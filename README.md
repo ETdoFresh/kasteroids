@@ -7,7 +7,7 @@ An Unity client project that is responsible for sending inputs to the server
 ## KasteroidsServer
 An Unity server project this is responsible for listening to inputs and updating the game/world state.
 
-#### Docker Hub
+**Docker Hub**  
 I am hosting the server as a docker container running on Ubuntu.
 https://hub.docker.com/repository/docker/etdofresh/kasteroidsserver
 
