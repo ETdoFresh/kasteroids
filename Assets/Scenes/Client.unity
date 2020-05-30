@@ -428,8 +428,8 @@ RectTransform:
   m_Father: {fileID: 1297786323}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.375, y: 0}
-  m_AnchorMax: {x: 0.625, y: 0.2}
+  m_AnchorMin: {x: 0.375, y: 0.8}
+  m_AnchorMax: {x: 0.625, y: 1}
   m_AnchoredPosition: {x: 345.5, y: 0}
   m_SizeDelta: {x: 1, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -482,7 +482,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bccdae5a66a69e429ed2441c417e0c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 1
+  id: 0
   controlLocally: 1
   up: 0
   down: 0
@@ -1108,7 +1108,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Client Player 1
+  m_Text: Player
 --- !u!222 &1707816966
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1155,6 +1155,7 @@ MonoBehaviour:
     type: 3}
   bulletPrefab: {fileID: 3138381885465665393, guid: efcd0585145ea5b47b9a9c43d2dcb159,
     type: 3}
+  playerInput: {fileID: 632103410}
 --- !u!4 &1763745729
 Transform:
   m_ObjectHideFlags: 0

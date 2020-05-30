@@ -232,10 +232,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   transform: {fileID: 7400556592603204230}
   rigidbody: {fileID: 7400556592603204233}
+  playerInput: {fileID: 0}
   force: 5
   maxVelocity: 2
   rotateSpeed: 360
-  fire1Down: 0
   gun: {fileID: 7400556592411046576}
   bulletPrefab: {fileID: 2806240170960880631, guid: bb6e1461f87bac6459fd5421871a6fe6,
     type: 3}

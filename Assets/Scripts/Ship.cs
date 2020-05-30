@@ -1,7 +1,6 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Ship : MonoBehaviour
+public class Ship : CustomMonoBehaviour
 {
     public new Transform transform;
     public new Rigidbody2D rigidbody;

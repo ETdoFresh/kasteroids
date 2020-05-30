@@ -9,15 +9,12 @@ using Object = UnityEngine.Object;
 public class Server : MonoBehaviour
 {
     public TCPServerUnity server;
-    public PlayerInput input;
     public WorldState worldState;
-
-    public List<Socket> clients = new List<Socket>();
-
+    public PlayerSpawner playerSpawner;
+    
     private void OnValidate()
     {
         if (!server) server = GetComponent<TCPServerUnity>();
-        if (!input) input = GetComponent<PlayerInput>();
     }
 
     private void OnEnable()
@@ -36,24 +33,26 @@ public class Server : MonoBehaviour
     private void OnOpen(Object tcpServer, Socket socket)
     {
         Debug.Log("Client Connected");
-        clients.Add(socket);
+        playerSpawner.Spawn(socket);
     }
 
     private void OnClose(Object tcpServer, Socket socket)
     {
         Debug.Log("Client Disconnected");
-        clients.Remove(socket);
+        playerSpawner.Despawn(socket);
     }
 
     private void OnMessage(Object tcpServer, Message<Socket> message)
     {
         Debug.Log(message.data);
-        input.Deserialize(message.data);
+        foreach(var playerInput in FindObjectsOfType<PlayerInput>())
+            if (gameObject.scene == playerInput.gameObject.scene)
+                playerInput.Deserialize(message.data);
     }
 
     private void FixedUpdate()
     {
-        foreach (var client in clients)
-            server.Send(client, worldState.Serialize());
+        foreach (var client in playerSpawner.clients)
+            server.Send(client.socket, worldState.Serialize(client.id));
     }
 }

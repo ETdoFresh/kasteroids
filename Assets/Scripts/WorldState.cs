@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WorldState : MonoBehaviour
+public class WorldState : CustomMonoBehaviour
 {
     public List<GameObject> ships = new List<GameObject>();
     public List<GameObject> asteroids = new List<GameObject>();
@@ -12,7 +12,13 @@ public class WorldState : MonoBehaviour
     public GameObject shipPrefab;
     public GameObject asteroidPrefab;
     public GameObject bulletPrefab;
+    public PlayerInput playerInput;
 
+    public string Serialize(int clientId)
+    {
+        return $"{clientId},{Serialize()}";
+    }
+    
     public string Serialize()
     {
         var output = "";
@@ -62,8 +68,10 @@ public class WorldState : MonoBehaviour
     public void Deserialize(string serialized)
     {
         var items = serialized.Split(',');
+
+        if (playerInput) playerInput.id = Convert.ToInt32(items[0]);
         
-        var x = 0;
+        var x = 1;
         try
         {
             var shipCount = int.Parse(items[x++]);
