@@ -391,7 +391,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   client: {fileID: 540150059}
-  input: {fileID: 0}
+  input: {fileID: 632103410}
+  worldState: {fileID: 1763745728}
 --- !u!1 &632103406
 GameObject:
   m_ObjectHideFlags: 0
@@ -1116,6 +1117,58 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1707816963}
   m_CullTransparentMesh: 0
+--- !u!1 &1763745727
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1763745729}
+  - component: {fileID: 1763745728}
+  m_Layer: 0
+  m_Name: World State
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1763745728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1763745727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 079a3da3915e2bf48bfdc12819214994, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ships: []
+  asteroids: []
+  bullets: []
+  shipPrefab: {fileID: 474964975951942000, guid: 0cb908d731d3bbe46bd9d3bb106f7107,
+    type: 3}
+  asteroidPrefab: {fileID: 3156479556835219846, guid: f3cf693e579da58499ef59ecb74206f6,
+    type: 3}
+  bulletPrefab: {fileID: 3138381885465665393, guid: efcd0585145ea5b47b9a9c43d2dcb159,
+    type: 3}
+--- !u!4 &1763745729
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1763745727}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1906540667
 GameObject:
   m_ObjectHideFlags: 0

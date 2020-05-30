@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Ship : MonoBehaviour
 {
@@ -8,15 +9,30 @@ public class Ship : MonoBehaviour
     public float force = 5f;
     public float maxVelocity = 2f;
     public float rotateSpeed = 360f;
-    
+
     public GameObject gun;
     public GameObject bulletPrefab;
-    
+
     private void OnValidate()
     {
         if (!transform) transform = GetComponent<Transform>();
         if (!rigidbody) rigidbody = GetComponent<Rigidbody2D>();
         if (!playerInput) playerInput = GetComponent<PlayerInput>();
+    }
+
+    private void OnEnable()
+    {
+        foreach (var worldState in FindObjectsOfType<WorldState>())
+            if (gameObject.scene == worldState.gameObject.scene)
+
+                worldState.ships.Add(gameObject);
+    }
+
+    private void OnDisable()
+    {
+        foreach (var worldState in FindObjectsOfType<WorldState>())
+            if (gameObject.scene == worldState.gameObject.scene)
+                worldState.ships.Remove(gameObject);
     }
 
     private void FixedUpdate()
@@ -33,7 +49,7 @@ public class Ship : MonoBehaviour
 
         if (rigidbody.velocity.magnitude > maxVelocity)
             rigidbody.velocity = rigidbody.velocity.normalized * maxVelocity;
-        
+
         var eulerAngles = transform.eulerAngles;
         eulerAngles.z += horizontal * -rotateSpeed * Time.fixedDeltaTime;
         transform.eulerAngles = eulerAngles;

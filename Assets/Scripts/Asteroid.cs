@@ -25,12 +25,20 @@ public class Asteroid : MonoBehaviour
         RandomizeScale();
         RandomizeRotation();
         RandomizeVelocity();
+
+        foreach (var worldState in FindObjectsOfType<WorldState>())
+            if (gameObject.scene == worldState.gameObject.scene)
+                worldState.asteroids.Add(gameObject);
     }
 
     private void OnDisable()
     {
         rigidbody.velocity = Vector2.zero;
         rigidbody.angularVelocity = 0;
+
+        foreach (var worldState in FindObjectsOfType<WorldState>())
+            if (gameObject.scene == worldState.gameObject.scene)
+                worldState.asteroids.Remove(gameObject);
     }
 
     private void RandomizeScale()
@@ -42,7 +50,7 @@ public class Asteroid : MonoBehaviour
     private void RandomizeRotation()
     {
         var rotation = Random.Range(0f, 360f);
-        var rotationVector = new Vector3(0,0, rotation);
+        var rotationVector = new Vector3(0, 0, rotation);
         transform.eulerAngles = rotationVector;
     }
 
@@ -55,7 +63,7 @@ public class Asteroid : MonoBehaviour
 
         var angularVelocity = Random.Range(minAngularVelocity, maxAngularVelocity);
         rigidbody.angularVelocity = angularVelocity;
-        
+
         if (rigidbody.velocity.magnitude > maxVelocity)
             rigidbody.velocity = rigidbody.velocity.normalized * maxScale;
     }
