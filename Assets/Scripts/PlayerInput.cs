@@ -47,6 +47,11 @@ public class PlayerInput : MonoBehaviour
 #endif
     }
 
+    public string Serialize()
+    {
+        return $"{id},{up},{down},{left},{right},{fire},";
+    }
+
     public void Deserialize(string serialized)
     {
         var args = serialized.Split(',');

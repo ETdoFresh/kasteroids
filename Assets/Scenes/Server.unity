@@ -2217,7 +2217,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Player 1
+  m_Text: Server Player 1
 --- !u!222 &760764343
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3198,6 +3198,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1174600143}
+  - component: {fileID: 1174600144}
+  - component: {fileID: 1174600145}
+  - component: {fileID: 1174600146}
   m_Layer: 0
   m_Name: Server
   m_TagString: Untagged
@@ -3219,6 +3222,101 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1174600144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174600142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 583708532, guid: ccdd06262fbf4ef468e9300d46334475, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  server:
+    hostNameOrAddress: 
+    port: 0
+  host: 
+  port: 53020
+  OnServerOpen:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityNetworking.UnityEventObject, UnityNetworking, Version=0.1.2.0,
+      Culture=neutral, PublicKeyToken=null
+  OnServerClose:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityNetworking.UnityEventObject, UnityNetworking, Version=0.1.2.0,
+      Culture=neutral, PublicKeyToken=null
+  OnOpen:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1174600145}
+        m_MethodName: Output
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 'Server: Client Connected'
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityNetworking.UnityEventObjectSocket, UnityNetworking, Version=0.1.2.0,
+      Culture=neutral, PublicKeyToken=null
+  OnMessage:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityNetworking.UnityEventObjectMessageSocket, UnityNetworking, Version=0.1.2.0,
+      Culture=neutral, PublicKeyToken=null
+  OnClose:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1174600145}
+        m_MethodName: Output
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 'Server: Client Disconnected'
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityNetworking.UnityEventObjectSocket, UnityNetworking, Version=0.1.2.0,
+      Culture=neutral, PublicKeyToken=null
+  OnError:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityNetworking.UnityEventObjectException, UnityNetworking, Version=0.1.2.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!114 &1174600145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174600142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 416445091cd5a8a4d871b8de050dbb00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1174600146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174600142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56c86eb9c45f2b04abcb8bbaa9cd323b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  server: {fileID: 1174600144}
+  input: {fileID: 1995858069}
 --- !u!1 &1177463892
 GameObject:
   m_ObjectHideFlags: 0
