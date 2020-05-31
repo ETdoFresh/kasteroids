@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
+using Commands;
 using CSharpNetworking;
 using UnityEngine;
 using UnityNetworking;
@@ -34,6 +35,7 @@ public class Server : MonoBehaviour
     {
         Debug.Log("Client Connected");
         playerSpawner.Spawn(socket);
+        ClientCommand.Run<GetName>(server, socket);
     }
 
     private void OnClose(Object tcpServer, Socket socket)

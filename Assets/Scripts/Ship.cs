@@ -23,7 +23,6 @@ public class Ship : CustomMonoBehaviour
     {
         foreach (var worldState in FindObjectsOfType<WorldState>())
             if (gameObject.scene == worldState.gameObject.scene)
-
                 worldState.ships.Add(gameObject);
     }
 

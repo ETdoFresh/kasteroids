@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class PlayerInput : MonoBehaviour
 {
     public int id = 0;
+    public string playerName;
 
     public bool controlLocally;
 
@@ -22,6 +24,24 @@ public class PlayerInput : MonoBehaviour
     public Image rightImage;
     public Image fireImage;
     public Text playerText;
+
+    private void OnEnable()
+    {
+        for (var i = 0; i < 1000; i++)
+        {
+            playerName = $"Guest{Random.Range(0, 1000):000}";
+            var nameExists = false;
+            foreach(var playerInput in FindObjectsOfType<PlayerInput>())
+                if (playerInput != this)
+                    if (playerInput.playerName == playerName)
+                    {
+                        nameExists = true;
+                        break;
+                    }
+            if (!nameExists)
+                break;
+        }
+    }
 
     private void FixedUpdate()
     {
@@ -45,7 +65,7 @@ public class PlayerInput : MonoBehaviour
             fireImage.color = fire ? Color.gray : Color.white;
         }
         if (playerText) 
-            playerText.text = $"Player {id}";
+            playerText.text = $"Player {id}: {playerName}";
     }
 
     public string Serialize()
