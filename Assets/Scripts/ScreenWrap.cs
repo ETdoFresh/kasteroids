@@ -16,6 +16,7 @@ public class ScreenWrap : MonoBehaviour
 
     private void OnEnable()
     {
+        if (!camera) camera = FindObjectOfType<Camera>();
         var min = camera.ViewportToWorldPoint(Vector3.zero);
         var max = camera.ViewportToWorldPoint(Vector3.one);
         left = min.x;

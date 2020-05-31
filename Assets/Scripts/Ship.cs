@@ -16,7 +16,7 @@ public class Ship : CustomMonoBehaviour
     {
         if (!transform) transform = GetComponent<Transform>();
         if (!rigidbody) rigidbody = GetComponent<Rigidbody2D>();
-        if (!playerInput) playerInput = GetComponent<PlayerInput>();
+        if (!playerInput) playerInput = FindObjectOfType<PlayerInput>();
     }
 
     private void OnEnable()

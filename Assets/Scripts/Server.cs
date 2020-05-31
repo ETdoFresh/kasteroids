@@ -44,7 +44,7 @@ public class Server : MonoBehaviour
 
     private void OnMessage(Object tcpServer, Message<Socket> message)
     {
-        Debug.Log(message.data);
+        //Debug.Log(message.data);
         foreach(var playerInput in FindObjectsOfType<PlayerInput>())
             if (gameObject.scene == playerInput.gameObject.scene)
                 playerInput.Deserialize(message.data);

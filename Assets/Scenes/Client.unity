@@ -284,7 +284,6 @@ GameObject:
   m_Component:
   - component: {fileID: 540150060}
   - component: {fileID: 540150059}
-  - component: {fileID: 540150061}
   - component: {fileID: 540150062}
   m_Layer: 0
   m_Name: Client
@@ -312,18 +311,7 @@ MonoBehaviour:
   port: 53020
   OnOpen:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 540150061}
-        m_MethodName: Output
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 'Client: Connected to Server'
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityNetworking.UnityEventObject, UnityNetworking, Version=0.1.2.0,
       Culture=neutral, PublicKeyToken=null
   OnMessage:
@@ -333,18 +321,7 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
   OnClose:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 540150061}
-        m_MethodName: Output
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 'Client: Disconnected from Server'
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityNetworking.UnityEventObject, UnityNetworking, Version=0.1.2.0,
       Culture=neutral, PublicKeyToken=null
   OnError:
@@ -366,18 +343,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &540150061
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 540150058}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 416445091cd5a8a4d871b8de050dbb00, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &540150062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -494,6 +459,7 @@ MonoBehaviour:
   leftImage: {fileID: 1280550625}
   rightImage: {fileID: 754111735}
   fireImage: {fileID: 1507055287}
+  playerText: {fileID: 1707816965}
 --- !u!1 &645259596
 GameObject:
   m_ObjectHideFlags: 0

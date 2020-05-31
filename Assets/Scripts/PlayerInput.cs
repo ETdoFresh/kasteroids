@@ -21,10 +21,10 @@ public class PlayerInput : MonoBehaviour
     public Image leftImage;
     public Image rightImage;
     public Image fireImage;
+    public Text playerText;
 
     private void FixedUpdate()
     {
-#if UNITY_EDITOR
         if (controlLocally)
         {
             var horizontal = Input.GetAxisRaw("Horizontal");
@@ -44,7 +44,8 @@ public class PlayerInput : MonoBehaviour
             rightImage.color = right ? Color.gray : Color.white;
             fireImage.color = fire ? Color.gray : Color.white;
         }
-#endif
+        if (playerText) 
+            playerText.text = $"Player {id}";
     }
 
     public string Serialize()

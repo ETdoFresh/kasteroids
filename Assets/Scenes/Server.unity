@@ -3171,7 +3171,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1174600143}
   - component: {fileID: 1174600144}
-  - component: {fileID: 1174600145}
   - component: {fileID: 1174600146}
   m_Layer: 0
   m_Name: Server
@@ -3223,18 +3222,7 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
   OnOpen:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1174600145}
-        m_MethodName: Output
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 'Server: Client Connected'
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityNetworking.UnityEventObjectSocket, UnityNetworking, Version=0.1.2.0,
       Culture=neutral, PublicKeyToken=null
   OnMessage:
@@ -3244,18 +3232,7 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
   OnClose:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1174600145}
-        m_MethodName: Output
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 'Server: Client Disconnected'
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityNetworking.UnityEventObjectSocket, UnityNetworking, Version=0.1.2.0,
       Culture=neutral, PublicKeyToken=null
   OnError:
@@ -3263,18 +3240,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityNetworking.UnityEventObjectException, UnityNetworking, Version=0.1.2.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &1174600145
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1174600142}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 416445091cd5a8a4d871b8de050dbb00, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1174600146
 MonoBehaviour:
   m_ObjectHideFlags: 0

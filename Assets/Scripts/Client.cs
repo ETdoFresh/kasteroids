@@ -13,6 +13,7 @@ public class Client : MonoBehaviour
     {
         if (!client) client = GetComponent<TCPClientUnity>();
         if (!input) input = FindObjectOfType<PlayerInput>();
+        if (!worldState) worldState = FindObjectOfType<WorldState>();
     }
     
     private void OnEnable()
@@ -26,7 +27,7 @@ public class Client : MonoBehaviour
 
     private void OnMessage(Object tcpClient, Message message)
     {
-        Debug.Log(message.data);
+        //Debug.Log(message.data);
         worldState.Deserialize(message.data);
     }
 
