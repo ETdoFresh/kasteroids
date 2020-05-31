@@ -1,82 +1,95 @@
 ﻿#if UNITY_EDITOR
 
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using UnityEditor;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-using Debug = UnityEngine.Debug;
 
 public class PlatformMenu
 {
-    [MenuItem("Platform/Build Open Scene(s) for Linux")]
-    static void BuildAndUploadLinuxServer()
+    [MenuItem("Platform/Build Server Scene for Linux")]
+    static void BuildServerSceneLinux()
     {
         var previousTarget = EditorUserBuildSettings.activeBuildTarget;
         var previousTargetGroup = EditorUserBuildSettings.selectedBuildTargetGroup;
-        var openScenes = OpenScenes().ToArray();
-        var scenes = openScenes.Select(s => s.path).ToArray();
         var buildPlayerOptions = new BuildPlayerOptions
         {
-            scenes = scenes,
+            scenes = new[] {EditorBuildSettings.scenes[1].path},
             targetGroup = BuildTargetGroup.Standalone,
             target = BuildTarget.StandaloneLinux64,
-            locationPathName = $@"Build\Linux\Kasteroids{openScenes[0].name}.x86_64",
+            locationPathName = $@"Build\Linux\KasteroidsServer.x86_64",
             options = BuildOptions.EnableHeadlessMode | BuildOptions.ShowBuiltPlayer | BuildOptions.Development
         };
         BuildPipeline.BuildPlayer(buildPlayerOptions);
+        
         //Process.Start(@"Build\Linux\UploadToETdoFresh.cmd");
+        
+        // Copy Dockerfile folder to Build
+        var sourceDirectory = @".\DockerFile\";
+        var targetDirectory = @".\Build\Linux\";
+        foreach (var file in Directory.GetFiles(sourceDirectory))
+            File.Copy(file, Path.Combine(targetDirectory, Path.GetFileName(file)), true);
+        
         EditorUserBuildSettings.SwitchActiveBuildTarget(previousTargetGroup, previousTarget);
     }
 
-    [MenuItem("Platform/Build and Run Open Scene(s) [Windows Headless]")]
-    static void BuildAndRunOpenScenesWindowsHeadless()
+    [MenuItem("Platform/Build Server Scene for Windows Server Mode")]
+    static void BuildAndRunServerSceneWindowsServerMode()
     {
         var previousTarget = EditorUserBuildSettings.activeBuildTarget;
         var previousTargetGroup = EditorUserBuildSettings.selectedBuildTargetGroup;
-        var openScenes = OpenScenes().ToArray();
-        var scenes = openScenes.Select(s => s.path).ToArray();
         var buildPlayerOptions = new BuildPlayerOptions
         {
-            scenes = scenes,
+            scenes = new[] {EditorBuildSettings.scenes[1].path},
             targetGroup = BuildTargetGroup.Standalone,
             target = BuildTarget.StandaloneWindows64,
-            locationPathName = $@"Build\WindowsServerMode\Kasteroirds{openScenes[0].name}.exe",
+            locationPathName = $@"Build\WindowsServer\KasteroidsServer.exe",
             options = BuildOptions.AutoRunPlayer | BuildOptions.Development | BuildOptions.EnableHeadlessMode
         };
         BuildPipeline.BuildPlayer(buildPlayerOptions);
         EditorUserBuildSettings.SwitchActiveBuildTarget(previousTargetGroup, previousTarget);
     }
 
-    [MenuItem("Platform/Build and Run Open Scenes [Windows]")]
-    static void BuildAndRunOpenScenesWindows()
+    [MenuItem("Platform/Build and Run Server Scene for Windows GUI")]
+    static void BuildAndRunServerSceneWindowsGUI()
     {
         var previousTarget = EditorUserBuildSettings.activeBuildTarget;
         var previousTargetGroup = EditorUserBuildSettings.selectedBuildTargetGroup;
-        var openScenes = OpenScenes().ToArray();
-        var scenes = openScenes.Select(s => s.path).ToArray();
         var buildPlayerOptions = new BuildPlayerOptions
         {
-            scenes = scenes,
+            scenes = new[] {EditorBuildSettings.scenes[1].path},
             targetGroup = BuildTargetGroup.Standalone,
             target = BuildTarget.StandaloneWindows64,
-            locationPathName = $@"Build\Windows\Kasteroids{openScenes[0].name}.exe",
+            locationPathName = $@"Build\WindowsServerGUI\KasteroidsServer.exe",
             options = BuildOptions.AutoRunPlayer | BuildOptions.Development
         };
         BuildPipeline.BuildPlayer(buildPlayerOptions);
         EditorUserBuildSettings.SwitchActiveBuildTarget(previousTargetGroup, previousTarget);
     }
 
-    [MenuItem("Platform/Build and Run Open Scenes [WebGL]")]
-    static void BuildAndRunOpenScenesWebGL()
+    [MenuItem("Platform/Build and Run Client Scene for Windows GUI")]
+    static void BuildAndRunClientSceneWindowsGUI()
     {
         var previousTarget = EditorUserBuildSettings.activeBuildTarget;
         var previousTargetGroup = EditorUserBuildSettings.selectedBuildTargetGroup;
         var buildPlayerOptions = new BuildPlayerOptions
         {
-            scenes = OpenScenes().Select(s => s.path).ToArray(),
+            scenes = new[] {EditorBuildSettings.scenes[2].path},
+            targetGroup = BuildTargetGroup.Standalone,
+            target = BuildTarget.StandaloneWindows64,
+            locationPathName = $@"Build\WindowsClient\KasteroidsClient.exe",
+            options = BuildOptions.AutoRunPlayer | BuildOptions.Development
+        };
+        BuildPipeline.BuildPlayer(buildPlayerOptions);
+        EditorUserBuildSettings.SwitchActiveBuildTarget(previousTargetGroup, previousTarget);
+    }
+
+    [MenuItem("Platform/Build and Run Client Scene for WebGL")]
+    static void BuildAndRunClientSceneWebGL()
+    {
+        var previousTarget = EditorUserBuildSettings.activeBuildTarget;
+        var previousTargetGroup = EditorUserBuildSettings.selectedBuildTargetGroup;
+        var buildPlayerOptions = new BuildPlayerOptions
+        {
+            scenes = new[] {EditorBuildSettings.scenes[2].path},
             targetGroup = BuildTargetGroup.WebGL,
             target = BuildTarget.WebGL,
             locationPathName = @"Build\WebGL",
@@ -84,12 +97,6 @@ public class PlatformMenu
         };
         BuildPipeline.BuildPlayer(buildPlayerOptions);
         EditorUserBuildSettings.SwitchActiveBuildTarget(previousTargetGroup, previousTarget);
-    }
-    
-    public static IEnumerable<Scene> OpenScenes()
-    {
-        for (int i = 0; i < SceneManager.sceneCount; i++)
-            yield return SceneManager.GetSceneAt(i);
     }
 }
 
