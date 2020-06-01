@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 2806240170960880631, guid: bb6e1461f87bac6459fd5421871a6fe6,
         type: 3}
       propertyPath: m_Name
-      value: Bullet
+      value: Bullet Variant
       objectReference: {fileID: 0}
     - target: {fileID: 2806240170960880633, guid: bb6e1461f87bac6459fd5421871a6fe6,
         type: 3}
@@ -67,9 +67,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8320690806299647443, guid: bb6e1461f87bac6459fd5421871a6fe6,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6197946646918108865, guid: bb6e1461f87bac6459fd5421871a6fe6, type: 3}
-    - {fileID: 8320690806299647443, guid: bb6e1461f87bac6459fd5421871a6fe6, type: 3}
     - {fileID: 2806240170960880635, guid: bb6e1461f87bac6459fd5421871a6fe6, type: 3}
     - {fileID: 5944745255916043967, guid: bb6e1461f87bac6459fd5421871a6fe6, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: bb6e1461f87bac6459fd5421871a6fe6, type: 3}

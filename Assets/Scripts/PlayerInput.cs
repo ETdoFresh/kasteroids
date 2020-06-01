@@ -7,8 +7,7 @@ using Random = UnityEngine.Random;
 
 public class PlayerInput : MonoBehaviour
 {
-    public int id = 0;
-    public string playerName;
+    public Player player;
 
     public bool controlLocally;
 
@@ -24,24 +23,6 @@ public class PlayerInput : MonoBehaviour
     public Image rightImage;
     public Image fireImage;
     public Text playerText;
-
-    private void OnEnable()
-    {
-        for (var i = 0; i < 1000; i++)
-        {
-            playerName = $"Guest{Random.Range(0, 1000):000}";
-            var nameExists = false;
-            foreach(var playerInput in FindObjectsOfType<PlayerInput>())
-                if (playerInput != this)
-                    if (playerInput.playerName == playerName)
-                    {
-                        nameExists = true;
-                        break;
-                    }
-            if (!nameExists)
-                break;
-        }
-    }
 
     private void FixedUpdate()
     {
@@ -64,19 +45,25 @@ public class PlayerInput : MonoBehaviour
             rightImage.color = right ? Color.gray : Color.white;
             fireImage.color = fire ? Color.gray : Color.white;
         }
-        if (playerText) 
-            playerText.text = $"Player {id}: {playerName}";
+
+        if (playerText)
+            if (player)
+                playerText.text = $"Player {player.id}: {player.nickname}";
+            else
+                playerText.text = $"<Unassigned>";
     }
 
     public string Serialize()
     {
-        return $"{id},{up},{down},{left},{right},{fire},";
+        return $"{player.id},{up},{down},{left},{right},{fire},";
     }
 
     public void Deserialize(string serialized)
     {
+        if (!player) return;
+
         var args = serialized.Split(',');
-        if (id != Convert.ToInt32(args[0])) return;
+        if (player.id.value != Convert.ToInt32(args[0])) return;
         up = Convert.ToBoolean(args[1]);
         down = Convert.ToBoolean(args[2]);
         left = Convert.ToBoolean(args[3]);

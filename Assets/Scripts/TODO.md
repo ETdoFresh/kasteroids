@@ -1,5 +1,4 @@
 ## Tasks
-- [ ] Show Name above Ship
 - [ ] Set Name
 - [ ] Join game
 - [ ] Leave game [not disconnect]
@@ -7,6 +6,8 @@
 - [ ] Add Server State [Ready, Running, Loading, etc, etc]
 - [ ] Handle Disconnects
 - [ ] Disconnect
+- [X] Put name into State
+- [X] Show Name above Ship
 - [X] Set Default Name
 - [X] Get Name
 - [X] Send Inputs

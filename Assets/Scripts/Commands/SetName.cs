@@ -23,8 +23,8 @@ namespace Commands
                 throw new Exception($"{GetType().Name}: Player Spawner did not exist");
 
             var i = _playerSpawner.sockets.IndexOf(client);
-            var clientData = _playerSpawner.clients[i];
-            clientData.ship.playerInput.playerName = (string) args[0];
+            var player = _playerSpawner.players[i];
+            player.nickname.value = (string) args[0];
         }
     }
 }

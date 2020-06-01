@@ -5,14 +5,14 @@ using UnityEngine;
 
 public class WorldState : CustomMonoBehaviour
 {
-    public List<GameObject> ships = new List<GameObject>();
-    public List<GameObject> asteroids = new List<GameObject>();
-    public List<GameObject> bullets = new List<GameObject>();
+    public List<Ship> ships = new List<Ship>();
+    public List<Asteroid> asteroids = new List<Asteroid>();
+    public List<Bullet> bullets = new List<Bullet>();
 
     public GameObject shipPrefab;
     public GameObject asteroidPrefab;
     public GameObject bulletPrefab;
-    public PlayerInput playerInput;
+    public Player player;
 
     public string Serialize(int clientId)
     {
@@ -29,11 +29,13 @@ public class WorldState : CustomMonoBehaviour
             var shipPosition = shipTransform.position;
             var shipEulerAngles = shipTransform.eulerAngles;
             var shipScale = shipTransform.localScale;
+            var shipName = ship.playerNickname.value.Replace(",","");
             output += $"{shipPosition.x},";
             output += $"{shipPosition.y},";
             output += $"{shipEulerAngles.z},";
             output += $"{shipScale.x},";
             output += $"{shipScale.y},";
+            output += $"{shipName},";
         }
         output += $"{asteroids.Count},";
         foreach (var asteroid in asteroids)
@@ -69,7 +71,7 @@ public class WorldState : CustomMonoBehaviour
     {
         var items = serialized.Split(',');
 
-        if (playerInput) playerInput.id = Convert.ToInt32(items[0]);
+        if (player) player.id.value = Convert.ToInt32(items[0]);
         
         var x = 1;
         try
@@ -79,13 +81,13 @@ public class WorldState : CustomMonoBehaviour
             // Destroy Missing Ships
             for (var i = ships.Count - 1; i >= shipCount; i--)
             {
-                Destroy(ships[i]);
+                Destroy(ships[i].gameObject);
                 ships.RemoveAt(i);
             }
 
             // Add New Ships
             for (var i = ships.Count; i < shipCount; i++)
-                ships.Add(Instantiate(shipPrefab));
+                ships.Add(Instantiate(shipPrefab).GetComponent<Ship>());
 
             // Update Ships
             for (var i = 0; i < ships.Count; i++)
@@ -95,9 +97,11 @@ public class WorldState : CustomMonoBehaviour
                 var rotationZ = float.Parse(items[x++]);
                 var scaleX = float.Parse(items[x++]);
                 var scaleY = float.Parse(items[x++]);
+                var shipNickName = items[x++];
                 ships[i].transform.position = new Vector3(positionX, positionY, 0);
                 ships[i].transform.eulerAngles = new Vector3(0, 0, rotationZ);
                 ships[i].transform.localScale = new Vector3(scaleX, scaleY, 1);
+                ships[i].playerNickname.value = shipNickName;
             }
 
             var asteroidCount = int.Parse(items[x++]);
@@ -105,13 +109,13 @@ public class WorldState : CustomMonoBehaviour
             // Destroy Missing Asteroids
             for (var i = asteroids.Count - 1; i >= asteroidCount; i--)
             {
-                Destroy(asteroids[i]);
+                Destroy(asteroids[i].gameObject);
                 asteroids.RemoveAt(i);
             }
 
             // Add New Asteroids
             for (var i = asteroids.Count; i < asteroidCount; i++)
-                asteroids.Add(Instantiate(asteroidPrefab));
+                asteroids.Add(Instantiate(asteroidPrefab).GetComponent<Asteroid>());
 
             // Update Asteroids
             for (var i = 0; i < asteroids.Count; i++)
@@ -128,18 +132,18 @@ public class WorldState : CustomMonoBehaviour
 
             var bulletCount = int.Parse(items[x++]);
 
-            // Destroy Missing Ships
+            // Destroy Missing Bullets
             for (var i = bullets.Count - 1; i >= bulletCount; i--)
             {
-                Destroy(bullets[i]);
+                Destroy(bullets[i].gameObject);
                 bullets.RemoveAt(i);
             }
 
-            // Add New Ships
+            // Add New Bullets
             for (var i = bullets.Count; i < bulletCount; i++)
-                bullets.Add(Instantiate(bulletPrefab));
+                bullets.Add(Instantiate(bulletPrefab).GetComponent<Bullet>());
 
-            // Update Ships
+            // Update Bullets
             for (var i = 0; i < bullets.Count; i++)
             {
                 var positionX = float.Parse(items[x++]);

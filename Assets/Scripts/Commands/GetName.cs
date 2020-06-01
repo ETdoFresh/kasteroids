@@ -18,13 +18,13 @@ namespace Commands
                 throw new Exception($"{GetType().Name}: Player Spawner did not exist");
 
             var i = _playerSpawner.sockets.IndexOf(client);
-            return _playerSpawner.clients[i].ship.playerInput.playerName;
+            return _playerSpawner.players[i].nickname.value;
         }
 
         public override void Receive(TCPClientUnity client, params object[] args)
         {
-            var playerInput = client.FindObjectOfTypeInScene<PlayerInput>();
-            playerInput.playerName = (string) args[0];
+            var player = client.FindObjectOfTypeInScene<Player>();
+            player.nickname.value = (string) args[0];
         }
     }
 }

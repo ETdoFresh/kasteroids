@@ -54,7 +54,7 @@ public class Server : MonoBehaviour
 
     private void FixedUpdate()
     {
-        foreach (var client in playerSpawner.clients)
-            server.Send(client.socket, worldState.Serialize(client.id));
+        foreach (var player in playerSpawner.players)
+            server.Send(player.socket, worldState.Serialize(player.id.value));
     }
 }

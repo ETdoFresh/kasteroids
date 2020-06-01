@@ -18,7 +18,7 @@ public class Bullet : MonoBehaviour
     {
         foreach (var worldState in FindObjectsOfType<WorldState>())
             if (gameObject.scene == worldState.gameObject.scene)
-                worldState.bullets.Add(gameObject);
+                worldState.bullets.Add(this);
 
         rigidbody.velocity += (Vector2) transform.up * velocity;
         Destroy(gameObject, destroyAfter);
@@ -28,7 +28,7 @@ public class Bullet : MonoBehaviour
     {
         foreach (var worldState in FindObjectsOfType<WorldState>())
             if (gameObject.scene == worldState.gameObject.scene)
-                worldState.bullets.Remove(gameObject);
+                worldState.bullets.Remove(this);
     }
 
     private void OnCollisionEnter2D(Collision2D other)

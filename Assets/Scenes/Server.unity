@@ -559,7 +559,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bccdae5a66a69e429ed2441c417e0c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 2
+  player: {fileID: 0}
   controlLocally: 0
   up: 0
   down: 0
@@ -571,6 +571,7 @@ MonoBehaviour:
   leftImage: {fileID: 1172728451}
   rightImage: {fileID: 1689915723}
   fireImage: {fileID: 1783994962}
+  playerText: {fileID: 610146443}
 --- !u!114 &213326981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -991,7 +992,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bccdae5a66a69e429ed2441c417e0c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 4
+  player: {fileID: 0}
   controlLocally: 0
   up: 0
   down: 0
@@ -1003,6 +1004,7 @@ MonoBehaviour:
   leftImage: {fileID: 210153280}
   rightImage: {fileID: 1791823499}
   fireImage: {fileID: 310456097}
+  playerText: {fileID: 1630409984}
 --- !u!114 &439290376
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1329,7 +1331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bccdae5a66a69e429ed2441c417e0c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 3
+  player: {fileID: 0}
   controlLocally: 0
   up: 0
   down: 0
@@ -1341,6 +1343,7 @@ MonoBehaviour:
   leftImage: {fileID: 1539745258}
   rightImage: {fileID: 607325621}
   fireImage: {fileID: 2124472012}
+  playerText: {fileID: 770683784}
 --- !u!114 &591374919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1561,7 +1564,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1587,12 +1590,12 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 32
+    m_FontSize: 24
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 3
+    m_MinSize: 2
     m_MaxSize: 40
-    m_Alignment: 7
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -2106,7 +2109,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2132,12 +2135,12 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 32
+    m_FontSize: 24
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 3
+    m_MinSize: 2
     m_MaxSize: 40
-    m_Alignment: 7
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -2185,7 +2188,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2211,12 +2214,12 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 32
+    m_FontSize: 24
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 3
+    m_MinSize: 2
     m_MaxSize: 40
-    m_Alignment: 7
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -2467,7 +2470,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3634eb7a56817fd40a2c5f37e5724f1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clients: []
+  players: []
   shipPrefab: {fileID: 7400556592603204229, guid: 9a9e44a6f540a08428fe48b0d073b2c3,
     type: 3}
 --- !u!4 &902993922
@@ -3346,6 +3349,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Asteroid (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7824595594360069327, guid: 6333590cd8697824a9feebb4b31aa990,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7824595594360069326, guid: 6333590cd8697824a9feebb4b31aa990,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3400,11 +3408,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7824595594360069327, guid: 6333590cd8697824a9feebb4b31aa990,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6333590cd8697824a9feebb4b31aa990, type: 3}
@@ -3802,7 +3805,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -3828,12 +3831,12 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 32
+    m_FontSize: 24
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 3
+    m_MinSize: 2
     m_MaxSize: 40
-    m_Alignment: 7
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -4040,7 +4043,7 @@ MonoBehaviour:
     type: 3}
   bulletPrefab: {fileID: 2806240170960880631, guid: bb6e1461f87bac6459fd5421871a6fe6,
     type: 3}
-  playerInput: {fileID: 0}
+  player: {fileID: 0}
 --- !u!4 &1687837006
 Transform:
   m_ObjectHideFlags: 0
@@ -4798,7 +4801,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bccdae5a66a69e429ed2441c417e0c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 1
+  player: {fileID: 0}
   controlLocally: 0
   up: 0
   down: 0
@@ -4810,6 +4813,7 @@ MonoBehaviour:
   leftImage: {fileID: 1794137204}
   rightImage: {fileID: 1638513011}
   fireImage: {fileID: 125316351}
+  playerText: {fileID: 760764342}
 --- !u!114 &1995858070
 MonoBehaviour:
   m_ObjectHideFlags: 0

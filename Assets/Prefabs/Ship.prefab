@@ -239,3 +239,4 @@ MonoBehaviour:
   gun: {fileID: 7400556592411046576}
   bulletPrefab: {fileID: 2806240170960880631, guid: bb6e1461f87bac6459fd5421871a6fe6,
     type: 3}
+  playerName: 

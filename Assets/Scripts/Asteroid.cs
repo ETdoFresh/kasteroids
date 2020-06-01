@@ -28,7 +28,7 @@ public class Asteroid : MonoBehaviour
 
         foreach (var worldState in FindObjectsOfType<WorldState>())
             if (gameObject.scene == worldState.gameObject.scene)
-                worldState.asteroids.Add(gameObject);
+                worldState.asteroids.Add(this);
     }
 
     private void OnDisable()
@@ -38,7 +38,7 @@ public class Asteroid : MonoBehaviour
 
         foreach (var worldState in FindObjectsOfType<WorldState>())
             if (gameObject.scene == worldState.gameObject.scene)
-                worldState.asteroids.Remove(gameObject);
+                worldState.asteroids.Remove(this);
     }
 
     private void RandomizeScale()
