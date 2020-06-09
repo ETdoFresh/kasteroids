@@ -1,4 +1,5 @@
 ## Tasks
+- [ ] Get State/Info (return JSON of server info)
 - [ ] Set Name
 - [ ] Join game
 - [ ] Leave game [not disconnect]
@@ -14,6 +15,12 @@
 - [X] Get Updates
 
 ## Ideal Sample Communication
+
+### Master Server List
+- [ ] Runs GetInfo every X seconds to get state and info
+- [ ] Can start new game servers if necessary
+- [ ] Returns server list to matchmaker [query engine?]
+- [ ] Client should be able to see master server list
 
 ### User Database
 - Start webserver
