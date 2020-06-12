@@ -28,32 +28,32 @@ func _on_Virtual_Controls2_up_pressed():	up = true
 func _on_Virtual_Controls2_up_released():	up = false
 
 func _process(delta):	
-	
-	if up || Input.is_action_pressed("ui_up"):
-		thrust = Vector2(0, -engine_thrust)
-	elif down || Input.is_action_pressed("ui_down"):
-		thrust = Vector2(0, engine_thrust)
-	else:
-		thrust = Vector2()
-		
-	rotation_dir = 0
-	if left || Input.is_action_pressed("ui_left"): 
-		rotation_dir -= 1
-	if right || Input.is_action_pressed("ui_right"):
-		rotation_dir += 1
-		
-	if fire || Input.is_action_just_pressed("ui_select"):
-		emit_signal("fire")
-		fire = false
+    
+    if up || Input.is_action_pressed("ui_up"):
+        thrust = Vector2(0, -engine_thrust)
+    elif down || Input.is_action_pressed("ui_down"):
+        thrust = Vector2(0, engine_thrust)
+    else:
+        thrust = Vector2()
+        
+    rotation_dir = 0
+    if left || Input.is_action_pressed("ui_left"): 
+        rotation_dir -= 1
+    if right || Input.is_action_pressed("ui_right"):
+        rotation_dir += 1
+        
+    if fire || Input.is_action_just_pressed("ui_select"):
+        emit_signal("fire")
+        fire = false
 
 func _physics_process(delta):
-	set_applied_force(thrust.rotated(rotation))
-	
-	angular_velocity = rotation_dir * spin_thrust * delta
-	#set_applied_torque(rotation_dir * spin_thrust)
-	
-	if linear_velocity.length() > max_speed:
-		linear_velocity = linear_velocity.normalized() * max_speed
+    set_applied_force(thrust.rotated(rotation))
+    
+    angular_velocity = rotation_dir * spin_thrust * delta
+    #set_applied_torque(rotation_dir * spin_thrust)
+    
+    if linear_velocity.length() > max_speed:
+        linear_velocity = linear_velocity.normalized() * max_speed
 
 func _integrate_forces(state):
-	emit_signal("integrate_forces", state)
+    emit_signal("integrate_forces", state)

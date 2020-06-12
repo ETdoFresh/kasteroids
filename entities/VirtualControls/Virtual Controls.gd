@@ -12,31 +12,31 @@ signal fire_pressed
 signal fire_released
 
 func _on_Up_button_down():
-	emit_signal("up_pressed")
+    emit_signal("up_pressed")
 
 func _on_Up_button_up():
-	emit_signal("up_released")
+    emit_signal("up_released")
 
 func _on_Left_button_down():
-	emit_signal("left_pressed")
+    emit_signal("left_pressed")
 
 func _on_Left_button_up():
-	emit_signal("left_released")
+    emit_signal("left_released")
 
 func _on_Down_button_down():
-	emit_signal("down_pressed")
+    emit_signal("down_pressed")
 
 func _on_Down_button_up():
-	emit_signal("down_released")
+    emit_signal("down_released")
 
 func _on_Right_button_down():
-	emit_signal("right_pressed")
+    emit_signal("right_pressed")
 
 func _on_Right_button_up():
-	emit_signal("right_released")
+    emit_signal("right_released")
 
 func _on_Fire_button_down():
-	emit_signal("fire_pressed")
+    emit_signal("fire_pressed")
 
 func _on_Fire_button_up():
-	emit_signal("fire_released")
+    emit_signal("fire_released")
