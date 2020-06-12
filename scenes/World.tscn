@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://entities/Bullet/Bullet.tscn" type="PackedScene" id=1]
 [ext_resource path="res://entities/Ship/Ship.tscn" type="PackedScene" id=2]
 [ext_resource path="res://entities/Asteroid/Asteroid.tscn" type="PackedScene" id=3]
+[ext_resource path="res://entities/VirtualControls/Virtual Controls.tscn" type="PackedScene" id=4]
+[ext_resource path="res://entities/Shared/ShortcutKeys.gd" type="Script" id=5]
 
 [sub_resource type="Gradient" id=1]
 colors = PoolColorArray( 0, 0.00354004, 0.226563, 1, 0, 0.0201416, 0.234375, 1 )
@@ -24,8 +25,20 @@ __meta__ = {
 [node name="Ship" parent="." instance=ExtResource( 2 )]
 position = Vector2( 588, 394 )
 
-[node name="Bullet" parent="." instance=ExtResource( 1 )]
-position = Vector2( 591, 323 )
-
 [node name="Asteroid" parent="." instance=ExtResource( 3 )]
 position = Vector2( 360, 362 )
+
+[node name="Virtual Controls2" parent="." instance=ExtResource( 4 )]
+
+[node name="ShortcutKeys" type="Node" parent="."]
+script = ExtResource( 5 )
+[connection signal="down_pressed" from="Virtual Controls2" to="Ship" method="_on_Virtual_Controls2_down_pressed"]
+[connection signal="down_released" from="Virtual Controls2" to="Ship" method="_on_Virtual_Controls2_down_released"]
+[connection signal="fire_pressed" from="Virtual Controls2" to="Ship" method="_on_Virtual_Controls2_fire_pressed"]
+[connection signal="fire_released" from="Virtual Controls2" to="Ship" method="_on_Virtual_Controls2_fire_released"]
+[connection signal="left_pressed" from="Virtual Controls2" to="Ship" method="_on_Virtual_Controls2_left_pressed"]
+[connection signal="left_released" from="Virtual Controls2" to="Ship" method="_on_Virtual_Controls2_left_released"]
+[connection signal="right_pressed" from="Virtual Controls2" to="Ship" method="_on_Virtual_Controls2_right_pressed"]
+[connection signal="right_released" from="Virtual Controls2" to="Ship" method="_on_Virtual_Controls2_right_released"]
+[connection signal="up_pressed" from="Virtual Controls2" to="Ship" method="_on_Virtual_Controls2_up_pressed"]
+[connection signal="up_released" from="Virtual Controls2" to="Ship" method="_on_Virtual_Controls2_up_released"]
