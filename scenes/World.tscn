@@ -6,7 +6,7 @@
 [ext_resource path="res://entities/Shared/ShortcutKeys.gd" type="Script" id=5]
 
 [sub_resource type="Gradient" id=1]
-colors = PoolColorArray( 0, 0.00354004, 0.226563, 1, 0, 0.0201416, 0.234375, 1 )
+colors = PoolColorArray( 0, 0.00392157, 0.384314, 1, 0.23587, 0.248374, 0.460938, 1 )
 
 [sub_resource type="GradientTexture" id=2]
 gradient = SubResource( 1 )
@@ -14,8 +14,11 @@ gradient = SubResource( 1 )
 [node name="World" type="Node2D"]
 
 [node name="Background" type="TextureRect" parent="."]
-margin_right = 1280.0
-margin_bottom = 720.0
+margin_left = 608.0
+margin_top = -712.0
+margin_right = 2108.0
+margin_bottom = 788.0
+rect_rotation = 44.9999
 texture = SubResource( 2 )
 expand = true
 __meta__ = {
@@ -25,8 +28,17 @@ __meta__ = {
 [node name="Ship" parent="." instance=ExtResource( 2 )]
 position = Vector2( 588, 394 )
 
-[node name="Asteroid" parent="." instance=ExtResource( 3 )]
-position = Vector2( 360, 362 )
+[node name="Asteroid1" parent="." instance=ExtResource( 3 )]
+position = Vector2( 225, 130 )
+
+[node name="Asteroid2" parent="." instance=ExtResource( 3 )]
+position = Vector2( 281, 528 )
+
+[node name="Asteroid3" parent="." instance=ExtResource( 3 )]
+position = Vector2( 952, 142 )
+
+[node name="Asteroid4" parent="." instance=ExtResource( 3 )]
+position = Vector2( 1008, 508 )
 
 [node name="Virtual Controls2" parent="." instance=ExtResource( 4 )]
 

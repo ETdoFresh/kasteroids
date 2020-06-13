@@ -10,3 +10,6 @@ func _integrate_forces(state):
 
 func _on_DestroyAfter_timeout():
     queue_free()
+
+func _on_Bullet_body_entered(body):
+    queue_free()

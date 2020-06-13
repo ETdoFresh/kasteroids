@@ -2,5 +2,5 @@
 
 - [ ] Multitouch controls
 - [ ] Particles on bullet explode
-- [ ] Random Asteroids Velocity/Spin
-- [ ] Collision Destroy Bullets
+- [x] Random Asteroids Velocity/Spin
+- [x] Collision Destroy Bullets
