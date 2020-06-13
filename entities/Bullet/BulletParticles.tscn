@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="Curve" id=1]
+_data = [ Vector2( 0.0114943, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.712644, 0.909091 ), 0.0, 0.0, 0, 0, Vector2( 0.977011, 0.145455 ), 0.0, 0.0, 0, 0 ]
+
+[node name="BulletParticles" type="CPUParticles2D"]
+emitting = false
+amount = 20
+lifetime = 0.3
+one_shot = true
+explosiveness = 0.5
+local_coords = false
+spread = 180.0
+gravity = Vector2( 0, 0 )
+initial_velocity = 50.0
+scale_amount = 4.0
+scale_amount_curve = SubResource( 1 )

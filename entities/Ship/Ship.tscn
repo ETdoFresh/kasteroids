@@ -23,7 +23,7 @@ shape = SubResource( 1 )
 script = ExtResource( 2 )
 
 [node name="Gun" type="Node2D" parent="."]
-position = Vector2( 4.41174, -44.7478 )
+position = Vector2( 2.4508, -43.7705 )
 script = ExtResource( 4 )
 [connection signal="fire" from="." to="Gun" method="_on_Ship_fire"]
 [connection signal="integrate_forces" from="." to="Wrap" method="_on_integrate_forces"]
