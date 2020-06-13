@@ -1,9 +1,11 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
+[ext_resource path="res://entities/PlayerControlMonitor/PlayerMonitor.tscn" type="PackedScene" id=1]
 [ext_resource path="res://entities/Ship/Ship.tscn" type="PackedScene" id=2]
 [ext_resource path="res://entities/Asteroid/Asteroid.tscn" type="PackedScene" id=3]
 [ext_resource path="res://entities/VirtualControls/Virtual Controls.tscn" type="PackedScene" id=4]
 [ext_resource path="res://entities/Shared/ShortcutKeys.gd" type="Script" id=5]
+[ext_resource path="res://entities/PlayerControlMonitor/LocalPlayerInput.gd" type="Script" id=6]
 
 [sub_resource type="Gradient" id=1]
 colors = PoolColorArray( 0, 0.00392157, 0.384314, 1, 0.23587, 0.248374, 0.460938, 1 )
@@ -27,6 +29,7 @@ __meta__ = {
 
 [node name="Ship" parent="." instance=ExtResource( 2 )]
 position = Vector2( 588, 394 )
+input_path = NodePath("../LocalPlayerInput")
 
 [node name="Asteroid1" parent="." instance=ExtResource( 3 )]
 position = Vector2( 225, 130 )
@@ -40,17 +43,28 @@ position = Vector2( 952, 142 )
 [node name="Asteroid4" parent="." instance=ExtResource( 3 )]
 position = Vector2( 1008, 508 )
 
-[node name="Virtual Controls2" parent="." instance=ExtResource( 4 )]
+[node name="Virtual Controls" parent="." instance=ExtResource( 4 )]
 
 [node name="ShortcutKeys" type="Node" parent="."]
 script = ExtResource( 5 )
-[connection signal="down_pressed" from="Virtual Controls2" to="Ship" method="_on_Virtual_Controls2_down_pressed"]
-[connection signal="down_released" from="Virtual Controls2" to="Ship" method="_on_Virtual_Controls2_down_released"]
-[connection signal="fire_pressed" from="Virtual Controls2" to="Ship" method="_on_Virtual_Controls2_fire_pressed"]
-[connection signal="fire_released" from="Virtual Controls2" to="Ship" method="_on_Virtual_Controls2_fire_released"]
-[connection signal="left_pressed" from="Virtual Controls2" to="Ship" method="_on_Virtual_Controls2_left_pressed"]
-[connection signal="left_released" from="Virtual Controls2" to="Ship" method="_on_Virtual_Controls2_left_released"]
-[connection signal="right_pressed" from="Virtual Controls2" to="Ship" method="_on_Virtual_Controls2_right_pressed"]
-[connection signal="right_released" from="Virtual Controls2" to="Ship" method="_on_Virtual_Controls2_right_released"]
-[connection signal="up_pressed" from="Virtual Controls2" to="Ship" method="_on_Virtual_Controls2_up_pressed"]
-[connection signal="up_released" from="Virtual Controls2" to="Ship" method="_on_Virtual_Controls2_up_released"]
+
+[node name="PlayerMonitor" parent="." instance=ExtResource( 1 )]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 1285.0
+margin_bottom = 725.0
+assignedControllers = [ NodePath("../LocalPlayerInput"), NodePath("") ]
+assignedController1Path = NodePath("../LocalPlayerInput")
+
+[node name="LocalPlayerInput" type="Node" parent="."]
+script = ExtResource( 6 )
+[connection signal="down_pressed" from="Virtual Controls" to="LocalPlayerInput" method="_on_Virtual_Controls_down_pressed"]
+[connection signal="down_released" from="Virtual Controls" to="LocalPlayerInput" method="_on_Virtual_Controls_down_released"]
+[connection signal="fire_pressed" from="Virtual Controls" to="LocalPlayerInput" method="_on_Virtual_Controls_fire_pressed"]
+[connection signal="fire_released" from="Virtual Controls" to="LocalPlayerInput" method="_on_Virtual_Controls_fire_released"]
+[connection signal="left_pressed" from="Virtual Controls" to="LocalPlayerInput" method="_on_Virtual_Controls_left_pressed"]
+[connection signal="left_released" from="Virtual Controls" to="LocalPlayerInput" method="_on_Virtual_Controls_left_released"]
+[connection signal="right_pressed" from="Virtual Controls" to="LocalPlayerInput" method="_on_Virtual_Controls_right_pressed"]
+[connection signal="right_released" from="Virtual Controls" to="LocalPlayerInput" method="_on_Virtual_Controls_right_released"]
+[connection signal="up_pressed" from="Virtual Controls" to="LocalPlayerInput" method="_on_Virtual_Controls_up_pressed"]
+[connection signal="up_released" from="Virtual Controls" to="LocalPlayerInput" method="_on_Virtual_Controls_up_released"]

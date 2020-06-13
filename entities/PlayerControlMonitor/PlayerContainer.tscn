@@ -1,0 +1,125 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://entities/PlayerControlMonitor/PlayerContainer.gd" type="Script" id=1]
+
+[node name="PlayerContainer" type="VBoxContainer"]
+margin_right = 156.0
+margin_bottom = 60.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ActiveButtons" type="HBoxContainer" parent="."]
+margin_right = 156.0
+margin_bottom = 42.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="UpButton" type="VBoxContainer" parent="ActiveButtons"]
+margin_right = 24.0
+margin_bottom = 42.0
+
+[node name="CheckBox" type="CheckBox" parent="ActiveButtons/UpButton"]
+margin_right = 24.0
+margin_bottom = 24.0
+disabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="ActiveButtons/UpButton"]
+margin_top = 28.0
+margin_right = 24.0
+margin_bottom = 42.0
+text = "Up"
+align = 1
+
+[node name="DownButton" type="VBoxContainer" parent="ActiveButtons"]
+margin_left = 28.0
+margin_right = 64.0
+margin_bottom = 42.0
+alignment = 1
+
+[node name="CheckBox" type="CheckBox" parent="ActiveButtons/DownButton"]
+margin_right = 36.0
+margin_bottom = 24.0
+disabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="ActiveButtons/DownButton"]
+margin_top = 28.0
+margin_right = 36.0
+margin_bottom = 42.0
+text = "Down"
+align = 1
+
+[node name="LeftButton" type="VBoxContainer" parent="ActiveButtons"]
+margin_left = 68.0
+margin_right = 92.0
+margin_bottom = 42.0
+
+[node name="CheckBox" type="CheckBox" parent="ActiveButtons/LeftButton"]
+margin_right = 24.0
+margin_bottom = 24.0
+disabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="ActiveButtons/LeftButton"]
+margin_top = 28.0
+margin_right = 24.0
+margin_bottom = 42.0
+text = "Left"
+align = 1
+
+[node name="RightButton" type="VBoxContainer" parent="ActiveButtons"]
+margin_left = 96.0
+margin_right = 128.0
+margin_bottom = 42.0
+
+[node name="CheckBox" type="CheckBox" parent="ActiveButtons/RightButton"]
+margin_right = 32.0
+margin_bottom = 24.0
+disabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="ActiveButtons/RightButton"]
+margin_top = 28.0
+margin_right = 32.0
+margin_bottom = 42.0
+text = "Right"
+align = 1
+
+[node name="FireButton" type="VBoxContainer" parent="ActiveButtons"]
+margin_left = 132.0
+margin_right = 156.0
+margin_bottom = 42.0
+
+[node name="CheckBox" type="CheckBox" parent="ActiveButtons/FireButton"]
+margin_right = 24.0
+margin_bottom = 24.0
+disabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="ActiveButtons/FireButton"]
+margin_top = 28.0
+margin_right = 24.0
+margin_bottom = 42.0
+text = "Fire"
+align = 1
+
+[node name="PlayerName" type="Label" parent="."]
+margin_top = 46.0
+margin_right = 156.0
+margin_bottom = 60.0
+text = "<Unassigned>"
+align = 1

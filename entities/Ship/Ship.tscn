@@ -25,5 +25,10 @@ script = ExtResource( 2 )
 [node name="Gun" type="Node2D" parent="."]
 position = Vector2( 2.4508, -43.7705 )
 script = ExtResource( 4 )
+
+[node name="GunCooldown" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
 [connection signal="fire" from="." to="Gun" method="_on_Ship_fire"]
 [connection signal="integrate_forces" from="." to="Wrap" method="_on_integrate_forces"]
+[connection signal="timeout" from="GunCooldown" to="Gun" method="_on_GunCooldown_timeout"]
