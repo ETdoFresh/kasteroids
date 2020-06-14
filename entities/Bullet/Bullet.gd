@@ -1,5 +1,7 @@
 extends RigidBody2D
 
+class_name Bullet
+
 signal integrate_forces(state)
 
 onready var root = get_tree().get_root()
@@ -7,7 +9,12 @@ export (Resource) var bullet_particles_scene = preload("res://entities/Bullet/Bu
 
 func start(current_velocity, shoot_velocity):
     linear_velocity = current_velocity + Vector2(0, -shoot_velocity).rotated(rotation)
-    print("Shoot! " + String(current_velocity) + " " + String(linear_velocity))
+
+func _enter_tree():
+    Global.emit_signal("node_created", self)
+
+func _exit_tree():
+    Global.emit_signal("node_destroyed", self)
 
 func _integrate_forces(state):
     emit_signal("integrate_forces", state)

@@ -11,8 +11,10 @@ export (Array, NodePath) var player_containers
 
 func _process(delta):
     for i in range(assignedControllers.size()):
+        
+        if not has_node(assignedControllers[i]): continue
+        
         var assignedController = get_node(assignedControllers[i])
-        if assignedController == null: continue
         var player_container = get_node(player_containers[i])
         player_container.player_name.text = assignedController.player_name
         player_container.player_up.pressed = assignedController.vertical > 0

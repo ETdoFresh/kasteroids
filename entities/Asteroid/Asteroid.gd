@@ -1,5 +1,7 @@
 extends RigidBody2D
 
+class_name Asteroid
+
 signal integrate_forces(state)
 
 var random = RandomNumberGenerator.new()
@@ -16,6 +18,12 @@ func _ready():
     randomize_spin()
     randomize_speed()
     randomize_scale()
+    
+func _enter_tree():
+    Global.emit_signal("node_created", self)
+
+func _exit_tree():
+    Global.emit_signal("node_destroyed", self)
 
 func randomize_spin():
     angular_velocity = random.randf_range(min_angular_velocity, max_angular_velocity)
