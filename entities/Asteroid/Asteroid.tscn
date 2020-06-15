@@ -14,7 +14,7 @@ linear_damp = 0.0
 angular_damp = 0.0
 script = ExtResource( 2 )
 
-[node name="asteroid1" type="Sprite" parent="."]
+[node name="Sprite" type="Sprite" parent="."]
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 1 )
 

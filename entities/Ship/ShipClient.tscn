@@ -5,8 +5,6 @@
 
 [node name="ShipClient" type="Node2D"]
 modulate = Color( 1, 1, 1, 0.501961 )
-position = Vector2( 588.001, 397.355 )
-scale = Vector2( 0.5, 0.5 )
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]

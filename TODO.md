@@ -5,12 +5,12 @@
 - [ ] Show Virtual Controls on tap [Hide/Show Virtual Controls]
 
 ### In Progress
-- [ ] Create TCP Connection for Server
-- [ ] Create TCP Connection for Client
 - [ ] Create TCP/Network Client Input
 - [ ] Create new ship on Client Connection
 
 ### Complete
+- [x] Create TCP Connection for Server
+- [x] Create TCP Connection for Client
 - [X] Create Server Scene
 - [X] Create Client Scene
 - [X] Load Both Scenes at once to test connection

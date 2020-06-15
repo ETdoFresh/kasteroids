@@ -44,6 +44,8 @@ func serialize():
                 message += String(node.position.x) + ","
                 message += String(node.position.y) + ","
                 message += String(node.rotation) + ","
+                message += String(node.get_node("./Sprite").scale.x) + ","
+                message += String(node.get_node("./Sprite").scale.y) + ","
     
     return message
 
@@ -66,6 +68,8 @@ func deserialize(message):
             node.position.x = float(items[x]); x += 1
             node.position.y = float(items[x]); x += 1
             node.rotation = float(items[x]); x += 1
+            node.scale.x = float(items[x]); x += 1
+            node.scale.y = float(items[x]); x += 1
 
 func count_nodes_by_type(nodes, type):
     var count = 0
@@ -106,5 +110,5 @@ func get_node_by_type(nodes, type, i):
                 
     return null
 
-func _on_Server_on_receive(client, message):
+func _on_Client_on_receive(client, message):
     deserialize(message)
