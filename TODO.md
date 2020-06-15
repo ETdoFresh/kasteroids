@@ -1,6 +1,7 @@
 # Things to work on
 
 ### Backlog
+- [ ] Fix button controls
 - [ ] Multitouch controls
 - [ ] Show Virtual Controls on tap [Hide/Show Virtual Controls]
 

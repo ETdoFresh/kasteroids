@@ -2,17 +2,15 @@ extends Node
 
 class_name Wrap
 
-var screen_size
+onready var parent = get_parent()
+onready var screen_size = get_viewport().get_visible_rect().size
 
-func _ready():
-    screen_size = get_viewport().get_visible_rect().size
-    
-func _on_integrate_forces(state):
-    wrap(state)
-    
-func wrap(state):
-    var transform = state.get_transform()
-    var position = transform.origin
+#warning-ignore:unused_argument
+func _physics_process(delta):
+    wrap()
+
+func wrap():
+    var position = parent.position
     while position.x < 0:
         position.x += screen_size.x
     while position.x > screen_size.x:
@@ -22,6 +20,5 @@ func wrap(state):
     while position.y > screen_size.y:
         position.y -= screen_size.y
     
-    if position != transform.origin:
-        transform.origin = position
-        state.set_transform(transform)
+    if position != parent.position:
+        parent.set_position(position)

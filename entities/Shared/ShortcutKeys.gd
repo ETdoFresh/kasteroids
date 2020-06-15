@@ -2,6 +2,7 @@ extends Node
 
 class_name RestartSceneWithR
 
+#warning-ignore:return_value_discarded
 func _input(event):
     
     if event is InputEventKey and event.pressed:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://entities/PlayerControlMonitor/PlayerMonitor.tscn" type="PackedScene" id=1]
 [ext_resource path="res://entities/Ship/Ship.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://networking/Server.gd" type="Script" id=7]
 [ext_resource path="res://networking/WorldState.gd" type="Script" id=8]
 [ext_resource path="res://scenes/Client.gd" type="Script" id=9]
+[ext_resource path="res://scenes/World.gd" type="Script" id=10]
 
 [sub_resource type="Gradient" id=1]
 colors = PoolColorArray( 0, 0.00392157, 0.384314, 1, 0.23587, 0.248374, 0.460938, 1 )
@@ -17,6 +18,7 @@ colors = PoolColorArray( 0, 0.00392157, 0.384314, 1, 0.23587, 0.248374, 0.460938
 gradient = SubResource( 1 )
 
 [node name="World" type="Node2D"]
+script = ExtResource( 10 )
 
 [node name="WorldState" type="Node" parent="."]
 script = ExtResource( 8 )
@@ -38,16 +40,18 @@ position = Vector2( 588, 394 )
 input_path = NodePath("../LocalPlayerInput")
 
 [node name="Asteroid1" parent="." instance=ExtResource( 3 )]
-position = Vector2( 225, 130 )
+position = Vector2( 227.247, 143.353 )
+min_scale = 0.5
+max_scale = 0.6
 
 [node name="Asteroid2" parent="." instance=ExtResource( 3 )]
-position = Vector2( 281, 528 )
+position = Vector2( 263.085, 444.72 )
 
 [node name="Asteroid3" parent="." instance=ExtResource( 3 )]
-position = Vector2( 952, 142 )
+position = Vector2( 922.019, 157.199 )
 
 [node name="Asteroid4" parent="." instance=ExtResource( 3 )]
-position = Vector2( 1008, 508 )
+position = Vector2( 1013.24, 492.775 )
 
 [node name="Virtual Controls" parent="." instance=ExtResource( 4 )]
 
@@ -69,6 +73,7 @@ script = ExtResource( 6 )
 script = ExtResource( 7 )
 min_latency = 0.05
 dup_rate = 0.1
+net_fps = 20
 
 [node name="Client" type="Node" parent="."]
 script = ExtResource( 9 )

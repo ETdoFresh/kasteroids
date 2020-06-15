@@ -16,11 +16,18 @@ export var client_message = ""
 func _enter_tree():
     nodes = []
     client_nodes = []
+    
+    #warning-ignore:return_value_discarded
     Global.connect("node_created", self, "add_node")
+    
+    #warning-ignore:return_value_discarded
     Global.connect("node_destroyed", self, "remove_node")
 
 func _exit_tree():
+    #warning-ignore:return_value_discarded
     Global.disconnect("node_created", self, "add_node")
+    
+    #warning-ignore:return_value_discarded
     Global.disconnect("node_destroyed", self, "remove_node")
 
 func add_node(node):
@@ -44,8 +51,8 @@ func serialize():
                 message += String(node.position.x) + ","
                 message += String(node.position.y) + ","
                 message += String(node.rotation) + ","
-                message += String(node.get_node("./Sprite").scale.x) + ","
-                message += String(node.get_node("./Sprite").scale.y) + ","
+                message += String(node.rigid_body_2D_scale.x) + ","
+                message += String(node.rigid_body_2D_scale.y) + ","
     
     return message
 
@@ -110,5 +117,6 @@ func get_node_by_type(nodes, type, i):
                 
     return null
 
+#warning-ignore:unused_argument
 func _on_Client_on_receive(client, message):
     deserialize(message)

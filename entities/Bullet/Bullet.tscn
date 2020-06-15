@@ -30,5 +30,4 @@ script = ExtResource( 3 )
 one_shot = true
 autostart = true
 [connection signal="body_entered" from="." to="." method="_on_Bullet_body_entered"]
-[connection signal="integrate_forces" from="." to="Wrap" method="_on_integrate_forces"]
 [connection signal="timeout" from="DestroyAfter" to="." method="_on_DestroyAfter_timeout"]

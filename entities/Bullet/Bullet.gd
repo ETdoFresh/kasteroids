@@ -1,4 +1,4 @@
-extends RigidBody2D
+extends RigidBody2DExt
 
 class_name Bullet
 
@@ -22,6 +22,7 @@ func _integrate_forces(state):
 func _on_DestroyAfter_timeout():
     destroy()
 
+#warning-ignore:unused_argument
 func _on_Bullet_body_entered(body):
     destroy()
 

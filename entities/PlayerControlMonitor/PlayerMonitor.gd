@@ -9,6 +9,7 @@ export (NodePath) var assignedController4Path
 
 export (Array, NodePath) var player_containers
 
+#warning-ignore:unused_argument
 func _process(delta):
     for i in range(assignedControllers.size()):
         

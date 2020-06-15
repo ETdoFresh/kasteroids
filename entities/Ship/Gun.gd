@@ -7,7 +7,7 @@ export var shoot_velocity = 800
 
 onready var root = get_tree().get_root()
 onready var ship = get_parent()
-onready var cooldown = ship.get_node("GunCooldown")
+onready var cooldown = get_parent().get_node("GunCooldown")
 
 func _on_Ship_fire():
     if not can_shoot: 
