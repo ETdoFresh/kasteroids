@@ -41,7 +41,7 @@ func remove_node(node):
 func serialize():
     message = ""
     
-    var types = [Ship, Asteroid, Bullet]
+    var types = [Ship2, Asteroid, Bullet]
     for type in types:
         var count = 0
         for node in nodes: if node is type: count += 1
@@ -51,8 +51,8 @@ func serialize():
                 message += String(node.position.x) + ","
                 message += String(node.position.y) + ","
                 message += String(node.rotation) + ","
-                message += String(node.rigid_body_2D_scale.x) + ","
-                message += String(node.rigid_body_2D_scale.y) + ","
+                message += String(node.scale.x) + ","
+                message += String(node.scale.y) + ","
     
     return message
 

@@ -17,8 +17,8 @@ func _on_Ship_fire():
     root.add_child(bullet)
     bullet.rotation = self.global_rotation
     bullet.position = self.global_position
-    bullet.add_collision_exception_with(ship)
-    bullet.start(ship.linear_velocity, shoot_velocity)
+    bullet.rigidbody.add_collision_exception_with(ship.rigidbody)
+    bullet.start(ship.rigidbody.linear_velocity, shoot_velocity)
     can_shoot = false
     cooldown.start()
 

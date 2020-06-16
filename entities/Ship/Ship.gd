@@ -1,4 +1,4 @@
-extends RigidBody2DExt
+extends Node2D
 
 class_name Ship
 
@@ -11,15 +11,10 @@ export (int) var max_speed = 500
 export (NodePath) var input_path
 
 onready var input = get_node(input_path)
+onready var rigidbody = $RigidBody2DNode2DLink
 
 var thrust = Vector2()
 var rotation_dir = 0
-
-func _enter_tree():
-    Global.emit_signal("node_created", self)
-
-func _exit_tree():
-    Global.emit_signal("node_destroyed", self)
 
 #warning-ignore:unused_argument
 func _process(delta):
@@ -28,11 +23,24 @@ func _process(delta):
     if input.fire:  emit_signal("fire")
 
 func _physics_process(delta):
-    set_applied_force(thrust.rotated(rotation))
+    rigidbody.set_applied_force(thrust.rotated(global_rotation))
     
-    angular_velocity = rotation_dir * spin_thrust * delta
+    rigidbody.angular_velocity = rotation_dir * spin_thrust * delta
     #set_applied_torque(rotation_dir * spin_thrust)
     
-    if linear_velocity.length() > max_speed:
-        linear_velocity = linear_velocity.normalized() * max_speed
+    if rigidbody.linear_velocity.length() > max_speed:
+        rigidbody.linear_velocity = rigidbody.linear_velocity.normalized() * max_speed
 
+func state_enter(previous_state):
+    if previous_state != null:
+        print("[Entering] State Transition from ", previous_state.name, " to ", name, "  ")
+    else:
+        print("[Entering] State Transition ", name, "  ")
+        return
+    
+    if previous_state.get("rigidbody"):
+        rigidbody.linear_velocity = previous_state.rigidbody.linear_velocity
+        rigidbody.angular_velocity = previous_state.rigidbody.angular_velocity
+    else:
+        rigidbody.linear_velocity = Vector2(0,0)
+        rigidbody.angular_velocity = 0
