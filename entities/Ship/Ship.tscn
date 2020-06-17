@@ -8,61 +8,12 @@
 [ext_resource path="res://scenes/Initiating.gd" type="Script" id=6]
 [ext_resource path="res://entities/Ship/Ship.gd" type="Script" id=7]
 [ext_resource path="res://utility/State.gd" type="Script" id=8]
+[ext_resource path="res://entities/Ship/Normal.gd" type="Script" id=9]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 18.624, 29.835, -18.352, 27.065, 3.1, -31.974 )
 
-[sub_resource type="GDScript" id=2]
-script/source = "extends Node2D
-
-class_name Ship
-
-signal fire
-
-export (int) var engine_thrust = 500
-export (int) var spin_thrust = 500
-export (int) var max_speed = 500
-
-export (NodePath) var input_path
-
-onready var input = get_node(input_path)
-onready var rigidbody = $RigidBody2DNode2DLink
-
-var thrust = Vector2()
-var rotation_dir = 0
-
-#warning-ignore:unused_argument
-func _process(delta):
-    thrust = Vector2(0, input.vertical * engine_thrust)
-    rotation_dir = input.horizontal
-    if input.fire:  emit_signal(\"fire\")
-
-func _physics_process(delta):
-    rigidbody.set_applied_force(thrust.rotated(global_rotation))
-    
-    rigidbody.angular_velocity = rotation_dir * spin_thrust * delta
-    #set_applied_torque(rotation_dir * spin_thrust)
-    
-    if rigidbody.linear_velocity.length() > max_speed:
-        rigidbody.linear_velocity = rigidbody.linear_velocity.normalized() * max_speed
-
-func state_enter(previous_state):
-    if previous_state != null:
-        print(\"[Entering] State Transition from \", previous_state.name, \" to \", name, \"  \")
-    else:
-        print(\"[Entering] State Transition \", name, \"  \")
-        return
-    
-    if previous_state.get(\"rigidbody\"):
-        rigidbody.linear_velocity = previous_state.rigidbody.linear_velocity
-        rigidbody.angular_velocity = previous_state.rigidbody.angular_velocity
-    else:
-        rigidbody.linear_velocity = Vector2(0,0)
-        rigidbody.angular_velocity = 0
-"
-
 [node name="Ship" type="Node2D"]
-position = Vector2( 588, 394 )
 script = ExtResource( 7 )
 
 [node name="States" type="Node2D" parent="."]
@@ -76,9 +27,6 @@ script = ExtResource( 6 )
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 1 )
 
-[node name="InitiatingTimer" type="Timer" parent="States/Initiating"]
-autostart = true
-
 [node name="RigidBody2DNode2DLink" type="RigidBody2D" parent="States/Initiating"]
 mode = 1
 script = ExtResource( 5 )
@@ -89,8 +37,7 @@ shape = SubResource( 1 )
 
 [node name="Ghost" type="Node2D" parent="States"]
 visible = false
-script = SubResource( 2 )
-input_path = NodePath("../../../LocalPlayerInput")
+script = ExtResource( 9 )
 
 [node name="Sprite" type="Sprite" parent="States/Ghost"]
 modulate = Color( 0.0313726, 1, 0, 0.396078 )
@@ -123,8 +70,7 @@ link_path = NodePath("../../..")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="States/Ghost/RigidBody2DNode2DLink"]
 
 [node name="Normal" type="Node2D" parent="States"]
-script = SubResource( 2 )
-input_path = NodePath("../../../LocalPlayerInput")
+script = ExtResource( 9 )
 
 [node name="Sprite" type="Sprite" parent="States/Normal"]
 scale = Vector2( 0.5, 0.5 )
@@ -142,10 +88,6 @@ transform_path = NodePath("../../..")
 wait_time = 0.2
 one_shot = true
 
-[node name="NormalTimer" type="Timer" parent="States/Normal"]
-wait_time = 5.0
-autostart = true
-
 [node name="RigidBody2DNode2DLink" type="RigidBody2D" parent="States/Normal"]
 gravity_scale = 0.0
 linear_damp = 0.0
@@ -156,35 +98,27 @@ link_path = NodePath("../../..")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="States/Normal/RigidBody2DNode2DLink"]
 shape = SubResource( 1 )
 
-[node name="Exploding" type="Node2D" parent="States"]
+[node name="Dead" type="Node2D" parent="States"]
 visible = false
 script = ExtResource( 3 )
 
-[node name="Sprite" type="Sprite" parent="States/Exploding"]
+[node name="Sprite" type="Sprite" parent="States/Dead"]
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 1 )
 
-[node name="ExplodingTimer" type="Timer" parent="States/Exploding"]
-wait_time = 5.0
-autostart = true
-
-[node name="Wrap" type="Node" parent="States/Exploding"]
+[node name="Wrap" type="Node" parent="States/Dead"]
 script = ExtResource( 2 )
 transform_path = NodePath("../../..")
 
-[node name="RigidBody2DNode2DLink" type="RigidBody2D" parent="States/Exploding"]
+[node name="RigidBody2DNode2DLink" type="RigidBody2D" parent="States/Dead"]
 gravity_scale = 0.0
 linear_damp = 1.0
 angular_damp = 1.0
 script = ExtResource( 5 )
 link_path = NodePath("../../..")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="States/Exploding/RigidBody2DNode2DLink"]
-[connection signal="timeout" from="States/Initiating/InitiatingTimer" to="." method="_on_InitiatingTimer_timeout"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="States/Dead/RigidBody2DNode2DLink"]
 [connection signal="fire" from="States/Ghost" to="States/Ghost/Gun" method="_on_Ship_fire"]
 [connection signal="timeout" from="States/Ghost/GunCooldown" to="States/Ghost/Gun" method="_on_GunCooldown_timeout"]
-[connection signal="timeout" from="States/Ghost/GhostTimer" to="." method="_on_GhostTimer_timeout"]
 [connection signal="fire" from="States/Normal" to="States/Normal/Gun" method="_on_Ship_fire"]
 [connection signal="timeout" from="States/Normal/GunCooldown" to="States/Normal/Gun" method="_on_GunCooldown_timeout"]
-[connection signal="timeout" from="States/Normal/NormalTimer" to="." method="_on_NormalTimer_timeout"]
-[connection signal="timeout" from="States/Exploding/ExplodingTimer" to="." method="_on_ExplodingTimer_timeout"]

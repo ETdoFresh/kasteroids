@@ -41,7 +41,7 @@ func remove_node(node):
 func serialize():
     message = ""
     
-    var types = [Ship2, Asteroid, Bullet]
+    var types = [Ship, Asteroid, Bullet]
     for type in types:
         var count = 0
         for node in nodes: if node is type: count += 1

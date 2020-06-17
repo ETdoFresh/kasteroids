@@ -55,7 +55,7 @@ _global_script_classes=[ {
 "path": "res://utility/RigidBody2DNode2DLink.gd"
 }, {
 "base": "BaseNode2D",
-"class": "Ship2",
+"class": "Ship",
 "language": "GDScript",
 "path": "res://entities/Ship/Ship.gd"
 }, {
@@ -89,7 +89,7 @@ _global_script_class_icons={
 "Node2DExtended": "",
 "RestartSceneWithR": "",
 "RigidBody2DNode2DLink": "",
-"Ship2": "",
+"Ship": "",
 "ShipClient": "",
 "StateMachine": "",
 "TCPNetworkConnection": "",

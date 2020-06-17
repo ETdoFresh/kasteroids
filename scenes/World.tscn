@@ -38,6 +38,8 @@ __meta__ = {
 }
 
 [node name="Ship" parent="." instance=ExtResource( 3 )]
+position = Vector2( 591.691, 343.491 )
+input_path = NodePath("../LocalPlayerInput")
 
 [node name="Asteroid" parent="." instance=ExtResource( 2 )]
 
