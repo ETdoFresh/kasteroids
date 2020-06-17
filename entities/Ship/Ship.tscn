@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://entities/Ship/ship.svg" type="Texture" id=1]
 [ext_resource path="res://entities/Shared/Wrap.gd" type="Script" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://entities/Ship/Ship.gd" type="Script" id=7]
 [ext_resource path="res://utility/State.gd" type="Script" id=8]
 [ext_resource path="res://entities/Ship/Normal.gd" type="Script" id=9]
+[ext_resource path="res://entities/Ship/UprightLabel.gd" type="Script" id=10]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 18.624, 29.835, -18.352, 27.065, 3.1, -31.974 )
@@ -36,12 +37,30 @@ link_path = NodePath("../../../../Ship")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="States/Initiating/RigidBody2DNode2DLink"]
 shape = SubResource( 1 )
 
+[node name="LabelNode2D" type="Node2D" parent="States/Initiating"]
+script = ExtResource( 10 )
+
+[node name="Label" type="Label" parent="States/Initiating/LabelNode2D"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -50.0
+margin_top = -60.0
+margin_right = 50.0
+margin_bottom = -40.0
+text = "Initiating"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Ghost" type="Node2D" parent="States"]
-modulate = Color( 1, 1, 1, 0.345098 )
 script = ExtResource( 9 )
 
 [node name="Sprite" type="Sprite" parent="States/Ghost"]
-modulate = Color( 0.0313726, 1, 0, 0.396078 )
+modulate = Color( 0.298039, 0.298039, 0.298039, 0.74902 )
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 1 )
 
@@ -68,6 +87,25 @@ script = ExtResource( 5 )
 link_path = NodePath("../../..")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="States/Ghost/RigidBody2DNode2DLink"]
+
+[node name="LabelNode2D" type="Node2D" parent="States/Ghost"]
+script = ExtResource( 10 )
+
+[node name="Label" type="Label" parent="States/Ghost/LabelNode2D"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -50.0
+margin_top = -60.0
+margin_right = 50.0
+margin_bottom = -40.0
+text = "Ghost"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Normal" type="Node2D" parent="States"]
 visible = false
@@ -98,6 +136,25 @@ link_path = NodePath("../../..")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="States/Normal/RigidBody2DNode2DLink"]
 shape = SubResource( 1 )
 
+[node name="LabelNode2D" type="Node2D" parent="States/Normal"]
+script = ExtResource( 10 )
+
+[node name="Label" type="Label" parent="States/Normal/LabelNode2D"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -50.0
+margin_top = -60.0
+margin_right = 50.0
+margin_bottom = -40.0
+text = "Normal"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Dead" type="Node2D" parent="States"]
 visible = false
 script = ExtResource( 3 )
@@ -117,6 +174,25 @@ script = ExtResource( 5 )
 link_path = NodePath("../../..")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="States/Dead/RigidBody2DNode2DLink"]
+
+[node name="LabelNode2D" type="Node2D" parent="States/Dead"]
+script = ExtResource( 10 )
+
+[node name="Label" type="Label" parent="States/Dead/LabelNode2D"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -50.0
+margin_top = -60.0
+margin_right = 50.0
+margin_bottom = -40.0
+text = "Dead"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="fire" from="States/Ghost" to="States/Ghost/Gun" method="_on_Ship_fire"]
 [connection signal="timeout" from="States/Ghost/GunCooldown" to="States/Ghost/Gun" method="_on_GunCooldown_timeout"]
 [connection signal="fire" from="States/Normal" to="States/Normal/Gun" method="_on_Ship_fire"]
