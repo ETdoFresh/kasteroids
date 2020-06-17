@@ -10,6 +10,8 @@ signal right_pressed
 signal right_released
 signal fire_pressed
 signal fire_released
+signal next_state_pressed
+signal previous_state_pressed
 
 func _on_Up_button_down():
     emit_signal("up_pressed")
@@ -40,3 +42,9 @@ func _on_Fire_button_down():
 
 func _on_Fire_button_up():
     emit_signal("fire_released")
+
+func _on_Previous_State_button_down():
+    emit_signal("previous_state_pressed")
+
+func _on_Next_State_button_down():
+    emit_signal("next_state_pressed")

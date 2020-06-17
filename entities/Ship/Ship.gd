@@ -25,15 +25,8 @@ func _exit_tree():
 
 
 # Just some DEBUG code to test different states...
-var was_pressed = false
-func _input(_event):
-    if Input.is_key_pressed(KEY_COMMA):
-        if not was_pressed:
-            state_machine.set_previous_state()
-        was_pressed = true
-    elif Input.is_key_pressed(KEY_PERIOD):
-        if not was_pressed:
-            state_machine.set_next_state()
-        was_pressed = true
-    else:
-        was_pressed = false
+func _process(_delta):
+    if input.previous_state:
+        state_machine.set_previous_state()
+    elif input.next_state:
+        state_machine.set_next_state()

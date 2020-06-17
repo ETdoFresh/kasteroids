@@ -10,6 +10,8 @@ var virtual_down = false
 var virtual_left = false
 var virtual_right = false
 var virtual_fire = false
+var previous_state = false
+var next_state = false
 
 func _ready():
     var v = get_node("../Virtual Controls")
@@ -23,6 +25,8 @@ func _ready():
     v.connect("right_released", self, "_on_Virtual_Controls_right_released")
     v.connect("up_pressed", self, "_on_Virtual_Controls_up_pressed")
     v.connect("up_released", self, "_on_Virtual_Controls_up_released")
+    v.connect("previous_state_pressed", self, "on_previous_state_pressed")
+    v.connect("next_state_pressed", self, "on_next_state_pressed")
 
 func _on_Virtual_Controls_down_pressed():	virtual_down = true
 func _on_Virtual_Controls_down_released():	virtual_down = false
@@ -34,6 +38,8 @@ func _on_Virtual_Controls_right_pressed():	virtual_right = true
 func _on_Virtual_Controls_right_released():	virtual_right = false
 func _on_Virtual_Controls_up_pressed():	virtual_up = true
 func _on_Virtual_Controls_up_released():	virtual_up = false
+func on_previous_state_pressed(): previous_state = true
+func on_next_state_pressed(): next_state = true
 
 func _process(_delta):
     vertical = 0
@@ -49,10 +55,16 @@ func _process(_delta):
         horizontal += 1
         
     fire = virtual_fire
+    
+    if previous_state:
+        previous_state = false
+        
+    if next_state:
+        next_state = false
 
 func _unhandled_input(event):
-    var actions = ["player_up", "player_down", "player_left", "player_right", "player_fire"]
-    var variable = ["virtual_up","virtual_down","virtual_left","virtual_right","virtual_fire"]
+    var actions = ["player_up", "player_down", "player_left", "player_right", "player_fire", "player_previous_state", "player_next_state"]
+    var variable = ["virtual_up","virtual_down","virtual_left","virtual_right","virtual_fire", "previous_state", "next_state"]
     
     for i in range(actions.size()):
         if event.is_action_pressed(actions[i]):
