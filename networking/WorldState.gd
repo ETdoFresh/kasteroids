@@ -1,8 +1,5 @@
 extends Node
 
-export var ship_scene = preload("res://entities/Ship/Ship.tscn")
-export var asteroid_scene = preload("res://entities/Asteroid/Asteroid.tscn")
-export var bullet_scene = preload("res://entities/Bullet/Bullet.tscn")
 export var ship_client_scene = preload("res://entities/Ship/ShipClient.tscn")
 export var asteroid_client_scene = preload("res://entities/Asteroid/AsteroidClient.tscn")
 export var bullet_client_scene = preload("res://entities/Bullet/BulletClient.tscn")
@@ -116,7 +113,3 @@ func get_node_by_type(nodes, type, i):
                 j += 1
                 
     return null
-
-#warning-ignore:unused_argument
-func _on_Client_on_receive(client, message):
-    deserialize(message)

@@ -10,6 +10,7 @@ export var min_scale = 0.75
 export var max_scale = 1.0
 
 var random = RandomNumberGenerator.new()
+
 onready var rigidbody = $RigidBody2DNode2DLink
 
 func _ready():
@@ -17,12 +18,6 @@ func _ready():
     randomize_spin()
     randomize_speed()
     randomize_scale()
-    
-func _enter_tree():
-    Global.emit_signal("node_created", self)
-
-func _exit_tree():
-    Global.emit_signal("node_destroyed", self)
 
 func randomize_spin():
     rigidbody.angular_velocity = random.randf_range(min_angular_velocity, max_angular_velocity)

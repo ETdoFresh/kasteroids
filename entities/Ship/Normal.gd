@@ -15,9 +15,10 @@ var rotation_dir = 0
 
 #warning-ignore:unused_argument
 func _process(delta):
-    thrust = Vector2(0, base.input.vertical * engine_thrust)
-    rotation_dir = base.input.horizontal
-    if base.input.fire:  emit_signal("fire")
+    var input = base.world.input
+    thrust = Vector2(0, input.vertical * engine_thrust)
+    rotation_dir = input.horizontal
+    if input.fire:  emit_signal("fire")
 
 func _physics_process(delta):
     rigidbody.set_applied_force(thrust.rotated(global_rotation))

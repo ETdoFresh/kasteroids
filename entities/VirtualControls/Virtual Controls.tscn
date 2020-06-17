@@ -109,15 +109,15 @@ __meta__ = {
 
 [node name="Previous State" type="Button" parent="RightControls2"]
 margin_right = 103.0
-margin_bottom = 98.0
+margin_bottom = 97.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Previous State"
 
 [node name="Next State" type="Button" parent="RightControls2"]
-margin_top = 102.0
+margin_top = 101.0
 margin_right = 103.0
-margin_bottom = 200.0
+margin_bottom = 198.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Next State"
@@ -132,4 +132,6 @@ text = "Next State"
 [connection signal="button_down" from="RightControls/Fire" to="." method="_on_Fire_button_down"]
 [connection signal="button_up" from="RightControls/Fire" to="." method="_on_Fire_button_up"]
 [connection signal="button_down" from="RightControls2/Previous State" to="." method="_on_Previous_State_button_down"]
+[connection signal="button_up" from="RightControls2/Previous State" to="." method="_on_Previous_State_button_up"]
 [connection signal="button_down" from="RightControls2/Next State" to="." method="_on_Next_State_button_down"]
+[connection signal="button_up" from="RightControls2/Next State" to="." method="_on_Next_State_button_up"]

@@ -53,8 +53,9 @@ func _process(delta):
     while not queue.empty():
         var t = OS.get_ticks_msec() / 1000.0
         if t < queue[0][0]: break
+        var data = queue.pop_front()[1].to_ascii()
         for client in clients:
-            client.put_data(queue.pop_front()[1].to_ascii())
+            client.put_data(data)
 
 func listen(bind_address = "*", port = 11001):
     server.listen(port, bind_address)

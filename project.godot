@@ -14,7 +14,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://entities/Asteroid/Asteroid.gd"
 }, {
-"base": "Node2D",
+"base": "BaseNode2D",
 "class": "AsteroidClient",
 "language": "GDScript",
 "path": "res://entities/Asteroid/AsteroidClient.gd"
@@ -29,7 +29,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://entities/Bullet/Bullet.gd"
 }, {
-"base": "Node2D",
+"base": "BaseNode2D",
 "class": "BulletClient",
 "language": "GDScript",
 "path": "res://entities/Bullet/BulletClient.gd"
@@ -64,7 +64,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://entities/Ship/Ship.gd"
 }, {
-"base": "Node2D",
+"base": "BaseNode2D",
 "class": "ShipClient",
 "language": "GDScript",
 "path": "res://entities/Ship/ShipClient.gd"
@@ -105,7 +105,7 @@ _global_script_class_icons={
 [application]
 
 config/name="kasteroids"
-run/main_scene="res://scenes/Main.tscn"
+run/main_scene="res://scenes/Menu.tscn"
 config/icon="res://icon.png"
 
 [autoload]
@@ -195,6 +195,11 @@ player_previous_state={
 player_next_state={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":46,"unicode":0,"echo":false,"script":null)
+ ]
+}
+player1_start={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":49,"unicode":0,"echo":false,"script":null)
  ]
 }
 

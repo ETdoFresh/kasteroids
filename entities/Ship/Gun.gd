@@ -1,11 +1,10 @@
-extends Node2D
+extends Node2DExtended
 
 const bullet_scene = preload("res://entities/Bullet/Bullet.tscn")
 
 export var can_shoot = true
 export var shoot_velocity = 800
 
-onready var root = get_tree().get_root()
 onready var ship = get_parent()
 onready var cooldown = get_parent().get_node("GunCooldown")
 
@@ -14,7 +13,8 @@ func _on_Ship_fire():
         return
     
     var bullet = bullet_scene.instance()
-    root.add_child(bullet)
+    bullet.world = base.world
+    bullet.world.add_child(bullet)
     bullet.rotation = self.global_rotation
     bullet.position = self.global_position
     bullet.rigidbody.add_collision_exception_with(ship.rigidbody)
