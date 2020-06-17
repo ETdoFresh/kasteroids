@@ -1,46 +1,26 @@
-extends Node2D
+extends BaseNode2D
 
-class_name Ship
+class_name Ship2
 
-signal fire
+onready var state_machine = get_child_of_type(StateMachine)
 
-export (int) var engine_thrust = 500
-export (int) var spin_thrust = 500
-export (int) var max_speed = 500
+func state_name():
+    return state_machine.active_state_name
 
-export (NodePath) var input_path
+func _enter_tree():
+    Global.emit_signal("node_created", self)
 
-onready var input = get_node(input_path)
-onready var rigidbody = $RigidBody2DNode2DLink
+func _exit_tree():
+    Global.emit_signal("node_destroyed", self)
 
-var thrust = Vector2()
-var rotation_dir = 0
+func _on_InitiatingTimer_timeout():
+    state_machine.set_state_by_name("Ghost")
 
-#warning-ignore:unused_argument
-func _process(delta):
-    thrust = Vector2(0, input.vertical * engine_thrust)
-    rotation_dir = input.horizontal
-    if input.fire:  emit_signal("fire")
+func _on_GhostTimer_timeout():
+    state_machine.set_state_by_name("Normal")
 
-func _physics_process(delta):
-    rigidbody.set_applied_force(thrust.rotated(global_rotation))
-    
-    rigidbody.angular_velocity = rotation_dir * spin_thrust * delta
-    #set_applied_torque(rotation_dir * spin_thrust)
-    
-    if rigidbody.linear_velocity.length() > max_speed:
-        rigidbody.linear_velocity = rigidbody.linear_velocity.normalized() * max_speed
+func _on_NormalTimer_timeout():
+    state_machine.set_state_by_name("Exploding")
 
-func state_enter(previous_state):
-    if previous_state != null:
-        print("[Entering] State Transition from ", previous_state.name, " to ", name, "  ")
-    else:
-        print("[Entering] State Transition ", name, "  ")
-        return
-    
-    if previous_state.get("rigidbody"):
-        rigidbody.linear_velocity = previous_state.rigidbody.linear_velocity
-        rigidbody.angular_velocity = previous_state.rigidbody.angular_velocity
-    else:
-        rigidbody.linear_velocity = Vector2(0,0)
-        rigidbody.angular_velocity = 0
+func _on_ExplodingTimer_timeout():
+    state_machine.set_state_by_name("Initiating")

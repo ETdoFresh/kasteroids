@@ -1,4 +1,6 @@
-extends Node
+extends Node2D
+
+class_name StateMachine
 
 export var allow_transitions = true
 export (String) var active_state_name
@@ -32,6 +34,7 @@ func set_state(new_state):
             previous_state.state_exit()
     
     active_state = new_state
+    active_state_name = new_state.name
     add_child(new_state)
     if (new_state.has_method("state_enter")):
         new_state.state_enter(previous_state)
