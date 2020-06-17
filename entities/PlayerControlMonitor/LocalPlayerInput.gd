@@ -23,7 +23,7 @@ func _on_Virtual_Controls_right_released():	virtual_right = false
 func _on_Virtual_Controls_up_pressed():	virtual_up = true
 func _on_Virtual_Controls_up_released():	virtual_up = false
 
-func _input(event):
+func _input(_event):
     vertical = 0
     if Input.is_action_pressed("player_up") || virtual_up:
         vertical -= 1

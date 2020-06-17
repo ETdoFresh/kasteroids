@@ -8,20 +8,16 @@ export (int) var max_speed = 500
 
 export (NodePath) var input_path
 
-var input
-
 onready var rigidbody = $RigidBody2DNode2DLink
 
 var thrust = Vector2()
 var rotation_dir = 0
 
-
 #warning-ignore:unused_argument
 func _process(delta):
-    thrust = Vector2(0, input.vertical * engine_thrust)
-    rotation_dir = input.horizontal
-    if input.fire:  emit_signal("fire")
-
+    thrust = Vector2(0, base.input.vertical * engine_thrust)
+    rotation_dir = base.input.horizontal
+    if base.input.fire:  emit_signal("fire")
 
 func _physics_process(delta):
     rigidbody.set_applied_force(thrust.rotated(global_rotation))
@@ -32,11 +28,7 @@ func _physics_process(delta):
     if rigidbody.linear_velocity.length() > max_speed:
         rigidbody.linear_velocity = rigidbody.linear_velocity.normalized() * max_speed
 
-
 func state_enter(previous_state):
-    
-    input = get_base_node().input
-    
     if not previous_state:
         return
     

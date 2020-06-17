@@ -69,7 +69,7 @@ func get_state_index(state):
     return -1
 
 var inspector_state_monitor = active_state_name
-func _process(delta):
+func _process(_delta):
     if inspector_state_monitor != active_state_name:
         inspector_state_monitor = active_state_name
         set_state_by_name(active_state_name)

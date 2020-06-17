@@ -7,14 +7,14 @@ export var ship_client_scene = preload("res://entities/Ship/ShipClient.tscn")
 export var asteroid_client_scene = preload("res://entities/Asteroid/AsteroidClient.tscn")
 export var bullet_client_scene = preload("res://entities/Bullet/BulletClient.tscn")
 
-export var nodes = []
-export var message = ""
+export var server_nodes = []
+export var server_message = ""
 
 export var client_nodes = []
 export var client_message = ""
 
 func _enter_tree():
-    nodes = []
+    server_nodes = []
     client_nodes = []
     
     #warning-ignore:return_value_discarded
@@ -31,30 +31,30 @@ func _exit_tree():
     Global.disconnect("node_destroyed", self, "remove_node")
 
 func add_node(node):
-    nodes.append(node)
+    server_nodes.append(node)
 
 func remove_node(node):
-    for i in range(nodes.size() - 1, -1, -1):
-        if (nodes[i] == node):
-            nodes.remove(i)
+    for i in range(server_nodes.size() - 1, -1, -1):
+        if (server_nodes[i] == node):
+            server_nodes.remove(i)
 
 func serialize():
-    message = ""
+    server_message = ""
     
     var types = [Ship, Asteroid, Bullet]
     for type in types:
         var count = 0
-        for node in nodes: if node is type: count += 1
-        message += String(count) + ","
-        for node in nodes:
+        for node in server_nodes: if node is type: count += 1
+        server_message += String(count) + ","
+        for node in server_nodes:
             if node is type:
-                message += String(node.position.x) + ","
-                message += String(node.position.y) + ","
-                message += String(node.rotation) + ","
-                message += String(node.scale.x) + ","
-                message += String(node.scale.y) + ","
+                server_message += String(node.position.x) + ","
+                server_message += String(node.position.y) + ","
+                server_message += String(node.rotation) + ","
+                server_message += String(node.scale.x) + ","
+                server_message += String(node.scale.y) + ","
     
-    return message
+    return server_message
 
 func deserialize(message):
     client_message = message

@@ -10,12 +10,15 @@ var previous_rotation
 var previous_scale
 
 func _ready():
-    var link_node = get_node(link_path)
-    link = link_node if link_node else get_parent()
+    if has_node(link_path):
+        link = get_node(link_path)
+    else:
+        link = get_parent()
+    
     previous_position = link.global_position
     previous_rotation = link.global_rotation
 
-func _process(delta):
+func _process(_delta):
     if previous_position != link.global_position:
         sleeping = false
     if previous_rotation != link.global_rotation:

@@ -22,7 +22,7 @@ export var dup_rate = 0.05
 export var out_of_order = true
 
 var server = TCP_Server.new()
-var client = StreamPeerTCP.new()
+var clientPeer = StreamPeerTCP.new()
 
 var queue = []
 var clients = []
@@ -43,14 +43,12 @@ func _process(delta):
                 if clients[i] == client:
                     clients.remove(i)
     
-    if client and client.is_connected_to_host():
-        var bytes = client.get_available_bytes()
+    if clientPeer and clientPeer.is_connected_to_host():
+        var bytes = clientPeer.get_available_bytes()
         if bytes > 0:
-            var data = client.get_data(bytes)
+            var data = clientPeer.get_data(bytes)
             var message = data[1].get_string_from_ascii()
-            #print(bytes)
-            #print(str(message))
-            emit_signal("on_receive", client, message)
+            emit_signal("on_receive", clientPeer, message)
     
     while not queue.empty():
         var t = OS.get_ticks_msec() / 1000.0
@@ -62,7 +60,7 @@ func listen(bind_address = "*", port = 11001):
     server.listen(port, bind_address)
 
 func open(host = "localhost", port = 11001):
-    client.connect_to_host(host, port)
+    clientPeer.connect_to_host(host, port)
 
 func send(client, message):
     if not simulate_latency:

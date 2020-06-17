@@ -1,4 +1,4 @@
-extends Node2D
+extends BaseNode2D
 
 class_name Asteroid
 
