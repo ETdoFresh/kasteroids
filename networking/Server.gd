@@ -1,7 +1,7 @@
 extends TCPNetworkConnection
 
 export var net_fps = 10
-onready var world_state = get_node("../WorldState")
+onready var world_state = get_node("../../WorldState")
 var net_fps_timer = 0.0
 
 func _ready():

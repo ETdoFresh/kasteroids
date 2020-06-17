@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://entities/PlayerControlMonitor/PlayerMonitor.tscn" type="PackedScene" id=1]
 [ext_resource path="res://entities/Asteroid/Asteroid.tscn" type="PackedScene" id=2]
@@ -6,9 +6,7 @@
 [ext_resource path="res://entities/VirtualControls/Virtual Controls.tscn" type="PackedScene" id=4]
 [ext_resource path="res://entities/Shared/ShortcutKeys.gd" type="Script" id=5]
 [ext_resource path="res://entities/PlayerControlMonitor/LocalPlayerInput.gd" type="Script" id=6]
-[ext_resource path="res://networking/Server.gd" type="Script" id=7]
 [ext_resource path="res://networking/WorldState.gd" type="Script" id=8]
-[ext_resource path="res://scenes/Client.gd" type="Script" id=9]
 [ext_resource path="res://scenes/World.gd" type="Script" id=10]
 [ext_resource path="res://utility/DebugOverlay.tscn" type="PackedScene" id=11]
 
@@ -31,6 +29,7 @@ margin_top = -712.0
 margin_right = 2108.0
 margin_bottom = 788.0
 rect_rotation = 44.9999
+mouse_filter = 2
 texture = SubResource( 2 )
 expand = true
 __meta__ = {
@@ -52,8 +51,6 @@ position = Vector2( 882.096, 131.165 )
 [node name="Asteroid4" parent="." instance=ExtResource( 2 )]
 position = Vector2( 880.988, 494.6 )
 
-[node name="Virtual Controls" parent="." instance=ExtResource( 4 )]
-
 [node name="ShortcutKeys" type="Node" parent="."]
 script = ExtResource( 5 )
 
@@ -68,24 +65,4 @@ assignedController1Path = NodePath("../LocalPlayerInput")
 [node name="LocalPlayerInput" type="Node" parent="."]
 script = ExtResource( 6 )
 
-[node name="Server" type="Node" parent="."]
-script = ExtResource( 7 )
-min_latency = 0.05
-dup_rate = 0.1
-net_fps = 20
-
-[node name="Client" type="Node" parent="."]
-script = ExtResource( 9 )
-
-[node name="Networking" type="Node" parent="."]
-[connection signal="down_pressed" from="Virtual Controls" to="LocalPlayerInput" method="_on_Virtual_Controls_down_pressed"]
-[connection signal="down_released" from="Virtual Controls" to="LocalPlayerInput" method="_on_Virtual_Controls_down_released"]
-[connection signal="fire_pressed" from="Virtual Controls" to="LocalPlayerInput" method="_on_Virtual_Controls_fire_pressed"]
-[connection signal="fire_released" from="Virtual Controls" to="LocalPlayerInput" method="_on_Virtual_Controls_fire_released"]
-[connection signal="left_pressed" from="Virtual Controls" to="LocalPlayerInput" method="_on_Virtual_Controls_left_pressed"]
-[connection signal="left_released" from="Virtual Controls" to="LocalPlayerInput" method="_on_Virtual_Controls_left_released"]
-[connection signal="right_pressed" from="Virtual Controls" to="LocalPlayerInput" method="_on_Virtual_Controls_right_pressed"]
-[connection signal="right_released" from="Virtual Controls" to="LocalPlayerInput" method="_on_Virtual_Controls_right_released"]
-[connection signal="up_pressed" from="Virtual Controls" to="LocalPlayerInput" method="_on_Virtual_Controls_up_pressed"]
-[connection signal="up_released" from="Virtual Controls" to="LocalPlayerInput" method="_on_Virtual_Controls_up_released"]
-[connection signal="on_receive" from="Client" to="WorldState" method="_on_Client_on_receive"]
+[node name="Virtual Controls" parent="." instance=ExtResource( 4 )]

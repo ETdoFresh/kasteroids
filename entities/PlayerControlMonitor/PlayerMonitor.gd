@@ -18,8 +18,8 @@ func _process(delta):
         var assignedController = get_node(assignedControllers[i])
         var player_container = get_node(player_containers[i])
         player_container.player_name.text = assignedController.player_name
-        player_container.player_up.pressed = assignedController.vertical > 0
-        player_container.player_down.pressed = assignedController.vertical < 0
+        player_container.player_up.pressed = assignedController.vertical < 0
+        player_container.player_down.pressed = assignedController.vertical > 0
         player_container.player_left.pressed = assignedController.horizontal < 0
         player_container.player_right.pressed = assignedController.horizontal > 0
         player_container.player_fire.pressed = assignedController.fire
