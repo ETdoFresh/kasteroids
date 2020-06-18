@@ -1,6 +1,5 @@
-extends Node2D
-
 class_name StateMachine
+extends Node2D
 
 export var allow_transitions = true
 export (String) var active_state_name
@@ -9,7 +8,7 @@ var states = []
 var active_state
 var active_state_index = 0
 
-func _ready():
+func _ready():    
     for child in get_children():
         child.visible = true
         states.append(child)
@@ -38,6 +37,7 @@ func set_state(new_state):
     active_state_name = new_state.name
     active_state_index = get_state_index(new_state)
     add_child(new_state)
+    new_state.owner = owner
     if (new_state.has_method("state_enter")):
         new_state.state_enter(previous_state)
 

@@ -1,8 +1,10 @@
-extends Node2DExtended
+extends Node2D
 
-onready var original_position = base.position
-onready var original_rotation = base.rotation
+onready var original_position = global_position
+onready var original_rotation = global_rotation
 
 func state_enter(_previous_state):
-    base.position = original_position
-    base.rotation = original_rotation
+    global_position = original_position
+    global_rotation = original_rotation
+
+    $LabelNode2D.global_rotation = 0

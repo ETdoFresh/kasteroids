@@ -1,26 +1,18 @@
-extends Node2DExtended
+class_name Gun
+extends Node2D
+
+signal create(scene, position, rotation, rigidbody, shoot_velocity)
 
 const bullet_scene = preload("res://entities/Bullet/Bullet.tscn")
 
-export var can_shoot = true
+export var fire = false
 export var shoot_velocity = 800
 
-onready var ship = get_parent()
-onready var cooldown = get_parent().get_node("GunCooldown")
+onready var cooldown = $Cooldown
 
-func _on_Ship_fire():
-    if not can_shoot: 
+func fire(creator, rigidbody):
+    if not cooldown.is_stopped(): 
         return
     
-    var bullet = bullet_scene.instance()
-    bullet.world = base.world
-    bullet.world.add_child(bullet)
-    bullet.rotation = self.global_rotation
-    bullet.position = self.global_position
-    bullet.rigidbody.add_collision_exception_with(ship.rigidbody)
-    bullet.start(ship.rigidbody.linear_velocity, shoot_velocity)
-    can_shoot = false
+    creator.emit_signal("create", bullet_scene, global_position, global_rotation, rigidbody, shoot_velocity)
     cooldown.start()
-
-func _on_GunCooldown_timeout():
-    can_shoot = true

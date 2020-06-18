@@ -1,30 +1,31 @@
-extends BaseNode2D
-
 class_name Bullet
-
-signal integrate_forces(state)
-
-onready var world = get_parent()
-onready var rigidbody = $RigidBody2DNode2DLink
+extends RigidBody2D
 
 export (Resource) var bullet_particles_scene = preload("res://entities/Bullet/BulletParticles.tscn")
 
-func start(current_velocity, shoot_velocity):
-    rigidbody.linear_velocity = current_velocity + Vector2(0, -shoot_velocity).rotated(rotation)
+func _ready():
+    connect("body_entered", self, "_on_self_body_entered")
+
+func start(position, rotation, rigidbody, velocity_magnitude):
+    global_position = position
+    global_rotation = rotation
+    add_collision_exception_with(rigidbody)
+    
+    var ship_velocity = rigidbody.linear_velocity
+    linear_velocity = ship_velocity + Vector2(0, -velocity_magnitude).rotated(rotation)
 
 func _integrate_forces(state):
-    emit_signal("integrate_forces", state)
+    $Wrap.wrap(state)
 
 func _on_DestroyAfter_timeout():
     destroy()
 
-#warning-ignore:unused_argument
-func _on_RigidBody2DNode2DLink_body_entered(body):
+func _on_self_body_entered(_body):
     destroy()
 
 func destroy():
     var bullet_particles = bullet_particles_scene.instance()
-    world.add_child(bullet_particles)
+    owner.add_child(bullet_particles)
     bullet_particles.position = global_position
     bullet_particles.emitting = true
     queue_free()

@@ -1,6 +1,5 @@
-extends BaseNode2D
-
 class_name Asteroid
+extends RigidBody2D
 
 export var min_angular_velocity = -3.0
 export var max_angular_velocity = 3.0
@@ -11,22 +10,22 @@ export var max_scale = 1.0
 
 var random = RandomNumberGenerator.new()
 
-onready var rigidbody = $RigidBody2DNode2DLink
-
 func _ready():
     random.randomize()
     randomize_spin()
     randomize_speed()
     randomize_scale()
 
+func _integrate_forces(state):
+    $Wrap.wrap(state)
+
 func randomize_spin():
-    rigidbody.angular_velocity = random.randf_range(min_angular_velocity, max_angular_velocity)
+    angular_velocity = random.randf_range(min_angular_velocity, max_angular_velocity)
 
 func randomize_speed():
     var random_direction = Vector2(1,0).rotated(random.randf() * 2 * PI)
-    rigidbody.linear_velocity = random_direction
-    rigidbody.linear_velocity *= random.randf_range(min_linear_velocity, max_linear_velocity)
+    linear_velocity = random_direction
+    linear_velocity *= random.randf_range(min_linear_velocity, max_linear_velocity)
 
 func randomize_scale():
-    scale = Vector2(1,1)
-    scale *= random.randf_range(min_scale, max_scale)
+    $CollisionShape2D.scale *= random.randf_range(min_scale, max_scale)

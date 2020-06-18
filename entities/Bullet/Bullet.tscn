@@ -1,17 +1,23 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://entities/Bullet/bullet.svg" type="Texture" id=1]
 [ext_resource path="res://entities/Bullet/Bullet.gd" type="Script" id=2]
 [ext_resource path="res://entities/Shared/Wrap.gd" type="Script" id=3]
-[ext_resource path="res://utility/RigidBody2DNode2DLink.gd" type="Script" id=4]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 6.40146
 
-[node name="Bullet" type="Node2D"]
+[node name="Bullet" type="RigidBody2D"]
+contacts_reported = 1
+contact_monitor = true
+linear_damp = 0.0
+angular_damp = 0.0
 script = ExtResource( 2 )
 
-[node name="Sprite" type="Sprite" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="CollisionShape2D"]
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 1 )
 
@@ -21,14 +27,4 @@ script = ExtResource( 3 )
 [node name="DestroyAfter" type="Timer" parent="."]
 one_shot = true
 autostart = true
-
-[node name="RigidBody2DNode2DLink" type="RigidBody2D" parent="."]
-mass = 0.2
-contacts_reported = 1
-contact_monitor = true
-script = ExtResource( 4 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2DNode2DLink"]
-shape = SubResource( 1 )
 [connection signal="timeout" from="DestroyAfter" to="." method="_on_DestroyAfter_timeout"]
-[connection signal="body_entered" from="RigidBody2DNode2DLink" to="." method="_on_RigidBody2DNode2DLink_body_entered"]

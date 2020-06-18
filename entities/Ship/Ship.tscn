@@ -1,10 +1,9 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://entities/Ship/ship.svg" type="Texture" id=1]
 [ext_resource path="res://entities/Shared/Wrap.gd" type="Script" id=2]
 [ext_resource path="res://scenes/Exploding.gd" type="Script" id=3]
 [ext_resource path="res://entities/Ship/Gun.gd" type="Script" id=4]
-[ext_resource path="res://utility/RigidBody2DNode2DLink.gd" type="Script" id=5]
 [ext_resource path="res://scenes/Initiating.gd" type="Script" id=6]
 [ext_resource path="res://entities/Ship/Ship.gd" type="Script" id=7]
 [ext_resource path="res://utility/State.gd" type="Script" id=8]
@@ -21,24 +20,18 @@ script = ExtResource( 7 )
 script = ExtResource( 8 )
 active_state_name = "Normal"
 
-[node name="Initiating" type="Node2D" parent="States"]
+[node name="Initiating" type="StaticBody2D" parent="States"]
 visible = false
 script = ExtResource( 6 )
 
-[node name="Sprite" type="Sprite" parent="States/Initiating"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="States/Initiating"]
+shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="States/Initiating/CollisionShape2D"]
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 1 )
 
-[node name="RigidBody2DNode2DLink" type="RigidBody2D" parent="States/Initiating"]
-mode = 1
-script = ExtResource( 5 )
-link_path = NodePath("../../../../Ship")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="States/Initiating/RigidBody2DNode2DLink"]
-shape = SubResource( 1 )
-
 [node name="LabelNode2D" type="Node2D" parent="States/Initiating"]
-script = ExtResource( 10 )
 
 [node name="Label" type="Label" parent="States/Initiating/LabelNode2D"]
 anchor_left = 0.5
@@ -46,9 +39,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -50.0
-margin_top = -60.0
+margin_top = -60.1748
 margin_right = 50.0
-margin_bottom = -40.0
+margin_bottom = -40.1748
 text = "Initiating"
 align = 1
 valign = 1
@@ -56,37 +49,34 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Ghost" type="Node2D" parent="States"]
+[node name="Ghost" type="RigidBody2D" parent="States"]
+visible = false
+gravity_scale = 0.0
+linear_damp = 0.0
+angular_damp = 0.0
 script = ExtResource( 9 )
 
-[node name="Sprite" type="Sprite" parent="States/Ghost"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="States/Ghost"]
+
+[node name="Sprite" type="Sprite" parent="States/Ghost/CollisionShape2D"]
 modulate = Color( 0.298039, 0.298039, 0.298039, 0.74902 )
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 1 )
 
-[node name="Gun" type="Node2D" parent="States/Ghost"]
+[node name="Gun" type="Node2D" parent="States/Ghost/CollisionShape2D"]
 position = Vector2( 2.4508, -43.7705 )
 script = ExtResource( 4 )
+
+[node name="Cooldown" type="Timer" parent="States/Ghost/CollisionShape2D/Gun"]
+wait_time = 0.2
+one_shot = true
 
 [node name="Wrap" type="Node" parent="States/Ghost"]
 script = ExtResource( 2 )
 
-[node name="GunCooldown" type="Timer" parent="States/Ghost"]
-wait_time = 0.2
-one_shot = true
-
 [node name="GhostTimer" type="Timer" parent="States/Ghost"]
 wait_time = 3.0
 autostart = true
-
-[node name="RigidBody2DNode2DLink" type="RigidBody2D" parent="States/Ghost"]
-gravity_scale = 0.0
-linear_damp = 0.0
-angular_damp = 0.0
-script = ExtResource( 5 )
-link_path = NodePath("../../..")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="States/Ghost/RigidBody2DNode2DLink"]
 
 [node name="LabelNode2D" type="Node2D" parent="States/Ghost"]
 script = ExtResource( 10 )
@@ -107,34 +97,33 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Normal" type="Node2D" parent="States"]
-visible = false
+[node name="Normal" type="RigidBody2D" parent="States"]
+gravity_scale = 0.0
+linear_damp = 0.0
+angular_damp = 0.0
 script = ExtResource( 9 )
 
-[node name="Sprite" type="Sprite" parent="States/Normal"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="States/Normal"]
+shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="States/Normal/CollisionShape2D"]
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 1 )
 
-[node name="Gun" type="Node2D" parent="States/Normal"]
+[node name="Gun" type="Node2D" parent="States/Normal/CollisionShape2D"]
 position = Vector2( 2.4508, -43.7705 )
 script = ExtResource( 4 )
+
+[node name="Cooldown" type="Timer" parent="States/Normal/CollisionShape2D/Gun"]
+wait_time = 0.2
+one_shot = true
 
 [node name="Wrap" type="Node" parent="States/Normal"]
 script = ExtResource( 2 )
 
-[node name="GunCooldown" type="Timer" parent="States/Normal"]
-wait_time = 0.2
-one_shot = true
-
-[node name="RigidBody2DNode2DLink" type="RigidBody2D" parent="States/Normal"]
-gravity_scale = 0.0
-linear_damp = 0.0
-angular_damp = 0.0
-script = ExtResource( 5 )
-link_path = NodePath("../../..")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="States/Normal/RigidBody2DNode2DLink"]
-shape = SubResource( 1 )
+[node name="GhostTimer" type="Timer" parent="States/Normal"]
+wait_time = 3.0
+autostart = true
 
 [node name="LabelNode2D" type="Node2D" parent="States/Normal"]
 script = ExtResource( 10 )
@@ -155,25 +144,21 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Dead" type="Node2D" parent="States"]
+[node name="Dead" type="RigidBody2D" parent="States"]
 visible = false
+gravity_scale = 0.0
+linear_damp = 1.5
+angular_damp = 1.5
 script = ExtResource( 3 )
 
-[node name="Sprite" type="Sprite" parent="States/Dead"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="States/Dead"]
+
+[node name="Sprite" type="Sprite" parent="States/Dead/CollisionShape2D"]
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 1 )
 
 [node name="Wrap" type="Node" parent="States/Dead"]
 script = ExtResource( 2 )
-
-[node name="RigidBody2DNode2DLink" type="RigidBody2D" parent="States/Dead"]
-gravity_scale = 0.0
-linear_damp = 1.0
-angular_damp = 1.0
-script = ExtResource( 5 )
-link_path = NodePath("../../..")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="States/Dead/RigidBody2DNode2DLink"]
 
 [node name="LabelNode2D" type="Node2D" parent="States/Dead"]
 script = ExtResource( 10 )
@@ -193,7 +178,3 @@ valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="fire" from="States/Ghost" to="States/Ghost/Gun" method="_on_Ship_fire"]
-[connection signal="timeout" from="States/Ghost/GunCooldown" to="States/Ghost/Gun" method="_on_GunCooldown_timeout"]
-[connection signal="fire" from="States/Normal" to="States/Normal/Gun" method="_on_Ship_fire"]
-[connection signal="timeout" from="States/Normal/GunCooldown" to="States/Normal/Gun" method="_on_GunCooldown_timeout"]

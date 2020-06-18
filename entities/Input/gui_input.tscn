@@ -1,8 +1,9 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://entities/VirtualControls/Virtual Controls.gd" type="Script" id=1]
+[ext_resource path="res://entities/Input/gui_input.gd" type="Script" id=1]
 
-[node name="Virtual Controls" type="Control"]
+
+[node name="GUIInput" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
@@ -107,31 +108,17 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Previous State" type="Button" parent="RightControls2"]
+[node name="PreviousState" type="Button" parent="RightControls2"]
 margin_right = 103.0
 margin_bottom = 97.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Previous State"
 
-[node name="Next State" type="Button" parent="RightControls2"]
+[node name="NextState" type="Button" parent="RightControls2"]
 margin_top = 101.0
 margin_right = 103.0
 margin_bottom = 198.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Next State"
-[connection signal="button_down" from="LeftControls/Up" to="." method="_on_Up_button_down"]
-[connection signal="button_up" from="LeftControls/Up" to="." method="_on_Up_button_up"]
-[connection signal="button_down" from="LeftControls/Left" to="." method="_on_Left_button_down"]
-[connection signal="button_up" from="LeftControls/Left" to="." method="_on_Left_button_up"]
-[connection signal="button_down" from="LeftControls/Down" to="." method="_on_Down_button_down"]
-[connection signal="button_up" from="LeftControls/Down" to="." method="_on_Down_button_up"]
-[connection signal="button_down" from="LeftControls/Right" to="." method="_on_Right_button_down"]
-[connection signal="button_up" from="LeftControls/Right" to="." method="_on_Right_button_up"]
-[connection signal="button_down" from="RightControls/Fire" to="." method="_on_Fire_button_down"]
-[connection signal="button_up" from="RightControls/Fire" to="." method="_on_Fire_button_up"]
-[connection signal="button_down" from="RightControls2/Previous State" to="." method="_on_Previous_State_button_down"]
-[connection signal="button_up" from="RightControls2/Previous State" to="." method="_on_Previous_State_button_up"]
-[connection signal="button_down" from="RightControls2/Next State" to="." method="_on_Next_State_button_down"]
-[connection signal="button_up" from="RightControls2/Next State" to="." method="_on_Next_State_button_up"]

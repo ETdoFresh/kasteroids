@@ -1,12 +1,14 @@
+class_name BaseNode2D
 extends Node2D
 
-class_name BaseNode2D
 
 func _enter_tree():
+    return
     var world = get_parent()
     world.add_state_node(self)
 
 func _exit_tree():
+    return
     var world = get_parent()
     world.remove_state_node(self)
 

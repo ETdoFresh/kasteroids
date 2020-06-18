@@ -1,17 +1,31 @@
+class_name Ship
 extends BaseNode2D
 
-class_name Ship
+signal create(scene, position, rotation, rigidbody, velocity_magnitude)
 
-onready var state_machine = get_child_of_type(StateMachine)
-onready var world = get_parent()
+var horizontal = 0
+var vertical = 0
+var fire = false
+var next_state = false
+var previous_state = false
+
+onready var state_machine = $States
 
 func state_name():
     return state_machine.active_state_name
 
-
-# Just some DEBUG code to test different states...
 func _process(_delta):
-    if world.input.previous_state:
+    var state = state_machine.active_state
+    if state:
+        Util.copy_input_variables(self, state)
+        
+        if fire:
+            if state.has_node("CollisionShape2D/Gun"):
+                var gun = state.get_node("CollisionShape2D/Gun")
+                gun.fire(self, state)
+    
+    # Just some DEBUG code to test different states...
+    if previous_state:
         state_machine.set_previous_state()
-    elif world.input.next_state:
+    elif next_state:
         state_machine.set_next_state()
