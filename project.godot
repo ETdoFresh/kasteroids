@@ -9,90 +9,85 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "RigidBody2D",
+"base": "Reference",
 "class": "Asteroid",
 "language": "GDScript",
-"path": "res://entities/Asteroid/Asteroid.gd"
+"path": "res://entities_1/asteroid/asteroid.gd"
 }, {
 "base": "BaseNode2D",
 "class": "AsteroidClient",
 "language": "GDScript",
-"path": "res://entities/Asteroid/AsteroidClient.gd"
+"path": "res://entities_1/asteroid/asteroid_client.gd"
 }, {
 "base": "Node2D",
 "class": "BaseNode2D",
 "language": "GDScript",
-"path": "res://utility/BaseNode2D.gd"
+"path": "res://utility/base_node_2d.gd"
 }, {
-"base": "RigidBody2D",
+"base": "Reference",
 "class": "Bullet",
 "language": "GDScript",
-"path": "res://entities/Bullet/Bullet.gd"
+"path": "res://entities_1/bullet/bullet.gd"
 }, {
 "base": "BaseNode2D",
 "class": "BulletClient",
 "language": "GDScript",
-"path": "res://entities/Bullet/BulletClient.gd"
+"path": "res://entities_1/bullet/bullet_client.gd"
 }, {
 "base": "",
 "class": "GitAPI",
 "language": "NativeScript",
 "path": "res://git_api.gdns"
 }, {
-"base": "Node2D",
+"base": "Reference",
 "class": "Gun",
 "language": "GDScript",
-"path": "res://entities/Ship/Gun.gd"
+"path": "res://entities_1/ship/gun.gd"
 }, {
 "base": "Node",
 "class": "NetworkConnection",
 "language": "GDScript",
-"path": "res://networking/NetworkConnection.gd"
+"path": "res://networking_1/network_connection.gd"
 }, {
 "base": "Node2D",
 "class": "Node2DExtended",
 "language": "GDScript",
-"path": "res://utility/Node2DExtended.gd"
+"path": "res://utility/node_2d_extended.gd"
 }, {
 "base": "Node",
 "class": "NodeExtended",
 "language": "GDScript",
-"path": "res://utility/NodeExtended.gd"
-}, {
-"base": "Node",
-"class": "RestartSceneWithR",
-"language": "GDScript",
-"path": "res://entities/Shared/ShortcutKeys.gd"
+"path": "res://utility/node_extended.gd"
 }, {
 "base": "RigidBody2D",
 "class": "RigidBody2DNode2DLink",
 "language": "GDScript",
-"path": "res://utility/RigidBody2DNode2DLink.gd"
+"path": "res://utility/rigid_body_2d_node_2d_link.gd"
 }, {
-"base": "BaseNode2D",
+"base": "Reference",
 "class": "Ship",
 "language": "GDScript",
-"path": "res://entities/Ship/Ship.gd"
+"path": "res://entities_1/ship/ship.gd"
 }, {
 "base": "BaseNode2D",
 "class": "ShipClient",
 "language": "GDScript",
-"path": "res://entities/Ship/ShipClient.gd"
+"path": "res://entities_1/ship/ship_client.gd"
 }, {
 "base": "Node2D",
 "class": "StateMachine",
 "language": "GDScript",
-"path": "res://utility/State.gd"
+"path": "res://utility/state.gd"
 }, {
 "base": "Node",
 "class": "TCPNetworkConnection",
 "language": "GDScript",
-"path": "res://networking/TCPNetworkConnection.gd"
+"path": "res://networking_1/tcp_network_connection.gd"
 }, {
-"base": "Node",
+"base": "Reference",
 "class": "Wrap",
 "language": "GDScript",
-"path": "res://entities/Shared/Wrap.gd"
+"path": "res://entities_1/shared/wrap.gd"
 } ]
 _global_script_class_icons={
 "Asteroid": "",
@@ -105,7 +100,6 @@ _global_script_class_icons={
 "NetworkConnection": "",
 "Node2DExtended": "",
 "NodeExtended": "",
-"RestartSceneWithR": "",
 "RigidBody2DNode2DLink": "",
 "Ship": "",
 "ShipClient": "",
@@ -117,13 +111,13 @@ _global_script_class_icons={
 [application]
 
 config/name="kasteroids"
-run/main_scene="res://scenes/Main.tscn"
+run/main_scene="res://scenes_1/main.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
-Global="*res://utility/Global.gd"
-Util="*res://utility/Util.gd"
+Global="*res://utility/global.gd"
+Util="*res://utility/util.gd"
 
 [display]
 

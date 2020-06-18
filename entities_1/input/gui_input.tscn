@@ -1,0 +1,124 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://entities_1/input/gui_input.gd" type="Script" id=1]
+
+
+[node name="GUIInput" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LeftControls" type="GridContainer" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -200.0
+margin_right = 300.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="LeftControls"]
+margin_right = 97.0
+margin_bottom = 98.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Up" type="Button" parent="LeftControls"]
+margin_left = 101.0
+margin_right = 198.0
+margin_bottom = 98.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Up"
+
+[node name="Button3" type="Button" parent="LeftControls"]
+margin_left = 202.0
+margin_right = 299.0
+margin_bottom = 98.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Left" type="Button" parent="LeftControls"]
+margin_top = 102.0
+margin_right = 97.0
+margin_bottom = 200.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Left"
+
+[node name="Down" type="Button" parent="LeftControls"]
+margin_left = 101.0
+margin_top = 102.0
+margin_right = 198.0
+margin_bottom = 200.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Down"
+
+[node name="Right" type="Button" parent="LeftControls"]
+margin_left = 202.0
+margin_top = 102.0
+margin_right = 299.0
+margin_bottom = 200.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Right"
+
+[node name="RightControls" type="GridContainer" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -120.0
+margin_top = -120.0
+margin_right = -20.0
+margin_bottom = -20.0001
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Fire" type="Button" parent="RightControls"]
+margin_right = 100.0
+margin_bottom = 99.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Fire"
+
+[node name="RightControls2" type="GridContainer" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -116.29
+margin_top = 16.2901
+margin_right = -16.29
+margin_bottom = 216.29
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="PreviousState" type="Button" parent="RightControls2"]
+margin_right = 103.0
+margin_bottom = 97.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Previous State"
+
+[node name="NextState" type="Button" parent="RightControls2"]
+margin_top = 101.0
+margin_right = 103.0
+margin_bottom = 198.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Next State"
