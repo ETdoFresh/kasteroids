@@ -1,10 +1,11 @@
 extends Node
 
-const resources = {
-    ShipClient: preload("res://entities/Ship/ShipClient.tscn"),
-    AsteroidClient: preload("res://entities/Asteroid/AsteroidClient.tscn"),
-    BulletClient: preload("res://entities/Bullet/BulletClient.tscn")
-   }
+const resources = \
+{
+    ShipClient: preload("res://entities/ship/ship_client.tscn"),
+    AsteroidClient: preload("res://entities/asteroid/asteroid_client.tscn"),
+    BulletClient: preload("res://entities/bullet/bullet_client.tscn")
+}
 
 onready var world = get_parent()
 onready var state = world.state

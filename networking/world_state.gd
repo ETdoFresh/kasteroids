@@ -1,8 +1,8 @@
 extends Node
 
-export var ship_client_scene = preload("res://entities/Ship/ShipClient.tscn")
-export var asteroid_client_scene = preload("res://entities/Asteroid/AsteroidClient.tscn")
-export var bullet_client_scene = preload("res://entities/Bullet/BulletClient.tscn")
+export var ship_client_scene = preload("res://entities/ship/ship_client.tscn")
+export var asteroid_client_scene = preload("res://entities/asteroid/asteroid_client.tscn")
+export var bullet_client_scene = preload("res://entities/bullet/bullet_client.tscn")
 
 export var server_nodes = []
 export var server_message = ""

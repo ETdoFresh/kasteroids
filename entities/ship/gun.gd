@@ -3,7 +3,7 @@ extends Node2D
 
 signal create(scene, position, rotation, rigidbody, shoot_velocity)
 
-const bullet_scene = preload("res://entities/Bullet/Bullet.tscn")
+const bullet_scene = preload("res://entities/bullet/bullet.tscn")
 
 export var fire = false
 export var shoot_velocity = 800
