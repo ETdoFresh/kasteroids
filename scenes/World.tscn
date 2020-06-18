@@ -32,15 +32,16 @@ __meta__ = {
 position = Vector2( 591.691, 343.491 )
 
 [node name="Asteroid" parent="." index="2" instance=ExtResource( 2 )]
+position = Vector2( 315.336, 222.286 )
 
 [node name="Asteroid2" parent="." index="3" instance=ExtResource( 2 )]
-position = Vector2( 168.521, 425.902 )
+position = Vector2( 256.401, 533.168 )
 
 [node name="Asteroid3" parent="." index="4" instance=ExtResource( 2 )]
-position = Vector2( 882.096, 131.165 )
+position = Vector2( 932.498, 241.016 )
 
 [node name="Asteroid4" parent="." index="5" instance=ExtResource( 2 )]
-position = Vector2( 880.988, 494.6 )
+position = Vector2( 986.961, 520.447 )
 
 [node name="PlayerMonitor" parent="." index="6" instance=ExtResource( 1 )]
 margin_left = 5.0

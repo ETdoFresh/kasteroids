@@ -6,6 +6,7 @@
 - [ ] Show Virtual Controls on tap [Hide/Show Virtual Controls]
 
 ### In Progress
+- [ ] Rename files per Godot best practices
 - [ ] Create TCP/Network Client Input
 - [ ] Create new ship on Client Connection
 
