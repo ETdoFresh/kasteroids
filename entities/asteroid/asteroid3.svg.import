@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/asteroid2.svg-cf7de3aaea00702f59b2ff8589172a1c.stex"
+path="res://.import/asteroid3.svg-8d168f95a1873234e441f3be3723b93d.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://entities_1/asteroid/asteroid2.svg"
-dest_files=[ "res://.import/asteroid2.svg-cf7de3aaea00702f59b2ff8589172a1c.stex" ]
+source_file="res://entities/asteroid/asteroid3.svg"
+dest_files=[ "res://.import/asteroid3.svg-8d168f95a1873234e441f3be3723b93d.stex" ]
 
 [params]
 

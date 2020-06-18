@@ -1,7 +1,8 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://entities_1/bullet/bullet.svg" type="Texture" id=1]
-[ext_resource path="res://entities_1/bullet/bullet_client.gd" type="Script" id=2]
+[ext_resource path="res://entities/bullet/bullet.svg" type="Texture" id=1]
+[ext_resource path="res://entities/bullet/bullet_client.gd" type="Script" id=2]
+
 
 
 

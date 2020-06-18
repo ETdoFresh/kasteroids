@@ -1,7 +1,6 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://entities_1/player_monitor/player_container.gd" type="Script" id=1]
-
+[ext_resource path="res://entities/player_monitor/player_container.gd" type="Script" id=1]
 
 [node name="PlayerContainer" type="VBoxContainer"]
 margin_right = 156.0

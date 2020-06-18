@@ -1,9 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://entities_1/bullet/bullet_particles.gd" type="Script" id=1]
-
-
-
+[ext_resource path="res://entities/bullet/bullet_particles.gd" type="Script" id=1]
 
 [sub_resource type="Curve" id=1]
 _data = [ Vector2( 0.0114943, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.712644, 0.909091 ), 0.0, 0.0, 0, 0, Vector2( 0.977011, 0.145455 ), 0.0, 0.0, 0, 0 ]
