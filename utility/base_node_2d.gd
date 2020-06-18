@@ -4,13 +4,9 @@ extends Node2D
 
 func _enter_tree():
     return
-    var world = get_parent()
-    world.add_state_node(self)
 
 func _exit_tree():
     return
-    var world = get_parent()
-    world.remove_state_node(self)
 
 func get_child_of_type_in_node(node, type):
     for child in node.get_children():

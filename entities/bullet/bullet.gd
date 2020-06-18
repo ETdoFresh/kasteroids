@@ -4,6 +4,7 @@ extends RigidBody2D
 export (Resource) var bullet_particles_scene = preload("res://entities/bullet/bullet_particles.tscn")
 
 func _ready():
+    #warning-ignore:return_value_discarded
     connect("body_entered", self, "_on_self_body_entered")
 
 func start(position, rotation, rigidbody, velocity_magnitude):

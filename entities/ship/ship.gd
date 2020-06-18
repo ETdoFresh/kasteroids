@@ -1,6 +1,7 @@
 class_name Ship
 extends BaseNode2D
 
+#warning-ignore:unused_signal
 signal create(scene, position, rotation, rigidbody, velocity_magnitude)
 
 var horizontal = 0

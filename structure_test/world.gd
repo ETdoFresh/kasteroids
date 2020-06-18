@@ -1,6 +1,6 @@
 extends Node2D
 
-const ShipScene = preload("res://StructureTest/Ship.tscn")
+const ShipScene = preload("res://structure_test/ship.tscn")
 
 export var players = []
 

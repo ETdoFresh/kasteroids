@@ -7,10 +7,6 @@ func add_stat(stat_name, object, stat_reference, is_method):
 
 func _ready():
     add_stat("FPS", Engine, "get_frames_per_second", true)
-    add_stat("Player_State", $"../Ship/States", "active_state_name", false)
-    add_stat("Player Position", $"../Ship", "position", false)
-    add_stat("Player Rotation", $"../Ship", "rotation", false)
-    add_stat("Player Scale", $"../Ship", "scale", false)
 
 func _process(_delta):
     var label_text = ""
