@@ -4,11 +4,12 @@
 [ext_resource path="res://utility/state.gd" type="Script" id=2]
 [ext_resource path="res://entities/ship/gun.gd" type="Script" id=3]
 [ext_resource path="res://entities/shared/wrap.gd" type="Script" id=4]
-[ext_resource path="res://scenes/initiating.gd" type="Script" id=5]
+[ext_resource path="res://entities/ship/initiating.gd" type="Script" id=5]
 [ext_resource path="res://entities/ship/ship.gd" type="Script" id=6]
-[ext_resource path="res://scenes/exploding.gd" type="Script" id=7]
+[ext_resource path="res://entities/ship/exploding.gd" type="Script" id=7]
 [ext_resource path="res://entities/ship/upright_label.gd" type="Script" id=8]
 [ext_resource path="res://entities/ship/normal.gd" type="Script" id=9]
+
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 18.624, 29.835, -18.352, 27.065, 3.1, -31.974 )

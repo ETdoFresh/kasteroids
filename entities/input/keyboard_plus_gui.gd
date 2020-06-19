@@ -46,3 +46,9 @@ func _unhandled_input(event):
             self[variable[i]] = true
         elif event.is_action_released(actions[i]):
             self[variable[i]] = false
+
+func serialize():
+    var serialized = ""
+    for variable in ["horizontal", "vertical", "fire"]:
+        serialized += String(self[variable]) + ","
+    return serialized

@@ -30,11 +30,13 @@ func create_rigidbody(rigidbody_scene, position, rotation, rigidbody, speed):
     instance.linear_velocity = relative_velocity + Vector2(0, -speed).rotated(rotation)
 
 func create(scene, before_ready = {}, after_ready = {}):
-    var instance = scene.instance()
+    return add(scene.instance(), before_ready, after_ready)
+
+func add(instance, before_ready = {}, after_ready = {}):
     for variable in before_ready:
         if variable in instance:
             instance[variable] = before_ready[variable]
-    
+            
     add_child(instance)
     instance.owner = self
     

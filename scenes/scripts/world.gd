@@ -11,10 +11,6 @@ func _enter_tree():
     
     $Ships.connect("node_added", self, "listen_for_bullets")
 
-func _process(_delta):
-    for ship in $Ships.get_children():
-        Util.copy_input_variables(self, ship)
-
 func listen_for_bullets(ship):
     ship.connect("create", $Bullets, "create_rigidbody")
 

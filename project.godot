@@ -77,7 +77,7 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "Serializer",
 "language": "GDScript",
-"path": "res://scenes/serializer.gd"
+"path": "res://networking/serializer.gd"
 }, {
 "base": "BaseNode2D",
 "class": "Ship",
@@ -98,6 +98,11 @@ _global_script_classes=[ {
 "class": "TCPNetworkConnection",
 "language": "GDScript",
 "path": "res://networking/tcp_network_connection.gd"
+}, {
+"base": "Node",
+"class": "TCPServerInput",
+"language": "GDScript",
+"path": "res://networking/tcp_server_input.gd"
 }, {
 "base": "Node",
 "class": "TypedContainer",
@@ -128,6 +133,7 @@ _global_script_class_icons={
 "ShipClient": "",
 "StateMachine": "",
 "TCPNetworkConnection": "",
+"TCPServerInput": "",
 "TypedContainer": "",
 "Wrap": ""
 }
@@ -135,7 +141,7 @@ _global_script_class_icons={
 [application]
 
 config/name="kasteroids"
-run/main_scene="res://scenes/main.tscn"
+run/main_scene="res://scenes/network_test.tscn"
 config/icon="res://icon.png"
 
 [autoload]

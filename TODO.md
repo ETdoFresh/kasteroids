@@ -4,13 +4,20 @@
 - [ ] Fix button controls
 - [ ] Multitouch controls
 - [ ] Show Virtual Controls on tap [Hide/Show Virtual Controls]
+- [ ] Network Interpolate Rigidbodies
+- [ ] Network Predict Rigidbodies
+- [ ] Add WebSocket Client Support... relay?
+- [ ] Add Menu
+- [ ] Have connection/disconnection messages
 
 ### In Progress
-- [ ] Create ship when input is registered
-- [ ] Create TCP/Network Client Input
-- [ ] Create new ship on Client Connection
+- [ ] Show Client proxies on Client exe
+- [ ] Add latency simulation
 
 ### Complete
+- [X] Create ship when input is registered
+- [X] Create TCP/Network Client Input
+- [X] Create new ship on Client Connection
 - [X] Rename files per Godot best practices
 - [x] Create TCP Connection for Server
 - [x] Create TCP Connection for Client
