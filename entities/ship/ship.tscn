@@ -10,10 +10,6 @@
 [ext_resource path="res://entities/ship/upright_label.gd" type="Script" id=8]
 [ext_resource path="res://entities/ship/normal.gd" type="Script" id=9]
 
-
-
-
-
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 18.624, 29.835, -18.352, 27.065, 3.1, -31.974 )
 
@@ -28,12 +24,12 @@ active_state_name = "Normal"
 visible = false
 script = ExtResource( 5 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="States/Initiating"]
-shape = SubResource( 1 )
-
-[node name="Sprite" type="Sprite" parent="States/Initiating/CollisionShape2D"]
+[node name="Sprite" type="Sprite" parent="States/Initiating"]
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="States/Initiating"]
+shape = SubResource( 1 )
 
 [node name="LabelNode2D" type="Node2D" parent="States/Initiating"]
 
@@ -60,20 +56,20 @@ linear_damp = 0.0
 angular_damp = 0.0
 script = ExtResource( 9 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="States/Ghost"]
-
-[node name="Sprite" type="Sprite" parent="States/Ghost/CollisionShape2D"]
+[node name="Sprite" type="Sprite" parent="States/Ghost"]
 modulate = Color( 0.298039, 0.298039, 0.298039, 0.74902 )
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 1 )
 
-[node name="Gun" type="Node2D" parent="States/Ghost/CollisionShape2D"]
+[node name="Gun" type="Node2D" parent="States/Ghost"]
 position = Vector2( 2.4508, -43.7705 )
 script = ExtResource( 3 )
 
-[node name="Cooldown" type="Timer" parent="States/Ghost/CollisionShape2D/Gun"]
+[node name="Cooldown" type="Timer" parent="States/Ghost/Gun"]
 wait_time = 0.2
 one_shot = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="States/Ghost"]
 
 [node name="Wrap" type="Node" parent="States/Ghost"]
 script = ExtResource( 4 )
@@ -107,20 +103,20 @@ linear_damp = 0.0
 angular_damp = 0.0
 script = ExtResource( 9 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="States/Normal"]
-shape = SubResource( 1 )
-
-[node name="Sprite" type="Sprite" parent="States/Normal/CollisionShape2D"]
+[node name="Sprite" type="Sprite" parent="States/Normal"]
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 1 )
 
-[node name="Gun" type="Node2D" parent="States/Normal/CollisionShape2D"]
+[node name="Gun" type="Node2D" parent="States/Normal"]
 position = Vector2( 2.4508, -43.7705 )
 script = ExtResource( 3 )
 
-[node name="Cooldown" type="Timer" parent="States/Normal/CollisionShape2D/Gun"]
+[node name="Cooldown" type="Timer" parent="States/Normal/Gun"]
 wait_time = 0.2
 one_shot = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="States/Normal"]
+shape = SubResource( 1 )
 
 [node name="Wrap" type="Node" parent="States/Normal"]
 script = ExtResource( 4 )
@@ -155,11 +151,11 @@ linear_damp = 1.5
 angular_damp = 1.5
 script = ExtResource( 7 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="States/Dead"]
-
-[node name="Sprite" type="Sprite" parent="States/Dead/CollisionShape2D"]
+[node name="Sprite" type="Sprite" parent="States/Dead"]
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="States/Dead"]
 
 [node name="Wrap" type="Node" parent="States/Dead"]
 script = ExtResource( 4 )

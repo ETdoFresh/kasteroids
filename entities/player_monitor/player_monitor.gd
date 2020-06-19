@@ -1,25 +1,17 @@
 extends Control
 
-export (Array, NodePath) var assignedControllers
+export (Array, NodePath) var player_uis
 
-export (NodePath) var assignedController1Path
-export (NodePath) var assignedController2Path
-export (NodePath) var assignedController3Path
-export (NodePath) var assignedController4Path
-
-export (Array, NodePath) var player_containers
+var player_inputs = []
 
 #warning-ignore:unused_argument
 func _process(delta):
-    for i in range(assignedControllers.size()):
-        
-        if not has_node(assignedControllers[i]): continue
-        
-        var assignedController = get_node(assignedControllers[i])
-        var player_container = get_node(player_containers[i])
-        player_container.player_name.text = assignedController.player_name
-        player_container.player_up.pressed = assignedController.vertical < 0
-        player_container.player_down.pressed = assignedController.vertical > 0
-        player_container.player_left.pressed = assignedController.horizontal < 0
-        player_container.player_right.pressed = assignedController.horizontal > 0
-        player_container.player_fire.pressed = assignedController.fire
+    for i in range(player_inputs.size()):
+        var player_input = player_inputs[i]
+        var player_ui = get_node(player_uis[i])
+        player_ui.player_name.text = "Local Player!" #player.player_name
+        player_ui.player_up.pressed = player_input.vertical < 0
+        player_ui.player_down.pressed = player_input.vertical > 0
+        player_ui.player_left.pressed = player_input.horizontal < 0
+        player_ui.player_right.pressed = player_input.horizontal > 0
+        player_ui.player_fire.pressed = player_input.fire

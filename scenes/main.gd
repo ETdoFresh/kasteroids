@@ -1,4 +1,4 @@
 extends Node
 
-func _process(_delta):
-    Util.copy_input_variables($Input, $World)
+func _ready():
+    $World.create_player($Input)

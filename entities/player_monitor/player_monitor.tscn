@@ -13,7 +13,7 @@ script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-player_containers = [ NodePath("HBoxContainer/PlayerContainer1"), NodePath("HBoxContainer/PlayerContainer2"), NodePath("HBoxContainer/PlayerContainer3"), NodePath("HBoxContainer/PlayerContainer4") ]
+player_uis = [ NodePath("HBoxContainer/PlayerContainer1"), NodePath("HBoxContainer/PlayerContainer2"), NodePath("HBoxContainer/PlayerContainer3"), NodePath("HBoxContainer/PlayerContainer4") ]
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 anchor_right = 1.0

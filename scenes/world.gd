@@ -1,12 +1,7 @@
 extends Node2D
 
+const PlayerScene = preload("res://entities/player/player.tscn")
 const ShipScene = preload("res://entities/ship/ship.tscn")
-
-var horizontal = 0
-var vertical = 0
-var fire = false
-var next_state = false
-var previous_state = false
 
 func _ready():
     for child in get_children():
@@ -23,11 +18,6 @@ func _ready():
     
     #warning-ignore:return_value_discarded
     $Ships.connect("node_added", self, "listen_for_bullets")
-    
-    $Overlay.add_stat("Player_State", $Ships/Ship/States, "active_state_name", false)
-    $Overlay.add_stat("Player Position", $Ships/Ship, "position", false)
-    $Overlay.add_stat("Player Rotation", $Ships/Ship, "rotation", false)
-    $Overlay.add_stat("Player Scale", $Ships/Ship, "scale", false)
 
 func _process(_delta):
     for ship in $Ships.get_children():
@@ -36,8 +26,17 @@ func _process(_delta):
 func listen_for_bullets(ship):
     ship.connect("create", $Bullets, "create_rigidbody")
 
-func create_ship():
-    $Ships.create(ShipScene, Vector2(1280/2, 720/2))
-
 func serialize():
     $Serializer.serialize()
+
+func create_player(input):
+    var ship = $Ships.create(ShipScene, {"input": input})
+    ship.set_position(Vector2(630, 360))
+    var player = $Players.create(PlayerScene, {"ship": ship, "input": input})
+    
+    $Overlay.add_stat("Player_State", ship, "state_name", true)
+    $Overlay.add_stat("Player Position", ship, "position", false)
+    $Overlay.add_stat("Player Rotation", ship, "rotation", false)
+    $Overlay.add_stat("Player Scale", ship, "scale", false)
+    
+    $PlayerMonitor.player_inputs.append(player.input)

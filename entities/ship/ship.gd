@@ -4,29 +4,35 @@ extends BaseNode2D
 #warning-ignore:unused_signal
 signal create(scene, position, rotation, rigidbody, velocity_magnitude)
 
-var horizontal = 0
-var vertical = 0
-var fire = false
-var next_state = false
-var previous_state = false
+var input = Util.NULL_INPUT
 
-onready var state_machine = $States
-
-func state_name():
-    return state_machine.active_state_name
+func _ready():
+    update_input(input)
 
 func _process(_delta):
-    var state = state_machine.active_state
-    if state:
-        Util.copy_input_variables(self, state)
-        
-        if fire:
-            if state.has_node("CollisionShape2D/Gun"):
-                var gun = state.get_node("CollisionShape2D/Gun")
-                gun.fire(self, state)
+    if input.fire:
+        if $States.active_state:
+            if $States.active_state.has_node("Gun"):
+                var gun = $States.active_state.get_node("Gun")
+                gun.fire(self, $States.active_state)
     
     # Just some DEBUG code to test different states...
-    if previous_state:
-        state_machine.set_previous_state()
-    elif next_state:
-        state_machine.set_next_state()
+    if input.previous_state:
+        $States.set_previous_state()
+    elif input.next_state:
+        $States.set_next_state()
+
+func state_name():
+    return $States.active_state_name
+
+func update_input(new_input):
+    input = new_input
+    for state in $States.states:
+        if "input" in state:
+            state.input = input
+
+func set_position(new_position):
+    position = new_position
+    var state = $States.active_state
+    if state is RigidBody2D:
+        state.global_position = new_position

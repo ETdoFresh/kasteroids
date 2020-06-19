@@ -19,23 +19,29 @@ func remove_node():
             emit_signal("node_removed", node)
             nodes.remove(i)
 
-func create(scene, position = null, rotation = null):
+func create_rigidbody(rigidbody_scene, position, rotation, rigidbody, speed):
+    var instance = create(rigidbody_scene, {},
+            {"global_position": position, "global_rotation": rotation})
+    instance.add_collision_exception_with(rigidbody)
+    
+    var relative_velocity = rigidbody.linear_velocity
+    instance.linear_velocity = relative_velocity + Vector2(0, -speed).rotated(rotation)
+
+func create(scene, before_ready = {}, after_ready = {}):
     var instance = scene.instance()
+    for variable in before_ready:
+        if variable in instance:
+            instance[variable] = before_ready[variable]
+    
     add_child(instance)
     instance.owner = self
     
-    if position != null: instance.global_position = position
-    if rotation != null: instance.global_rotation = rotation
+    for variable in after_ready:
+        if variable in instance:
+            instance[variable] = after_ready[variable]
     
     emit_signal("node_added", instance)
     instance.connect("tree_exited", self, "remove_node")
     nodes.append(instance)
     
     return instance
-
-func create_rigidbody(scene, position, rotation, rigidbody, speed):
-    var instance = create(scene, position, rotation)
-    instance.add_collision_exception_with(rigidbody)
-    
-    var relative_velocity = rigidbody.linear_velocity
-    instance.linear_velocity = relative_velocity + Vector2(0, -speed).rotated(rotation)

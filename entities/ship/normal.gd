@@ -1,20 +1,18 @@
 extends RigidBody2D
 
-export var horizontal = 0
-export var vertical = 0
-
 export var engine_thrust = 500
 export var spin_thrust = 500
 export var max_speed = 500
 
+var input = Util.NULL_INPUT
 var thrust = Vector2()
 var rotation_dir = 0
 
-onready var gun = $CollisionShape2D/Gun
+onready var gun = $Gun
 
 func _process(_delta):
-    thrust = Vector2(0, vertical * engine_thrust)
-    rotation_dir = horizontal
+    thrust = Vector2(0, input.vertical * engine_thrust)
+    rotation_dir = input.horizontal
 
 func _physics_process(delta):
     set_applied_force(thrust.rotated(global_rotation))
