@@ -1,5 +1,5 @@
 class_name TypedContainer
-extends Node2D
+extends Node
 
 signal node_added(node)
 signal node_removed(node)
@@ -8,9 +8,11 @@ var nodes = []
 
 func _ready():
     for child in get_children():
-        emit_signal("node_added", child)
-        child.connect("tree_exited", self, "remove_node")
         nodes.append(child)
+        var child_name = child.name
+        emit_signal("node_added", child)
+        if not (child.is_connected("tree_exited", self, "remove_node")):
+            child.connect("tree_exited", self, "remove_node")
 
 func remove_node():
     for i in range(nodes.size() - 1, -1, -1):

@@ -27,3 +27,8 @@ func find_parent_of_type_if_not_set(node, dest_node, type):
             parent = parent.get_parent()
     
     return null
+
+func remove_item(list, item):
+    for i in range(list.size() - 1, -1, -1):
+        if list[i] == item:
+            list.remove(i)
