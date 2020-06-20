@@ -9,6 +9,7 @@ func _enter_tree():
             child.connect("node_added", $Serializer, "track_node")
             child.connect("node_removed", $Serializer, "untrack_node")
     
+    #warning-ignore:return_value_discarded
     $Ships.connect("node_added", self, "listen_for_bullets")
 
 func listen_for_bullets(ship):
@@ -20,7 +21,7 @@ func serialize():
 func create_player(input):
     var ship = $Ships.create(ShipScene, {"input": input})
     ship.set_position(Vector2(630, 360))
-    var player = $Players.create(PlayerScene, {"ship": ship, "input": input})
+    $Players.create(PlayerScene, {"ship": ship, "input": input})
     
 #    $Overlay.add_stat("Player_State", ship, "state_name", true)
 #    $Overlay.add_stat("Player Position", ship, "position", false)

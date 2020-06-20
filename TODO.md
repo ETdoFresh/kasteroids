@@ -8,10 +8,10 @@
 - [ ] Network Predict Rigidbodies
 
 ### In Progress
-- [ ] Have connection/disconnection messages
 - [ ] Add WebSocket Client Support... relay?
 
 ### Complete
+- [X] Have connection/disconnection messages
 - [X] Add latency simulation
 - [X] Add Menu
 - [X] Show Client proxies on Client exe

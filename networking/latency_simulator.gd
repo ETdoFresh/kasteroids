@@ -10,7 +10,7 @@ export var out_of_order = true
 
 var queue = []
 
-func _process(delta):
+func _process(_delta):
     while not queue.empty():
         var now = OS.get_ticks_msec() / 1000.0
         if now < queue[0][0]: break

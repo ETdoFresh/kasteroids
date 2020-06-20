@@ -9,7 +9,6 @@ var nodes = []
 func _ready():
     for child in get_children():
         nodes.append(child)
-        var child_name = child.name
         emit_signal("node_added", child)
         if not (child.is_connected("tree_exited", self, "remove_node")):
             child.connect("tree_exited", self, "remove_node")

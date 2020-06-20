@@ -3,6 +3,7 @@ extends Control
 onready var root = get_tree().get_root()
 
 func _ready():
+    #warning-ignore-all:return_value_discarded
     $VBoxContainer/Button1.connect("button_down", self, "go_to_local")
     $VBoxContainer/Button2.connect("button_down", self, "go_to_server")
     $VBoxContainer/Button3.connect("button_down", self, "go_to_client")

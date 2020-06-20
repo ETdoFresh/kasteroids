@@ -1,15 +1,21 @@
 extends Node
 
 func _enter_tree():
+    #warning-ignore-all:return_value_discarded
     $Inputs.connect("node_added", self, "input_connected")
     $Inputs.connect("node_removed", self, "input_disconnected")
     
     if has_node("TCPServer"):
+        console_write_ln("Starting Server...")
         $TCPServer.connect("on_open", self, "create_tcp_server_input")
         $TCPServer.connect("on_close", self, "remove_tcp_server_input")
         $TCPServer.listen()
+        console_write_ln("Awaiting new connection...")
     
     if has_node("TCPClient"):
+        console_write_ln("Connecting to Server...")
+        $TCPClient.connect("on_open", self, "show_connected_to_server")
+        $TCPClient.connect("on_close", self, "show_disconnected_to_server")
         $TCPClient.open()
     
 func input_connected(input):
@@ -21,12 +27,20 @@ func input_disconnected(input):
 func create_tcp_server_input(client):
     var input = $Inputs.add(TCPServerInput.new(), {"client": client})
     $TCPServer.connect("on_receive", input, "deserialize")
+    console_write_ln("A Client has connected!")
 
 func remove_tcp_server_input(client):
+    console_write_ln("A Client has disconnected!")
     for input in $Inputs.get_children():
         if input.client == client:
             input.queue_free();
             return
+
+func show_connected_to_server():
+    console_write_ln("Connected to Server!")
+
+func show_disconnected_to_server():
+    console_write_ln("Disconnected from Server!")
 
 export var input_rate = 10
 var input_timer = 0.0
@@ -53,4 +67,8 @@ func _process(delta):
         #$TCPServer.broadcast($World.serialize())
         for client in $TCPServer.clients:
             $LatencySimulator.send(client, $World.serialize())
-        
+
+func console_write_ln(message):
+    print(message)
+    if $UI/Console: $UI/Console.write_line(message)
+    if $UI/Banner/Label: $UI/Banner/Label.text = message

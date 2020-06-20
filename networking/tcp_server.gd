@@ -8,7 +8,7 @@ signal on_send(client, message)
 var server = TCP_Server.new()
 var clients = []
 
-func _process(delta):    
+func _process(_delta):    
     check_for_connection()
     check_for_disconnection()
     check_for_received_data()

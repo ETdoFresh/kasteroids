@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://entities/input/keyboard_plus_gui.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/empty_world.tscn" type="PackedScene" id=2]
@@ -6,6 +6,13 @@
 [ext_resource path="res://entities/shared/typed_container.gd" type="Script" id=4]
 [ext_resource path="res://networking/tcp_client.gd" type="Script" id=5]
 [ext_resource path="res://networking/latency_simulator.gd" type="Script" id=6]
+[ext_resource path="res://entities/input/keyboard_shortcuts.gd" type="Script" id=7]
+[ext_resource path="res://entities/in_game_console.gd" type="Script" id=8]
+[ext_resource path="res://fonts/secret_code/secrcode.ttf" type="DynamicFontData" id=9]
+
+[sub_resource type="DynamicFont" id=2]
+size = 48
+font_data = ExtResource( 9 )
 
 [node name="Client" type="Node"]
 script = ExtResource( 3 )
@@ -24,3 +31,79 @@ script = ExtResource( 5 )
 script = ExtResource( 6 )
 min_latency = 0.03
 max_latency = 0.15
+
+[node name="KeyboardShortcuts" type="Node" parent="."]
+script = ExtResource( 7 )
+
+[node name="UI" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Banner" type="Control" parent="UI"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -640.0
+margin_top = -50.0
+margin_right = 640.0
+margin_bottom = 50.0
+mouse_filter = 2
+
+[node name="Panel" type="Panel" parent="UI/Banner"]
+modulate = Color( 1, 1, 1, 0.290196 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="UI/Banner"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 2 )
+text = "Starting Server..."
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FadeTimer" type="Timer" parent="UI/Banner"]
+
+[node name="Console" type="Panel" parent="UI"]
+self_modulate = Color( 1, 1, 1, 0.301961 )
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 306.0
+margin_top = -200.0
+margin_right = 806.0
+script = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/Console"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+scroll_horizontal_enabled = false
+scroll_vertical = 86
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Console/ScrollContainer"]
+margin_right = 500.0
+margin_bottom = 200.0
+
+[node name="Label" type="Label" parent="UI/Console/ScrollContainer/VBoxContainer"]
+margin_right = 500.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 500, 200 )
+valign = 2

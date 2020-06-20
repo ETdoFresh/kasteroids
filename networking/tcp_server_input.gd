@@ -2,7 +2,7 @@ class_name TCPServerInput
 extends Node
 
 var client
-var input_name = "TCP Input"
+var input_name = "TCP Input " + String(randi() % 10000)
 var horizontal = 0
 var vertical = 0
 var fire = false
