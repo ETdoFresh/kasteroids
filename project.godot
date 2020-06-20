@@ -47,7 +47,7 @@ _global_script_classes=[ {
 "base": "Panel",
 "class": "InGameConsole",
 "language": "GDScript",
-"path": "res://entities/in_game_console.gd"
+"path": "res://entities/ui/in_game_console.gd"
 }, {
 "base": "Node",
 "class": "KeyboardPlusGUI",

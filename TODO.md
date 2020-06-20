@@ -8,9 +8,16 @@
 - [ ] Network Predict Rigidbodies
 
 ### In Progress
-- [ ] Add WebSocket Client Support... relay?
+- [ ] Create headless linux build
+- [ ] Put headless build in Docker
+- [ ] Host docker on web
+- [ ] Create a text file that contains possible servers
+- [ ] Use http to get server and redirect
 
 ### Complete
+- [X] Figure out why connected to server doesn't show up in websocket
+- [X] Fade out middle banner
+- [X] Add WebSocket Client Support
 - [X] Have connection/disconnection messages
 - [X] Add latency simulation
 - [X] Add Menu

@@ -98,5 +98,5 @@ func _process(delta):
 
 func console_write_ln(message):
     print(message)
-    if $UI/Console: $UI/Console.write_line(message)
-    if $UI/Banner/Label: $UI/Banner/Label.text = message
+    if has_node("UI/Console"): $UI/Console.write_line(message)
+    if has_node("UI/Banner"): $UI/Banner.set_text(message)

@@ -16,7 +16,8 @@ func write_line(message):
         if i == 0: text = lines[i]
         else: text += "\n" + lines[i]
     
-    yield(self, "tree_entered")
+    if not is_inside_tree(): yield(self, "tree_entered")
     $ScrollContainer/VBoxContainer/Label.text = text
     yield(get_tree(), "idle_frame")
-    $ScrollContainer.scroll_vertical = $ScrollContainer.get_v_scrollbar().max_value
+    if lines.size() > 12:
+        $ScrollContainer.scroll_vertical = $ScrollContainer.get_v_scrollbar().max_value
