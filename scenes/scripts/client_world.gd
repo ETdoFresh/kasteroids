@@ -11,8 +11,8 @@ var input = Util.NULL_INPUT
 
 onready var containers = { ShipClient: $Ships, AsteroidClient: $Asteroids, BulletClient: $Bullets }
 
-func create_player(input): pass
-func delete_player(input): pass
+func create_player(_input): pass
+func delete_player(_input): pass
 
 func deserialize(serialized):
     var items = serialized.split(",", false)

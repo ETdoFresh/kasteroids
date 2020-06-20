@@ -16,6 +16,11 @@ func _process(delta):
 func open(host = "localhost", port = 11001):
     client.connect_to_host(host, port)
 
+func send(message):
+    if client and client.is_connected_to_host():
+        client.put_data(message.to_ascii())
+        emit_signal("on_send", message)
+
 func check_for_connection():
     if not connected:
         if client and client.is_connected_to_host():
@@ -35,8 +40,3 @@ func check_for_received_data():
             var data = client.get_data(bytes)
             var message = data[1].get_string_from_ascii()
             emit_signal("on_receive", message)
-
-func send(message):
-    if client and client.is_connected_to_host():
-        client.put_data(message.to_ascii())
-        emit_signal("on_send", message)

@@ -13,6 +13,17 @@ func _process(_delta):
     check_for_disconnection()
     check_for_received_data()
 
+func listen(bind_address = "*", port = 11001):
+    server.listen(port, bind_address)
+
+func send(client, message):
+    client.put_data(message.to_ascii())
+    emit_signal("on_send", client, message)
+
+func broadcast(message):
+    for client in clients:
+        send(client, message)
+
 func check_for_connection():
     if server:
         var incoming_connection = server.take_connection()
@@ -37,14 +48,3 @@ func check_for_received_data():
                 var data = client.get_data(bytes)
                 var message = data[1].get_string_from_ascii()
                 emit_signal("on_receive", client, message)
-
-func listen(bind_address = "*", port = 11001):
-    server.listen(port, bind_address)
-
-func send(client, message):
-    client.put_data(message.to_ascii())
-    emit_signal("on_send", client, message)
-
-func broadcast(message):
-    for client in clients:
-        send(client, message)

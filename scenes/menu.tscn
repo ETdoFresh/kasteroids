@@ -28,31 +28,55 @@ __meta__ = {
 
 [node name="Button1" type="Button" parent="VBoxContainer"]
 margin_right = 315.0
-margin_bottom = 142.0
+margin_bottom = 79.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Local"
 
 [node name="Button2" type="Button" parent="VBoxContainer"]
-margin_top = 146.0
+margin_top = 83.0
 margin_right = 315.0
-margin_bottom = 288.0
+margin_bottom = 162.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Server"
 
 [node name="Button3" type="Button" parent="VBoxContainer"]
-margin_top = 292.0
+margin_top = 166.0
 margin_right = 315.0
-margin_bottom = 434.0
+margin_bottom = 245.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Client"
 
 [node name="Button4" type="Button" parent="VBoxContainer"]
-margin_top = 438.0
+margin_top = 249.0
+margin_right = 315.0
+margin_bottom = 328.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Server and Client"
+
+[node name="Button5" type="Button" parent="VBoxContainer"]
+margin_top = 332.0
+margin_right = 315.0
+margin_bottom = 411.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Web Socket Server"
+
+[node name="Button6" type="Button" parent="VBoxContainer"]
+margin_top = 415.0
+margin_right = 315.0
+margin_bottom = 494.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Web Socket Client"
+
+[node name="Button7" type="Button" parent="VBoxContainer"]
+margin_top = 498.0
 margin_right = 315.0
 margin_bottom = 582.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-text = "Server and Client"
+text = "Web Socket Server and Client"
