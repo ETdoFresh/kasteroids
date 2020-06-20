@@ -6,15 +6,15 @@
 - [ ] Show Virtual Controls on tap [Hide/Show Virtual Controls]
 - [ ] Network Interpolate Rigidbodies
 - [ ] Network Predict Rigidbodies
-- [ ] Add WebSocket Client Support... relay?
-- [ ] Add Menu
-- [ ] Have connection/disconnection messages
 
 ### In Progress
-- [ ] Show Client proxies on Client exe
-- [ ] Add latency simulation
+- [ ] Have connection/disconnection messages
+- [ ] Add WebSocket Client Support... relay?
 
 ### Complete
+- [X] Add latency simulation
+- [X] Add Menu
+- [X] Show Client proxies on Client exe
 - [X] Create ship when input is registered
 - [X] Create TCP/Network Client Input
 - [X] Create new ship on Client Connection

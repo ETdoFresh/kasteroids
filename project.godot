@@ -50,6 +50,11 @@ _global_script_classes=[ {
 "path": "res://entities/input/keyboard_plus_gui.gd"
 }, {
 "base": "Node",
+"class": "LatencySimulator",
+"language": "GDScript",
+"path": "res://networking/latency_simulator.gd"
+}, {
+"base": "Node",
 "class": "NetworkConnection",
 "language": "GDScript",
 "path": "res://networking/network_connection.gd"
@@ -123,6 +128,7 @@ _global_script_class_icons={
 "Data": "",
 "Gun": "",
 "KeyboardPlusGUI": "",
+"LatencySimulator": "",
 "NetworkConnection": "",
 "Node2DExtended": "",
 "NodeExtended": "",

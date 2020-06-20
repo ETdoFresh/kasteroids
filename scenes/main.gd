@@ -43,12 +43,14 @@ func _process(delta):
         input_timer += delta
         if input_timer < 1.0 / input_rate: return
         input_timer -= 1.0 / input_rate
-        $TCPClient.send($Inputs/Input.serialize())
+        #$TCPClient.send($Inputs/Input.serialize())
+        $LatencySimulator.send($TCPClient.client, $Inputs/Input.serialize())
     
     if has_node("TCPServer"):
         update_timer += delta
         if update_timer < 1.0 / update_rate: return
         update_timer -= 1.0 / update_rate
-        var serialized = $World.serialize()
-        $TCPServer.broadcast($World.serialize())
+        #$TCPServer.broadcast($World.serialize())
+        for client in $TCPServer.clients:
+            $LatencySimulator.send(client, $World.serialize())
         
