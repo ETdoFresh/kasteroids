@@ -26,7 +26,7 @@ func check_for_disconnection():
         if not client:
             clients.remove(i)
         elif not client.is_connected_to_host():
-            clients.remove()
+            clients.remove(i)
             emit_signal("on_close", client)
 
 func check_for_received_data():
@@ -44,3 +44,7 @@ func listen(bind_address = "*", port = 11001):
 func send(client, message):
     client.put_data(message.to_ascii())
     emit_signal("on_send", client, message)
+
+func broadcast(message):
+    for client in clients:
+        send(client, message)

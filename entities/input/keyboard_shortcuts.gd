@@ -2,15 +2,12 @@ extends Node
 
 const KeyboardPlusGUIScene = preload("res://entities/input/keyboard_plus_gui.tscn")
 
-onready var root = get_tree().get_root()
 onready var inputs = get_parent().get_node("Inputs")
 
 func _input(event):
     if event is InputEventKey and event.pressed:
         if event.scancode == KEY_R:
-            #warning-ignore:return_value_discarded
-            get_parent().queue_free()
-            root.add_child(load("res://scenes/main.tscn").instance())
+           get_tree().change_scene("res://scenes/menu.tscn")
     
     if event is InputEventKey and event.pressed:
         if event.scancode == KEY_F11:

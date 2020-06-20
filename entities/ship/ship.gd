@@ -21,6 +21,10 @@ func _process(_delta):
         $States.set_previous_state()
     elif input.next_state:
         $States.set_next_state()
+    
+    if $States && $States.active_state && $States.active_state.get_node("CollisionShape2D"):
+        var state = $States.active_state
+        $Data.update(state.global_position, state.global_rotation, state.get_node("CollisionShape2D").scale)
 
 func state_name():
     return $States.active_state_name

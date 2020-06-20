@@ -1,7 +1,7 @@
 extends Node2D
 
-const PlayerScene = preload("res://entities/player/player.tscn")
 const ShipScene = preload("res://entities/ship/ship.tscn")
+const PlayerScene = preload("res://entities/player/player.tscn")
 
 func _enter_tree():
     for child in get_children():
@@ -15,7 +15,7 @@ func listen_for_bullets(ship):
     ship.connect("create", $Bullets, "create_rigidbody")
 
 func serialize():
-    $Serializer.serialize()
+    return $Serializer.serialize()
 
 func create_player(input):
     var ship = $Ships.create(ShipScene, {"input": input})

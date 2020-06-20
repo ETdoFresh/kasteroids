@@ -10,8 +10,6 @@ export var max_scale = 1.0
 
 var random = RandomNumberGenerator.new()
 
-onready var data = $Data
-
 func _ready():
     random.randomize()
     randomize_spin()
@@ -34,3 +32,6 @@ func randomize_speed():
 
 func randomize_scale():
     $CollisionShape2D.scale *= random.randf_range(min_scale, max_scale)
+
+func serialize():
+    return $Data.serialize()

@@ -21,10 +21,11 @@ func serialize():
     for list in [ships, asteroids, bullets]:
         serialized += String(list.size()) + ","
         for node in list:
-            var data = node.data
-            serialized += String(data.position.x) + ","
-            serialized += String(data.position.y) + ","
-            serialized += String(data.rotation) + ","
-            serialized += String(data.scale.x) + ","
-            serialized += String(data.scale.y) + ","
+            if node.has_node("Data"):
+                var data = node.get_node("Data")
+                serialized += String(data.position.x) + ","
+                serialized += String(data.position.y) + ","
+                serialized += String(data.rotation) + ","
+                serialized += String(data.scale.x) + ","
+                serialized += String(data.scale.y) + ","
     return serialized
