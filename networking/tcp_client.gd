@@ -16,6 +16,9 @@ func _process(_delta):
 func open(host = "localhost", port = 11001):
     client.connect_to_host(host, port)
 
+func close():
+    client.disconnect_from_host()
+
 func send(message):
     if client and client.is_connected_to_host():
         client.put_data(message.to_ascii())

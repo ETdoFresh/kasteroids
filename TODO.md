@@ -1,18 +1,19 @@
 # Things to work on
 
 ### Backlog
+- [ ] Create a text file that contains possible servers
+- [ ] Use http to get server and redirect
 - [ ] Fix button controls
 - [ ] Multitouch controls
 - [ ] Show Virtual Controls on tap [Hide/Show Virtual Controls]
+
+### In Progress
+- [ ] Create a Clock sync example
 - [ ] Network Interpolate Rigidbodies
 - [ ] Network Predict Rigidbodies
 
-### In Progress
-- [ ] Host docker on web (WSS)
-- [ ] Create a text file that contains possible servers
-- [ ] Use http to get server and redirect
-
 ### Complete
+- [X] Host docker on web (WSS)
 - [X] Create headless linux build
 - [X] Put headless build in Docker
 - [X] Figure out why connected to server doesn't show up in websocket
