@@ -8,13 +8,13 @@
 - [ ] Network Predict Rigidbodies
 
 ### In Progress
-- [ ] Create headless linux build
-- [ ] Put headless build in Docker
-- [ ] Host docker on web
+- [ ] Host docker on web (WSS)
 - [ ] Create a text file that contains possible servers
 - [ ] Use http to get server and redirect
 
 ### Complete
+- [X] Create headless linux build
+- [X] Put headless build in Docker
 - [X] Figure out why connected to server doesn't show up in websocket
 - [X] Fade out middle banner
 - [X] Add WebSocket Client Support
