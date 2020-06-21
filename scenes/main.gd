@@ -29,7 +29,7 @@ func _enter_tree():
         console_write_ln("Connecting to Server...")
         $WebSocketClient.connect("on_open", self, "show_connected_to_server")
         $WebSocketClient.connect("on_close", self, "show_disconnected_to_server")
-        $WebSocketClient.open("ws://ENAS:11001")
+        $WebSocketClient.open("wss://etdofresh.synology.me:11001")
     
 func input_connected(input):
     $World.create_player(input)

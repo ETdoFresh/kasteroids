@@ -8,7 +8,7 @@ signal on_send(message)
 var client = StreamPeerTCP.new()
 var connected = false
 
-func _process(delta):
+func _process(_delta):
     check_for_connection()
     check_for_disconnection()
     check_for_received_data()

@@ -24,20 +24,4 @@ WORKDIR app
 CMD godot-server
 
 
-### Some Tips
-#
-# To build a Docker image
-# docker build PATH_TO_DOCKER_FILE -t TAG{:VERSION}
-# docker build . -t test123
-# docker build . -t etdofresh/kasteroids:v2
-#
-# Run docker in background on on machine port 1234 from program port 5678
-# docker run -dp 1234:5678 etdofresh/kasteroids:v2
-#
-# Run docker in foreground
-# docker run -itp 1234:5678 etdofresh/kasteroids:v2
-#
-# Save docker image for nas
-# docker save -o kasteroids.tar etdofresh/kasteroids:v2
-#
-#
+

@@ -13,6 +13,12 @@ func _process(_delta):
 
 func listen(bind_address = "*", port = 11001):
     server.bind_ip = bind_address
+    server.private_key = CryptoKey.new(); 
+    print(server.private_key.load("res://keys/privkey.key"))
+    server.ssl_certificate = X509Certificate.new()
+    print(server.ssl_certificate.load("res://keys/cert.crt"))
+    server.ca_chain = X509Certificate.new()
+    print(server.ca_chain.load("res://keys/chain.crt"))
     server.connect("client_connected", self, "check_for_connection")
     server.connect("client_disconnected", self, "check_for_disconnection")
     server.connect("data_received", self, "check_for_received_data")
