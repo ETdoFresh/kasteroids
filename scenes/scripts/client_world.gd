@@ -31,8 +31,17 @@ func deserialize(serialized):
 
         for i in range(count):
             var node = nodes[i]
-            node.position.x = float(items[x]); x += 1
-            node.position.y = float(items[x]); x += 1
-            node.rotation = float(items[x]); x += 1
-            node.scale.x = float(items[x]); x += 1
-            node.scale.y = float(items[x]); x += 1
+            var position = Vector2()
+            position.x = float(items[x]); x += 1
+            position.y = float(items[x]); x += 1
+            var rotation = float(items[x]); x += 1
+            var scale = Vector2()
+            scale.x = float(items[x]); x += 1
+            scale.y = float(items[x]); x += 1
+            
+            if node.has_method("receive_update"):
+                node.receive_update({"tick": 0, "position": position, "rotation": rotation, "scale": scale})
+            else:
+                node.position = position
+                node.rotation = rotation
+                node.scale = scale

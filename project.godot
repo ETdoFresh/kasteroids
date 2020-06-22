@@ -14,7 +14,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://entities/asteroid/asteroid.gd"
 }, {
-"base": "BaseNode2D",
+"base": "Node2D",
 "class": "AsteroidClient",
 "language": "GDScript",
 "path": "res://entities/asteroid/asteroid_client.gd"
@@ -153,7 +153,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Kasteroids"
-run/main_scene="res://clock_sync/clock_sync_test.tscn"
+run/main_scene="res://scenes/web_socket_client.tscn"
 config/icon="res://icon.png"
 config/windows_native_icon="res://icon.ico"
 
