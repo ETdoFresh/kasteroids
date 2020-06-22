@@ -161,6 +161,7 @@ config/windows_native_icon="res://icon.ico"
 
 Global="*res://utility/global.gd"
 Util="*res://utility/util.gd"
+Settings="*res://entities/settings/settings.gd"
 
 [display]
 
@@ -270,6 +271,11 @@ clock_test_connect={
 clock_test_reset={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":82,"unicode":0,"echo":false,"script":null)
+ ]
+}
+interpolation_toggle={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":73,"unicode":0,"echo":false,"script":null)
  ]
 }
 
