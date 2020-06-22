@@ -8,11 +8,12 @@
 - [ ] Show Virtual Controls on tap [Hide/Show Virtual Controls]
 
 ### In Progress
-- [ ] Create a Clock sync example
+- [ ] Create a Clock sync example with multiple clients
 - [ ] Network Interpolate Rigidbodies
 - [ ] Network Predict Rigidbodies
 
 ### Complete
+- [X] Create a Clock sync example
 - [X] Host docker on web (WSS)
 - [X] Create headless linux build
 - [X] Put headless build in Docker

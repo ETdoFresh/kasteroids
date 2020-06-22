@@ -16,16 +16,18 @@ font_data = ExtResource( 7 )
 [node name="ClockSyncTest" type="Node"]
 script = ExtResource( 5 )
 
+[node name="Latency" type="Node" parent="."]
+script = ExtResource( 3 )
+simulate_latency = false
+min_latency = 0.5
+max_latency = 1.5
+drop_rate = 0.0
+
 [node name="Server" type="Node" parent="."]
 script = ExtResource( 4 )
 
 [node name="TCP" type="Node" parent="Server"]
 script = ExtResource( 2 )
-
-[node name="Latency" type="Node" parent="Server"]
-script = ExtResource( 3 )
-min_latency = 3.0
-max_latency = 10.0
 
 [node name="History" type="Node" parent="Server"]
 script = ExtResource( 8 )
