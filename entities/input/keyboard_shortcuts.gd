@@ -9,6 +9,7 @@ onready var inputs = get_parent().get_node("Inputs")
 
 func _ready():
     if has_node("../UI/Button"):
+        #warning-ignore:return_value_discarded
         get_node("../UI/Button").connect("button_down", self, "menu_gui_press")
 
 func _input(event):
@@ -31,4 +32,5 @@ func _input(event):
             get_parent().get_node("Inputs").create(KeyboardPlusGUIScene)
 
 func menu_gui_press():
+    #warning-ignore:return_value_discarded
     get_tree().change_scene(menu_scene_path)

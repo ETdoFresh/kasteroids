@@ -4,7 +4,7 @@ extends Node2D
 var tick = 0
 var history = []
 
-func _process(delta):
+func _process(_delta):
     interpolate()
 
 func receive_update(state):

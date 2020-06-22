@@ -2,7 +2,7 @@
 
 [ext_resource path="res://networking/web_socket_server.gd" type="Script" id=1]
 [ext_resource path="res://entities/input/keyboard_shortcuts.gd" type="Script" id=2]
-[ext_resource path="res://scenes/main.gd" type="Script" id=3]
+[ext_resource path="res://scenes/scripts/server.gd" type="Script" id=3]
 [ext_resource path="res://entities/shared/typed_container.gd" type="Script" id=4]
 [ext_resource path="res://scenes/world.tscn" type="PackedScene" id=5]
 [ext_resource path="res://entities/ui/console.tscn" type="PackedScene" id=6]
