@@ -1,9 +1,9 @@
 To interpolate a frame on the client side....
 
-Server will send state packets at ticks: 1,3,6,9,12.... 
+Server will send state packets at ticks: 1,3,6,9,12...
 *occasionally, not every frame*
 
-Clients will send input packets at probably every tick: 1,2,3,4,5,6
+Clients will send input packets at probably every tick: 1,2,3,4,5,6...
 
 If both client and server are running at 60 ticks/second, that's about 0.0167 seconds/tick
 
@@ -79,3 +79,45 @@ Time|Client_Tick|Server_Tick|CliLastRecv|ServLastRecb|ServSend|ServRecv|CliSend|
 0.48|24|1258|1254|21||"22,1254"|"24,1254"||||||
 0.49|24|1258|1256|22||||"1256,20"|0.39|0.02|0.08|0.04|1258
 0.5|25|1259|1256|22|"1259,22"|"23,1254"|"25,1256"||||||
+
+- It is important to establish that the tick_rate at both client and server are **tick_rate = 0.02**
+
+- At **time 0.04**, the client receives an estimate of the **server tick 1234**, but not sure how accurate this is...
+
+- At this point the client still does not know delay between client and server
+
+- Same thing at **time 0.09**
+
+- At **time 0.14**, the client receives another estimate, this time with additional information!
+
+  - The client receives the **server tick 1239** and the last received **client tick 2**
+  - Additional server sends **offset time 0.02**, aka time between server receiving client tick and sending server tick/packet
+  - The client knows **client tick 2** was sent at **time 0.04**
+  - Now the client can compute the **Round Trip Time (RTT)**
+    - RTT = Current Time - Client Tick Sent Time - Offset time
+    - **RTT** = 0.14 - 0.04 - 0.02 = **0.08**
+  - The delay (time it took from server to client) = RTT / 2
+    - **delay** = 0.08 / 2 = **0.04**
+
+- At **time 0.14**, the client now predict the current server tick
+
+  - current server tick = received server tick + delay / tick_rate
+
+  - **current server tick** = 1239 + 0.04 / 0.02 = **1241**
+
+- After **time 0.14**, the client can use delay to predict server tick at any time by:
+
+  - current server tick = last_received_server_tick + (current_time - last_received_server_time + delay) / tick_rate
+  - At **time 0.16**, **current_server_tick** = 1239 + (0.16 - 0.14 + 0.04) / 0.02 = **1242**
+
+### Sliding Window
+
+It may be beneficial to have a sliding window of the last X values. A sliding windows is an array of size X, where the value of the window can be
+
+- Average of all values
+- Median of all values
+- Mode of all values
+- Min/Max of all values
+
+For the delay, the average or median delay of the last 10 packets may be more helpful than having a rapidly changing delay each frame.
+

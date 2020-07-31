@@ -1,11 +1,14 @@
 extends "res://networking/tcp_server.gd"
 
 var update_timer = 0.0
-var speed = 0.0001
+var speed = 0.01
 var tick = 10000
 var t = 0
 var last_received = {}
+var tick_rate = 1.0 / Engine.iterations_per_second
+var time = 0
 
+onready var time_label = $Time/Value
 onready var tick_label = $Tick/Value
 onready var t_label = $T/Value
 onready var update_rate_lineedit = $SendRate/Value
@@ -18,12 +21,14 @@ func _enter_tree():
     listen()
     console_write_ln("Awaiting new connection...")
 
-func _physics_process(_delta):
+func _physics_process(delta):
     tick += 1
-    t += speed
+    t += speed * delta
 
-func _process(delta):    
-    tick_label.text = String(tick)
+func _process(delta):
+    time += delta
+    time_label.text = "%5.4f" % time
+    tick_label.text = "%d" % tick
     t_label.text = "%5.4f" % t
     $CosineGodotImage.t = t
     
@@ -35,16 +40,20 @@ func _process(delta):
     if update_timer < 1.0 / update_rate: return
     update_timer -= 1.0 / update_rate
     for client in clients:
-        var message = "%s,%s,%s" % [tick, last_received[client], t_label.text]
+        var last_received_time = last_received[client][1]
+        var offset = time - last_received_time
+        var message = "%s,%s,%s,%s|" % [tick, last_received[client][0], offset, t_label.text]
         $LatencySimulator.send(client, message)
 
 func console_write_ln(value):
     print(value)
 
 func update_last_received(client, message):
-    $Message/Value.text = message
-    var items = message.split(",")
-    last_received[client] = int(items[0])
+    var messages = message.split("|", false)
+    for msg in messages:
+        $Message/Value.text = msg
+        var items = msg.split(",")
+        last_received[client] = [int(items[0]), time]
 
 func delete_client(client):
     last_received.erase(client)
