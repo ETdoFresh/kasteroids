@@ -37,10 +37,10 @@ func get_child_of_type_in_node_recursive(node, type, recurse = true):
         if found_in_child:
             return child
         
-        if recurse:
-            for child in node.get_children():
-                var found_in_recursion = get_child_of_type_in_node_recursive(child, type, recurse)
-                if found_in_recursion:
-                    return found_in_recursion
+    if recurse:
+        for child in node.get_children():
+            var found_in_recursion = get_child_of_type_in_node_recursive(child, type, recurse)
+            if found_in_recursion:
+                return found_in_recursion
     
     return null

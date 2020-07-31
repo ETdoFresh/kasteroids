@@ -1,0 +1,210 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://fonts/arial_24.tres" type="DynamicFont" id=1]
+[ext_resource path="res://one_value_sync/server.gd" type="Script" id=2]
+[ext_resource path="res://one_value_sync/client.gd" type="Script" id=3]
+[ext_resource path="res://networking/latency_simulator.gd" type="Script" id=4]
+[ext_resource path="res://one_value_sync/one_value_sync.gd" type="Script" id=5]
+[ext_resource path="res://one_value_sync/cosine_godot_image.tscn" type="PackedScene" id=6]
+
+[node name="OneValueSync" type="Control"]
+pause_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+pause_mode = 1
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Server" type="VBoxContainer" parent="HBoxContainer"]
+margin_right = 638.0
+margin_bottom = 742.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 2 )
+
+[node name="Title" type="Label" parent="HBoxContainer/Server"]
+margin_right = 638.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 1 )
+text = "Server"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tick" type="HBoxContainer" parent="HBoxContainer/Server"]
+margin_top = 32.0
+margin_right = 638.0
+margin_bottom = 60.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="HBoxContainer/Server/Tick"]
+margin_right = 51.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 1 )
+text = "Tick:"
+
+[node name="Value" type="Label" parent="HBoxContainer/Server/Tick"]
+margin_left = 55.0
+margin_right = 68.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 1 )
+text = "0"
+
+[node name="T" type="HBoxContainer" parent="HBoxContainer/Server"]
+margin_top = 64.0
+margin_right = 638.0
+margin_bottom = 92.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="HBoxContainer/Server/T"]
+margin_right = 22.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 1 )
+text = "T:"
+
+[node name="Value" type="Label" parent="HBoxContainer/Server/T"]
+margin_left = 26.0
+margin_right = 39.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 1 )
+text = "0"
+
+[node name="SendRate" type="HBoxContainer" parent="HBoxContainer/Server"]
+margin_top = 96.0
+margin_right = 638.0
+margin_bottom = 134.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="HBoxContainer/Server/SendRate"]
+margin_top = 5.0
+margin_right = 119.0
+margin_bottom = 33.0
+custom_fonts/font = ExtResource( 1 )
+text = "Send Rate:"
+
+[node name="Value" type="LineEdit" parent="HBoxContainer/Server/SendRate"]
+margin_left = 123.0
+margin_right = 217.0
+margin_bottom = 38.0
+custom_fonts/font = ExtResource( 1 )
+text = "10"
+
+[node name="CosineGodotImage" parent="HBoxContainer/Server" instance=ExtResource( 6 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 138.0
+margin_right = 638.0
+margin_bottom = 438.0
+rect_min_size = Vector2( 0, 300 )
+multiplier = 500
+
+[node name="LatencySimulator" type="Node" parent="HBoxContainer/Server"]
+script = ExtResource( 4 )
+
+[node name="Client" type="VBoxContainer" parent="HBoxContainer"]
+margin_left = 642.0
+margin_right = 1280.0
+margin_bottom = 742.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 3 )
+
+[node name="Title" type="Label" parent="HBoxContainer/Client"]
+margin_right = 638.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 1 )
+text = "Client"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tick" type="HBoxContainer" parent="HBoxContainer/Client"]
+margin_top = 32.0
+margin_right = 638.0
+margin_bottom = 60.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="HBoxContainer/Client/Tick"]
+margin_right = 51.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 1 )
+text = "Tick:"
+
+[node name="Value" type="Label" parent="HBoxContainer/Client/Tick"]
+margin_left = 55.0
+margin_right = 68.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 1 )
+text = "0"
+
+[node name="T" type="HBoxContainer" parent="HBoxContainer/Client"]
+margin_top = 64.0
+margin_right = 638.0
+margin_bottom = 92.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="HBoxContainer/Client/T"]
+margin_right = 22.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 1 )
+text = "T:"
+
+[node name="Value" type="Label" parent="HBoxContainer/Client/T"]
+margin_left = 26.0
+margin_right = 39.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 1 )
+text = "0"
+
+[node name="SendRate" type="HBoxContainer" parent="HBoxContainer/Client"]
+margin_top = 96.0
+margin_right = 638.0
+margin_bottom = 134.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="HBoxContainer/Client/SendRate"]
+margin_top = 5.0
+margin_right = 119.0
+margin_bottom = 33.0
+custom_fonts/font = ExtResource( 1 )
+text = "Send Rate:"
+
+[node name="Value" type="LineEdit" parent="HBoxContainer/Client/SendRate"]
+margin_left = 123.0
+margin_right = 217.0
+margin_bottom = 38.0
+custom_fonts/font = ExtResource( 1 )
+text = "10"
+
+[node name="CosineGodotImage" parent="HBoxContainer/Client" instance=ExtResource( 6 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 138.0
+margin_right = 638.0
+margin_bottom = 438.0
+rect_min_size = Vector2( 0, 300 )
+multiplier = 500
+
+[node name="LatencySimulator" type="Node" parent="HBoxContainer/Client"]
+script = ExtResource( 4 )
