@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://fonts/arial_24.tres" type="DynamicFont" id=1]
 [ext_resource path="res://one_value_sync/server.gd" type="Script" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://networking/latency_simulator.gd" type="Script" id=4]
 [ext_resource path="res://one_value_sync/one_value_sync.gd" type="Script" id=5]
 [ext_resource path="res://one_value_sync/cosine_godot_image.tscn" type="PackedScene" id=6]
+[ext_resource path="res://one_value_sync/interpolation.gd" type="Script" id=7]
 
 [node name="OneValueSync" type="Control"]
 pause_mode = 2
@@ -26,7 +27,7 @@ __meta__ = {
 
 [node name="Server" type="VBoxContainer" parent="HBoxContainer"]
 margin_right = 638.0
-margin_bottom = 742.0
+margin_bottom = 720.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 2 )
@@ -104,12 +105,54 @@ margin_bottom = 38.0
 custom_fonts/font = ExtResource( 1 )
 text = "10"
 
+[node name="Message" type="HBoxContainer" parent="HBoxContainer/Server"]
+margin_top = 138.0
+margin_right = 638.0
+margin_bottom = 166.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="HBoxContainer/Server/Message"]
+margin_right = 103.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 1 )
+text = "Message:"
+
+[node name="Value" type="Label" parent="HBoxContainer/Server/Message"]
+margin_left = 107.0
+margin_right = 123.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 1 )
+text = "--"
+
+[node name="Clients" type="HBoxContainer" parent="HBoxContainer/Server"]
+margin_top = 170.0
+margin_right = 638.0
+margin_bottom = 198.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="HBoxContainer/Server/Clients"]
+margin_right = 79.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 1 )
+text = "Clients:"
+
+[node name="Value" type="Label" parent="HBoxContainer/Server/Clients"]
+margin_left = 83.0
+margin_right = 96.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 1 )
+text = "0"
+
 [node name="CosineGodotImage" parent="HBoxContainer/Server" instance=ExtResource( 6 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 138.0
+margin_top = 202.0
 margin_right = 638.0
-margin_bottom = 438.0
+margin_bottom = 502.0
 rect_min_size = Vector2( 0, 300 )
 multiplier = 500
 
@@ -119,7 +162,7 @@ script = ExtResource( 4 )
 [node name="Client" type="VBoxContainer" parent="HBoxContainer"]
 margin_left = 642.0
 margin_right = 1280.0
-margin_bottom = 742.0
+margin_bottom = 720.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 3 )
@@ -197,14 +240,113 @@ margin_bottom = 38.0
 custom_fonts/font = ExtResource( 1 )
 text = "10"
 
-[node name="CosineGodotImage" parent="HBoxContainer/Client" instance=ExtResource( 6 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Message" type="HBoxContainer" parent="HBoxContainer/Client"]
 margin_top = 138.0
 margin_right = 638.0
-margin_bottom = 438.0
+margin_bottom = 166.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="HBoxContainer/Client/Message"]
+margin_right = 103.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 1 )
+text = "Message:"
+
+[node name="Value" type="Label" parent="HBoxContainer/Client/Message"]
+margin_left = 107.0
+margin_right = 123.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 1 )
+text = "--"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/Client"]
+margin_top = 170.0
+margin_right = 638.0
+margin_bottom = 184.0
+
+[node name="Label" type="Label" parent="HBoxContainer/Client/HBoxContainer2"]
+margin_right = 156.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+text = "Last Received"
+align = 1
+valign = 1
+
+[node name="Label2" type="Label" parent="HBoxContainer/Client/HBoxContainer2"]
+margin_left = 160.0
+margin_right = 316.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+text = "Interpolated"
+align = 1
+valign = 1
+
+[node name="Label3" type="Label" parent="HBoxContainer/Client/HBoxContainer2"]
+margin_left = 320.0
+margin_right = 476.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+text = "Prediction"
+align = 1
+valign = 1
+
+[node name="Label4" type="Label" parent="HBoxContainer/Client/HBoxContainer2"]
+margin_left = 480.0
+margin_right = 638.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+text = "Visible"
+align = 1
+valign = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/Client"]
+margin_top = 188.0
+margin_right = 638.0
+margin_bottom = 488.0
+
+[node name="CosineGodotImage" parent="HBoxContainer/Client/HBoxContainer" instance=ExtResource( 6 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 156.0
+margin_bottom = 300.0
 rect_min_size = Vector2( 0, 300 )
+size_flags_horizontal = 3
+multiplier = 500
+
+[node name="CosineGodotImage2" parent="HBoxContainer/Client/HBoxContainer" instance=ExtResource( 6 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 160.0
+margin_right = 316.0
+margin_bottom = 300.0
+rect_min_size = Vector2( 0, 300 )
+size_flags_horizontal = 3
+multiplier = 500
+
+[node name="CosineGodotImage3" parent="HBoxContainer/Client/HBoxContainer" instance=ExtResource( 6 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 320.0
+margin_right = 476.0
+margin_bottom = 300.0
+rect_min_size = Vector2( 0, 300 )
+size_flags_horizontal = 3
+multiplier = 500
+
+[node name="CosineGodotImage4" parent="HBoxContainer/Client/HBoxContainer" instance=ExtResource( 6 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 480.0
+margin_right = 638.0
+margin_bottom = 300.0
+rect_min_size = Vector2( 0, 300 )
+size_flags_horizontal = 3
 multiplier = 500
 
 [node name="LatencySimulator" type="Node" parent="HBoxContainer/Client"]
 script = ExtResource( 4 )
+
+[node name="Interpolation" type="Node" parent="HBoxContainer/Client"]
+script = ExtResource( 7 )
