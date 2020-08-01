@@ -1,5 +1,7 @@
 extends Node
 
+signal tick
+
 var rtt_window = SlidingWindow.new(5)
 var rtt = -1
 var delay = -1
@@ -38,14 +40,14 @@ func record_client_recieve(server_tick, client_tick, offset_time):
     calculate_rtt(client_tick, offset_time)
 
 func record_client_send(client_tick):
-    client_tick_sent_times[client_tick] = time
+    client_tick_sent_times[int(client_tick)] = time
 
 func update_server_tick():
     prediction = last_received_server_tick
     prediction += (time - last_received_server_time) / tick_rate
     prediction += delay / tick_rate
     future_tick = prediction
-    future_tick += delay / tick_rate
+    future_tick += rtt / tick_rate
 
 func update_smooth_tick():
     # warning-ignore:integer_division
@@ -53,12 +55,14 @@ func update_smooth_tick():
         smooth_tick = round(future_tick) - 1
     
     if smooth_tick_ahead_count >= buffer:
-        smooth_tick -= 1
         smooth_tick_ahead_count = 0
+    else:
+        smooth_tick += 1
+        emit_signal("tick")
     
-    smooth_tick += 1
     if smooth_tick > future_tick:
         smooth_tick_ahead_count += 1
     if smooth_tick < future_tick:
         smooth_tick += 1
         smooth_tick_ahead_count = 0
+        emit_signal("tick")

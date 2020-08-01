@@ -27,6 +27,7 @@ func _ready():
     var _1 = connect("on_open", self, "start_game")
     var _2 = connect("on_receive", self, "update_state")
     var _3 = connect("on_close", self, "stop_game")
+    var _4 = server_tick.connect("tick", self, "send_tick")
 
 func _physics_process(delta):
     if not start:
@@ -47,21 +48,23 @@ func _process(delta):
     $HBoxContainer/CosineGodotImage2.t = interpolated_t
     $HBoxContainer/CosineGodotImage3.t = predicted_t
     $HBoxContainer/CosineGodotImage4.t = t
-    
-    var update_rate = int(update_rate_lineedit.text)
-    if update_rate == 0: return
-    
-    update_timer += delta
-    if update_timer < 1.0 / update_rate: return
-    update_timer -= 1.0 / update_rate
-    var message = "%s,|" % [tick]
+
+func send_tick():
+    var message = create_repeat_history_input_message()
     $LatencySimulator.send(client, message)
-    $ServerTick.record_client_send(tick)
+    $ServerTick.record_client_send(server_tick.smooth_tick)
 
 func _input(event):
     if event is InputEventKey:
         if event.scancode == KEY_C:
             start_client()
+
+func create_repeat_history_input_message():
+    var number_of_repeats = 20
+    var message = ""
+    for i in range(number_of_repeats - 1, -1, -1):
+        message += "%s,|" % [server_tick.smooth_tick - i]
+    return message
 
 func start_client():
     if start: return

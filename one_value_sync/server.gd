@@ -5,13 +5,16 @@ var speed = 0.01
 var tick = 10000
 var t = 0
 var last_received = {}
+var ticks_received = []
 var tick_rate = 1.0 / Engine.iterations_per_second
 var time = 0
+var misses = 0
 
 onready var time_label = $Time/Value
 onready var tick_label = $Tick/Value
 onready var t_label = $T/Value
 onready var update_rate_lineedit = $SendRate/Value
+onready var misses_value = $Misses/Value
 
 func _enter_tree():
     console_write_ln("Starting Server...")
@@ -30,6 +33,7 @@ func _process(delta):
     time_label.text = "%5.4f" % time
     tick_label.text = "%d" % tick
     t_label.text = "%5.4f" % t
+    misses_value.text = "%d" % misses
     $CosineGodotImage.t = t
     
     
@@ -44,6 +48,8 @@ func _process(delta):
         var offset = time - last_received_time
         var message = "%s,%s,%s,%s|" % [tick, last_received[client][0], offset, t_label.text]
         $LatencySimulator.send(client, message)
+        if not ticks_received.has(tick):
+            misses += 1
 
 func console_write_ln(value):
     print(value)
@@ -53,7 +59,9 @@ func update_last_received(client, message):
     for msg in messages:
         $Message/Value.text = msg
         var items = msg.split(",")
-        last_received[client] = [int(items[0]), time]
+        var client_tick = int(items[0])
+        last_received[client] = [client_tick, time]
+        ticks_received.append(client_tick)
 
 func delete_client(client):
     last_received.erase(client)

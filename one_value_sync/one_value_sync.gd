@@ -12,3 +12,11 @@ func _input(event):
                 yield(get_tree(), "physics_frame")
                 yield(get_tree(), "physics_frame")
                 get_tree().paused = true
+
+onready var server_tick_value = $HBoxContainer/Server/Tick/Value
+onready var client_smooth_tick_value = $HBoxContainer/Client/SmoothTick/Value
+onready var future_time_value = $HBoxContainer/Client/FutureTime/Value
+func _process(_delta):
+    var server_tick = float(server_tick_value.text)
+    var client_tick = float(client_smooth_tick_value.text)
+    future_time_value.text = "%5.4f" % [(client_tick - server_tick) / Engine.iterations_per_second]
