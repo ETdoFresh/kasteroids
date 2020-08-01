@@ -18,8 +18,10 @@ onready var tick_label = $Tick/Value
 onready var t_label = $T/Value
 onready var rtt_value = $RTT/Value
 onready var predicted_tick_value = $PredictedTick/Value
+onready var future_tick_value = $FutureTick/Value
 onready var update_rate_lineedit = $SendRate/Value
 onready var server_tick = $ServerTick
+onready var smooth_tick_value = $SmoothTick/Value
 
 func _ready():
     var _1 = connect("on_open", self, "start_game")
@@ -39,6 +41,8 @@ func _process(delta):
     t_label.text = "%5.4f" % t
     rtt_value.text = "%5.4f" % server_tick.rtt
     predicted_tick_value.text = "%5.4f" % server_tick.prediction
+    future_tick_value.text = "%5.4f" % server_tick.future_tick
+    smooth_tick_value.text = "%d" % server_tick.smooth_tick
     $HBoxContainer/CosineGodotImage.t = last_received_t
     $HBoxContainer/CosineGodotImage2.t = interpolated_t
     $HBoxContainer/CosineGodotImage3.t = predicted_t
@@ -80,6 +84,7 @@ func update_state(message):
     for msg in messages:
         $Message/Value.text = msg
         var items = msg.split(",")
+        # warning-ignore:shadowed_variable
         var server_tick = int(items[0])
         var client_tick = int(items[1])
         var offset_time = float(items[2])

@@ -4,15 +4,20 @@ var rtt_window = SlidingWindow.new(5)
 var rtt = -1
 var delay = -1
 var prediction = -1
+var future_tick = -1
 var last_received_server_tick = -1
 var last_received_server_time = -1
 var client_tick_sent_times = {}
 var time = 0
 var tick_rate = 1.0 / Engine.iterations_per_second
+var smooth_tick = -1
+var buffer = 10
+var smooth_tick_ahead_count = 0
 
 func _process(delta):
     time += delta
     update_server_tick()
+    update_smooth_tick()
 
 func calculate_rtt(client_tick, offset_time):
     if client_tick == 0:
@@ -39,3 +44,21 @@ func update_server_tick():
     prediction = last_received_server_tick
     prediction += (time - last_received_server_time) / tick_rate
     prediction += delay / tick_rate
+    future_tick = prediction
+    future_tick += delay / tick_rate
+
+func update_smooth_tick():
+    # warning-ignore:integer_division
+    if abs(smooth_tick - future_tick) >= Engine.iterations_per_second / 2:
+        smooth_tick = round(future_tick) - 1
+    
+    if smooth_tick_ahead_count >= buffer:
+        smooth_tick -= 1
+        smooth_tick_ahead_count = 0
+    
+    smooth_tick += 1
+    if smooth_tick > future_tick:
+        smooth_tick_ahead_count += 1
+    if smooth_tick < future_tick:
+        smooth_tick += 1
+        smooth_tick_ahead_count = 0

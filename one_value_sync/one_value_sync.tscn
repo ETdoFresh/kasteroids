@@ -346,10 +346,52 @@ margin_bottom = 28.0
 custom_fonts/font = ExtResource( 1 )
 text = "0"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/Client"]
+[node name="FutureTick" type="HBoxContainer" parent="HBoxContainer/Client"]
 margin_top = 266.0
 margin_right = 638.0
-margin_bottom = 280.0
+margin_bottom = 294.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="HBoxContainer/Client/FutureTick"]
+margin_right = 127.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 1 )
+text = "Future Tick:"
+
+[node name="Value" type="Label" parent="HBoxContainer/Client/FutureTick"]
+margin_left = 131.0
+margin_right = 144.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 1 )
+text = "0"
+
+[node name="SmoothTick" type="HBoxContainer" parent="HBoxContainer/Client"]
+margin_top = 298.0
+margin_right = 638.0
+margin_bottom = 326.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="HBoxContainer/Client/SmoothTick"]
+margin_right = 140.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 1 )
+text = "Smooth Tick:"
+
+[node name="Value" type="Label" parent="HBoxContainer/Client/SmoothTick"]
+margin_left = 144.0
+margin_right = 157.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 1 )
+text = "0"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/Client"]
+margin_top = 330.0
+margin_right = 638.0
+margin_bottom = 344.0
 
 [node name="Label" type="Label" parent="HBoxContainer/Client/HBoxContainer2"]
 margin_right = 156.0
@@ -387,9 +429,9 @@ align = 1
 valign = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/Client"]
-margin_top = 284.0
+margin_top = 348.0
 margin_right = 638.0
-margin_bottom = 584.0
+margin_bottom = 648.0
 
 [node name="CosineGodotImage" parent="HBoxContainer/Client/HBoxContainer" instance=ExtResource( 6 )]
 anchor_right = 0.0
