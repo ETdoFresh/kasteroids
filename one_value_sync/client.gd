@@ -22,6 +22,8 @@ onready var future_tick_value = $FutureTick/Value
 onready var update_rate_lineedit = $SendRate/Value
 onready var server_tick = $ServerTick
 onready var smooth_tick_value = $SmoothTick/Value
+onready var predicted_t_value = $PredictedT/Value
+onready var predict_misses_value = $PredictMisses/Value
 
 func _ready():
     var _1 = connect("on_open", self, "start_game")
@@ -44,7 +46,10 @@ func _process(delta):
     predicted_tick_value.text = "%5.4f" % server_tick.prediction
     future_tick_value.text = "%5.4f" % server_tick.future_tick
     smooth_tick_value.text = "%d" % server_tick.smooth_tick
+    predicted_t_value.text = "%5.4f" % predicted_t
+    predict_misses_value.text = "%d" % $Prediction.misses
     interpolate()
+    predict()
     $HBoxContainer/CosineGodotImage.t = last_received_t
     $HBoxContainer/CosineGodotImage2.t = interpolated_t
     $HBoxContainer/CosineGodotImage3.t = predicted_t
@@ -70,6 +75,7 @@ func create_repeat_history_input_message():
 func start_client():
     if start: return
     start = true
+    var _1 = server_tick.connect("tick", $Prediction, "simulate")
     open()
 
 func start_game():
@@ -95,6 +101,7 @@ func update_state(message):
         var received_t = float(items[3])
         $ServerTick.record_client_recieve(server_tick, client_tick, offset_time)
         $Interpolation.add(server_tick, received_t)
+        $Prediction.recieve_and_correct_past(server_tick, received_t)
         last_received_server_tick = server_tick
         last_received_client_tick = client_tick
         last_received_t = received_t
@@ -107,3 +114,6 @@ func interpolate():
     var new_interpolated_t = $Interpolation.interpolate(smooth_prediction, rate)
     if new_interpolated_t != null:
         interpolated_t = new_interpolated_t
+
+func predict():
+    predicted_t = $Prediction.t

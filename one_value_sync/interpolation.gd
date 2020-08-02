@@ -1,6 +1,5 @@
 extends Node
 
-var interpolated_tick = 0
 var history = []
 
 func add(tick, value):
