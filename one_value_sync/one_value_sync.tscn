@@ -516,6 +516,7 @@ multiplier = 500
 
 [node name="LatencySimulator" type="Node" parent="HBoxContainer/Client"]
 script = ExtResource( 4 )
+simulate_latency = false
 
 [node name="Interpolation" type="Node" parent="HBoxContainer/Client"]
 script = ExtResource( 7 )

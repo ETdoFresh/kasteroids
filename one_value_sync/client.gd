@@ -44,6 +44,7 @@ func _process(delta):
     predicted_tick_value.text = "%5.4f" % server_tick.prediction
     future_tick_value.text = "%5.4f" % server_tick.future_tick
     smooth_tick_value.text = "%d" % server_tick.smooth_tick
+    interpolate()
     $HBoxContainer/CosineGodotImage.t = last_received_t
     $HBoxContainer/CosineGodotImage2.t = interpolated_t
     $HBoxContainer/CosineGodotImage3.t = predicted_t
@@ -60,7 +61,7 @@ func _input(event):
             start_client()
 
 func create_repeat_history_input_message():
-    var number_of_repeats = 20
+    var number_of_repeats = 6
     var message = ""
     for i in range(number_of_repeats - 1, -1, -1):
         message += "%s,|" % [server_tick.smooth_tick - i]
@@ -91,7 +92,18 @@ func update_state(message):
         var server_tick = int(items[0])
         var client_tick = int(items[1])
         var offset_time = float(items[2])
+        var received_t = float(items[3])
         $ServerTick.record_client_recieve(server_tick, client_tick, offset_time)
+        $Interpolation.add(server_tick, received_t)
         last_received_server_tick = server_tick
         last_received_client_tick = client_tick
-        last_received_t = float(items[3])
+        last_received_t = received_t
+
+func interpolate():
+    var smooth_prediction = server_tick.smooth_tick - server_tick.rtt / tick_rate
+    var rate = server_tick.rtt * 1.5
+    rate = max(0.1, rate)
+    # TODO: Think of some way to keep the rate more consistent than RTT
+    var new_interpolated_t = $Interpolation.interpolate(smooth_prediction, rate)
+    if new_interpolated_t != null:
+        interpolated_t = new_interpolated_t
