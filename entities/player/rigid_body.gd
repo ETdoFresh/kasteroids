@@ -23,6 +23,8 @@ func _integrate_forces(state):
 func queue_position(position):
     self.position = position
     queued_position = position
+    self.sleeping = false
+    self.linear_velocity = Vector2()
 
 func queue_rotation(rotation):
     self.rotation = rotation

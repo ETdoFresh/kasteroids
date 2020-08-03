@@ -9,9 +9,11 @@ onready var cube_space = Physics2DServer.body_get_space(cube_rid)
 onready var world_space = get_world_2d().space
 onready var spaces_equal = world_space == cube_space
 onready var cube_space_equal = cube_space == cube_rid
+onready var future = $FutureWorld
+onready var world = $World
 
 func _ready():
-    cube.custom_integrator = true
+    future.world_history = world.history
 
 func _input(event):
     if event is InputEventKey:

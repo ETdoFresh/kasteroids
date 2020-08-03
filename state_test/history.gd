@@ -5,6 +5,8 @@ var node_positions = {}
 var node_rotations = {}
 var node_linear_velocities = {}
 var node_angular_velocities = {}
+var latest_tick setget , get_latest_tick
+var latest setget , get_latest
 
 onready var world = get_parent()
 
@@ -62,3 +64,15 @@ func erase_future_ticks(tick):
 
 func has_tick(tick):
     return history.has(tick)
+
+func get_latest_tick():
+    if history.keys().size() == 0:
+        return null
+    else:
+        return history.keys()[history.keys().size() - 1]
+
+func get_latest():
+    if get_latest_tick() == null:
+        return null
+    else:
+        return history[get_latest_tick()]
