@@ -292,6 +292,7 @@ interpolation_toggle={
 [physics]
 
 2d/time_before_sleep=1.0
+2d/default_gravity=980
 
 [rendering]
 
