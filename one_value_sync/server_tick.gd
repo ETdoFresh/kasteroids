@@ -30,6 +30,10 @@ func calculate_rtt(client_tick, offset_time):
     var client_tick_sent_time = client_tick_sent_times[client_tick]
     rtt = rtt_window.add(time - client_tick_sent_time  - offset_time)
     delay = rtt / 2
+    
+    for i in range(client_tick_sent_times.size() - 1, -1, -1):
+        if client_tick_sent_times.keys()[i] < client_tick:
+            client_tick_sent_times.erase(client_tick_sent_times.keys()[i])
 
 func record_client_recieve(server_tick, client_tick, offset_time):
     if server_tick <= last_received_server_tick:

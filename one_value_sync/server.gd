@@ -50,6 +50,9 @@ func _process(delta):
         $LatencySimulator.send(client, message)
         if not ticks_received.has(tick):
             misses += 1
+        for i in range(ticks_received.size() - 1, -1, -1):
+            if ticks_received[i] <= tick:
+                ticks_received.remove(i)
 
 func console_write_ln(value):
     print(value)

@@ -21,6 +21,10 @@ func recieve_and_correct_past(tick, recieved_t):
             history[current_tick] = simulate(history[previous_tick])
             if current_tick == future_tick:
                 t = history[current_tick]
+    
+    for i in range(history.size() - 1, -1, -1):
+        if history.keys()[i] < tick:
+            history.erase(history.keys()[i])
 
 func simulate(state = null):
     if state == null:

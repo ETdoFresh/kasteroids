@@ -13,6 +13,12 @@ func interpolate(current_tick, interpolation_rate):
     var target_tick = current_tick - interpolated_tick
     var before = get_before(target_tick)
     var after = get_after(target_tick)
+    
+    if before != null:
+        for i in range(history.size() - 1, -1, -1):
+            if history[i].tick < before.tick:
+                history.remove(i)
+    
     if before == null and after == null: return null
     if before != null and after == null: return before.value
     if before == null and after != null: return after.value
