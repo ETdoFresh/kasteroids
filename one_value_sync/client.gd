@@ -12,6 +12,8 @@ var start = false
 var update_timer = 0
 var tick_rate = 1.0 / Engine.iterations_per_second
 var time = 0
+var server_send_rate = SlidingWindow.new(5, SlidingWindow.Algorithm.MEDIAN)
+var last_received_time = 0
 
 onready var time_label = $Time/Value
 onready var tick_label = $Tick/Value
@@ -24,12 +26,14 @@ onready var server_tick = $ServerTick
 onready var smooth_tick_value = $SmoothTick/Value
 onready var predicted_t_value = $PredictedT/Value
 onready var predict_misses_value = $PredictMisses/Value
+onready var server_send_rate_value = $ServerSendRate/Value
 
 func _ready():
     var _1 = connect("on_open", self, "start_game")
     var _2 = connect("on_receive", self, "update_state")
     var _3 = connect("on_close", self, "stop_game")
     var _4 = server_tick.connect("tick", self, "send_tick")
+    server_send_rate.add(0.1)
 
 func _physics_process(delta):
     if not start:
@@ -48,6 +52,7 @@ func _process(delta):
     smooth_tick_value.text = "%d" % server_tick.smooth_tick
     predicted_t_value.text = "%5.4f" % predicted_t
     predict_misses_value.text = "%d" % $Prediction.misses
+    server_send_rate_value.text = "%5.4f" % server_send_rate.get_value()
     interpolate()
     predict()
     $HBoxContainer/CosineGodotImage.t = last_received_t
@@ -109,11 +114,15 @@ func update_state(message):
         last_received_server_tick = server_tick
         last_received_client_tick = client_tick
         last_received_t = received_t
+    
+    if last_received_time > 0:
+        server_send_rate.add(time - last_received_time)
+    last_received_time = time
 
 func interpolate():
     var smooth_prediction = server_tick.smooth_tick - server_tick.rtt / tick_rate
-    var rate = server_tick.rtt * 1.5
-    rate = max(0.1, rate)
+    var rate = server_send_rate.get_value()
+    rate = max(rate, server_tick.rtt)
     # TODO: Think of some way to keep the rate more consistent than RTT
     var new_interpolated_t = $Interpolation.interpolate(smooth_prediction, rate)
     if new_interpolated_t != null:

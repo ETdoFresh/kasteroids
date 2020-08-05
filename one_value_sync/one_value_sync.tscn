@@ -29,7 +29,7 @@ __meta__ = {
 
 [node name="Server" type="VBoxContainer" parent="HBoxContainer"]
 margin_right = 638.0
-margin_bottom = 744.0
+margin_bottom = 776.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 2 )
@@ -206,7 +206,7 @@ script = ExtResource( 4 )
 [node name="Client" type="VBoxContainer" parent="HBoxContainer"]
 margin_left = 642.0
 margin_right = 1280.0
-margin_bottom = 744.0
+margin_bottom = 776.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 3 )
@@ -305,10 +305,31 @@ margin_bottom = 38.0
 custom_fonts/font = ExtResource( 1 )
 text = "10"
 
-[node name="Message" type="HBoxContainer" parent="HBoxContainer/Client"]
+[node name="ServerSendRate" type="HBoxContainer" parent="HBoxContainer/Client"]
 margin_top = 170.0
 margin_right = 638.0
 margin_bottom = 198.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="HBoxContainer/Client/ServerSendRate"]
+margin_right = 196.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 1 )
+text = "Server Send Rate:"
+
+[node name="Value" type="Label" parent="HBoxContainer/Client/ServerSendRate"]
+margin_left = 200.0
+margin_right = 226.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 1 )
+text = "10"
+
+[node name="Message" type="HBoxContainer" parent="HBoxContainer/Client"]
+margin_top = 202.0
+margin_right = 638.0
+margin_bottom = 230.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -327,9 +348,9 @@ custom_fonts/font = ExtResource( 1 )
 text = "--"
 
 [node name="RTT" type="HBoxContainer" parent="HBoxContainer/Client"]
-margin_top = 202.0
+margin_top = 234.0
 margin_right = 638.0
-margin_bottom = 230.0
+margin_bottom = 262.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -348,9 +369,9 @@ custom_fonts/font = ExtResource( 1 )
 text = "0"
 
 [node name="PredictedTick" type="HBoxContainer" parent="HBoxContainer/Client"]
-margin_top = 234.0
+margin_top = 266.0
 margin_right = 638.0
-margin_bottom = 262.0
+margin_bottom = 294.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -369,9 +390,9 @@ custom_fonts/font = ExtResource( 1 )
 text = "0"
 
 [node name="FutureTick" type="HBoxContainer" parent="HBoxContainer/Client"]
-margin_top = 266.0
+margin_top = 298.0
 margin_right = 638.0
-margin_bottom = 294.0
+margin_bottom = 326.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -390,9 +411,9 @@ custom_fonts/font = ExtResource( 1 )
 text = "0"
 
 [node name="SmoothTick" type="HBoxContainer" parent="HBoxContainer/Client"]
-margin_top = 298.0
+margin_top = 330.0
 margin_right = 638.0
-margin_bottom = 326.0
+margin_bottom = 358.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -411,9 +432,9 @@ custom_fonts/font = ExtResource( 1 )
 text = "0"
 
 [node name="FutureTime" type="HBoxContainer" parent="HBoxContainer/Client"]
-margin_top = 330.0
+margin_top = 362.0
 margin_right = 638.0
-margin_bottom = 358.0
+margin_bottom = 390.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -432,9 +453,9 @@ custom_fonts/font = ExtResource( 1 )
 text = "0"
 
 [node name="PredictedT" type="HBoxContainer" parent="HBoxContainer/Client"]
-margin_top = 362.0
+margin_top = 394.0
 margin_right = 638.0
-margin_bottom = 390.0
+margin_bottom = 422.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -453,9 +474,9 @@ custom_fonts/font = ExtResource( 1 )
 text = "0"
 
 [node name="PredictMisses" type="HBoxContainer" parent="HBoxContainer/Client"]
-margin_top = 394.0
+margin_top = 426.0
 margin_right = 638.0
-margin_bottom = 422.0
+margin_bottom = 454.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -474,9 +495,9 @@ custom_fonts/font = ExtResource( 1 )
 text = "0"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/Client"]
-margin_top = 426.0
+margin_top = 458.0
 margin_right = 638.0
-margin_bottom = 440.0
+margin_bottom = 472.0
 
 [node name="Label" type="Label" parent="HBoxContainer/Client/HBoxContainer2"]
 margin_right = 156.0
@@ -514,9 +535,9 @@ align = 1
 valign = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/Client"]
-margin_top = 444.0
+margin_top = 476.0
 margin_right = 638.0
-margin_bottom = 744.0
+margin_bottom = 776.0
 
 [node name="CosineGodotImage" parent="HBoxContainer/Client/HBoxContainer" instance=ExtResource( 6 )]
 anchor_right = 0.0
