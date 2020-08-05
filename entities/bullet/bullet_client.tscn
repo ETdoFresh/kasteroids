@@ -5,7 +5,6 @@
 [ext_resource path="res://entities/shared/interpolation.gd" type="Script" id=3]
 
 [node name="BulletClient" type="Node2D"]
-modulate = Color( 1, 1, 1, 0.501961 )
 script = ExtResource( 2 )
 
 [node name="Latest" type="Node2D" parent="."]

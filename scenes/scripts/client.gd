@@ -4,6 +4,9 @@ export var input_rate = 10
 
 var input_timer = 0.0
 
+#onready var interpolated_world = $InterpolatedWorld
+#onready var predicted_world = $PredictedWorld
+
 func _enter_tree():
     #warning-ignore-all:return_value_discarded
     $Inputs.connect("node_added", self, "input_connected")
@@ -24,8 +27,12 @@ func _enter_tree():
 func _ready():
     if has_node("TCPClient"):
         $TCPClient.connect("on_receive", $World, "deserialize")
+        #$TCPClient.connect("on_receive", interpolated_world, "deserialize")
+        #$TCPClient.connect("on_receive", predicted_world, "deserialize")
     if has_node("WebSocketClient"):
         $WebSocketClient.connect("on_receive", $World, "deserialize")
+        #$WebSocketClient.connect("on_receive", interpolated_world, "deserialize")
+        #$WebSocketClient.connect("on_receive", predicted_world, "deserialize")
 
 func _process(delta):
     if has_node("TCPClient") || has_node("WebSocketClient"):

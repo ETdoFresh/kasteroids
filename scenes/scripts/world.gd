@@ -22,12 +22,6 @@ func create_player(input):
     var ship = $Ships.create(ShipScene, {"input": input})
     ship.set_position(Vector2(630, 360))
     $Players.create(PlayerScene, {"ship": ship, "input": input})
-    
-#    $Overlay.add_stat("Player_State", ship, "state_name", true)
-#    $Overlay.add_stat("Player Position", ship, "position", false)
-#    $Overlay.add_stat("Player Rotation", ship, "rotation", false)
-#    $Overlay.add_stat("Player Scale", ship, "scale", false)
-    
     $PlayerMonitor.add_player_input(input)
 
 func delete_player(input):
