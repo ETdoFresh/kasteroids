@@ -53,6 +53,10 @@ func _process(delta):
     $HBoxContainer/CosineGodotImage.t = last_received_t
     $HBoxContainer/CosineGodotImage2.t = interpolated_t
     $HBoxContainer/CosineGodotImage3.t = predicted_t
+    if abs(t - predicted_t) < 1: # Some threshold
+        t = lerp(t, predicted_t, 0.5)
+    else: # Else Snap to prediction
+        t = predicted_t
     $HBoxContainer/CosineGodotImage4.t = t
 
 func send_tick():
