@@ -15,11 +15,15 @@ var tick_rate = 1.0 / Engine.iterations_per_second
 var smooth_tick = 0
 var buffer = 10
 var smooth_tick_ahead_count = 0
+var receive_rate_window = SlidingWindow.new(10)
+var receive_rate = 0
+var interpolated_tick = 0
 
 func _process(delta):
     time += delta
     update_server_tick()
     update_smooth_tick()
+    update_interpolated_tick()
 
 func calculate_rtt(client_tick, offset_time):
     if client_tick == 0:
@@ -38,6 +42,8 @@ func calculate_rtt(client_tick, offset_time):
 func record_client_recieve(server_tick, client_tick, offset_time):
     if server_tick <= last_received_server_tick:
         return
+    
+    receive_rate = receive_rate_window.add(time - last_received_client_time)
     
     last_received_server_tick = server_tick
     last_received_client_time = time
@@ -70,3 +76,8 @@ func update_smooth_tick():
         smooth_tick += 1
         smooth_tick_ahead_count = 0
         emit_signal("tick")
+
+func update_interpolated_tick():
+    interpolated_tick = smooth_tick
+    interpolated_tick -= rtt / tick_rate
+    interpolated_tick -= max(rtt, receive_rate) / tick_rate

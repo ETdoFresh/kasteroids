@@ -1,7 +1,7 @@
 extends Node
 
 onready var latest_received_world = $LatestReceivedWorld
-#onready var interpolated_world = $InterpolatedWorld
+onready var interpolated_world = $InterpolatedWorld
 #onready var predicted_world = $PredictedWorld
 
 func _enter_tree():
@@ -24,18 +24,20 @@ func _ready():
     
     if has_node("TCPClient"):
         var _1 = $TCPClient.connect("on_receive", latest_received_world, "deserialize")
-        #$TCPClient.connect("on_receive", interpolated_world, "deserialize")
-        #$TCPClient.connect("on_receive", predicted_world, "deserialize")
+        var _2 = $TCPClient.connect("on_receive", interpolated_world, "deserialize")
+        #var _3 = $TCPClient.connect("on_receive", predicted_world, "deserialize")
     if has_node("WebSocketClient"):
         var _1 = $WebSocketClient.connect("on_receive", latest_received_world, "deserialize")
-        #$WebSocketClient.connect("on_receive", interpolated_world, "deserialize")
-        #$WebSocketClient.connect("on_receive", predicted_world, "deserialize")
+        var _2 = $WebSocketClient.connect("on_receive", interpolated_world, "deserialize")
+        #var _3 = $WebSocketClient.connect("on_receive", predicted_world, "deserialize")
     
     $DebugOverlay.add_stat("Tick", $LatestReceivedWorld/Tick, "tick", false)
     $DebugOverlay.add_stat("RTT", $LatestReceivedWorld/ServerTickSync, "rtt", false)
     $DebugOverlay.add_stat("Prediction", $LatestReceivedWorld/ServerTickSync, "prediction", false)
     $DebugOverlay.add_stat("Future Tick", $LatestReceivedWorld/ServerTickSync, "future_tick", false)
     $DebugOverlay.add_stat("SmoothTick", $LatestReceivedWorld/ServerTickSync, "smooth_tick", false)
+    $DebugOverlay.add_stat("Receive Rate", $LatestReceivedWorld/ServerTickSync, "receive_rate", false)
+    $DebugOverlay.add_stat("Interpolated Tick", $LatestReceivedWorld/ServerTickSync, "interpolated_tick", false)
 
 func _process(_delta):
     if has_node("TCPClient") || has_node("WebSocketClient"):
@@ -46,7 +48,9 @@ func _process(_delta):
             $LatencySimulator.send($TCPClient.client, $Inputs/Input.serialize())
         if has_node("WebSocketClient"):
             $WebSocketClient.send($Inputs/Input.serialize())
+        
         $LatestReceivedWorld/ServerTickSync.record_client_send($Inputs/Input.tick)
+        $InterpolatedWorld/ServerTickSync.record_client_send($Inputs/Input.tick)
 
 func show_connected_to_server():
     console_write_ln("Connected to Server!")

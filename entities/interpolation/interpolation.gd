@@ -1,37 +1,8 @@
-extends Node2D
+extends Node
 
-export var interpolation_rate = 0.2
 export var snap_distance = 150
 
-var tick = 0
-var target
 var history = []
-
-func _ready():
-    if has_node("../Latest"):
-        target = get_node("../Latest")
-        target.visible = false
-
-func _process(_delta):
-    if not target: return
-    faux_terpolate()
-    #interpolate()
-    
-    visible = Settings.interpolation_enable
-    target.visible = not Settings.interpolation_enable
-
-func faux_terpolate():
-    if position.distance_to(target.position) >= snap_distance:
-        position = target.position
-    else:
-        position = lerp(position, target.position, interpolation_rate)
-    
-    if abs(rotation - target.rotation) >= PI:
-        rotation = target.rotation
-    else:
-        rotation = lerp(rotation, target.rotation, interpolation_rate)
-        
-    scale = lerp(scale, target.scale, interpolation_rate)
 
 func add_history(state):
     for i in range(history.size() - 1, -1, -1):
@@ -39,32 +10,53 @@ func add_history(state):
             history.remove(i)
     history.append(state)
 
-func interpolate():
-    var before = get_before()
-    var after = get_after()
-
+func interpolate(tick):
+    var before = get_before(tick)
+    var after = get_after(tick)
+    
+    if before != null:
+        for i in range(history.size() - 1, -1, -1):
+            if history[i].tick < before.tick:
+                history.remove(i)
+    
     if before == null && after == null: return
     if before == null: before = after
     if after == null: after = before
+    
+    if before == after:
+        for child in before.children:
+            if not child.node || child.node.is_inside_tree():
+                child.node.position = child.position
+                child.node.rotation = child.rotation
+                child.node.scale = child.scale
+        return
     
     var t = 0
     var numerator = tick - before.tick
     var denominator = after.tick - before.tick
     if denominator != 0: t = numerator / denominator
     
-    var a = before.position
-    var b = after.position
-    $Interpolated.position = a.linear_interpolate(b, t)
-    
-    a = before.rotation
-    b = after.rotation
-    $Interpolated.rotation = lerp(a, b, t)
-    
-    a = before.scale
-    b = after.scale
-    $Interpolated.scale = a.linear_interpolate(b, t)
+    var a
+    var b
+    for before_child in before.children:
+        for after_child in after.children:
+            if before_child.node == after_child.node:
+                if not before_child.node || not before_child.node.is_inside_tree():
+                    continue
+                    
+                a = before_child.position
+                b = after_child.position
+                before_child.node.position = a.linear_interpolate(b, t)
+                
+                a = before_child.rotation
+                b = after_child.rotation
+                before_child.node.rotation = lerp(a, b, t)
+                
+                a = before_child.scale
+                b = after_child.scale
+                before_child.node.scale = a.linear_interpolate(b, t)
 
-func get_before():
+func get_before(tick):
     var before = null
     for item in history:
         if item.tick < tick:
@@ -72,7 +64,7 @@ func get_before():
                 before = item
     return before
 
-func get_after():
+func get_after(tick):
     var after = null
     for item in history:
         if item.tick >= tick:

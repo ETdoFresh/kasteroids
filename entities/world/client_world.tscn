@@ -1,9 +1,10 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://entities/tick/tick.gd" type="Script" id=1]
-[ext_resource path="res://scenes/world/client_world.gd" type="Script" id=2]
+[ext_resource path="res://entities/world/client_world.gd" type="Script" id=2]
 [ext_resource path="res://entities/server_tick_sync/server_tick_sync.gd" type="Script" id=3]
-[ext_resource path="res://scenes/world/base_world.tscn" type="PackedScene" id=5]
+[ext_resource path="res://entities/world/base_world.tscn" type="PackedScene" id=5]
+
 
 [sub_resource type="Gradient" id=1]
 colors = PoolColorArray( 0, 0.00392157, 0.384314, 1, 0.23587, 0.248374, 0.460938, 1 )
