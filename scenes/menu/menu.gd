@@ -23,10 +23,10 @@ func _ready():
     else:
         $VBoxContainer/Button7.visible = false
 
-func go_to_local(): get_tree().change_scene("res://scenes/local/local.tscn")
-func go_to_server(): get_tree().change_scene("res://scenes/tcp/server.tscn")
-func go_to_client(): get_tree().change_scene("res://scenes/tcp/client.tscn")
-func go_to_network_test(): get_tree().change_scene("res://scenes/tcp/both.tscn")
-func go_to_web_socket_server(): get_tree().change_scene("res://scenes/web_socket/server.tscn")
-func go_to_web_socket_client(): get_tree().change_scene("res://scenes/web_socket/client.tscn")
-func go_to_web_socket_both(): get_tree().change_scene("res://scenes/web_socket/both.tscn")
+func go_to_local(): get_tree().change_scene_to(Scene.LOCAL_GAME)
+func go_to_server(): get_tree().change_scene_to(Scene.TCP_SERVER_GAME)
+func go_to_client(): get_tree().change_scene_to(Scene.TCP_CLIENT_GAME)
+func go_to_network_test(): get_tree().change_scene_to(Scene.TCP_BOTH_GAME)
+func go_to_web_socket_server(): get_tree().change_scene_to(Scene.WEB_SOCKET_SERVER_GAME)
+func go_to_web_socket_client(): get_tree().change_scene_to(Scene.WEB_SOCKET_CLIENT_GAME)
+func go_to_web_socket_both(): get_tree().change_scene_to(Scene.WEB_SOCKET_BOTH_GAME)

@@ -4,7 +4,7 @@ export var engine_thrust = 500
 export var spin_thrust = 500
 export var max_speed = 500
 
-var input = Util.NULL_INPUT
+var input = Data.NULL_INPUT
 var thrust = Vector2()
 var rotation_dir = 0
 

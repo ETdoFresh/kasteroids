@@ -4,7 +4,7 @@ extends BaseNode2D
 #warning-ignore:unused_signal
 signal create(scene, position, rotation, rigidbody, velocity_magnitude)
 
-var input = Util.NULL_INPUT
+var input = Data.NULL_INPUT
 
 func _ready():
     update_input(input)

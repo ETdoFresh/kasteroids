@@ -1,4 +1,3 @@
-class_name Data
 extends Node
 
 var position = Vector2.ZERO

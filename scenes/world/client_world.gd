@@ -1,13 +1,13 @@
 extends Node2D
 
-const resources = \
+var resources = \
 {
-    ShipClient: preload("res://entities/ship/ship_client.tscn"),
-    AsteroidClient: preload("res://entities/asteroid/asteroid_client.tscn"),
-    BulletClient: preload("res://entities/bullet/bullet_client.tscn")
+    ShipClient: Scene.SHIP_CLIENT,
+    AsteroidClient: Scene.ASTEROID_CLIENT,
+    BulletClient: Scene.BULLET_CLIENT
 }
 
-var input = Util.NULL_INPUT
+var input = Data.NULL_INPUT
 
 onready var containers = { ShipClient: $Ships, AsteroidClient: $Asteroids, BulletClient: $Bullets }
 

@@ -28,4 +28,4 @@ func add_player_input(input):
     player_inputs.append(input)
 
 func remove_player_input(input):
-    Util.remove_item(player_inputs, input)
+    player_inputs.erase(input)

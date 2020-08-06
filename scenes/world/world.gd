@@ -1,8 +1,5 @@
 extends Node2D
 
-const ShipScene = preload("res://entities/ship/ship.tscn")
-const PlayerScene = preload("res://entities/player/player.tscn")
-
 func _enter_tree():
     for child in get_children():
         if child is TypedContainer:
@@ -19,9 +16,9 @@ func serialize():
     return $Serializer.serialize()
 
 func create_player(input):
-    var ship = $Ships.create(ShipScene, {"input": input})
+    var ship = $Ships.create(Scene.SHIP, {"input": input})
     ship.set_position(Vector2(630, 360))
-    $Players.create(PlayerScene, {"ship": ship, "input": input})
+    $Players.create(Scene.PLAYER, {"ship": ship, "input": input})
     $PlayerMonitor.add_player_input(input)
 
 func delete_player(input):

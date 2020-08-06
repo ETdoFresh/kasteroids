@@ -34,11 +34,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://entities/bullet/bullet_client.gd"
 }, {
-"base": "Node",
-"class": "Data",
-"language": "GDScript",
-"path": "res://entities/asteroid/data.gd"
-}, {
 "base": "Node2D",
 "class": "Gun",
 "language": "GDScript",
@@ -135,7 +130,6 @@ _global_script_class_icons={
 "BaseNode2D": "",
 "Bullet": "",
 "BulletClient": "",
-"Data": "",
 "Gun": "",
 "InGameConsole": "",
 "KeyboardPlusGUI": "",
@@ -165,9 +159,9 @@ config/windows_native_icon="res://icon.ico"
 
 [autoload]
 
-Global="*res://entities/global/global.gd"
-Util="*res://entities/util/util.gd"
-Settings="*res://entities/settings/settings.gd"
+Data="*res://entities/autoload/data.gd"
+Scene="*res://entities/autoload/scene.gd"
+Settings="*res://entities/autoload/settings.gd"
 
 [display]
 

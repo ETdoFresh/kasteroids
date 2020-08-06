@@ -1,8 +1,6 @@
 class_name Bullet
 extends RigidBody2D
 
-export (Resource) var bullet_particles_scene = preload("res://entities/bullet/bullet_particles.tscn")
-
 func _ready():
     #warning-ignore:return_value_discarded
     connect("body_entered", self, "_on_self_body_entered")
@@ -28,7 +26,7 @@ func _on_self_body_entered(_body):
     destroy()
 
 func destroy():
-    var bullet_particles = bullet_particles_scene.instance()
+    var bullet_particles = Scene.BULLET_PARTICLES.instance()
     owner.add_child(bullet_particles)
     bullet_particles.position = global_position
     bullet_particles.emitting = true

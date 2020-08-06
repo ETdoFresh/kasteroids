@@ -1,10 +1,6 @@
 class_name KeyboardShortcuts
 extends Node
 
-const KeyboardPlusGUIScene = preload("res://entities/input/keyboard_plus_gui.tscn")
-
-var menu_scene_path = "res://scenes/menu/menu.tscn"
-
 onready var inputs = get_parent().get_node("Inputs")
 
 func _ready():
@@ -16,7 +12,7 @@ func _input(event):
     if event is InputEventKey and event.pressed:
         if event.scancode == KEY_R:
             #warning-ignore:return_value_discarded
-           get_tree().change_scene(menu_scene_path)
+           get_tree().change_scene_to(Scene.MENU)
     
     if event is InputEventKey and event.pressed:
         if event.scancode == KEY_F11:
@@ -29,8 +25,8 @@ func _input(event):
     
     if event is InputEventKey and event.pressed:
         if event.scancode == KEY_INSERT:
-            get_parent().get_node("Inputs").create(KeyboardPlusGUIScene)
+            get_parent().get_node("Inputs").create(Scene.KEYBOARD_PLUS_GUI)
 
 func menu_gui_press():
     #warning-ignore:return_value_discarded
-    get_tree().change_scene(menu_scene_path)
+    get_tree().change_scene(Scene.MENU)

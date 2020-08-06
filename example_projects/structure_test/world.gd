@@ -1,11 +1,9 @@
 extends Node2D
 
-const ShipScene = preload("res://structure_test/ship.tscn")
-
 export var players = []
 
 func add_player(input):
-    var ship = ShipScene.instance()
+    var ship = Scene.STRUCTURE_TEST_SHIP.instance()
     add_child(ship)
     ship.input = input
     players.append(ship)
