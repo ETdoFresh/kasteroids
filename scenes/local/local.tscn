@@ -1,0 +1,23 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scenes/tcp/server.gd" type="Script" id=1]
+[ext_resource path="res://entities/input/keyboard_plus_gui.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/world/world.tscn" type="PackedScene" id=3]
+[ext_resource path="res://entities/typed_container/typed_container.gd" type="Script" id=4]
+[ext_resource path="res://entities/input/keyboard_shortcuts.gd" type="Script" id=5]
+
+
+
+
+[node name="Main" type="Node"]
+script = ExtResource( 1 )
+
+[node name="World" parent="." instance=ExtResource( 3 )]
+
+[node name="KeyboardShortcuts" type="Node" parent="."]
+script = ExtResource( 5 )
+
+[node name="Inputs" type="Node" parent="."]
+script = ExtResource( 4 )
+
+[node name="Input" parent="Inputs" instance=ExtResource( 2 )]

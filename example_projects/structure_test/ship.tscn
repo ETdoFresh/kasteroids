@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://entities/ship/ship.svg" type="Texture" id=1]
+[ext_resource path="res://example_projects/structure_test/ship.gd" type="Script" id=2]
+
+
+
+
+
+
+
+
+[sub_resource type="ConvexPolygonShape2D" id=1]
+points = PoolVector2Array( 5.188, -63.925, -39.159, 59.545, 39.689, 64.01 )
+
+[node name="Ship" type="Node2D"]
+position = Vector2( 626.145, 322.894 )
+script = ExtResource( 2 )
+
+[node name="RigidBody2D" type="RigidBody2D" parent="."]
+gravity_scale = 0.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
+scale = Vector2( 0.5, 0.5 )
+shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="RigidBody2D/CollisionShape2D"]
+texture = ExtResource( 1 )

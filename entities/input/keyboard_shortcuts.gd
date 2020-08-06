@@ -3,7 +3,7 @@ extends Node
 
 const KeyboardPlusGUIScene = preload("res://entities/input/keyboard_plus_gui.tscn")
 
-var menu_scene_path = "res://scenes/menu.tscn"
+var menu_scene_path = "res://scenes/menu/menu.tscn"
 
 onready var inputs = get_parent().get_node("Inputs")
 

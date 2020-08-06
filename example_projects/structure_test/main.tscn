@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://example_projects/structure_test/keyboard.tscn" type="PackedScene" id=1]
+[ext_resource path="res://example_projects/structure_test/main.gd" type="Script" id=3]
+[ext_resource path="res://example_projects/structure_test/world.gd" type="Script" id=4]
+
+
+
+
+
+
+
+[node name="Main" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="World" type="Node2D" parent="."]
+script = ExtResource( 4 )
+
+[node name="Spawn" type="Position2D" parent="World"]
+position = Vector2( 635.089, 360 )
+
+[node name="Keyboard" parent="." instance=ExtResource( 1 )]
