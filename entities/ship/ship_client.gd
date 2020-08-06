@@ -1,5 +1,5 @@
 class_name ShipClient
-extends BaseNode2D
+extends Node2D
 
 func receive_update(state):
     if get_node("Interpolation"):

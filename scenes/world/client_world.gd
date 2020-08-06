@@ -10,6 +10,7 @@ var resources = \
 var input = Data.NULL_INPUT
 
 onready var containers = { ShipClient: $Ships, AsteroidClient: $Asteroids, BulletClient: $Bullets }
+onready var tick = $Tick
 
 func create_player(_input): pass
 func delete_player(_input): pass
@@ -18,19 +19,20 @@ func deserialize(serialized):
     var items = serialized.split(",", false)
     var types = [ShipClient, AsteroidClient, BulletClient]
     var x = 0
-
+    
+    tick.tick = int(items[x]); x += 1
     for type in types:
         var count = int(items[x]); x += 1
-        var nodes = containers[type].nodes
-        while nodes.size() > count:
-            nodes[0].queue_free()
-            nodes.remove(0)
+        var container = containers[type]
+        while container.get_child_count() > count:
+            container.get_child(0).free()
 
-        while nodes.size() < count:
-            containers[type].create(resources[type])
+        while container.get_child_count() < count:
+            var child = resources[type].instance()
+            containers[type].add_child(child)
 
         for i in range(count):
-            var node = nodes[i]
+            var child = container.get_child(i)
             var position = Vector2()
             position.x = float(items[x]); x += 1
             position.y = float(items[x]); x += 1
@@ -39,9 +41,9 @@ func deserialize(serialized):
             scale.x = float(items[x]); x += 1
             scale.y = float(items[x]); x += 1
             
-            if node.has_method("receive_update"):
-                node.receive_update({"tick": 0, "position": position, "rotation": rotation, "scale": scale})
+            if child.has_method("receive_update"):
+                child.receive_update({"tick": 0, "position": position, "rotation": rotation, "scale": scale})
             else:
-                node.position = position
-                node.rotation = rotation
-                node.scale = scale
+                child.position = position
+                child.rotation = rotation
+                child.scale = scale

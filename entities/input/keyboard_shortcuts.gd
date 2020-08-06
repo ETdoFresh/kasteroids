@@ -29,4 +29,4 @@ func _input(event):
 
 func menu_gui_press():
     #warning-ignore:return_value_discarded
-    get_tree().change_scene(Scene.MENU)
+    get_tree().change_scene_to(Scene.MENU)

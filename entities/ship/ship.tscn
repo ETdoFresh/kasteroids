@@ -11,10 +11,6 @@
 [ext_resource path="res://entities/ship/normal.gd" type="Script" id=9]
 [ext_resource path="res://entities/ship/test_input.gd" type="Script" id=10]
 
-
-
-
-
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 18.624, 29.835, -18.352, 27.065, 3.1, -31.974 )
 

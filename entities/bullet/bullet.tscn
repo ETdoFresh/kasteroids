@@ -5,13 +5,12 @@
 [ext_resource path="res://entities/bullet/bullet.gd" type="Script" id=3]
 [ext_resource path="res://entities/asteroid/data.gd" type="Script" id=4]
 
-
-
 [sub_resource type="CircleShape2D" id=1]
 radius = 6.40146
 
 [node name="Bullet" type="RigidBody2D"]
 mass = 0.15
+gravity_scale = 0.0
 contacts_reported = 1
 contact_monitor = true
 linear_damp = 0.0

@@ -16,7 +16,7 @@ func _ready():
     randomize_speed()
     randomize_scale()
 
-func _process(_delta):
+func _physics_process(_delta):
     $Data.update(position, rotation, $CollisionShape2D.scale)
 
 func _integrate_forces(state):

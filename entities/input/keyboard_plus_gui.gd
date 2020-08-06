@@ -3,9 +3,6 @@ extends Node
 
 const input_name = "WASD Keyboard Plus GUI"
 
-signal connected(input)
-signal disconnected(input)
-
 var horizontal = 0
 var vertical = 0
 var fire = false
@@ -16,12 +13,6 @@ var right = false
 var fire_button = false
 var next_state = false
 var previous_state = false
-
-func _enter_tree():
-    emit_signal("connected", self)
-
-func _exit_tree():
-    emit_signal("disconnected", self)
 
 func _process(_delta):
     vertical = 0

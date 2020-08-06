@@ -4,33 +4,34 @@ export var input_rate = 10
 
 var input_timer = 0.0
 
+onready var latest_received_world = $LatestReceivedWorld
 #onready var interpolated_world = $InterpolatedWorld
 #onready var predicted_world = $PredictedWorld
 
 func _enter_tree():
-    #warning-ignore-all:return_value_discarded
-    $Inputs.connect("node_added", self, "input_connected")
-    $Inputs.connect("node_removed", self, "input_disconnected")
-    
     if has_node("TCPClient"):
         console_write_ln("Connecting to Server...")
-        $TCPClient.connect("on_open", self, "show_connected_to_server")
-        $TCPClient.connect("on_close", self, "show_disconnected_to_server")
+        var _1 = $TCPClient.connect("on_open", self, "show_connected_to_server")
+        var _2 = $TCPClient.connect("on_close", self, "show_disconnected_to_server")
         $TCPClient.open()
     
     if has_node("WebSocketClient"):
         console_write_ln("Connecting to Server...")
-        $WebSocketClient.connect("on_open", self, "show_connected_to_server")
-        $WebSocketClient.connect("on_close", self, "show_disconnected_to_server")
+        var _1 = $WebSocketClient.connect("on_open", self, "show_connected_to_server")
+        var _2 = $WebSocketClient.connect("on_close", self, "show_disconnected_to_server")
         $WebSocketClient.open("wss://etdofresh.synology.me:11001")
 
 func _ready():
+    for existing_input in $Inputs.get_children():
+        latest_received_world.create_player(existing_input)
+        existing_input.connect("tree_exited", latest_received_world,"delete_player", [existing_input])
+    
     if has_node("TCPClient"):
-        $TCPClient.connect("on_receive", $World, "deserialize")
+        var _1 = $TCPClient.connect("on_receive", latest_received_world, "deserialize")
         #$TCPClient.connect("on_receive", interpolated_world, "deserialize")
         #$TCPClient.connect("on_receive", predicted_world, "deserialize")
     if has_node("WebSocketClient"):
-        $WebSocketClient.connect("on_receive", $World, "deserialize")
+        var _1 = $WebSocketClient.connect("on_receive", latest_received_world, "deserialize")
         #$WebSocketClient.connect("on_receive", interpolated_world, "deserialize")
         #$WebSocketClient.connect("on_receive", predicted_world, "deserialize")
 
@@ -44,12 +45,6 @@ func _process(delta):
             $LatencySimulator.send($TCPClient.client, $Inputs/Input.serialize())
         if has_node("WebSocketClient"):
             $WebSocketClient.send($Inputs/Input.serialize())
-
-func input_connected(input):
-    $World.create_player(input)
-
-func input_disconnected(input):
-    $World.delete_player(input)
 
 func show_connected_to_server():
     console_write_ln("Connected to Server!")

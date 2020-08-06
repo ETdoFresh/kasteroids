@@ -1,26 +1,17 @@
 class_name Serializer
 extends Node
 
-var ships = []
-var asteroids = []
-var bullets = []
-
-func track_node(node):
-    if node is Ship: ships.append(node)
-    elif node is Asteroid: asteroids.append(node)
-    elif node is Bullet: bullets.append(node)
-
-func untrack_node(node):
-    for list in [ships, asteroids, bullets]:
-        for i in range(list.size() - 1, -1, -1):
-            if list[i] == node:
-                list.remove(i)
+onready var world = get_parent()
+onready var tick = world.get_node("Tick")
+onready var asteroids = world.get_node("Asteroids")
+onready var bullets = world.get_node("Bullets")
+onready var ships = world.get_node("Ships")
 
 func serialize():
-    var serialized = ""
-    for list in [ships, asteroids, bullets]:
-        serialized += String(list.size()) + ","
-        for node in list:
+    var serialized = "%d," % tick.tick
+    for group in [ships, asteroids, bullets]:
+        serialized += String(group.get_child_count()) + ","
+        for node in group.get_children():
             if node.has_node("Data"):
                 var data = node.get_node("Data")
                 serialized += String(data.position.x) + ","

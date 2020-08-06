@@ -1,6 +1,6 @@
 extends Node
 
 func _ready():
-    $Client/World/Background.visible = false
+    $Client/LatestReceivedWorld/Background.visible = false
     $Client/KeyboardShortcuts.queue_free()
     $Client/UI.visible = false

@@ -4,9 +4,7 @@
 [ext_resource path="res://scenes/tcp/client.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/tcp/both.gd" type="Script" id=3]
 
-
-
-[node name="NetworkTest" type="Node"]
+[node name="TCPBoth" type="Node"]
 script = ExtResource( 3 )
 
 [node name="Server" parent="." instance=ExtResource( 1 )]
