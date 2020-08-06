@@ -1,6 +1,9 @@
 extends Node2D
 
-func serialize():
+func serialize(client_tick, offset):
+    $Serializer.tick = $Tick.tick
+    $Serializer.last_received_client_tick = client_tick
+    $Serializer.offset = offset
     return $Serializer.serialize()
 
 func _physics_process(delta):

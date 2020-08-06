@@ -3,6 +3,7 @@ extends Node
 
 const input_name = "WASD Keyboard Plus GUI"
 
+var tick = 0
 var horizontal = 0
 var vertical = 0
 var fire = false
@@ -13,6 +14,8 @@ var right = false
 var fire_button = false
 var next_state = false
 var previous_state = false
+
+onready var repeater = $Repeater
 
 func _process(_delta):
     vertical = 0
@@ -40,6 +43,9 @@ func _unhandled_input(event):
 
 func serialize():
     var serialized = ""
-    for variable in ["horizontal", "vertical", "fire"]:
+    for variable in ["tick", "horizontal", "vertical", "fire"]:
         serialized += String(self[variable]) + ","
-    return serialized
+    if repeater:
+        return repeater.add(serialized)
+    else:
+        return serialized

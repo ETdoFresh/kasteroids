@@ -2,7 +2,7 @@ FROM ubuntu
 
 RUN mkdir app
 COPY ./ app/
-RUN sed -i 's/run\/main_scene=.*/run\/main_scene="res:\/\/scenes\/web_socket_server.tscn"/g' app/project.godot
+RUN sed -i 's/run\/main_scene=.*/run\/main_scene="res:\/\/scenes\/web_socket\/server.tscn"/g' app/project.godot
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \

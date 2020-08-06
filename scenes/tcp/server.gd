@@ -24,7 +24,12 @@ func _enter_tree():
         var _3 = $WebSocketServer.listen()
         console_write_ln("Awaiting new connection...")
 
-func _process(delta):    
+func _process(delta):
+    for input in $Inputs.get_children():
+        if input is NetworkServerPlayerInput:
+            if not input.set_state_at_tick($World/Tick.tick):
+                input.misses += 1
+    
     if has_node("TCPServer") || has_node("WebSocketServer"):
         update_timer += delta
         if update_timer < 1.0 / update_rate: return
@@ -32,10 +37,16 @@ func _process(delta):
         #$TCPServer.broadcast($World.serialize())
         if has_node("TCPServer"):
             for client in $TCPServer.clients:
-                $LatencySimulator.send(client, $World.serialize())
+                var input = get_input_by_client(client)
+                var client_tick = input.latest_received_tick
+                var offset = input.time - input.latest_received_time
+                $LatencySimulator.send(client, $World.serialize(client_tick, offset))
         if has_node("WebSocketServer"):
             for client in $WebSocketServer.clients:
-                $WebSocketServer.send(client, $World.serialize())
+                var input = get_input_by_client(client)
+                var client_tick = input.latest_received_tick
+                var offset = input.time - input.latest_received_time
+                $WebSocketServer.send(client, $World.serialize(client_tick, offset))
 
 func create_tcp_server_input(client):
     var input = NetworkServerPlayerInput.new("TCPPlayer", client)
@@ -53,11 +64,15 @@ func create_web_socket_server_input(client):
 
 func remove_server_input(client):
     console_write_ln("A Client has disconnected!")
+    var input = get_input_by_client(client)
+    $World.delete_player(input)
+    input.queue_free();
+
+func get_input_by_client(client):
     for input in $Inputs.get_children():
         if input.client == client:
-            $World.delete_player(input)
-            input.queue_free();
-            return
+            return input
+    return null
 
 func console_write_ln(message):
     print(message)

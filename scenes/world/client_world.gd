@@ -11,6 +11,7 @@ var input = Data.NULL_INPUT
 
 onready var containers = { ShipClient: $Ships, AsteroidClient: $Asteroids, BulletClient: $Bullets }
 onready var tick = $Tick
+onready var server_tick_sync = $ServerTickSync
 
 func create_player(_input): pass
 func delete_player(_input): pass
@@ -20,7 +21,14 @@ func deserialize(serialized):
     var types = [ShipClient, AsteroidClient, BulletClient]
     var x = 0
     
-    tick.tick = int(items[x]); x += 1
+    var server_tick = int(items[x]); x += 1
+    var client_tick = int(items[x]); x += 1
+    var offset_time = float(items[x]); x += 1
+    if tick:
+        tick.tick = server_tick
+    if server_tick_sync:
+        $ServerTickSync.record_client_recieve(server_tick, client_tick, offset_time)
+    
     for type in types:
         var count = int(items[x]); x += 1
         var container = containers[type]

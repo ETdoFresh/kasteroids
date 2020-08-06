@@ -1,9 +1,5 @@
 extends Node
 
-export var input_rate = 10
-
-var input_timer = 0.0
-
 onready var latest_received_world = $LatestReceivedWorld
 #onready var interpolated_world = $InterpolatedWorld
 #onready var predicted_world = $PredictedWorld
@@ -34,13 +30,15 @@ func _ready():
         var _1 = $WebSocketClient.connect("on_receive", latest_received_world, "deserialize")
         #$WebSocketClient.connect("on_receive", interpolated_world, "deserialize")
         #$WebSocketClient.connect("on_receive", predicted_world, "deserialize")
+    
+    $DebugOverlay.add_stat("Tick", $LatestReceivedWorld/Tick, "tick", false)
+    $DebugOverlay.add_stat("SmoothTick", $LatestReceivedWorld/ServerTickSync, "smooth_tick", false)
 
 func _process(delta):
     if has_node("TCPClient") || has_node("WebSocketClient"):
-        input_timer += delta
-        if input_timer < 1.0 / input_rate: return
-        input_timer -= 1.0 / input_rate
+
         #$TCPClient.send($Inputs/Input.serialize())
+        $Inputs/Input.tick = latest_received_world.get_node("ServerTickSync").smooth_tick
         if has_node("TCPClient"):
             $LatencySimulator.send($TCPClient.client, $Inputs/Input.serialize())
         if has_node("WebSocketClient"):
