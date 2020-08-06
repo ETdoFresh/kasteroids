@@ -43,6 +43,7 @@ modulate = Color( 0.0941176, 0.933333, 0.0470588, 0.145098 )
 [node name="Inputs" type="Node" parent="."]
 
 [node name="KeyboardShortcuts" type="Node" parent="."]
+pause_mode = 2
 script = ExtResource( 2 )
 
 [node name="UI" type="Control" parent="."]

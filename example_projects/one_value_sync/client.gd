@@ -1,4 +1,4 @@
-extends "res://networking/tcp_client.gd"
+extends "res://entities/tcp/tcp_client.gd"
 
 var tick = 0
 var t = 0
