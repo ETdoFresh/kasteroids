@@ -80,4 +80,4 @@ func update_smooth_tick():
 func update_interpolated_tick():
     interpolated_tick = smooth_tick
     interpolated_tick -= rtt / tick_rate
-    interpolated_tick -= max(rtt, receive_rate) / tick_rate
+    interpolated_tick -= max(rtt, receive_rate) / tick_rate * 1.5

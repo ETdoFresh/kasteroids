@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://entities/ship/ship.svg" type="Texture" id=1]
 [ext_resource path="res://entities/state_machine/state_machine.gd" type="Script" id=2]
@@ -9,33 +9,10 @@
 [ext_resource path="res://entities/ship/exploding.gd" type="Script" id=7]
 [ext_resource path="res://entities/ship/upright_label.gd" type="Script" id=8]
 [ext_resource path="res://entities/ship/normal.gd" type="Script" id=9]
-[ext_resource path="res://entities/ship/test_input.gd" type="Script" id=10]
+[ext_resource path="res://entities/asteroid/data.gd" type="Script" id=10]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 18.624, 29.835, -18.352, 27.065, 3.1, -31.974 )
-
-[sub_resource type="GDScript" id=2]
-script/source = "extends Node
-
-var position = Vector2.ZERO
-var rotation = 0
-var scale = Vector2.ONE
-
-func update(new_position, new_rotation, new_scale):
-    position = new_position
-    rotation = new_rotation
-    scale = new_scale
-
-func serialize():
-    return [position, rotation, scale]
-
-func deserialize(queue:Array):
-    position.x = float(queue.pop_front())
-    position.y = float(queue.pop_front())
-    rotation = float(queue.pop_front())
-    scale.x = float(queue.pop_front())
-    scale.y = float(queue.pop_front())
-"
 
 [node name="Ship" type="Node2D"]
 script = ExtResource( 6 )
@@ -204,7 +181,4 @@ __meta__ = {
 }
 
 [node name="Data" type="Node" parent="."]
-script = SubResource( 2 )
-
-[node name="TestInput" type="Node" parent="."]
 script = ExtResource( 10 )

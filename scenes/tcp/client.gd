@@ -33,6 +33,7 @@ func _ready():
     
     $DebugOverlay.add_stat("Tick", $LatestReceivedWorld/Tick, "tick", false)
     $DebugOverlay.add_stat("RTT", $LatestReceivedWorld/ServerTickSync, "rtt", false)
+    $DebugOverlay.add_stat("Lastest Received Tick", $LatestReceivedWorld/ServerTickSync, "last_received_server_tick", false)
     $DebugOverlay.add_stat("Prediction", $LatestReceivedWorld/ServerTickSync, "prediction", false)
     $DebugOverlay.add_stat("Future Tick", $LatestReceivedWorld/ServerTickSync, "future_tick", false)
     $DebugOverlay.add_stat("SmoothTick", $LatestReceivedWorld/ServerTickSync, "smooth_tick", false)

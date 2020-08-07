@@ -28,10 +28,10 @@ min_latency = 0.03
 max_latency = 0.15
 
 [node name="LatestReceivedWorld" parent="." instance=ExtResource( 2 )]
-visible = false
-modulate = Color( 0.00392157, 0.0196078, 0.415686, 0.207843 )
+modulate = Color( 0, 0, 0.501961, 0.196078 )
 
 [node name="InterpolatedWorld" parent="." instance=ExtResource( 10 )]
+modulate = Color( 0.501961, 0.501961, 0, 0.196078 )
 
 [node name="Inputs" type="Node" parent="."]
 

@@ -16,7 +16,7 @@ func start(position, rotation, rigidbody, velocity_magnitude):
     linear_velocity = ship_velocity + Vector2(0, -velocity_magnitude).rotated(rotation)
 
 func _physics_process(_delta):
-    $Data.update(position, rotation, $CollisionShape2D.scale)
+    $Data.update(position, rotation, $CollisionShape2D.scale, linear_velocity, angular_velocity)
 
 func _integrate_forces(state):
     $Wrap.wrap(state)

@@ -25,7 +25,7 @@ func interpolate(tick):
     
     if before == after:
         for child in before.children:
-            if not child.node || child.node.is_inside_tree():
+            if child.node && child.node.is_inside_tree():
                 child.node.position = child.position
                 child.node.rotation = child.rotation
                 child.node.scale = child.scale
@@ -46,11 +46,13 @@ func interpolate(tick):
                     
                 a = before_child.position
                 b = after_child.position
-                before_child.node.position = a.linear_interpolate(b, t)
+                var snap_t = t
+                if (b - a).length() >= snap_distance: snap_t = round(snap_t)
+                before_child.node.position = a.linear_interpolate(b, snap_t)
                 
                 a = before_child.rotation
                 b = after_child.rotation
-                before_child.node.rotation = lerp(a, b, t)
+                before_child.node.rotation = lerp_angle(a, b, t)
                 
                 a = before_child.scale
                 b = after_child.scale
@@ -71,3 +73,5 @@ func get_after(tick):
             if after == null || after.tick > item.tick:
                 after = item
     return after
+
+
