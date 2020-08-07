@@ -18,6 +18,7 @@ var smooth_tick_ahead_count = 0
 var receive_rate_window = SlidingWindow.new(10)
 var receive_rate = 0
 var interpolated_tick = 0
+var interpolation_rate = 0.1
 
 func _process(delta):
     time += delta
@@ -78,6 +79,7 @@ func update_smooth_tick():
         emit_signal("tick")
 
 func update_interpolated_tick():
-    interpolated_tick = smooth_tick
-    interpolated_tick -= rtt / tick_rate
-    interpolated_tick -= max(rtt, receive_rate) / tick_rate * 1.5
+    var target_iterpolation_rate = rtt # back to predicted_tick
+    target_iterpolation_rate += max(rtt, receive_rate) * 1.5
+    interpolation_rate = lerp(interpolation_rate, target_iterpolation_rate, 0.1)
+    interpolated_tick = smooth_tick - interpolation_rate / tick_rate
