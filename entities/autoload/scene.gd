@@ -10,6 +10,7 @@ const WEB_SOCKET_CLIENT_GAME = preload("res://scenes/web_socket/client.tscn")
 const WEB_SOCKET_BOTH_GAME = preload("res://scenes/web_socket/both.tscn")
 
 # Entities
+const ASTEROID = preload("res://entities/asteroid/asteroid.tscn")
 const ASTEROID_CLIENT = preload("res://entities/asteroid/asteroid_client.tscn")
 const BULLET = preload("res://entities/bullet/bullet.tscn")
 const BULLET_CLIENT = preload("res://entities/bullet/bullet_client.tscn")

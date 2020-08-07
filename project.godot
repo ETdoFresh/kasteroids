@@ -235,6 +235,11 @@ interpolation_toggle={
  ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="default"
+2d_physics/layer_2="client"
+
 [physics]
 
 2d/time_before_sleep=1.0

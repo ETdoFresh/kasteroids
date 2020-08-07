@@ -1,7 +1,5 @@
 class_name Bullet
-extends RigidBody2D
-
-var world
+extends "res://entities/rigid_body_2d/rigid_body_2d.gd"
 
 func _ready():
     #warning-ignore:return_value_discarded
@@ -19,6 +17,7 @@ func _physics_process(_delta):
     $Data.update(position, rotation, $CollisionShape2D.scale, linear_velocity, angular_velocity)
 
 func _integrate_forces(state):
+    ._integrate_forces(state)
     $Wrap.wrap(state)
 
 func _on_DestroyAfter_timeout():
@@ -29,7 +28,17 @@ func _on_self_body_entered(_body):
 
 func destroy():
     var bullet_particles = Scene.BULLET_PARTICLES.instance()
+    var container = get_parent()
+    var world = container.get_parent()
     world.add_child(bullet_particles)
     bullet_particles.position = global_position
     bullet_particles.emitting = true
     queue_free()
+
+var snapping_distance = 100
+func linear_interpolate(other, t):
+    if (position - other.position).length() > snapping_distance:
+        queue_position(other.position)
+    else:
+        queue_position(position.linear_interpolate(other.position, t))
+    queue_rotation(lerp_angle(rotation, other.rotation, t))

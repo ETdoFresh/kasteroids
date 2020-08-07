@@ -1,4 +1,4 @@
-extends RigidBody2D
+extends "res://entities/rigid_body_2d/rigid_body_2d.gd"
 
 export var engine_thrust = 500
 export var spin_thrust = 500
@@ -27,6 +27,7 @@ func change_position(new_position):
     self.new_position = new_position
 
 func _integrate_forces(state):
+    ._integrate_forces(state)
     $Wrap.wrap(state)
 
 func state_enter(previous_state):
@@ -45,3 +46,11 @@ func state_enter(previous_state):
         angular_velocity = 0
     
     $LabelNode2D.global_rotation = 0
+
+var snapping_distance = 100
+func linear_interpolate(other, t):
+    if (position - other.position).length() > snapping_distance:
+        queue_position(other.position)
+    else:
+        queue_position(position.linear_interpolate(other.position, t))
+    queue_rotation(lerp_angle(rotation, other.rotation, t))

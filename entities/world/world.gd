@@ -27,7 +27,6 @@ func create_bullet(gun_position, gun_rotation, ship, speed):
     bullet.global_position = gun_position
     bullet.global_rotation = gun_rotation
     bullet.add_collision_exception_with(ship)
-    bullet.world = self
     var relative_velocity = ship.linear_velocity
     bullet.linear_velocity = relative_velocity + Vector2(0, -speed).rotated(gun_rotation)
     $Bullets.add_child(bullet)

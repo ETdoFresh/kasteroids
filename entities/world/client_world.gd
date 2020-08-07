@@ -18,7 +18,7 @@ func delete_player(_input): pass
 
 func deserialize(serialized):
     var items = serialized.split(",", false)
-    var types = ["ShipClient", "AsteroidClient", "BulletClient"]
+    var types = containers.keys()
     var x = 0
     
     var server_tick = int(items[x]); x += 1

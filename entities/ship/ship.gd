@@ -5,6 +5,10 @@ extends Node2D
 signal gun_fired(gun_position, gun_rotation, ship, velocity_magnitude)
 
 var input = Data.NULL_INPUT
+var collision_layer setget set_collision_layer
+var collision_mask setget set_collision_mask
+var linear_velocity
+var angular_velocity
 
 onready var state_machine = $States
 
@@ -32,8 +36,8 @@ func _physics_process(_delta):
 
     if state_machine && state_machine.active_state && state_machine.active_state.get_node("CollisionShape2D"):
         var state = state_machine.active_state
-        var linear_velocity = state.linear_velocity if state.get("linear_velocity") else Vector2.ZERO
-        var angular_velocity = state.angular_velocity if state.get("angular_velocity") else 0
+        linear_velocity = state.linear_velocity if state.get("linear_velocity") else Vector2.ZERO
+        angular_velocity = state.angular_velocity if state.get("angular_velocity") else 0
         $Data.update(state.global_position, state.global_rotation, state.get_node("CollisionShape2D").scale, linear_velocity, angular_velocity)
 
 func state_name():
@@ -50,3 +54,19 @@ func set_position(new_position):
     var state = state_machine.active_state
     if state is RigidBody2D:
         state.global_position = new_position
+
+func set_collision_layer(value):
+    collision_layer = value
+    for state in $States.get_children():
+        if state.get("collision_layer"):
+            state.collision_layer = collision_layer
+
+func set_collision_mask(value):
+    collision_mask = value
+    for state in $States.get_children():
+        if state.get("collision_mask"):
+            state.collision_mask = collision_mask
+
+func linear_interpolate(other, t):
+    if $States.active_state && $States.active_state.has_method("linear_interpolate"):
+        $States.active_state.linear_interpolate(other, t)

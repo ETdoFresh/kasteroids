@@ -3,11 +3,14 @@
 [ext_resource path="res://example_projects/state_test/state_test.gd" type="Script" id=1]
 [ext_resource path="res://example_projects/state_test/world.gd" type="Script" id=2]
 [ext_resource path="res://example_projects/state_test/history.gd" type="Script" id=3]
-[ext_resource path="res://entities/rigid_body/rigid_body.gd" type="Script" id=4]
+[ext_resource path="res://entities/rigid_body_2d/rigid_body_2d.gd" type="Script" id=4]
 [ext_resource path="res://example_projects/state_test/controls.gd" type="Script" id=5]
 [ext_resource path="res://example_projects/state_test/white_box.svg" type="Texture" id=6]
 [ext_resource path="res://example_projects/state_test/future_world.gd" type="Script" id=7]
 [ext_resource path="res://example_projects/state_test/selection_box.gd" type="Script" id=8]
+
+
+
 
 
 

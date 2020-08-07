@@ -1,5 +1,5 @@
 class_name Asteroid
-extends RigidBody2D
+extends "res://entities/rigid_body_2d/rigid_body_2d.gd"
 
 export var min_angular_velocity = -3.0
 export var max_angular_velocity = 3.0
@@ -20,6 +20,7 @@ func _physics_process(_delta):
     $Data.update(position, rotation, $CollisionShape2D.scale, linear_velocity, angular_velocity)
 
 func _integrate_forces(state):
+    ._integrate_forces(state)
     $Wrap.wrap(state)
 
 func randomize_spin():
@@ -35,3 +36,11 @@ func randomize_scale():
 
 func serialize():
     return $Data.serialize()
+
+var snapping_distance = 100
+func linear_interpolate(other, t):
+    if (position - other.position).length() > snapping_distance:
+        queue_position(other.position)
+    else:
+        queue_position(position.linear_interpolate(other.position, t))
+    queue_rotation(lerp_angle(rotation, other.rotation, t))
