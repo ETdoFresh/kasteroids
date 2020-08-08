@@ -47,7 +47,7 @@ func state_enter(previous_state):
     
     $LabelNode2D.global_rotation = 0
 
-var snapping_distance = 100
+var snapping_distance = 150
 func linear_interpolate(other, t):
     if (position - other.position).length() > snapping_distance:
         queue_position(other.position)

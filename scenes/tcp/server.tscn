@@ -22,6 +22,7 @@ script = ExtResource( 1 )
 
 [node name="LatencySimulator" type="Node" parent="."]
 script = ExtResource( 6 )
+simulate_latency = false
 
 [node name="Background" type="TextureRect" parent="."]
 margin_left = 608.0

@@ -4,11 +4,6 @@
 [ext_resource path="res://scenes/web_socket/server.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/tcp/both.gd" type="Script" id=3]
 
-
-
-
-
-
 [node name="WebSocketBoth" type="Node"]
 script = ExtResource( 3 )
 

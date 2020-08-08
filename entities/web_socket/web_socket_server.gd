@@ -24,6 +24,13 @@ func listen(bind_address = "*", port = 11001):
     server.connect("data_received", self, "check_for_received_data")
     server.listen(port)
 
+func listen_insecure(bind_address = "*", port = 11001):
+    server.bind_ip = bind_address
+    server.connect("client_connected", self, "check_for_connection")
+    server.connect("client_disconnected", self, "check_for_disconnection")
+    server.connect("data_received", self, "check_for_received_data")
+    server.listen(port)
+
 func send(client, message):
     client.put_packet(message.to_ascii())
     emit_signal("on_send", client, message)

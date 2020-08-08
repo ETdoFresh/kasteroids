@@ -56,9 +56,9 @@ func create_tcp_server_input(client):
     console_write_ln("A Client has connected!")
 
 func create_web_socket_server_input(client):
-    var input = NetworkServerPlayerInput.new("TCPPlayer", client)
+    var input = NetworkServerPlayerInput.new("WebSocketPlayer", client)
     $Inputs.add_child(input)
-    input.input_name = input.input_name.replace("TCP", "WebSocket")
+    $World.create_player(input)
     var _1 = $WebSocketServer.connect("on_receive", input, "deserialize")
     console_write_ln("A Client has connected!")
 
