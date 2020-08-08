@@ -17,6 +17,7 @@ func serialize():
         for node in group.get_children():
             if node.has_node("Data"):
                 var data = node.get_node("Data")
+                serialized += serialize_int(data.id)
                 serialized += serialize_Vector2(data.position)
                 serialized += serialize_float(data.rotation)
                 serialized += serialize_Vector2(data.scale)
@@ -29,3 +30,6 @@ func serialize_Vector2(v):
 
 func serialize_float(v):
     return "%f," % v
+
+func serialize_int(v):
+    return "%d," % v

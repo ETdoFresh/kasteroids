@@ -55,6 +55,7 @@ func deserialize(serialized):
 
         for i in range(count):
             var child = container.get_child(i)
+            child.get_node("Data").id = deserialize_int(items, x); x += 1
             child.position = deserialize_Vector2(items, x); x += 2
             child.set_meta("extrapolated_position", child.position)
             child.rotation = deserialize_float(items, x); x += 1
@@ -62,6 +63,9 @@ func deserialize(serialized):
             child.scale = deserialize_Vector2(items, x); x += 2
             child.set_meta("linear_velocity", deserialize_Vector2(items, x)); x += 2
             child.set_meta("angular_velocity", deserialize_float(items, x)); x += 1
+
+func deserialize_int(items, x):
+    return int(items[x])
 
 func deserialize_float(items, x):
     return float(items[x])

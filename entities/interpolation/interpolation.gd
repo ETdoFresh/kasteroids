@@ -23,6 +23,9 @@ func interpolate(tick):
     if before == null: before = after
     if after == null: after = before
     
+    create_instances(before, after)
+    delete_instances(before, after)
+    
     if before == after:
         for child in before.children:
             if child.node && child.node.is_inside_tree():
@@ -74,4 +77,30 @@ func get_after(tick):
                 after = item
     return after
 
+func create_instances(before, after):
+    for state in [before, after]:
+        for child in state.children:
+            if not container_has_id(child.container, child.id):
+                var new_child = child.type.instance()
+                var data = new_child.find_node("Data")
+                child.container.add_child(new_child)
+                data.id = child.id
 
+func container_has_id(container, id):
+    for child in container.get_children():
+        var data = child.find_node("Data")
+        if data.id == id:
+            return true
+    return false
+
+func delete_instances(before, after):
+    var ids = []
+    for child in before.children: ids.append(child.id)
+    for child in after.children: ids.append(child.id)
+    for container in before.containers:
+        for child in container.get_children():
+            var data = child.find_node("Data")
+            if data && ids.has(data.id):
+                continue
+            else:
+                child.queue_free()

@@ -41,11 +41,15 @@ func deserialize(serialized):
 
         for i in range(count):
             var child = container.get_child(i)
+            var _id = deserialize_int(items, x); x += 1
             child.position = deserialize_Vector2(items, x); x += 2
             child.rotation = deserialize_float(items, x); x += 1
             child.scale = deserialize_Vector2(items, x); x += 2
             var _linear_velocity = deserialize_Vector2(items, x); x += 2
             var _angular_velocity = deserialize_float(items, x); x += 1
+
+func deserialize_int(items, x):
+    return int(items[x])
 
 func deserialize_float(items, x):
     return float(items[x])

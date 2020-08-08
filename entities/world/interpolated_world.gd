@@ -1,6 +1,6 @@
 extends Node2D
 
-var resources = \
+var types = \
 {
     "ShipClient": Scene.SHIP_CLIENT,
     "AsteroidClient": Scene.ASTEROID_CLIENT,
@@ -22,7 +22,7 @@ func _process(_delta):
 
 func deserialize(serialized):
     var items = serialized.split(",", false)
-    var types = ["ShipClient", "AsteroidClient", "BulletClient"]
+    var type_names = ["ShipClient", "AsteroidClient", "BulletClient"]
     var x = 0
     
     var server_tick = int(items[x]); x += 1
@@ -31,28 +31,31 @@ func deserialize(serialized):
     if server_tick_sync:
         $ServerTickSync.record_client_recieve(server_tick, client_tick, offset_time)
     
-    var state = {"tick": server_tick, "children": []}
-    for type in types:
+    var state = {"tick": server_tick, "containers": containers.values(), "children": []}
+    for type_name in type_names:
         var count = int(items[x]); x += 1
-        
-        ## TODO: Maybe move this section to interpolation (Add/Delete Nodes)
-        var container = containers[type]
-        while container.get_child_count() > count:
-            container.get_child(0).free()
-        while container.get_child_count() < count:
-            var child = resources[type].instance()
-            containers[type].add_child(child)
-
-        for i in range(count):
-            var child = container.get_child(i)
+        var type = types[type_name]
+        var container = containers[type_name]
+        for _i in range(count):
+            var id = deserialize_int(items, x); x += 1
             var position = deserialize_Vector2(items, x); x += 2
             var rotation = deserialize_float(items, x); x += 1
             var scale = deserialize_Vector2(items, x); x += 2
             var linear_velocity = deserialize_Vector2(items, x); x += 2
             var angular_velocity = deserialize_float(items, x); x += 1
             
+            var child
+            for container_child in container.get_children():
+                var data = container_child.find_node("Data")
+                if data.id == id:
+                    child = container_child
+                    break
+            
             state.children.append({
-                "node": child, 
+                "node": child,
+                "id": id,
+                "container": container,
+                "type": type,
                 "position": position, 
                 "rotation": rotation, 
                 "scale": scale,
@@ -60,6 +63,9 @@ func deserialize(serialized):
                 "angular_velocity": angular_velocity
             })
     $Interpolation.add_history(state)
+
+func deserialize_int(items, x):
+    return int(items[x])
 
 func deserialize_float(items, x):
     return float(items[x])
