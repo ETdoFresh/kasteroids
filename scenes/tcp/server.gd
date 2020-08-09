@@ -8,6 +8,7 @@ func _ready():
     for existing_input in $Inputs.get_children():
         $World.create_player(existing_input)
         existing_input.connect("tree_exited", $World,"delete_player", [existing_input])
+    $DebugOverlay.add_stat("Kbps", $Kbps, "value", false)
 
 func _enter_tree():    
     if has_node("TCPServer"):
@@ -15,6 +16,7 @@ func _enter_tree():
         var _1 = $TCPServer.connect("on_open", self, "create_tcp_server_input")
         var _2 = $TCPServer.connect("on_close", self, "remove_server_input")
         var _3 = $TCPServer.listen()
+        var _4 = $TCPServer.connect("on_receive", $Kbps, "add_client_data")
         console_write_ln("Awaiting new connection...")
     
     if has_node("WebSocketServer"):
@@ -22,6 +24,7 @@ func _enter_tree():
         var _1 = $WebSocketServer.connect("on_open", self, "create_web_socket_server_input")
         var _2 = $WebSocketServer.connect("on_close", self, "remove_server_input")
         var _3 = $WebSocketServer.listen()
+        var _4 = $WebSocketServer.connect("on_receive", $Kbps, "add_client_data")
         console_write_ln("Awaiting new connection...")
 
 func _process(delta):
@@ -52,6 +55,7 @@ func create_tcp_server_input(client):
     var input = NetworkServerPlayerInput.new("TCPPlayer", client)
     $Inputs.add_child(input)
     $World.create_player(input)
+    $DebugOverlay.add_stat("Misses", input, "misses", false)
     var _1 = $TCPServer.connect("on_receive", input, "deserialize")
     console_write_ln("A Client has connected!")
 
@@ -59,6 +63,7 @@ func create_web_socket_server_input(client):
     var input = NetworkServerPlayerInput.new("WebSocketPlayer", client)
     $Inputs.add_child(input)
     $World.create_player(input)
+    $DebugOverlay.add_stat("Misses", input, "misses", false)
     var _1 = $WebSocketServer.connect("on_receive", input, "deserialize")
     console_write_ln("A Client has connected!")
 

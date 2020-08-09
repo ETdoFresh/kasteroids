@@ -1,5 +1,8 @@
 extends Node
 
+var time_since_send = 0
+var send_rate_per_second = 60
+
 onready var latest_received_world = $LatestReceivedWorld
 onready var interpolated_world = $InterpolatedWorld
 onready var extrapolated_world = $ExtrapolatedWorld
@@ -28,11 +31,13 @@ func _ready():
         var _2 = $TCPClient.connect("on_receive", interpolated_world, "deserialize")
         var _3 = $TCPClient.connect("on_receive", extrapolated_world, "deserialize")
         var _4 = $TCPClient.connect("on_receive", predicted_world, "deserialize")
+        var _5 = $TCPClient.connect("on_receive", $ReceivedKbps, "add_data")
     if has_node("WebSocketClient"):
         var _1 = $WebSocketClient.connect("on_receive", latest_received_world, "deserialize")
         var _2 = $WebSocketClient.connect("on_receive", interpolated_world, "deserialize")
         var _3 = $WebSocketClient.connect("on_receive", extrapolated_world, "deserialize")
         var _4 = $WebSocketClient.connect("on_receive", predicted_world, "deserialize")
+        var _5 = $WebSocketClient.connect("on_receive", $ReceivedKbps, "add_data")
     
     $DebugOverlay.add_stat("Tick", $LatestReceivedWorld/Tick, "tick", false)
     $DebugOverlay.add_stat("RTT", $LatestReceivedWorld/ServerTickSync, "rtt", false)
@@ -42,16 +47,32 @@ func _ready():
     $DebugOverlay.add_stat("SmoothTick", $LatestReceivedWorld/ServerTickSync, "smooth_tick", false)
     $DebugOverlay.add_stat("Receive Rate", $LatestReceivedWorld/ServerTickSync, "receive_rate", false)
     $DebugOverlay.add_stat("Interpolated Tick", $LatestReceivedWorld/ServerTickSync, "interpolated_tick", false)
+    $DebugOverlay.add_stat("Received Kbps", $ReceivedKbps, "value", false)
+    $DebugOverlay.add_stat("Received Packets/Sec", $ReceivedKbps, "count", false)
+    $DebugOverlay.add_stat("Sent Kbps/Sec", $SentKbps, "value", false)
+    $DebugOverlay.add_stat("Sent Packets/Sec", $SentKbps, "count", false)
 
-func _process(_delta):
+func _process(delta):
     if has_node("TCPClient") || has_node("WebSocketClient"):
 
         #$TCPClient.send($Inputs/Input.serialize())
         $Inputs/Input.tick = latest_received_world.get_node("ServerTickSync").smooth_tick
+        
+        time_since_send += delta
+        if time_since_send < 1.0 / send_rate_per_second:
+            $Inputs/Input.serialize()
+            return
+        else:
+            time_since_send -= 1.0 / send_rate_per_second
+        
         if has_node("TCPClient"):
-            $LatencySimulator.send($TCPClient.client, $Inputs/Input.serialize())
+            var message = $Inputs/Input.serialize()
+            $LatencySimulator.send($TCPClient.client, message)
+            $SentKbps.add_data(message)
         if has_node("WebSocketClient"):
-            $WebSocketClient.send($Inputs/Input.serialize())
+            var message = $Inputs/Input.serialize()
+            $WebSocketClient.send(message)
+            $SentKbps.add_data(message)
         
         $LatestReceivedWorld/ServerTickSync.record_client_send($Inputs/Input.tick)
         $InterpolatedWorld/ServerTickSync.record_client_send($Inputs/Input.tick)

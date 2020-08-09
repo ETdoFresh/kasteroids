@@ -1,8 +1,7 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://entities/player_monitor/player_monitor.tscn" type="PackedScene" id=1]
 [ext_resource path="res://entities/asteroid/asteroid.tscn" type="PackedScene" id=2]
-[ext_resource path="res://entities/debug_overlay/debug_overlay.tscn" type="PackedScene" id=3]
 [ext_resource path="res://entities/world/base_world.tscn" type="PackedScene" id=4]
 [ext_resource path="res://entities/serializer/serializer.gd" type="Script" id=5]
 [ext_resource path="res://entities/tick/tick.gd" type="Script" id=6]
@@ -34,13 +33,11 @@ margin_top = 5.0
 margin_right = 1285.0
 margin_bottom = 725.0
 
-[node name="Overlay" parent="." index="2" instance=ExtResource( 3 )]
+[node name="Bullets" type="Node2D" parent="." index="2"]
 
-[node name="Bullets" type="Node2D" parent="." index="3"]
+[node name="Ships" type="Node2D" parent="." index="3"]
 
-[node name="Ships" type="Node2D" parent="." index="4"]
-
-[node name="Asteroids" type="Node2D" parent="." index="5"]
+[node name="Asteroids" type="Node2D" parent="." index="4"]
 
 [node name="Asteroid1" parent="Asteroids" index="0" instance=ExtResource( 2 )]
 position = Vector2( 315.336, 222.286 )
@@ -54,10 +51,10 @@ position = Vector2( 932.498, 241.016 )
 [node name="Asteroid4" parent="Asteroids" index="3" instance=ExtResource( 2 )]
 position = Vector2( 986.961, 520.447 )
 
-[node name="Players" type="Node2D" parent="." index="6"]
+[node name="Players" type="Node2D" parent="." index="5"]
 
-[node name="Serializer" type="Node" parent="." index="7"]
+[node name="Serializer" type="Node" parent="." index="6"]
 script = ExtResource( 5 )
 
-[node name="Tick" type="Node" parent="." index="8"]
+[node name="Tick" type="Node" parent="." index="7"]
 script = ExtResource( 6 )
