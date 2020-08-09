@@ -9,7 +9,7 @@ var tick = 0
 
 onready var history = $History
 onready var physics_space = get_world_2d().space
-onready var fixed_delta = 1.0 / Settings.simulation_iterations_per_second
+onready var fixed_delta = 1.0 / Settings.ticks_per_second
 
 func _physics_process(_delta):
     simulate()

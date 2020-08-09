@@ -9,7 +9,7 @@ func add(tick, value):
     history.insert(0, {"tick": tick, "value": value})
 
 func interpolate(current_tick, interpolation_rate):
-    var interpolated_tick = interpolation_rate * Settings.simulation_iterations_per_second
+    var interpolated_tick = interpolation_rate * Settings.ticks_per_second
     var target_tick = current_tick - interpolated_tick
     var before = get_before(target_tick)
     var after = get_after(target_tick)

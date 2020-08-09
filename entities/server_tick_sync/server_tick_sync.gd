@@ -12,7 +12,7 @@ var last_received_client_time = 0
 var last_received_client_tick = 0
 var client_tick_sent_times = {}
 var time = 0
-var tick_rate = 1.0 / Settings.simulation_iterations_per_second
+var tick_rate = 1.0 / Settings.ticks_per_second
 var precise_smooth_tick = 0.0
 var smooth_tick = 0
 var buffer = 10
@@ -66,17 +66,17 @@ func update_server_tick():
 
 func update_smooth_tick(delta):
     # warning-ignore:integer_division
-    if abs(precise_smooth_tick - future_tick) >= Settings.simulation_iterations_per_second / 2:
+    if abs(precise_smooth_tick - future_tick) >= Settings.ticks_per_second / 2:
         precise_smooth_tick = round(future_tick) - 1
     
-    precise_smooth_tick += 0.5 * delta * Settings.simulation_iterations_per_second
+    precise_smooth_tick += 0.5 * delta * Settings.ticks_per_second
     
     if precise_smooth_tick > future_tick:
         pass
     elif precise_smooth_tick < future_tick:
-        precise_smooth_tick += 1 * delta * Settings.simulation_iterations_per_second
+        precise_smooth_tick += 1 * delta * Settings.ticks_per_second
     elif precise_smooth_tick == future_tick:
-        precise_smooth_tick += 0.5 * delta * Settings.simulation_iterations_per_second
+        precise_smooth_tick += 0.5 * delta * Settings.ticks_per_second
     
     smooth_tick = int(round(precise_smooth_tick))
 

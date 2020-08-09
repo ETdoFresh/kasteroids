@@ -9,9 +9,8 @@ var interpolated_t = 0
 var predicted_t = 0
 var speed = 0.01
 var start = false
-var update_timer = 0
-var tick_rate = 1.0 / Settings.simulation_iterations_per_second
 var time = 0
+var time_last_sent = 0
 var server_send_rate = SlidingWindow.new(5, SlidingWindow.Algorithm.MEDIAN)
 var last_received_time = 0
 
@@ -32,7 +31,6 @@ func _ready():
     var _1 = connect("on_open", self, "start_game")
     var _2 = connect("on_receive", self, "update_state")
     var _3 = connect("on_close", self, "stop_game")
-    var _4 = server_tick.connect("tick", self, "send_tick")
     server_send_rate.add(0.1)
 
 func _physics_process(delta):
@@ -63,11 +61,15 @@ func _process(delta):
     else: # Else Snap to prediction
         t = predicted_t
     $HBoxContainer/CosineGodotImage4.t = t
+    
+    if time - time_last_sent >= 1.0 / float(update_rate_lineedit.text):
+        time_last_sent += 1.0 / float(update_rate_lineedit.text)
+        send_tick()
 
 func send_tick():
     var message = create_repeat_history_input_message()
     $LatencySimulator.send(client, message)
-    $ServerTick.record_client_send(server_tick.smooth_tick)
+    $ServerTick.record_client_send(server_tick.smooth_tick_rounded)
 
 func _input(event):
     if event is InputEventKey:
@@ -75,10 +77,10 @@ func _input(event):
             start_client()
 
 func create_repeat_history_input_message():
-    var number_of_repeats = 6
+    var number_of_repeats = 10
     var message = ""
     for i in range(number_of_repeats - 1, -1, -1):
-        message += "%s,|" % [server_tick.smooth_tick - i]
+        message += "%s,|" % [server_tick.smooth_tick_rounded - i]
     return message
 
 func start_client():
@@ -120,7 +122,7 @@ func update_state(message):
     last_received_time = time
 
 func interpolate():
-    var smooth_prediction = server_tick.smooth_tick - server_tick.rtt / tick_rate
+    var smooth_prediction = server_tick.smooth_tick - server_tick.rtt * Settings.ticks_per_second
     var rate = server_send_rate.get_value()
     rate = max(rate, server_tick.rtt)
     # TODO: Think of some way to keep the rate more consistent than RTT

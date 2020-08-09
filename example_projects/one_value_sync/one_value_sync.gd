@@ -19,4 +19,4 @@ onready var future_time_value = $HBoxContainer/Client/FutureTime/Value
 func _process(_delta):
     var server_tick = float(server_tick_value.text)
     var client_tick = float(client_smooth_tick_value.text)
-    future_time_value.text = "%5.4f" % [(client_tick - server_tick) / Settings.simulation_iterations_per_second]
+    future_time_value.text = "%5.4f" % [(client_tick - server_tick) * Settings.tick_rate]

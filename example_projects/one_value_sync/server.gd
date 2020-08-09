@@ -3,12 +3,13 @@ extends "res://entities/tcp/tcp_server.gd"
 var update_timer = 0.0
 var speed = 0.01
 var tick = 10000
+var tick_rounded = tick
 var t = 0
 var last_received = {}
 var ticks_received = []
-var tick_rate = 1.0 / Settings.simulation_iterations_per_second
 var time = 0
 var misses = 0
+var history = {}
 
 onready var time_label = $Time/Value
 onready var tick_label = $Tick/Value
@@ -25,13 +26,17 @@ func _enter_tree():
     console_write_ln("Awaiting new connection...")
 
 func _physics_process(delta):
-    tick += 1
-    t += speed * delta
+    tick += delta * Settings.ticks_per_second
+    var previous_tick_rounded = tick_rounded
+    tick_rounded = int(round(tick))
+    for process_tick in range(previous_tick_rounded + 1, tick_rounded + 1):
+        t += speed * Settings.tick_rate
+        history[process_tick] = t
 
 func _process(delta):
     time += delta
     time_label.text = "%5.4f" % time
-    tick_label.text = "%d" % tick
+    tick_label.text = "%d" % tick_rounded
     t_label.text = "%5.4f" % t
     misses_value.text = "%d" % misses
     $CosineGodotImage.t = t
@@ -46,9 +51,9 @@ func _process(delta):
     for client in clients:
         var last_received_time = last_received[client][1]
         var offset = time - last_received_time
-        var message = "%s,%s,%s,%s|" % [tick, last_received[client][0], offset, t_label.text]
+        var message = "%s,%s,%s,%s|" % [tick_rounded, last_received[client][0], offset, t]
         $LatencySimulator.send(client, message)
-        if not ticks_received.has(tick):
+        if not ticks_received.has(tick_rounded):
             misses += 1
         for i in range(ticks_received.size() - 1, -1, -1):
             if ticks_received[i] <= tick:
