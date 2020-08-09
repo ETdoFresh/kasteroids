@@ -94,6 +94,7 @@ size_flags_vertical = 3
 text = "Fire"
 
 [node name="RightControls2" type="GridContainer" parent="."]
+visible = false
 anchor_left = 1.0
 anchor_right = 1.0
 margin_left = -116.29

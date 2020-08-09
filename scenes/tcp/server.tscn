@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://entities/tcp/tcp_server.gd" type="Script" id=1]
 [ext_resource path="res://entities/input/keyboard_shortcuts.gd" type="Script" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://entities/ui/banner.tscn" type="PackedScene" id=7]
 [ext_resource path="res://entities/ui/console.tscn" type="PackedScene" id=8]
 [ext_resource path="res://entities/debug_overlay/debug_overlay.tscn" type="PackedScene" id=9]
+[ext_resource path="res://entities/menu_button/menu_button.tscn" type="PackedScene" id=10]
 
 [sub_resource type="Gradient" id=1]
 colors = PoolColorArray( 0, 0.00392157, 0.384314, 1, 0.23587, 0.248374, 0.460938, 1 )
@@ -62,6 +63,16 @@ __meta__ = {
 [node name="Banner" parent="UI" instance=ExtResource( 7 )]
 
 [node name="Console" parent="UI" instance=ExtResource( 8 )]
+margin_left = 305.0
+margin_top = 470.0
+margin_right = -475.0
+margin_bottom = 6.10352e-05
+
+[node name="MenuButton" parent="UI" instance=ExtResource( 10 )]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -105.0
+margin_right = -15.0
 
 [node name="Kbps" type="Node" parent="."]
 script = ExtResource( 4 )

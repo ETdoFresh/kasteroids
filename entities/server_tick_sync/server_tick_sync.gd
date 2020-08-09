@@ -19,6 +19,7 @@ var receive_rate_window = SlidingWindow.new(10)
 var receive_rate = 0
 var interpolated_tick = 0
 var interpolation_rate = 0.1
+var client_send_rate = 60
 
 func _process(delta):
     time += delta
@@ -58,7 +59,7 @@ func update_server_tick():
     prediction += (time - last_received_client_time) / tick_rate
     prediction += delay / tick_rate
     future_tick = prediction
-    future_tick += rtt / tick_rate
+    future_tick += rtt / tick_rate# * (Engine.iterations_per_second / client_send_rate) * 2
 
 func update_smooth_tick():
     # warning-ignore:integer_division

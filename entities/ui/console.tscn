@@ -1,33 +1,49 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://entities/ui/in_game_console.gd" type="Script" id=1]
+[ext_resource path="res://fonts/arial_16.tres" type="DynamicFont" id=2]
 
 [node name="Console" type="Panel"]
 self_modulate = Color( 1, 1, 1, 0.301961 )
-anchor_top = 1.0
+anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = -200.0
-margin_right = 500.0
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ScrollContainer" type="ScrollContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-scroll_horizontal_enabled = false
-scroll_vertical = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
-margin_right = 500.0
-margin_bottom = 200.0
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
+margin_right = 1280.0
+margin_bottom = 687.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer"]
-margin_right = 500.0
-margin_bottom = 200.0
-rect_min_size = Vector2( 500, 200 )
+[node name="Label" type="Label" parent="VBoxContainer/ScrollContainer"]
+margin_right = 1280.0
+margin_bottom = 687.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 2 )
 valign = 2
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer"]
+margin_top = 691.0
+margin_right = 1280.0
+margin_bottom = 720.0
+custom_fonts/font = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

@@ -1,7 +1,7 @@
 extends Node
 
+export var send_rate_per_second = 15
 var time_since_send = 0
-var send_rate_per_second = 60
 
 onready var latest_received_world = $LatestReceivedWorld
 onready var interpolated_world = $InterpolatedWorld
@@ -78,6 +78,10 @@ func _process(delta):
         $InterpolatedWorld/ServerTickSync.record_client_send($Inputs/Input.tick)
         $ExtrapolatedWorld/ServerTickSync.record_client_send($Inputs/Input.tick)
         $PredictedWorld/ServerTickSync.record_client_send($Inputs/Input.tick)
+        latest_received_world.server_tick_sync.client_send_rate = send_rate_per_second
+        interpolated_world.server_tick_sync.client_send_rate = send_rate_per_second
+        extrapolated_world.server_tick_sync.client_send_rate = send_rate_per_second
+        predicted_world.server_tick_sync.client_send_rate = send_rate_per_second
 
 func show_connected_to_server():
     console_write_ln("Connected to Server!")

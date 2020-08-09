@@ -5,6 +5,13 @@ export var max_lines = 100
 
 var lines = []
 
+func _ready():
+    var _1 = $VBoxContainer/LineEdit.connect("text_entered", self, "submit_line")
+
+func submit_line(line):
+    $VBoxContainer/LineEdit.clear()
+    write_line(line)
+
 func write_line(message):
     lines.append(message)
     
@@ -17,7 +24,6 @@ func write_line(message):
         else: text += "\n" + lines[i]
     
     if not is_inside_tree(): yield(self, "tree_entered")
-    $ScrollContainer/VBoxContainer/Label.text = text
+    $VBoxContainer/ScrollContainer/Label.text = text
     yield(get_tree(), "idle_frame")
-    if lines.size() > 12:
-        $ScrollContainer.scroll_vertical = $ScrollContainer.get_v_scrollbar().max_value
+    $VBoxContainer/ScrollContainer.scroll_vertical = $VBoxContainer/ScrollContainer.get_v_scrollbar().max_value

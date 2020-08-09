@@ -8,7 +8,9 @@ func _ready():
     for existing_input in $Inputs.get_children():
         $World.create_player(existing_input)
         existing_input.connect("tree_exited", $World,"delete_player", [existing_input])
-    $DebugOverlay.add_stat("Kbps", $Kbps, "value", false)
+    
+    if has_node("DebugOverlay") && has_node("Kbps"):
+        $DebugOverlay.add_stat("Kbps", $Kbps, "value", false)
 
 func _enter_tree():    
     if has_node("TCPServer"):

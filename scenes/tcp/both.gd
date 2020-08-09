@@ -6,6 +6,7 @@ func _ready():
     $Client/LatestReceivedWorld/Background.visible = false
     $Client/KeyboardShortcuts.queue_free()
     $Client/UI.visible = false
+    $Client/Background.visible = false
     $Client/DebugOverlay.add_stat("Seconds in Future", self, "future_time", false)
 
 func _process(_delta):

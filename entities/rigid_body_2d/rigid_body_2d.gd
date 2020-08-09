@@ -38,7 +38,7 @@ func queue_rotation(rotation):
     queued_rotation = rotation
 
 func queue_scale(scale):
-    self.scale = scale
+    $CollisionShape2D.scale = scale
     queued_scale = scale
 
 func inverse(vector2 : Vector2):
