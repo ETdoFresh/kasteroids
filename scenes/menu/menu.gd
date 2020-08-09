@@ -22,6 +22,9 @@ func _ready():
         $VBoxContainer/Button7.connect("button_down", self, "go_to_web_socket_both")
     else:
         $VBoxContainer/Button7.visible = false
+    
+    $Username/Value.text = Data.get_username()
+    $Username/Value.connect("text_changed", Data, "set_username")
 
 func go_to_local(): get_tree().change_scene_to(Scene.LOCAL_GAME)
 func go_to_server(): get_tree().change_scene_to(Scene.TCP_SERVER_GAME)

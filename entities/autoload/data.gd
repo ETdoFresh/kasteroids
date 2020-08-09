@@ -1,5 +1,6 @@
 extends Node
 
+const USERNAME_PATH = "user://local_storage_username.tres"
 const INPUT_VARIABLES = ["horizontal", "vertical", "fire", "next_state", "previous_state"]
 const ID = {}
 const NULL_INPUT = {
@@ -38,3 +39,22 @@ func get_id(category):
 func return_id(category, id):
     if ID.has(category):
         ID[category].append(id)
+
+func get_username():
+    var username_resource
+    if ResourceLoader.exists(USERNAME_PATH):
+        username_resource = ResourceLoader.load(USERNAME_PATH)
+    if username_resource == null:
+        randomize()
+        username_resource = set_username("Guest%03d" % (randi() % 1000))
+    elif username_resource.value == "" || username_resource.value == null:
+        randomize()
+        username_resource["value"] = "Guest%03d" % (randi() % 1000)
+        var _1 = ResourceSaver.save(USERNAME_PATH, username_resource)
+    return username_resource.value
+
+func set_username(username):
+    var username_resource = Username.new(username)
+    username_resource.resource_path = USERNAME_PATH
+    var _1 = ResourceSaver.save(USERNAME_PATH, username_resource)
+    return username_resource
