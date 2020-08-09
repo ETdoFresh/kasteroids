@@ -11,13 +11,18 @@ var linear_velocity
 var angular_velocity
 
 onready var state_machine = $States
+onready var data = $Data
 
 func init(init_input):
     input = init_input
     return self
 
 func _ready():
+    var _1 = data.connect("deserialized", self, "on_deserialized")
     update_input(input)
+
+func _process(_delta):
+    $Name.position = state_machine.active_state.position
 
 func _physics_process(_delta):    
     if input.fire:
@@ -38,7 +43,11 @@ func _physics_process(_delta):
         var state = state_machine.active_state
         linear_velocity = state.linear_velocity if state.get("linear_velocity") else Vector2.ZERO
         angular_velocity = state.angular_velocity if state.get("angular_velocity") else 0
-        $Data.update(state.global_position, state.global_rotation, state.get_node("CollisionShape2D").scale, linear_velocity, angular_velocity)
+        var id = get_instance_id()
+        data.update(id, name, state.global_position, state.global_rotation, state.get_node("CollisionShape2D").scale, linear_velocity, angular_velocity)
+
+func on_deserialized():
+    $States/Normal/Name/Label.text = data.instance_name
 
 func state_name():
     return state_machine.active_state_name

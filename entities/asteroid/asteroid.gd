@@ -10,6 +10,8 @@ export var max_scale = 1.0
 
 var random = RandomNumberGenerator.new()
 
+onready var data = $Data
+
 func _ready():
     random.randomize()
     randomize_spin()
@@ -17,7 +19,7 @@ func _ready():
     randomize_scale()
 
 func _physics_process(_delta):
-    $Data.update(position, rotation, $CollisionShape2D.scale, linear_velocity, angular_velocity)
+    data.update(get_instance_id(), name, position, rotation, $CollisionShape2D.scale, linear_velocity, angular_velocity)
 
 func _integrate_forces(state):
     ._integrate_forces(state)
@@ -33,9 +35,6 @@ func randomize_speed():
 
 func randomize_scale():
     $CollisionShape2D.scale *= random.randf_range(min_scale, max_scale)
-
-func serialize():
-    return $Data.serialize()
 
 var snapping_distance = 100
 func linear_interpolate(other, t):

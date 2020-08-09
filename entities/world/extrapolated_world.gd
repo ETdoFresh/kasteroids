@@ -1,6 +1,6 @@
 extends Node2D
 
-var resources = \
+var types = \
 {
     "ShipClient": Scene.SHIP_CLIENT,
     "AsteroidClient": Scene.ASTEROID_CLIENT,
@@ -28,13 +28,10 @@ func _process(_delta):
                 child.rotation += child.get_meta("angular_velocity") * time
 
 func deserialize(serialized):
-    var items = serialized.split(",", false)
-    var types = containers.keys()
-    var x = 0
-    
-    var server_tick = int(items[x]); x += 1
-    var client_tick = int(items[x]); x += 1
-    var offset_time = float(items[x]); x += 1    
+    var queue = PoolStringQueue.new(serialized.split(",", false))
+    var server_tick = Data.deserialize_int(queue)
+    var client_tick = Data.deserialize_int(queue)
+    var offset_time = Data.deserialize_float(queue)
     if server_tick_sync:
         $ServerTickSync.record_client_recieve(server_tick, client_tick, offset_time)
     
@@ -43,32 +40,20 @@ func deserialize(serialized):
     
     last_tick_received = server_tick
     
-    for type in types:
-        var count = int(items[x]); x += 1
+    for type_name in types.keys():
+        var count = Data.deserialize_int(queue)
+        var container = containers[type_name]
         
-        var container = containers[type]
         while container.get_child_count() > count:
             container.get_child(0).free()
         while container.get_child_count() < count:
-            var child = resources[type].instance()
-            containers[type].add_child(child)
+            var child = types[type_name].instance()
+            containers[type_name].add_child(child)
 
         for i in range(count):
             var child = container.get_child(i)
-            child.get_node("Data").id = deserialize_int(items, x); x += 1
-            child.position = deserialize_Vector2(items, x); x += 2
-            child.set_meta("extrapolated_position", child.position)
-            child.rotation = deserialize_float(items, x); x += 1
-            child.set_meta("extrapolated_rotation", child.rotation)
-            child.scale = deserialize_Vector2(items, x); x += 2
-            child.set_meta("linear_velocity", deserialize_Vector2(items, x)); x += 2
-            child.set_meta("angular_velocity", deserialize_float(items, x)); x += 1
-
-func deserialize_int(items, x):
-    return int(items[x])
-
-func deserialize_float(items, x):
-    return float(items[x])
-
-func deserialize_Vector2(items, x):
-    return Vector2(items[x], items[x + 1])
+            child.data.deserialize(queue)
+            child.set_meta("extrapolated_position", child.data.position)
+            child.set_meta("extrapolated_rotation", child.data.rotation)
+            child.set_meta("linear_velocity", child.data.linear_velocity)
+            child.set_meta("angular_velocity", child.data.angular_velocity)

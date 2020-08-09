@@ -33,6 +33,7 @@ texture = ExtResource( 1 )
 shape = SubResource( 1 )
 
 [node name="LabelNode2D" type="Node2D" parent="States/Initiating"]
+visible = false
 
 [node name="Label" type="Label" parent="States/Initiating/LabelNode2D"]
 anchor_left = 0.5
@@ -80,6 +81,7 @@ wait_time = 3.0
 autostart = true
 
 [node name="LabelNode2D" type="Node2D" parent="States/Ghost"]
+visible = false
 script = ExtResource( 8 )
 
 [node name="Label" type="Label" parent="States/Ghost/LabelNode2D"]
@@ -127,6 +129,7 @@ wait_time = 3.0
 autostart = true
 
 [node name="LabelNode2D" type="Node2D" parent="States/Normal"]
+visible = false
 script = ExtResource( 8 )
 
 [node name="Label" type="Label" parent="States/Normal/LabelNode2D"]
@@ -162,6 +165,7 @@ texture = ExtResource( 1 )
 script = ExtResource( 4 )
 
 [node name="LabelNode2D" type="Node2D" parent="States/Dead"]
+visible = false
 script = ExtResource( 8 )
 
 [node name="Label" type="Label" parent="States/Dead/LabelNode2D"]
@@ -182,3 +186,22 @@ __meta__ = {
 
 [node name="Data" type="Node" parent="."]
 script = ExtResource( 10 )
+
+[node name="Name" type="Node2D" parent="."]
+script = ExtResource( 8 )
+
+[node name="Label" type="Label" parent="Name"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -50.0
+margin_top = -60.0
+margin_right = 50.0
+margin_bottom = -40.0
+text = "Name"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}

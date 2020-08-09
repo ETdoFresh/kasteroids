@@ -11,7 +11,7 @@ var last_received_server_tick = -1
 var last_received_server_time = -1
 var client_tick_sent_times = {}
 var time = 0
-var tick_rate = 1.0 / Engine.iterations_per_second
+var tick_rate = 1.0 / Settings.simulation_iterations_per_second
 var smooth_tick = -1
 var buffer = 10
 var smooth_tick_ahead_count = 0
@@ -55,7 +55,7 @@ func update_server_tick():
 
 func update_smooth_tick():
     # warning-ignore:integer_division
-    if abs(smooth_tick - future_tick) >= Engine.iterations_per_second / 2:
+    if abs(smooth_tick - future_tick) >= Settings.simulation_iterations_per_second / 2:
         smooth_tick = round(future_tick) - 1
     
     if smooth_tick_ahead_count >= buffer:

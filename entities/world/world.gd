@@ -7,7 +7,8 @@ func serialize(client_tick, offset):
     return $Serializer.serialize()
 
 func _physics_process(delta):
-    $Tick.tick += 1
+    $Tick.precise_tick += delta * Settings.simulation_iterations_per_second
+    $Tick.tick = int(round($Tick.precise_tick))
     $Tick.time += delta
 
 func create_player(input):

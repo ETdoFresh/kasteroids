@@ -1,6 +1,8 @@
 class_name Bullet
 extends "res://entities/rigid_body_2d/rigid_body_2d.gd"
 
+onready var data = $Data
+
 func _ready():
     #warning-ignore:return_value_discarded
     connect("body_entered", self, "_on_self_body_entered")
@@ -14,7 +16,7 @@ func start(position, rotation, rigidbody, velocity_magnitude):
     linear_velocity = ship_velocity + Vector2(0, -velocity_magnitude).rotated(rotation)
 
 func _physics_process(_delta):
-    $Data.update(position, rotation, $CollisionShape2D.scale, linear_velocity, angular_velocity)
+    data.update(get_instance_id(), name, position, rotation, $CollisionShape2D.scale, linear_velocity, angular_velocity)
 
 func _integrate_forces(state):
     ._integrate_forces(state)

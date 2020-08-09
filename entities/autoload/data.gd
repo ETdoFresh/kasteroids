@@ -58,3 +58,28 @@ func set_username(username):
     username_resource.resource_path = USERNAME_PATH
     var _1 = ResourceSaver.save(USERNAME_PATH, username_resource)
     return username_resource
+
+func serialize_Vector2(v : Vector2):
+    return "%f,%f," % [v.x, v.y]
+
+func serialize_float(v : float):
+    return "%f," % v
+
+func serialize_int(v : int):
+    return "%d," % v
+
+func serialize_string(v : String):
+    return v.replace(",", "{comma}") + ","
+
+func deserialize_Vector2(queue : PoolStringQueue):
+    return Vector2(float(queue.pop_front()), float(queue.pop_front()))
+
+func deserialize_float(queue : PoolStringQueue):
+    return float(queue.pop_front())
+
+func deserialize_int(queue : PoolStringQueue):
+    return int(queue.pop_front())
+
+func deserialize_string(queue : PoolStringQueue):
+    return queue.pop_front().replace("{comma}", ",")
+    

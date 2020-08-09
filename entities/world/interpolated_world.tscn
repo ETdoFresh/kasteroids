@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://entities/tick/tick.gd" type="Script" id=1]
 [ext_resource path="res://entities/world/interpolated_world.gd" type="Script" id=2]
 [ext_resource path="res://entities/server_tick_sync/server_tick_sync.gd" type="Script" id=3]
 [ext_resource path="res://entities/interpolation/interpolation.gd" type="Script" id=4]
 [ext_resource path="res://entities/world/base_world.tscn" type="PackedScene" id=5]
+[ext_resource path="res://entities/asteroid/data.gd" type="Script" id=6]
 
 [node name="InterpolatedWorld" instance=ExtResource( 5 )]
 script = ExtResource( 2 )
@@ -25,3 +26,6 @@ script = ExtResource( 3 )
 
 [node name="Interpolation" type="Node" parent="." index="6"]
 script = ExtResource( 4 )
+
+[node name="PlaceHolderData" type="Node" parent="." index="7"]
+script = ExtResource( 6 )

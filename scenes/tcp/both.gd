@@ -12,4 +12,4 @@ func _ready():
 func _process(_delta):
     future_time = $Client/LatestReceivedWorld/ServerTickSync.smooth_tick
     future_time -= $Server/World/Tick.tick
-    future_time *= 1.0 / Engine.iterations_per_second
+    future_time *= 1.0 / Settings.simulation_iterations_per_second

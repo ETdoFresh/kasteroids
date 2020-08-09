@@ -5,7 +5,7 @@ var queued_rotation = null
 var queued_scale = null
 
 func _integrate_forces(state):
-    if queued_position == null && queued_rotation == null || queued_scale == null:
+    if queued_position == null && queued_rotation == null && queued_scale == null:
         return
     
     var transform = state.transform

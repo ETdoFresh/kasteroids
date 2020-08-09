@@ -9,6 +9,7 @@ func _ready():
         $World.create_player(existing_input)
         existing_input.connect("tree_exited", $World,"delete_player", [existing_input])
     
+    $DebugOverlay.add_stat("Tick", $World/Tick, "tick", false)
     if has_node("DebugOverlay") && has_node("Kbps"):
         $DebugOverlay.add_stat("Kbps", $Kbps, "value", false)
 
@@ -58,6 +59,7 @@ func create_tcp_server_input(client):
     $Inputs.add_child(input)
     $World.create_player(input)
     $DebugOverlay.add_stat("Misses", input, "misses", false)
+    $DebugOverlay.add_stat("Last Received Tick", input, "latest_received_tick", false)
     var _1 = $TCPServer.connect("on_receive", input, "deserialize")
     console_write_ln("A Client has connected!")
 

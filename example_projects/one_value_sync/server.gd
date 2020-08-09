@@ -1,4 +1,4 @@
-extends "res://networking/tcp_server.gd"
+extends "res://entities/tcp/tcp_server.gd"
 
 var update_timer = 0.0
 var speed = 0.01
@@ -6,7 +6,7 @@ var tick = 10000
 var t = 0
 var last_received = {}
 var ticks_received = []
-var tick_rate = 1.0 / Engine.iterations_per_second
+var tick_rate = 1.0 / Settings.simulation_iterations_per_second
 var time = 0
 var misses = 0
 

@@ -17,6 +17,7 @@ onready var other_ships = get_parent().get_node("ExtrapolatedWorld/Ships")
 onready var other_asteroids = get_parent().get_node("ExtrapolatedWorld/Asteroids")
 onready var other_bullets = get_parent().get_node("ExtrapolatedWorld/Bullets")
 onready var other_containers = { "ShipClient": other_ships, "AsteroidClient": other_asteroids, "BulletClient": other_bullets }
+onready var place_holder_data = $PlaceHolderData
 
 func create_player(_input): pass
 func delete_player(_input): pass
@@ -35,53 +36,37 @@ func _process(_delta):
                     child.linear_interpolate(other_child, smoothing_rate)
 
 func deserialize(serialized):
-    var items = serialized.split(",", false)
-    var type_names = containers.keys()
-    var x = 0
-    
-    var server_tick = int(items[x]); x += 1
-    var client_tick = int(items[x]); x += 1
-    var offset_time = float(items[x]); x += 1
+    var queue = PoolStringQueue.new(serialized.split(",", false))
+    var server_tick = Data.deserialize_int(queue)
+    var client_tick = Data.deserialize_int(queue)
+    var offset_time = Data.deserialize_float(queue)
     if tick:
         tick.tick = server_tick
     if server_tick_sync:
         $ServerTickSync.record_client_recieve(server_tick, client_tick, offset_time)
     
-    for type_name in type_names:
-        var count = int(items[x]); x += 1
+    for type_name in types.keys():
+        var count = Data.deserialize_int(queue)
         var container = containers[type_name]
         var type = types[type_name]
 
         var ids = []
         for _i in range(count):
-            var id = deserialize_int(items, x); x += 1
-            var _position = deserialize_Vector2(items, x); x += 2
-            var _rotation = deserialize_float(items, x); x += 1
-            var _scale = deserialize_Vector2(items, x); x += 2
-            var linear_velocity = deserialize_Vector2(items, x); x += 2
-            var angular_velocity = deserialize_float(items, x); x += 1
+            place_holder_data.deserialize(queue)
             
+            var id = place_holder_data.id
             ids.append(id)
             if not container_has_id(container, id):
                 create_instance(container, type, id)
             
             var child = get_child_by_id(container, id)
-            child.linear_velocity = linear_velocity
-            child.angular_velocity = angular_velocity
+            child.linear_velocity = place_holder_data.linear_velocity
+            child.angular_velocity = place_holder_data.angular_velocity
         
         for child in container.get_children():
             var data = child.find_node("Data")
             if not ids.has(data.id):
                 child.queue_free()
-
-func deserialize_int(items, x):
-    return int(items[x])
-
-func deserialize_float(items, x):
-    return float(items[x])
-
-func deserialize_Vector2(items, x):
-    return Vector2(items[x], items[x + 1])
 
 func create_instance(container, type, id):
     var child = type.instance()

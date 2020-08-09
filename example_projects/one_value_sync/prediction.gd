@@ -5,7 +5,7 @@ var future_tick = 0
 var history = {}
 var misses = 0
 var speed = 0.01
-var tick_rate = 1.0 / Engine.iterations_per_second
+var tick_rate = 1.0 / Settings.simulation_iterations_per_second
 
 func recieve_and_correct_past(tick, recieved_t):
     tick = int(tick)

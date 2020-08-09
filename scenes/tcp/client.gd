@@ -2,11 +2,9 @@ extends Node
 
 export var send_rate_per_second = 15
 var time_since_send = 0
+var worlds = []
 
 onready var latest_received_world = $LatestReceivedWorld
-onready var interpolated_world = $InterpolatedWorld
-onready var extrapolated_world = $ExtrapolatedWorld
-onready var predicted_world = $PredictedWorld
 
 func _enter_tree():
     if has_node("TCPClient"):
@@ -22,26 +20,28 @@ func _enter_tree():
         $WebSocketClient.open("wss://etdofresh.synology.me:11001")
 
 func _ready():
+    if has_node("LatestReceivedWorld"): worlds.append(get_node("LatestReceivedWorld"))
+    if has_node("InterpolatedWorld"): worlds.append(get_node("InterpolatedWorld"))
+    if has_node("ExtrapolatedWorld"): worlds.append(get_node("ExtrapolatedWorld"))
+    if has_node("PredictedWorld"): worlds.append(get_node("PredictedWorld"))
+    
     for existing_input in $Inputs.get_children():
         latest_received_world.create_player(existing_input)
         existing_input.connect("tree_exited", latest_received_world,"delete_player", [existing_input])
     
     if has_node("TCPClient"):
-        var _1 = $TCPClient.connect("on_receive", latest_received_world, "deserialize")
-        var _2 = $TCPClient.connect("on_receive", interpolated_world, "deserialize")
-        var _3 = $TCPClient.connect("on_receive", extrapolated_world, "deserialize")
-        var _4 = $TCPClient.connect("on_receive", predicted_world, "deserialize")
+        for world in worlds:
+            var _1 = $TCPClient.connect("on_receive", world, "deserialize")
         var _5 = $TCPClient.connect("on_receive", $ReceivedKbps, "add_data")
     if has_node("WebSocketClient"):
-        var _1 = $WebSocketClient.connect("on_receive", latest_received_world, "deserialize")
-        var _2 = $WebSocketClient.connect("on_receive", interpolated_world, "deserialize")
-        var _3 = $WebSocketClient.connect("on_receive", extrapolated_world, "deserialize")
-        var _4 = $WebSocketClient.connect("on_receive", predicted_world, "deserialize")
+        for world in worlds:
+            var _1 = $WebSocketClient.connect("on_receive", world, "deserialize")
         var _5 = $WebSocketClient.connect("on_receive", $ReceivedKbps, "add_data")
     
     $DebugOverlay.add_stat("Tick", $LatestReceivedWorld/Tick, "tick", false)
     $DebugOverlay.add_stat("RTT", $LatestReceivedWorld/ServerTickSync, "rtt", false)
-    $DebugOverlay.add_stat("Lastest Received Tick", $LatestReceivedWorld/ServerTickSync, "last_received_server_tick", false)
+    $DebugOverlay.add_stat("Lastest Received Server Tick", $LatestReceivedWorld/ServerTickSync, "last_received_server_tick", false)
+    $DebugOverlay.add_stat("Lastest Received Client Tick", $LatestReceivedWorld/ServerTickSync, "last_received_client_tick", false)
     $DebugOverlay.add_stat("Prediction", $LatestReceivedWorld/ServerTickSync, "prediction", false)
     $DebugOverlay.add_stat("Future Tick", $LatestReceivedWorld/ServerTickSync, "future_tick", false)
     $DebugOverlay.add_stat("SmoothTick", $LatestReceivedWorld/ServerTickSync, "smooth_tick", false)
@@ -74,14 +74,9 @@ func _process(delta):
             $WebSocketClient.send(message)
             $SentKbps.add_data(message)
         
-        $LatestReceivedWorld/ServerTickSync.record_client_send($Inputs/Input.tick)
-        $InterpolatedWorld/ServerTickSync.record_client_send($Inputs/Input.tick)
-        $ExtrapolatedWorld/ServerTickSync.record_client_send($Inputs/Input.tick)
-        $PredictedWorld/ServerTickSync.record_client_send($Inputs/Input.tick)
-        latest_received_world.server_tick_sync.client_send_rate = send_rate_per_second
-        interpolated_world.server_tick_sync.client_send_rate = send_rate_per_second
-        extrapolated_world.server_tick_sync.client_send_rate = send_rate_per_second
-        predicted_world.server_tick_sync.client_send_rate = send_rate_per_second
+        for world in worlds:
+            world.server_tick_sync.record_client_send($Inputs/Input.tick)
+            world.server_tick_sync.client_send_rate = send_rate_per_second
 
 func show_connected_to_server():
     console_write_ln("Connected to Server!")
