@@ -55,9 +55,11 @@ __meta__ = {
 modulate = Color( 0, 0, 0.501961, 0.196078 )
 
 [node name="InterpolatedWorld" parent="." instance=ExtResource( 10 )]
+visible = false
 modulate = Color( 0.501961, 0.501961, 0, 0.196078 )
 
 [node name="ExtrapolatedWorld" parent="." instance=ExtResource( 11 )]
+visible = false
 modulate = Color( 0.501961, 0, 0.501961, 0.196078 )
 
 [node name="PredictedWorld" parent="." instance=ExtResource( 12 )]

@@ -7,28 +7,57 @@ func _input(event):
     if event is InputEventKey:
         if event.pressed:
             if Input.is_key_pressed(KEY_CONTROL):
-                if event.scancode == KEY_R:
+                if event.scancode == KEY_R: # +Control
                     #warning-ignore:return_value_discarded
                     get_tree().paused = false
                     get_tree().change_scene_to(Scene.MENU)
-            
-            if event.scancode == KEY_F11:
-                OS.window_fullscreen = !OS.window_fullscreen
-        
-            if Input.is_key_pressed(KEY_CONTROL):
-                if event.scancode == KEY_P:
+                    return
+                
+                if event.scancode == KEY_L: # +Control
+                    if get_parent().has_node("LatestReceivedWorld"):
+                        get_parent().get_node("LatestReceivedWorld").visible = \
+                            not get_parent().get_node("LatestReceivedWorld").visible
+                        return
+                
+                if event.scancode == KEY_I: # +Control
+                    if get_parent().has_node("InterpolatedWorld"):
+                        get_parent().get_node("InterpolatedWorld").visible = \
+                            not get_parent().get_node("InterpolatedWorld").visible
+                        return
+                
+                if event.scancode == KEY_E: # +Control
+                    if get_parent().has_node("ExtrapolatedWorld"):
+                        get_parent().get_node("ExtrapolatedWorld").visible = \
+                            not get_parent().get_node("ExtrapolatedWorld").visible
+                        return
+                
+                if event.scancode == KEY_A: # +Control
+                    if get_parent().has_node("PredictedWorld"):
+                        get_parent().get_node("PredictedWorld").visible = \
+                            not get_parent().get_node("PredictedWorld").visible
+                        return
+                
+                if event.scancode == KEY_S: # +Control
+                    if get_parent().get_parent().has_node("Server/World"):
+                        get_parent().get_parent().get_node("Server/World").visible = \
+                            not get_parent().get_parent().get_node("Server/World").visible
+                        return
+                
+                if event.scancode == KEY_P: # +Control
                     get_tree().paused = !get_tree().paused
-            
-            if Input.is_key_pressed(KEY_CONTROL):
-                if event.scancode == KEY_N:
+                
+                if event.scancode == KEY_N: # +Control
                     get_tree().paused = false
                     yield(get_tree(),"physics_frame")
                     yield(get_tree(),"physics_frame")
                     get_tree().paused = true
-        
+            
+            if event.scancode == KEY_F11:
+                OS.window_fullscreen = !OS.window_fullscreen
+            
             if event.scancode == KEY_DELETE:
                 if inputs.get_child_count() > 0:
                     inputs.get_child(0).queue_free()
-        
+            
             if event.scancode == KEY_INSERT:
                 get_parent().get_node("Inputs").create(Scene.KEYBOARD_PLUS_GUI)
