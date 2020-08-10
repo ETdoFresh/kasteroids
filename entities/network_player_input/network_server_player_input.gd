@@ -25,7 +25,7 @@ func deserialize(from_client, serialized):
     if from_client != client: return
     
     for message in serialized.split("|", false):
-        var items = serialized.split(",", false)
+        var items = message.split(",", false)
         var tick = int(items[0])
         if not received_inputs.has(tick):
             received_inputs[tick] = {

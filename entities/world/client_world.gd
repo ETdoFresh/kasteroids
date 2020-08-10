@@ -8,24 +8,18 @@ var types = \
 }
 
 var input = Data.NULL_INPUT
+var server_tick_sync
 
 onready var containers = { "ShipClient": $Ships, "AsteroidClient": $Asteroids, "BulletClient": $Bullets }
-onready var tick = $Tick
-onready var server_tick_sync = $ServerTickSync
 
-func create_player(_input): pass
-func delete_player(_input): pass
+func simulate(_delta):
+    pass
 
 func deserialize(serialized):
     var queue = PoolStringQueue.new(serialized.split(",", false))    
-    var server_tick = Data.deserialize_int(queue)
-    var client_tick = Data.deserialize_int(queue)
-    var offset_time = Data.deserialize_float(queue)
-    
-    if tick:
-        tick.tick = server_tick
-    if server_tick_sync:
-        $ServerTickSync.record_client_recieve(server_tick, client_tick, offset_time)
+    var _server_tick = Data.deserialize_int(queue)
+    var _client_tick = Data.deserialize_int(queue)
+    var _offset_time = Data.deserialize_float(queue)
     
     for type_name in types.keys():
         var count = Data.deserialize_int(queue)

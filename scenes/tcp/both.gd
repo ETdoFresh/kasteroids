@@ -10,6 +10,6 @@ func _ready():
     $Client/DebugOverlay.add_stat("Seconds in Future", self, "future_time", false)
 
 func _process(_delta):
-    future_time = $Client/LatestReceivedWorld/ServerTickSync.smooth_tick
+    future_time = $Client/ServerTickSync.smooth_tick
     future_time -= $Server/World/Tick.tick
     future_time *= 1.0 / Settings.ticks_per_second

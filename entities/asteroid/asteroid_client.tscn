@@ -1,8 +1,9 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://entities/asteroid/asteroid1.svg" type="Texture" id=1]
-[ext_resource path="res://entities/asteroid/data.gd" type="Script" id=2]
+[ext_resource path="res://entities/data/data.gd" type="Script" id=2]
 [ext_resource path="res://entities/asteroid/asteroid_client.gd" type="Script" id=3]
+
 
 [node name="AsteroidClient" type="Node2D"]
 script = ExtResource( 3 )

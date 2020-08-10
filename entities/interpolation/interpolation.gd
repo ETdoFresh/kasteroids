@@ -2,6 +2,7 @@ extends Node
 
 export var snap_distance = 150
 
+var interpolation_rate = 0.1
 var history = []
 
 func add_history(state):
@@ -104,3 +105,9 @@ func delete_instances(before, after):
                 continue
             else:
                 child.queue_free()
+
+func get_interpolated_tick(tick, rtt, receive_rate):
+    var target_iterpolation_rate = rtt # back to predicted_tick
+    target_iterpolation_rate += max(rtt, receive_rate) * 1.5
+    interpolation_rate = lerp(interpolation_rate, target_iterpolation_rate, 0.1)
+    return tick - interpolation_rate * Settings.ticks_per_second

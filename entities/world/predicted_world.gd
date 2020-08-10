@@ -9,20 +9,17 @@ var types = \
 
 var input = Data.NULL_INPUT
 var smoothing_rate = 0.1
+var server_tick_sync
+var last_received_tick = 0
 
 onready var containers = { "ShipClient": $Ships, "AsteroidClient": $Asteroids, "BulletClient": $Bullets }
-onready var tick = $Tick
-onready var server_tick_sync = $ServerTickSync
 onready var other_ships = get_parent().get_node("ExtrapolatedWorld/Ships")
 onready var other_asteroids = get_parent().get_node("ExtrapolatedWorld/Asteroids")
 onready var other_bullets = get_parent().get_node("ExtrapolatedWorld/Bullets")
 onready var other_containers = { "ShipClient": other_ships, "AsteroidClient": other_asteroids, "BulletClient": other_bullets }
 onready var place_holder_data = $PlaceHolderData
 
-func create_player(_input): pass
-func delete_player(_input): pass
-
-func _process(_delta):
+func simulate(_delta):
     for i in range(containers.size()):
         var container = containers.values()[i]
         var other_container = other_containers.values()[i]
@@ -38,18 +35,19 @@ func _process(_delta):
 func deserialize(serialized):
     var queue = PoolStringQueue.new(serialized.split(",", false))
     var server_tick = Data.deserialize_int(queue)
-    var client_tick = Data.deserialize_int(queue)
-    var offset_time = Data.deserialize_float(queue)
-    if tick:
-        tick.tick = server_tick
-    if server_tick_sync:
-        $ServerTickSync.record_client_recieve(server_tick, client_tick, offset_time)
+    var _client_tick = Data.deserialize_int(queue)
+    var _offset_time = Data.deserialize_float(queue)
+    
+    if server_tick < last_received_tick:
+        return
+    else:
+        last_received_tick = server_tick
     
     for type_name in types.keys():
         var count = Data.deserialize_int(queue)
         var container = containers[type_name]
         var type = types[type_name]
-
+        
         var ids = []
         for _i in range(count):
             place_holder_data.deserialize(queue)

@@ -7,8 +7,10 @@
 [ext_resource path="res://example_projects/one_value_sync/one_value_sync.gd" type="Script" id=5]
 [ext_resource path="res://example_projects/one_value_sync/cosine_godot_image.tscn" type="PackedScene" id=6]
 [ext_resource path="res://example_projects/one_value_sync/interpolation.gd" type="Script" id=7]
-[ext_resource path="res://example_projects/one_value_sync/server_tick.gd" type="Script" id=8]
+[ext_resource path="res://entities/server_tick_sync/server_tick_sync.gd" type="Script" id=8]
 [ext_resource path="res://example_projects/one_value_sync/prediction.gd" type="Script" id=9]
+
+
 
 [node name="OneValueSync" type="Control"]
 pause_mode = 2
