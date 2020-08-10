@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://entities/input/gui_input.gd" type="Script" id=1]
+[ext_resource path="res://entities/input/multi_touch_button.gd" type="Script" id=2]
 
 [node name="GUIInput" type="Control"]
 anchor_right = 1.0
@@ -28,6 +29,7 @@ margin_right = 97.0
 margin_bottom = 98.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+script = ExtResource( 2 )
 
 [node name="Up" type="Button" parent="LeftControls"]
 margin_left = 101.0
@@ -36,6 +38,7 @@ margin_bottom = 98.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Up"
+script = ExtResource( 2 )
 
 [node name="Button3" type="Button" parent="LeftControls"]
 margin_left = 202.0
@@ -43,6 +46,7 @@ margin_right = 299.0
 margin_bottom = 98.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+script = ExtResource( 2 )
 
 [node name="Left" type="Button" parent="LeftControls"]
 margin_top = 102.0
@@ -51,6 +55,7 @@ margin_bottom = 200.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Left"
+script = ExtResource( 2 )
 
 [node name="Down" type="Button" parent="LeftControls"]
 margin_left = 101.0
@@ -60,6 +65,7 @@ margin_bottom = 200.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Down"
+script = ExtResource( 2 )
 
 [node name="Right" type="Button" parent="LeftControls"]
 margin_left = 202.0
@@ -69,6 +75,7 @@ margin_bottom = 200.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Right"
+script = ExtResource( 2 )
 
 [node name="RightControls" type="GridContainer" parent="."]
 anchor_left = 1.0
@@ -92,6 +99,7 @@ margin_bottom = 99.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Fire"
+script = ExtResource( 2 )
 
 [node name="RightControls2" type="GridContainer" parent="."]
 visible = false
@@ -114,6 +122,7 @@ margin_bottom = 97.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Previous State"
+script = ExtResource( 2 )
 
 [node name="NextState" type="Button" parent="RightControls2"]
 margin_top = 101.0
@@ -122,3 +131,4 @@ margin_bottom = 198.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Next State"
+script = ExtResource( 2 )

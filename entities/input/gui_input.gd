@@ -11,30 +11,18 @@ var previous_state = false
 var was_previous_state = false
 
 func _ready():
-    #warning-ignore:return_value_discarded
-    #warning-ignore:return_value_discarded
-    #warning-ignore:return_value_discarded
-    #warning-ignore:return_value_discarded
-    #warning-ignore:return_value_discarded
-    #warning-ignore:return_value_discarded
-    #warning-ignore:return_value_discarded
-    #warning-ignore:return_value_discarded
-    #warning-ignore:return_value_discarded
-    #warning-ignore:return_value_discarded
-    #warning-ignore:return_value_discarded
-    #warning-ignore:return_value_discarded
-    $LeftControls/Up.connect("button_down", self, "up_pressed")
-    $LeftControls/Up.connect("button_up", self, "up_released")
-    $LeftControls/Down.connect("button_down", self, "down_pressed")
-    $LeftControls/Down.connect("button_up", self, "down_released")
-    $LeftControls/Left.connect("button_down", self, "left_pressed")
-    $LeftControls/Left.connect("button_up", self, "left_released")
-    $LeftControls/Right.connect("button_down", self, "right_pressed")
-    $LeftControls/Right.connect("button_up", self, "right_released")
-    $RightControls/Fire.connect("button_down", self, "fire_pressed")
-    $RightControls/Fire.connect("button_up", self, "fire_released")
-    $RightControls2/NextState.connect("button_down", self, "set_next_state")
-    $RightControls2/PreviousState.connect("button_down", self, "set_previous_state")
+    var _01 = $LeftControls/Up.connect("touch_button_down", self, "up_pressed")
+    var _02 = $LeftControls/Up.connect("touch_button_up", self, "up_released")
+    var _03 = $LeftControls/Down.connect("touch_button_down", self, "down_pressed")
+    var _04 = $LeftControls/Down.connect("touch_button_up", self, "down_released")
+    var _05 = $LeftControls/Left.connect("touch_button_down", self, "left_pressed")
+    var _06 = $LeftControls/Left.connect("touch_button_up", self, "left_released")
+    var _07 = $LeftControls/Right.connect("touch_button_down", self, "right_pressed")
+    var _08 = $LeftControls/Right.connect("touch_button_up", self, "right_released")
+    var _09 = $RightControls/Fire.connect("touch_button_down", self, "fire_pressed")
+    var _10 = $RightControls/Fire.connect("touch_button_up", self, "fire_released")
+    var _11 = $RightControls2/NextState.connect("touch_button_down", self, "set_next_state")
+    var _12 = $RightControls2/PreviousState.connect("touch_button_down", self, "set_previous_state")
 
 func up_pressed(): up = true
 func up_released(): up = false
