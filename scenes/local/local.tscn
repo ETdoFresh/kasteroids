@@ -1,10 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scenes/tcp/server.gd" type="Script" id=1]
 [ext_resource path="res://entities/input/keyboard_plus_gui.tscn" type="PackedScene" id=2]
 [ext_resource path="res://entities/world/world.tscn" type="PackedScene" id=3]
+[ext_resource path="res://entities/menu_button/menu_button.tscn" type="PackedScene" id=4]
 [ext_resource path="res://entities/input/keyboard_shortcuts.gd" type="Script" id=5]
-
 
 [node name="Local" type="Node"]
 script = ExtResource( 1 )
@@ -17,3 +17,10 @@ script = ExtResource( 5 )
 [node name="Inputs" type="Node" parent="."]
 
 [node name="Input" parent="Inputs" instance=ExtResource( 2 )]
+
+[node name="MenuButton" parent="." instance=ExtResource( 4 )]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -105.0
+margin_right = -15.0
+margin_bottom = 82.0
