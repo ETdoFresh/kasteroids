@@ -9,7 +9,6 @@ func _ready():
         $World.create_player(existing_input)
         existing_input.connect("tree_exited", $World,"delete_player", [existing_input])
     
-    $DebugOverlay.add_stat("Tick", $World/Tick, "tick", false)
     if has_node("DebugOverlay") && has_node("Kbps"):
         $DebugOverlay.add_stat("Kbps", $Kbps, "value", false)
 
@@ -27,6 +26,7 @@ func _enter_tree():
         var _1 = $WebSocketServer.connect("on_open", self, "create_web_socket_server_input")
         var _2 = $WebSocketServer.connect("on_close", self, "remove_server_input")
         var _3 = $WebSocketServer.listen()
+        #var _3 = $WebSocketServer.listen_insecure()
         var _4 = $WebSocketServer.connect("on_receive", $Kbps, "add_client_data")
         console_write_ln("Awaiting new connection...")
 

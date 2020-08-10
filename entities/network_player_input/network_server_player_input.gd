@@ -21,17 +21,22 @@ func _init(init_name_prefix, init_client):
 func _process(delta):
     time += delta
 
+func serailize():
+    var tick = 0
+    return "%s,%d,%s,%s,%s" % [input_name, tick, horizontal, vertical, fire]
+
 func deserialize(from_client, serialized):
     if from_client != client: return
     
     for message in serialized.split("|", false):
         var items = message.split(",", false)
-        var tick = int(items[0])
+        input_name = items[0]
+        var tick = int(items[1])
         if not received_inputs.has(tick):
             received_inputs[tick] = {
-                "horizontal": float(items[1]),
-                "vertical": float(items[2]),
-                "fire": true if items[3] == "True" else false
+                "horizontal": float(items[2]),
+                "vertical": float(items[3]),
+                "fire": true if items[4] == "True" else false
             }
         if tick > latest_received_tick:
             latest_received_tick = tick

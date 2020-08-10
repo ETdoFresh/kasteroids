@@ -32,7 +32,7 @@ func deserialize(queue : PoolStringQueue):
     emit_signal("deserialized")
 
 func update(u_id, u_instance_name, u_position, u_rotation, u_scale, u_linear_velocity, u_angular_velocity):
-    id = u_id
+    id = u_id if id == -1 else id
     instance_name = u_instance_name
     position = u_position
     rotation = u_rotation

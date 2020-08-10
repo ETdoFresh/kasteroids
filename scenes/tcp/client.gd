@@ -22,9 +22,12 @@ func _enter_tree():
         console_write_ln("Connecting to Server...")
         var _1 = $WebSocketClient.connect("on_open", self, "show_connected_to_server")
         var _2 = $WebSocketClient.connect("on_close", self, "show_disconnected_to_server")
+        #$WebSocketClient.open()
         $WebSocketClient.open("wss://etdofresh.synology.me:11001")
 
 func _ready():
+    $Inputs/Input.input_name = Data.get_username()
+    
     if has_node("LatestReceivedWorld"): worlds.append(get_node("LatestReceivedWorld"))
     if has_node("InterpolatedWorld"): worlds.append(get_node("InterpolatedWorld"))
     if has_node("ExtrapolatedWorld"): worlds.append(get_node("ExtrapolatedWorld"))
@@ -47,7 +50,7 @@ func _ready():
         
     if has_node("WebSocketClient"):
         for world in worlds:
-            var _1 = $TCPClient.connect("on_receive", world, "deserialize")
+            var _1 = $WebSocketClient.connect("on_receive", world, "deserialize")
         var _1 = $WebSocketClient.connect("on_receive", server_tick_sync, "record_client_receive_message")
         var _2 = $WebSocketClient.connect("on_receive", received_kbps, "add_data")
     

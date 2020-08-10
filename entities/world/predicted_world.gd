@@ -25,9 +25,7 @@ func simulate(_delta):
         var other_container = other_containers.values()[i]
         for j in range(container.get_child_count()):
             var child = container.get_child(j)
-            var data = child.find_node("Data")
-            var id = data.id
-            var other_child = get_child_by_id(other_container, id)
+            var other_child = get_child_by_id(other_container, child.data.id)
             if other_child != null:
                 if child.has_method("linear_interpolate"):
                     child.linear_interpolate(other_child, smoothing_rate)
@@ -57,47 +55,33 @@ func deserialize(serialized):
             if not container_has_id(container, id):
                 create_instance(container, type, id)
             
+            # TODO: Compare to determine if there was a prediction miss.
+            
             var child = get_child_by_id(container, id)
             child.linear_velocity = place_holder_data.linear_velocity
             child.angular_velocity = place_holder_data.angular_velocity
+            child.data.instance_name = place_holder_data.instance_name
         
         for child in container.get_children():
-            var data = child.find_node("Data")
-            if not ids.has(data.id):
+            if not ids.has(child.data.id):
                 child.queue_free()
 
 func create_instance(container, type, id):
     var child = type.instance()
     child.collision_layer = Data.get_physics_layer_id_by_name("client")
     child.collision_mask = Data.get_physics_layer_id_by_name("client")
-    child.set_meta("created_this_frame", true)
-    var data = child.find_node("Data")
     container.add_child(child)
-    data.id = id
+    child.data.id = id
     return child
 
 func get_child_by_id(container, id):
     for child in container.get_children():
-        var data = child.find_node("Data")
-        if data.id == id:
+        if child.data.id == id:
             return child
     return null
 
 func container_has_id(container, id):
     for child in container.get_children():
-        var data = child.find_node("Data")
-        if data.id == id:
+        if child.data.id == id:
             return true
     return false
-
-func delete_instances(before, after):
-    var ids = []
-    for child in before.children: ids.append(child.id)
-    for child in after.children: ids.append(child.id)
-    for container in before.containers:
-        for child in container.get_children():
-            var data = child.find_node("Data")
-            if data && ids.has(data.id):
-                continue
-            else:
-                child.queue_free()

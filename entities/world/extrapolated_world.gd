@@ -34,6 +34,8 @@ func deserialize(serialized):
     
     if server_tick < last_tick_received:
         return
+    else:
+        last_tick_received = server_tick
     
     for type_name in types.keys():
         var count = Data.deserialize_int(queue)

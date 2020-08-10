@@ -25,6 +25,9 @@ func _process(_delta):
     $Name.position = state_machine.active_state.position
 
 func _physics_process(_delta):    
+    if input:
+        $Name/Label.text = data.instance_name
+    
     if input.fire:
         if state_machine.active_state:
             if state_machine.active_state.has_node("Gun"):
@@ -44,10 +47,10 @@ func _physics_process(_delta):
         linear_velocity = state.linear_velocity if state.get("linear_velocity") else Vector2.ZERO
         angular_velocity = state.angular_velocity if state.get("angular_velocity") else 0
         var id = get_instance_id()
-        data.update(id, name, state.global_position, state.global_rotation, state.get_node("CollisionShape2D").scale, linear_velocity, angular_velocity)
-
-func on_deserialized():
-    $States/Normal/Name/Label.text = data.instance_name
+        if input.input_name != Data.NULL_INPUT.input_name:
+            data.update(id, input.input_name, state.global_position, state.global_rotation, state.get_node("CollisionShape2D").scale, linear_velocity, angular_velocity)
+        else:
+            data.update(id, data.instance_name, state.global_position, state.global_rotation, state.get_node("CollisionShape2D").scale, linear_velocity, angular_velocity)
 
 func state_name():
     return state_machine.active_state_name

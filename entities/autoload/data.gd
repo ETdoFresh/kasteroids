@@ -8,7 +8,8 @@ const NULL_INPUT = {
     "vertical": 0, 
     "fire": false, 
     "next_state": false, 
-    "previous_state": false
+    "previous_state": false,
+    "input_name": "Null Input"
 }
 
 func copy_values(keys, source, destination):
