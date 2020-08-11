@@ -84,3 +84,32 @@ func deserialize_int(queue : PoolStringQueue):
 func deserialize_string(queue : PoolStringQueue):
     return queue.pop_front().replace("{comma}", ",")
     
+func instance_to_dictionary(instance):
+    var dictionary = inst2dict(instance)
+    for key in dictionary.keys():
+        if key in instance:
+            dictionary[key] = var2str(instance[key])
+    return dictionary
+
+func dictionary_to_instance(dictionary, instance):
+    for key in dictionary.keys():
+        if key in instance:
+            instance[key] = str2var(dictionary[key])
+
+func instance_to_json(instance):
+    return to_json(instance_to_dictionary(instance))
+
+func json_to_instance(json, instance):
+    var dictionary = parse_json(json)
+    dictionary_to_instance(dictionary, instance)
+
+func instance_to_bytes(instance):
+    return var2bytes(instance_to_dictionary(instance))
+
+func bytes_to_instance(bytes, instance):
+    var dictionary = bytes2var(bytes)
+    dictionary_to_instance(dictionary, instance)
+
+func instance_to_csv(_instance):
+    # TODO: I'll think about this one....
+    return null
