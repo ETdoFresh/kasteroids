@@ -47,4 +47,4 @@ func linear_interpolate(other, t):
     else:
         queue_position(position.linear_interpolate(other.position, t))
     queue_rotation(lerp_angle(rotation, other.rotation, t))
-    queue_scale(scale.linear_interpolate(other.scale, t))
+    queue_scale($CollisionShape2D.scale.linear_interpolate(other.scale, t))

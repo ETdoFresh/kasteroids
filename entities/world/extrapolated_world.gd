@@ -24,6 +24,7 @@ func simulate(_delta):
             entity.position += entity.get_meta("linear_velocity") * time
             entity.rotation = entity.get_meta("extrapolated_rotation")
             entity.rotation += entity.get_meta("angular_velocity") * time
+            entity.scale = entity.data.scale
 
 func deserialize(serialized):
     dictionary = parse_json(serialized)
