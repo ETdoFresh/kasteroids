@@ -27,6 +27,7 @@ func deserialize(from_client, serialized):
     var list = parse_json(serialized)
     for item in list:
         item.tick = int(item.tick)
+        input_name = item.name
         if not received_inputs.has(item.tick):
             received_inputs[item.tick] = item
 
