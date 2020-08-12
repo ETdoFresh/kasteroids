@@ -8,26 +8,37 @@ var types = {
     "Asteroid": Scene.ASTEROID_CLIENT,
     "Bullet": Scene.BULLET_CLIENT }
 
-onready var containers = { "Ship": $Ships, "Asteroid": $Asteroids, "Bullet": $Bullets }
+onready var containers = { 
+    "Ship": $Ships, "Asteroid": $Asteroids, "Bullet": $Bullets }
 
 func simulate(_delta):
     pass
 
 func deserialize(serialized):
     dictionary = parse_json(serialized)
-    
+    create_new_entities()
+    remove_deleted_entities()
+    update_entities()
+
+func create_new_entities():
     for entry in dictionary.entries:
         var entity = get_entity_by_id(entry.id)
         if not entity:
             create_entity(entry)
-        else:
-            entity.data.from_dictionary(entry)
-    
-    for entity in entity_list:
+
+func remove_deleted_entities():
+    print("removing entities if necessary...")
+    for i in range(entity_list.size() - 1, -1, -1):
+        var entity = entity_list[i]
         if not get_dictionary_entry_by_id(entity.data.id):
-            delete_entity(entity)
-    
+            entity_list.remove(i)
+            entity.queue_free()
+
+func update_entities():
     for entity in entity_list:
+        var entry = get_dictionary_entry_by_id(entity.data.id)
+        print("update entity %s with entry %s" % [entity.data.id, entry != null])
+        entity.data.from_dictionary(entry)
         entity.data.apply(entity)
 
 func get_entity_by_id(id):
@@ -48,7 +59,3 @@ func create_entity(entry):
     entity_list.append(entity)
     containers[type].add_child(entity)
     entity.data.from_dictionary(entry)
-
-func delete_entity(entity):
-    entity.queue_free()
-    entity_list.erase(entity)
