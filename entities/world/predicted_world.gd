@@ -38,6 +38,10 @@ func deserialize(serialized):
         entity.linear_velocity = entity.data.linear_velocity
         entity.angular_velocity = entity.data.angular_velocity
         entity.data.instance_name = entity.data.instance_name
+        if entity.get("state_machine"):
+            var state = entity.state_machine.active_state
+            state.linear_velocity = entity.data.linear_velocity
+            state.angular_velocity = entity.data.angular_velocity
 
 func create_new_entities():
     for entry in dictionary.entries:
