@@ -50,7 +50,6 @@ func create_new_entities():
             create_entity(entry)
 
 func remove_deleted_entities():
-    print("removing entities if necessary...")
     for i in range(entity_list.size() - 1, -1, -1):
         var entity = entity_list[i]
         if not get_dictionary_entry_by_id(entity.data.id):
@@ -60,7 +59,6 @@ func remove_deleted_entities():
 func update_entities():
     for entity in entity_list:
         var entry = get_dictionary_entry_by_id(entity.data.id)
-        print("update entity %s with entry %s" % [entity.data.id, entry != null])
         entity.data.from_dictionary(entry)
         entity.data.apply(entity)
 
@@ -82,7 +80,3 @@ func create_entity(entry):
     entity_list.append(entity)
     containers[type].add_child(entity)
     entity.data.from_dictionary(entry)
-
-func delete_entity(entity):
-    entity.queue_free()
-    entity_list.erase(entity)

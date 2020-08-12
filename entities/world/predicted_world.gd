@@ -1,92 +1,84 @@
 extends Node2D
 
-var types = \
-{
-    "ShipClient": Scene.SHIP,
-    "AsteroidClient": Scene.ASTEROID,
-    "BulletClient": Scene.BULLET
-}
-
 var dictionary = {}
+var entity_list = []
 var input = Data.NULL_INPUT
 var smoothing_rate = 0.1
 var server_tick_sync
 var last_received_tick = 0
+var types = {
+    "Ship": Scene.SHIP,
+    "Asteroid": Scene.ASTEROID,
+    "Bullet": Scene.BULLET }
 
-onready var containers = { "ShipClient": $Ships, "AsteroidClient": $Asteroids, "BulletClient": $Bullets }
-onready var other_ships = get_parent().get_node("ExtrapolatedWorld/Ships")
-onready var other_asteroids = get_parent().get_node("ExtrapolatedWorld/Asteroids")
-onready var other_bullets = get_parent().get_node("ExtrapolatedWorld/Bullets")
-onready var other_containers = { "ShipClient": other_ships, "AsteroidClient": other_asteroids, "BulletClient": other_bullets }
-onready var place_holder_data = $PlaceHolderData
+onready var extrapolated_world = get_parent().get_node("ExtrapolatedWorld")
+onready var containers = { 
+    "Ship": $Ships, "Asteroid": $Asteroids, "Bullet": $Bullets }
 
 func simulate(_delta):
-    return
-    for i in range(containers.size()):
-        var container = containers.values()[i]
-        var other_container = other_containers.values()[i]
-        for j in range(container.get_child_count()):
-            var child = container.get_child(j)
-            var other_child = get_child_by_id(other_container, child.data.id)
-            if other_child != null:
-                if child.has_method("linear_interpolate"):
-                    child.linear_interpolate(other_child, smoothing_rate)
+    for entity in entity_list:
+        var other_entity = extrapolated_world.get_entity_by_id(entity.data.id)
+        if other_entity != null:
+            if entity.has_method("linear_interpolate"):
+                entity.linear_interpolate(other_entity, smoothing_rate)
 
 func deserialize(serialized):
     dictionary = parse_json(serialized)
-    return 
-    
-    var queue = PoolStringQueue.new(serialized.split(",", false))
-    var server_tick = Data.deserialize_int(queue)
-    var _client_tick = Data.deserialize_int(queue)
-    var _offset_time = Data.deserialize_float(queue)
-    
-    if server_tick < last_received_tick:
+    if dictionary.tick < last_received_tick:
         return
     else:
-        last_received_tick = server_tick
+        last_received_tick = dictionary.tick
     
-    for type_name in types.keys():
-        var count = Data.deserialize_int(queue)
-        var container = containers[type_name]
-        var type = types[type_name]
-        
-        var ids = []
-        for _i in range(count):
-            place_holder_data.deserialize(queue)
-            
-            var id = place_holder_data.id
-            ids.append(id)
-            if not container_has_id(container, id):
-                create_instance(container, type, id)
-            
-            # TODO: Compare to determine if there was a prediction miss.
-            
-            var child = get_child_by_id(container, id)
-            child.linear_velocity = place_holder_data.linear_velocity
-            child.angular_velocity = place_holder_data.angular_velocity
-            child.data.instance_name = place_holder_data.instance_name
-        
-        for child in container.get_children():
-            if not ids.has(child.data.id):
-                child.queue_free()
+    create_new_entities()
+    remove_deleted_entities()
+    
+    for entity in entity_list:
+        var entry = get_dictionary_entry_by_id(entity.data.id)
+        entity.data.from_dictionary(entry)
+        entity.linear_velocity = entity.data.linear_velocity
+        entity.angular_velocity = entity.data.angular_velocity
+        entity.data.instance_name = entity.data.instance_name
 
-func create_instance(container, type, id):
-    var child = type.instance()
-    child.collision_layer = Data.get_physics_layer_id_by_name("client")
-    child.collision_mask = Data.get_physics_layer_id_by_name("client")
-    container.add_child(child)
-    child.data.id = id
-    return child
+func create_new_entities():
+    for entry in dictionary.entries:
+        var entity = get_entity_by_id(entry.id)
+        if not entity:
+            create_entity(entry)
 
-func get_child_by_id(container, id):
-    for child in container.get_children():
-        if child.data.id == id:
-            return child
+func remove_deleted_entities():
+    for i in range(entity_list.size() - 1, -1, -1):
+        var entity = entity_list[i]
+        if not get_dictionary_entry_by_id(entity.data.id):
+            entity_list.remove(i)
+            entity.queue_free()
+
+func update_entities():
+    for entity in entity_list:
+        var entry = get_dictionary_entry_by_id(entity.data.id)
+        entity.data.from_dictionary(entry)
+        entity.data.apply(entity)
+
+func get_entity_by_id(id):
+    for entity in entity_list:
+        if entity.data.id == int(id):
+            return entity
     return null
 
-func container_has_id(container, id):
-    for child in container.get_children():
-        if child.data.id == id:
-            return true
-    return false
+func get_dictionary_entry_by_id(id):
+    for entry in dictionary.entries:
+        if int(entry.id) == id:
+            return entry
+    return null
+
+func create_entity(entry):
+    var type = entry.type.replace("\"", "")
+    var entity = types[type].instance()
+    entity_list.append(entity)
+    entity.collision_layer = Data.get_physics_layer_id_by_name("client")
+    entity.collision_mask = Data.get_physics_layer_id_by_name("client")
+    entity.connect("tree_exited", self, "erase_entity", [entity])
+    containers[type].add_child(entity)
+    entity.data.from_dictionary(entry)
+
+func erase_entity(entity):
+    entity_list.erase(entity)

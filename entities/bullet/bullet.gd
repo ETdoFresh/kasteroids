@@ -41,7 +41,7 @@ func destroy():
     bullet_particles.emitting = true
     queue_free()
 
-var snapping_distance = 100
+var snapping_distance = 200
 func linear_interpolate(other, t):
     if (position - other.position).length() > snapping_distance:
         queue_position(other.position)
