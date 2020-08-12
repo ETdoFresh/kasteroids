@@ -18,7 +18,6 @@ func init(init_input):
     return self
 
 func _ready():
-    var _1 = data.connect("deserialized", self, "on_deserialized")
     update_input(input)
 
 func _process(_delta):

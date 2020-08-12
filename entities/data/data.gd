@@ -1,7 +1,5 @@
 extends Node
 
-signal deserialized
-
 export var type = "Not Specified"
 
 var id = -1

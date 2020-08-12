@@ -4,6 +4,16 @@ export var snap_distance = 150
 
 var interpolation_rate = 0.1
 var history = []
+var entity_list = []
+var types = {
+    "Ship": Scene.SHIP_CLIENT,
+    "Asteroid": Scene.ASTEROID_CLIENT,
+    "Bullet": Scene.BULLET_CLIENT }
+
+onready var containers = { 
+    "Ship": get_parent().get_node("Ships"), 
+    "Asteroid": get_parent().get_node("Asteroids"),  
+    "Bullet": get_parent().get_node("Bullets") }
 
 func add_history(state):
     for i in range(history.size() - 1, -1, -1):
@@ -28,11 +38,11 @@ func interpolate(tick):
     delete_instances(before, after)
     
     if before == after:
-        for child in before.children:
-            if child.node && child.node.is_inside_tree():
-                child.node.position = child.position
-                child.node.rotation = child.rotation
-                child.node.scale = child.scale
+        for entry in before.entries:
+            var node = get_entity_by_id(entry.id)
+            if node.is_inside_tree():
+                node.data.from_dictionary(entry)
+                node.data.apply(node)
         return
     
     var t = 0
@@ -42,25 +52,26 @@ func interpolate(tick):
     
     var a
     var b
-    for before_child in before.children:
-        for after_child in after.children:
-            if before_child.node == after_child.node:
-                if not before_child.node || not before_child.node.is_inside_tree():
+    for before_entry in before.entries:
+        for after_entry in after.entries:
+            if before_entry.id == after_entry.id:
+                var node = get_entity_by_id(before_entry.id)
+                if not node.is_inside_tree():
                     continue
                     
-                a = before_child.position
-                b = after_child.position
+                a = str2var(before_entry.position)
+                b = str2var(after_entry.position)
                 var snap_t = t
                 if (b - a).length() >= snap_distance: snap_t = round(snap_t)
-                before_child.node.position = a.linear_interpolate(b, snap_t)
+                node.position = a.linear_interpolate(b, snap_t)
                 
-                a = before_child.rotation
-                b = after_child.rotation
-                before_child.node.rotation = lerp_angle(a, b, t)
+                a = str2var(before_entry.rotation)
+                b = str2var(after_entry.rotation)
+                node.rotation = lerp_angle(a, b, t)
                 
-                a = before_child.scale
-                b = after_child.scale
-                before_child.node.scale = a.linear_interpolate(b, t)
+                a = str2var(before_entry.scale)
+                b = str2var(after_entry.scale)
+                node.scale = a.linear_interpolate(b, t)
 
 func get_before(tick):
     var before = null
@@ -80,34 +91,41 @@ func get_after(tick):
 
 func create_instances(before, after):
     for state in [before, after]:
-        for child in state.children:
-            if not container_has_id(child.container, child.id):
-                var new_child = child.type.instance()
-                var data = new_child.find_node("Data")
-                child.container.add_child(new_child)
-                data.id = child.id
-
-func container_has_id(container, id):
-    for child in container.get_children():
-        var data = child.find_node("Data")
-        if data.id == id:
-            return true
-    return false
+        for entry in state.entries:
+            if not get_entity_by_id(entry.id):
+                create_entity(entry)
 
 func delete_instances(before, after):
-    var ids = []
-    for child in before.children: ids.append(child.id)
-    for child in after.children: ids.append(child.id)
-    for container in before.containers:
-        for child in container.get_children():
-            var data = child.find_node("Data")
-            if data && ids.has(data.id):
-                continue
-            else:
-                child.queue_free()
+    for entity in entity_list:
+        if not get_dictionary_entry_by_id(before, entity.data.id):
+            if not get_dictionary_entry_by_id(after, entity.data.id):
+                delete_entity(entity)
 
 func get_interpolated_tick(tick, rtt, receive_rate):
     var target_iterpolation_rate = rtt # back to predicted_tick
     target_iterpolation_rate += max(rtt, receive_rate) * 1.5
     interpolation_rate = lerp(interpolation_rate, target_iterpolation_rate, 0.1)
     return tick - interpolation_rate * Settings.ticks_per_second
+
+func get_entity_by_id(id):
+    for entity in entity_list:
+        if entity.data.id == int(id):
+            return entity
+    return null
+
+func get_dictionary_entry_by_id(dictionary, id):
+    for entry in dictionary.entries:
+        if int(entry.id) == id:
+            return entry
+    return null
+
+func create_entity(entry):
+    var type = entry.type.replace("\"", "")
+    var entity = types[type].instance()
+    entity_list.append(entity)
+    containers[type].add_child(entity)
+    entity.data.from_dictionary(entry)
+
+func delete_entity(entity):
+    entity.queue_free()
+    entity_list.erase(entity)
