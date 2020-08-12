@@ -126,6 +126,7 @@ config/windows_native_icon="res://icon.ico"
 Data="*res://entities/autoload/data.gd"
 Scene="*res://entities/autoload/scene.gd"
 Settings="*res://entities/autoload/settings.gd"
+ID="*res://entities/autoload/id.gd"
 
 [display]
 
