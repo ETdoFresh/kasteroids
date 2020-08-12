@@ -7,6 +7,7 @@ var types = \
     "BulletClient": Scene.BULLET_CLIENT
 }
 
+var dictionary = {}
 var input = Data.NULL_INPUT
 var last_tick_received = 0
 var server_tick_sync
@@ -14,6 +15,7 @@ var server_tick_sync
 onready var containers = { "ShipClient": $Ships, "AsteroidClient": $Asteroids, "BulletClient": $Bullets }
 
 func simulate(_delta):
+    return
     if not server_tick_sync:
         return
     
@@ -27,6 +29,9 @@ func simulate(_delta):
                 child.rotation += child.get_meta("angular_velocity") * time
 
 func deserialize(serialized):
+    dictionary = parse_json(serialized)
+    return 
+    
     var queue = PoolStringQueue.new(serialized.split(",", false))
     var server_tick = Data.deserialize_int(queue)
     var _client_tick = Data.deserialize_int(queue)

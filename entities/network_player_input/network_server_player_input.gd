@@ -21,25 +21,17 @@ func _init(init_name_prefix, init_client):
 func _process(delta):
     time += delta
 
-func serailize():
-    var tick = 0
-    return "%s,%d,%s,%s,%s" % [input_name, tick, horizontal, vertical, fire]
-
 func deserialize(from_client, serialized):
     if from_client != client: return
     
-    for message in serialized.split("|", false):
-        var items = message.split(",", false)
-        input_name = items[0]
-        var tick = int(items[1])
-        if not received_inputs.has(tick):
-            received_inputs[tick] = {
-                "horizontal": float(items[2]),
-                "vertical": float(items[3]),
-                "fire": true if items[4] == "True" else false
-            }
-        if tick > latest_received_tick:
-            latest_received_tick = tick
+    var list = parse_json(serialized)
+    for item in list:
+        item.tick = int(item.tick)
+        if not received_inputs.has(item.tick):
+            received_inputs[item.tick] = item
+
+        if item.tick > latest_received_tick:
+            latest_received_tick = item.tick
             latest_received_time = time
 
 func set_state_at_tick(tick):

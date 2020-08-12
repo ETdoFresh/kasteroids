@@ -1,36 +1,53 @@
 extends Node2D
 
-var types = \
-{
-    "ShipClient": Scene.SHIP_CLIENT,
-    "AsteroidClient": Scene.ASTEROID_CLIENT,
-    "BulletClient": Scene.BULLET_CLIENT
-}
-
 var input = Data.NULL_INPUT
-var server_tick_sync
+var serialized_string
+var dictionary = {}
+var entity_list = []
+var types = {
+    "Ship": Scene.SHIP_CLIENT,
+    "Asteroid": Scene.ASTEROID_CLIENT,
+    "Bullet": Scene.BULLET_CLIENT }
 
-onready var containers = { "ShipClient": $Ships, "AsteroidClient": $Asteroids, "BulletClient": $Bullets }
+onready var containers = { "Ship": $Ships, "Asteroid": $Asteroids, "Bullet": $Bullets }
 
 func simulate(_delta):
     pass
 
 func deserialize(serialized):
-    var queue = PoolStringQueue.new(serialized.split(",", false))    
-    var _server_tick = Data.deserialize_int(queue)
-    var _client_tick = Data.deserialize_int(queue)
-    var _offset_time = Data.deserialize_float(queue)
+    serialized_string = serialized
+    dictionary = parse_json(serialized)
+    for entry in dictionary.entries:
+        var entity = get_entity_by_id(entry.id)
+        if not entity:
+            create_entity(entry)
+        else:
+            entity.data.from_dictionary(entry)
     
-    for type_name in types.keys():
-        var count = Data.deserialize_int(queue)
-        var container = containers[type_name]
-        
-        while container.get_child_count() > count:
-            container.get_child(0).free()
-        while container.get_child_count() < count:
-            var child = types[type_name].instance()
-            containers[type_name].add_child(child)
+    for entity in entity_list:
+        var entry = get_dictionary_entry_by_id(entity.data.id)
+        if not entry:
+            entity.queue_free()
+            entity_list.erase(entity)
+    
+    for entity in entity_list:
+        entity.data.apply(entity)
 
-        for i in range(count):
-            var child = container.get_child(i)
-            child.data.deserialize(queue)
+func get_entity_by_id(id):
+    for entity in entity_list:
+        if entity.data.id == int(id):
+            return entity
+    return null
+
+func get_dictionary_entry_by_id(id):
+    for entry in dictionary.entries:
+        if int(entry.id) == id:
+            return entry
+    return null
+
+func create_entity(entry):
+    var type = entry.type.replace("\"", "")
+    var entity = types[type].instance()
+    entity_list.append(entity)
+    containers[type].add_child(entity)
+    entity.data.from_dictionary(entry)

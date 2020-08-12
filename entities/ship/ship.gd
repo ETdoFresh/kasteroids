@@ -46,11 +46,13 @@ func _physics_process(_delta):
         var state = state_machine.active_state
         linear_velocity = state.linear_velocity if state.get("linear_velocity") else Vector2.ZERO
         angular_velocity = state.angular_velocity if state.get("angular_velocity") else 0
-        var id = get_instance_id()
+        data.position = state.global_position
+        data.rotation = state.global_rotation
+        data.scale = state.get_node("CollisionShape2D").scale
+        data.linear_velocity = linear_velocity
+        data.angular_velocity = angular_velocity
         if input.input_name != Data.NULL_INPUT.input_name:
-            data.update(id, input.input_name, state.global_position, state.global_rotation, state.get_node("CollisionShape2D").scale, linear_velocity, angular_velocity)
-        else:
-            data.update(id, data.instance_name, state.global_position, state.global_rotation, state.get_node("CollisionShape2D").scale, linear_velocity, angular_velocity)
+            data.instance_name = input.input_name
 
 func state_name():
     return state_machine.active_state_name

@@ -89,6 +89,8 @@ func instance_to_dictionary(instance):
     for key in dictionary.keys():
         if key in instance:
             dictionary[key] = var2str(instance[key])
+        else:
+            dictionary.erase(key)
     return dictionary
 
 func dictionary_to_instance(dictionary, instance):
@@ -110,6 +112,11 @@ func bytes_to_instance(bytes, instance):
     var dictionary = bytes2var(bytes)
     dictionary_to_instance(dictionary, instance)
 
-func instance_to_csv(_instance):
-    # TODO: I'll think about this one....
-    return null
+func list_to_csv(list):
+    var csv = ""
+    for item in list:
+        csv += "%s," % item
+    return csv
+
+func csv_to_list(csv):
+    return csv.split(",", false)

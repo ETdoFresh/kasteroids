@@ -186,6 +186,7 @@ __meta__ = {
 
 [node name="Data" type="Node" parent="."]
 script = ExtResource( 10 )
+type = "Ship"
 
 [node name="Name" type="Node2D" parent="."]
 script = ExtResource( 8 )

@@ -7,6 +7,7 @@ var types = \
     "BulletClient": Scene.BULLET_CLIENT
 }
 
+var dictionary = {}
 var input = Data.NULL_INPUT
 var server_tick_sync
 
@@ -14,6 +15,7 @@ onready var containers = { "ShipClient": $Ships, "AsteroidClient": $Asteroids, "
 onready var place_holder_data = $PlaceHolderData
 
 func simulate(_delta):
+    return
     if server_tick_sync:
         var tick = server_tick_sync.smooth_tick_rounded
         var rtt = server_tick_sync.rtt
@@ -22,6 +24,9 @@ func simulate(_delta):
         $Interpolation.interpolate(interpolated_tick)
 
 func deserialize(serialized):
+    dictionary = parse_json(serialized)
+    return 
+    
     var queue = PoolStringQueue.new(serialized.split(",", false))
     var server_tick = Data.deserialize_int(queue)
     var _client_tick = Data.deserialize_int(queue)

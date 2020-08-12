@@ -16,25 +16,6 @@ var input_name = "WASD Keyboard Plus GUI"
 
 onready var repeater = $Repeater
 
-# FOR TESTING
-#func _ready():
-#    var _1 = $GUIInput/LeftControls/Up.connect("touch_button_down_event", self, "add_text", [$GUIInput/LeftControls/Up])
-#    var _2 = $GUIInput/LeftControls/Down.connect("touch_button_down_event", self, "add_text", [$GUIInput/LeftControls/Down])
-#    var _3 = $GUIInput/LeftControls/Left.connect("touch_button_down_event", self, "add_text", [$GUIInput/LeftControls/Left])
-#    var _4 = $GUIInput/LeftControls/Right.connect("touch_button_down_event", self, "add_text", [$GUIInput/LeftControls/Right])
-#    var _5 = $GUIInput/RightControls/Fire.connect("touch_button_down_event", self, "add_text", [$GUIInput/RightControls/Fire])
-#    var _6 = $GUIInput/LeftControls/Up.connect("touch_button_up_event", self, "add_text", [$GUIInput/LeftControls/Up])
-#    var _7 = $GUIInput/LeftControls/Down.connect("touch_button_up_event", self, "add_text", [$GUIInput/LeftControls/Down])
-#    var _8 = $GUIInput/LeftControls/Left.connect("touch_button_up_event", self, "add_text", [$GUIInput/LeftControls/Left])
-#    var _9 = $GUIInput/LeftControls/Right.connect("touch_button_up_event", self, "add_text", [$GUIInput/LeftControls/Right])
-#    var _10 = $GUIInput/RightControls/Fire.connect("touch_button_up_event", self, "add_text", [$GUIInput/RightControls/Fire])
-#
-#func add_text(event, node):
-#    if event is InputEventScreenTouch:
-#        $EventLog.text += "Name: %s | Pressed: %s | Index: %s, \n" % [node.name, event.is_pressed(), event.index]
-#    if event is InputEventMouseButton:
-#        $EventLog.text += "Name: %s | Pressed: %s | Index: %s, \n" % [node.name, event.is_pressed(), event.button_index]
-
 func _process(_delta):
     vertical = 0
     if up || $GUIInput.up: vertical -= 1
@@ -60,8 +41,8 @@ func _unhandled_input(event):
             self[variable[i]] = false
 
 func serialize():
-    var serialized = "%s,%d,%s,%s,%s" % [input_name, tick, horizontal, vertical, fire]
+    var serialized = {"name": input_name, "tick": tick, "horizontal": horizontal, "vertical": vertical, "fire": fire}
     if repeater:
         return repeater.add(serialized)
     else:
-        return serialized
+        return to_json([serialized])

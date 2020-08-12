@@ -2,6 +2,8 @@ extends Node
 
 signal deserialized
 
+export var type = "Not Specified"
+
 var id = -1
 var instance_name = "No Name"
 var position = Vector2.ZERO
@@ -10,32 +12,35 @@ var scale = Vector2.ONE
 var linear_velocity = Vector2.ZERO
 var angular_velocity = 0
 
-func serialize():
-    var output = ""
-    output += Data.serialize_int(id)
-    output += Data.serialize_string(instance_name)
-    output += Data.serialize_Vector2(position)
-    output += Data.serialize_float(rotation)
-    output += Data.serialize_Vector2(scale)
-    output += Data.serialize_Vector2(linear_velocity)
-    output += Data.serialize_float(angular_velocity)
-    return output
+func to_dictionary():
+    return Data.instance_to_dictionary(self)
 
-func deserialize(queue : PoolStringQueue):
-    id = Data.deserialize_int(queue)
-    instance_name = Data.deserialize_string(queue)
-    position = Data.deserialize_Vector2(queue)
-    rotation = Data.deserialize_float(queue)
-    scale = Data.deserialize_Vector2(queue)
-    linear_velocity = Data.deserialize_Vector2(queue)
-    angular_velocity = Data.deserialize_float(queue)
-    emit_signal("deserialized")
+func from_dictionary(dictionary):
+    Data.dictionary_to_instance(dictionary, self)
+    
+func to_csv():
+    return Data.list_to_csv([
+        id, 
+        type, 
+        instance_name,
+        position.x, position.y, 
+        rotation,
+        scale.x, scale.y, 
+        linear_velocity.x, linear_velocity.y,
+        angular_velocity])
 
-func update(u_id, u_instance_name, u_position, u_rotation, u_scale, u_linear_velocity, u_angular_velocity):
-    id = u_id if id == -1 else id
-    instance_name = u_instance_name
-    position = u_position
-    rotation = u_rotation
-    scale = u_scale
-    linear_velocity = u_linear_velocity
-    angular_velocity = u_angular_velocity
+func from_csv(csv):
+    var items = Data.csv_to_list(csv)
+    id = items[0]
+    type = items[1]
+    instance_name = items[2]
+    position = Vector2(float(items[3]), float(items[4]))
+    rotation = float(items[5])
+    scale = Vector2(float(items[6]), float(items[7]))
+    linear_velocity = Vector2(float(items[8]), float(items[9]))
+    angular_velocity = float(items[10])
+
+func apply(entity):
+    for variable_name in ["id", "type", "instance_name", "position", "rotation", "scale", "linear_velocity", "angular_velocity"]:
+        if variable_name in entity:
+            entity[variable_name] = self[variable_name]

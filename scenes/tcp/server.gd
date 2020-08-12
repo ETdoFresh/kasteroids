@@ -11,6 +11,7 @@ func _ready():
     
     if has_node("DebugOverlay") && has_node("Kbps"):
         $DebugOverlay.add_stat("Kbps", $Kbps, "value", false)
+    $DebugOverlay.add_stat("Tick", $World/Tick, "tick", false)
 
 func _enter_tree():    
     if has_node("TCPServer"):

@@ -10,7 +10,4 @@ func add(serialized):
     return serialize()
 
 func serialize():
-    var output = ""
-    for item in history:
-        output += item + "|"
-    return output
+    return to_json(history)

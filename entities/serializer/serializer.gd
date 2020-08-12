@@ -1,21 +1,31 @@
 class_name Serializer
 extends Node
 
-var tick
-var last_received_client_tick
-var offset
-
-onready var world = get_parent()
-onready var asteroids = world.get_node("Asteroids")
-onready var bullets = world.get_node("Bullets")
-onready var ships = world.get_node("Ships")
+var serialize_string : String
+var entity_list : Array = []
+var dictionary_list : Array = []
+var tick = 0
+var client_tick = 0
+var offset = 0
+var dictionary = {
+    "tick": tick,
+    "client_tick": client_tick,
+    "offset": offset,
+    "entries": dictionary_list}
 
 func serialize():
-    var serialized = "%d,%d,%d," % [tick, last_received_client_tick, offset]
-    for group in [ships, asteroids, bullets]:
-        serialized += String(group.get_child_count()) + ","
-        for node in group.get_children():
-            if node.has_node("Data"):
-                var data = node.get_node("Data")
-                serialized += data.serialize()
-    return serialized
+    if tick != dictionary.tick:
+        dictionary_list.clear()
+        for entity in entity_list:
+            dictionary_list.append(entity.data.to_dictionary())
+    
+    serialize_string = to_json(dictionary)
+    return serialize_string
+
+func add_entity(entity):
+    entity_list.append(entity)
+    entity.data.id = ID.reserve()
+
+func remove_entity(entity):
+    entity_list.erase(entity)
+    ID.release(entity.data.id)

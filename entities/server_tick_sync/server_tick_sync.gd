@@ -3,7 +3,7 @@ extends Node
 signal tick
 
 var rtt_window = SlidingWindow.new(5)
-var rtt = -1
+var rtt = 0.5
 var delay = -1
 var prediction = -1
 var future_tick = -1
@@ -24,14 +24,14 @@ func _process(delta):
     update_server_tick()
     update_smooth_tick(delta)
 
-func calculate_rtt(client_tick, offset_time):
+func calculate_rtt(client_tick, offset):
     if client_tick == 0:
         return
     if not client_tick_sent_times.has(client_tick):
         return
     
     var client_tick_sent_time = client_tick_sent_times[client_tick]
-    rtt = rtt_window.add(time - client_tick_sent_time  - offset_time)
+    rtt = rtt_window.add(time - client_tick_sent_time  - offset)
     delay = rtt / 2
     
     for i in range(client_tick_sent_times.size() - 1, -1, -1):
@@ -39,13 +39,13 @@ func calculate_rtt(client_tick, offset_time):
             client_tick_sent_times.erase(client_tick_sent_times.keys()[i])
 
 func record_client_receive_message(message):
-    var queue = PoolStringQueue.new(message.split(",", false))    
-    var server_tick = Data.deserialize_int(queue)
-    var client_tick = Data.deserialize_int(queue)
-    var offset_time = Data.deserialize_float(queue)
-    record_client_recieve(server_tick, client_tick, offset_time)
+    var dictionary = parse_json(message)
+    var server_tick = dictionary.tick
+    var client_tick = int(dictionary.client_tick)
+    var offset = dictionary.offset
+    record_client_recieve(server_tick, client_tick, offset)
 
-func record_client_recieve(server_tick, client_tick, offset_time):
+func record_client_recieve(server_tick, client_tick, offset):
     if server_tick <= last_received_server_tick:
         return
     
@@ -53,7 +53,7 @@ func record_client_recieve(server_tick, client_tick, offset_time):
     
     last_received_server_tick = server_tick
     last_received_client_time = time
-    calculate_rtt(client_tick, offset_time)
+    calculate_rtt(client_tick, offset)
 
 func record_client_send():
     client_tick_sent_times[smooth_tick_rounded] = time
@@ -63,7 +63,7 @@ func update_server_tick():
     prediction += (time - last_received_client_time) * Settings.ticks_per_second
     prediction += delay * Settings.ticks_per_second
     future_tick = prediction
-    future_tick += rtt * Settings.ticks_per_second
+    future_tick += max(rtt, 1.0 / get_parent().send_rate_per_second) * Settings.ticks_per_second
 
 func update_smooth_tick(delta):
     var previous_smooth_tick_rounded = smooth_tick_rounded
