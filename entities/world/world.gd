@@ -1,6 +1,7 @@
 extends Node2D
 
 func _ready():
+    var _1 = $Tick.connect("tick", self, "simulate")
     for group in [$Asteroids, $Bullets, $Ships]:
         for child in group.get_children():
             child.data.id = ID.reserve()
@@ -13,23 +14,18 @@ func serialize(client_tick, offset, ship):
     $Serializer.dictionary.ship_id = ship.data.id
     return $Serializer.serialize()
 
-func _physics_process(delta):
-    $Tick.precise_tick += delta * Settings.ticks_per_second
-    $Tick.tick = int(round($Tick.precise_tick))
-    $Tick.time += delta
+func simulate():
+    $Players.update_ship_inputs()
+    #Physics.step(Settings.tick_rate)
 
 func create_player(input):
     var ship = Scene.SHIP.instance()
-    ship.input = input
     ship.position = Vector2(630, 360)
     ship.connect("gun_fired", self, "create_bullet")
     ship.connect("tree_exited", $Serializer, "remove_entity", [ship])
     $Ships.add_child(ship)
     $Serializer.add_entity(ship)
-    var player = Scene.PLAYER.instance()
-    player.ship = ship
-    player.input = input
-    $Players.add_child(player)
+    $Players.add_player(ship, input)
     $PlayerMonitor.add_player_input(input)
 
 func create_bullet(gun_position, gun_rotation, ship, speed):

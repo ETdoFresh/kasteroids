@@ -1,16 +1,7 @@
 extends Node
 
 const USERNAME_PATH = "user://local_storage_username.tres"
-const INPUT_VARIABLES = ["horizontal", "vertical", "fire", "next_state", "previous_state"]
 const ID = {}
-const NULL_INPUT = {
-    "horizontal": 0, 
-    "vertical": 0, 
-    "fire": false, 
-    "next_state": false, 
-    "previous_state": false,
-    "input_name": "Null Input"
-}
 
 func copy_values(keys, source, destination):
     for key in keys:

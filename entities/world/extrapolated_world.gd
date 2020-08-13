@@ -1,6 +1,6 @@
 extends Node2D
 
-var input = Data.NULL_INPUT
+var input = InputData.new()
 var last_tick_received = 0
 var server_tick_sync
 var dictionary = {}

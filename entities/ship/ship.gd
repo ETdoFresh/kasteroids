@@ -1,10 +1,9 @@
 class_name Ship
 extends Node2D
 
-#warning-ignore:unused_signal
 signal gun_fired(gun_position, gun_rotation, ship, velocity_magnitude)
 
-var input = Data.NULL_INPUT setget update_input
+var input = InputData.new()
 var collision_layer setget set_collision_layer
 var collision_mask setget set_collision_mask
 var linear_velocity
@@ -13,20 +12,11 @@ var angular_velocity
 onready var state_machine = $States
 onready var data = $Data
 
-func init(init_input):
-    input = init_input
-    return self
-
-func _ready():
-    update_input(input)
-
 func _process(_delta):
     $Name.position = state_machine.active_state.position
+    if input: $Name/Label.text = data.instance_name
 
-func _physics_process(_delta):    
-    if input:
-        $Name/Label.text = data.instance_name
-    
+func _physics_process(_delta):
     if input.fire:
         if state_machine.active_state:
             if state_machine.active_state.has_node("Gun"):
@@ -50,19 +40,23 @@ func _physics_process(_delta):
         data.scale = state.get_node("CollisionShape2D").scale
         data.linear_velocity = linear_velocity
         data.angular_velocity = angular_velocity
-        if input.input_name != Data.NULL_INPUT.input_name:
-            data.instance_name = input.input_name
+        data.instance_name = input.input_name
 
 func state_name():
     return state_machine.active_state_name
 
-func update_input(new_input):
-    input = new_input
-    if not state_machine:
-        return
-    for state in state_machine.states:
-        if "input" in state:
-            state.input = input
+func update_input(update_input):
+    for key in input.keys():
+        if key in update_input:
+            input[key] = update_input[key]
+    
+    if state_machine:
+        for state in state_machine.states:
+            if "input" in state:
+                for key in state.input.keys():
+                    if key in update_input:
+                        state.input[key] = update_input[key]
+    
 
 func set_position(new_position):
     position = new_position

@@ -1,6 +1,6 @@
 extends Node
 
-export var player_name = "TCP Player"
+export var input_name = "TCP Player"
 export var horizontal = 0
 export var vertical = 0
 export var fire = false

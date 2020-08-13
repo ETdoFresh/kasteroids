@@ -1,6 +1,5 @@
 extends Node2D
 
-var input = Data.NULL_INPUT
 var server_tick_sync
 
 onready var place_holder_data = $PlaceHolderData

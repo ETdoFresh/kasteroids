@@ -4,7 +4,7 @@ export var smoothing_rate = 0.15
 
 var dictionary = {}
 var entity_list = []
-var input = Data.NULL_INPUT
+var input = InputData.new()
 var server_tick_sync
 var last_received_tick = 0
 var enable = true
