@@ -11,6 +11,7 @@ var dictionary = {
     "tick": tick,
     "client_tick": client_tick,
     "offset": offset,
+    "ship_id": -1,
     "entries": dictionary_list}
 
 func serialize():

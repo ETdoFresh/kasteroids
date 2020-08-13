@@ -1,0 +1,71 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://entities/input/keyboard_plus_gui.tscn" type="PackedScene" id=1]
+[ext_resource path="res://entities/world/world.gd" type="Script" id=2]
+[ext_resource path="res://entities/serializer/serializer.gd" type="Script" id=3]
+[ext_resource path="res://entities/player_monitor/player_monitor.tscn" type="PackedScene" id=4]
+[ext_resource path="res://entities/tick/tick.gd" type="Script" id=5]
+[ext_resource path="res://entities/ship/ship.tscn" type="PackedScene" id=6]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node
+
+func _ready():
+    $World/Ships/Ship.input = $Input
+
+func _input(event):
+    if event is InputEventKey:
+        if event.is_pressed():
+            if event.scancode == KEY_T:
+                $World/Ships/Ship/States/Normal.queue_position(Vector2(randf()*1000,randf()*1000))
+                $World/Ships/Ship/States/Normal.queue_rotation(randf()*1000)
+"
+
+[sub_resource type="Gradient" id=2]
+colors = PoolColorArray( 0, 0.00392157, 0.384314, 1, 0.23587, 0.248374, 0.460938, 1 )
+
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 2 )
+
+[node name="Node" type="Node"]
+script = SubResource( 1 )
+
+[node name="World" type="Node2D" parent="."]
+script = ExtResource( 2 )
+
+[node name="Background" type="TextureRect" parent="World"]
+margin_left = 608.0
+margin_top = -712.0
+margin_right = 2108.0
+margin_bottom = 788.0
+rect_rotation = 44.9999
+mouse_filter = 2
+texture = SubResource( 3 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayerMonitor" parent="World" instance=ExtResource( 4 )]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 1285.0
+margin_bottom = 725.0
+
+[node name="Bullets" type="Node2D" parent="World"]
+
+[node name="Ships" type="Node2D" parent="World"]
+
+[node name="Ship" parent="World/Ships" instance=ExtResource( 6 )]
+
+[node name="Asteroids" type="Node2D" parent="World"]
+
+[node name="Players" type="Node2D" parent="World"]
+
+[node name="Serializer" type="Node" parent="World"]
+script = ExtResource( 3 )
+
+[node name="Tick" type="Node" parent="World"]
+script = ExtResource( 5 )
+
+[node name="Input" parent="." instance=ExtResource( 1 )]

@@ -4,7 +4,7 @@ extends Node2D
 #warning-ignore:unused_signal
 signal gun_fired(gun_position, gun_rotation, ship, velocity_magnitude)
 
-var input = Data.NULL_INPUT
+var input = Data.NULL_INPUT setget update_input
 var collision_layer setget set_collision_layer
 var collision_mask setget set_collision_mask
 var linear_velocity
@@ -58,6 +58,8 @@ func state_name():
 
 func update_input(new_input):
     input = new_input
+    if not state_machine:
+        return
     for state in state_machine.states:
         if "input" in state:
             state.input = input

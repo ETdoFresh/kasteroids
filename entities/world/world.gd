@@ -6,10 +6,11 @@ func _ready():
             child.data.id = ID.reserve()
             $Serializer.add_entity(child)
 
-func serialize(client_tick, offset):
+func serialize(client_tick, offset, ship):
     $Serializer.dictionary.tick = $Tick.tick
     $Serializer.dictionary.client_tick = client_tick
     $Serializer.dictionary.offset = offset
+    $Serializer.dictionary.ship_id = ship.data.id
     return $Serializer.serialize()
 
 func _physics_process(delta):

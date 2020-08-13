@@ -36,8 +36,8 @@ func _ready():
     server_tick_sync.connect("tick", self, "update_input")
     for world in worlds:
         var _1 = server_tick_sync.connect("tick", world, "simulate", [Settings.tick_rate])
-        if "server_tick_sync" in world:
-            world.server_tick_sync = server_tick_sync
+        if "server_tick_sync" in world: world.server_tick_sync = server_tick_sync
+        if "input" in world: world.input = $Inputs/Input
     
     #for existing_input in $Inputs.get_children():
         #latest_received_world.create_player(existing_input)
