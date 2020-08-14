@@ -3,6 +3,7 @@ extends Node
 export var update_rate = 10
 
 var update_timer = 0.0
+var clients = {}
 
 func _ready():
     for existing_input in $Inputs.get_children():
@@ -18,7 +19,7 @@ func _enter_tree():
     if has_node("TCPServer"):
         console_write_ln("Starting Server...")
         var _1 = $TCPServer.connect("on_open", self, "create_tcp_server_input")
-        var _2 = $TCPServer.connect("on_close", self, "remove_server_input")
+        var _2 = $TCPServer.connect("on_close", self, "remove_client")
         var _3 = $TCPServer.listen()
         var _4 = $TCPServer.connect("on_receive", $Kbps, "add_client_data")
         console_write_ln("Awaiting new connection...")
@@ -26,7 +27,7 @@ func _enter_tree():
     if has_node("WebSocketServer"):
         console_write_ln("Starting Server...")
         var _1 = $WebSocketServer.connect("on_open", self, "create_web_socket_server_input")
-        var _2 = $WebSocketServer.connect("on_close", self, "remove_server_input")
+        var _2 = $WebSocketServer.connect("on_close", self, "remove_client")
         var _3 = $WebSocketServer.listen()
         #var _3 = $WebSocketServer.listen_insecure()
         var _4 = $WebSocketServer.connect("on_receive", $Kbps, "add_client_data")
@@ -45,27 +46,28 @@ func _process(delta):
         #$TCPServer.broadcast($World.serialize())
         if has_node("TCPServer"):
             for client in $TCPServer.clients:
-                var input = get_input_by_client(client)
+                var input = clients[client].input
+                var ship_id = clients[client].ship.id
                 var client_tick = input.latest_received_tick
                 var offset = input.time - input.latest_received_time
-                var ship_id = -1 #get_ship_by_client(client)
                 var world_dictionary = $World.to_dictionary(client_tick, offset, ship_id)
                 var json = to_json(world_dictionary)
                 $LatencySimulator.send(client, json)
         if has_node("WebSocketServer"):
             for client in $WebSocketServer.clients:
-                var input = get_input_by_client(client)
-                var ship = get_ship_by_client(client)
+                var input = clients[client].input
+                var ship_id = clients[client].ship.id
                 var client_tick = input.latest_received_tick
                 var offset = input.time - input.latest_received_time
-                var world_dictionary = $World.to_dictionary(client_tick, offset, ship)
+                var world_dictionary = $World.to_dictionary(client_tick, offset, ship_id)
                 var json = to_json(world_dictionary)
                 $WebSocketServer.send(client, json)
 
 func create_tcp_server_input(client):
     var input = NetworkServerPlayerInput.new("TCPPlayer", client)
     $Inputs.add_child(input)
-    $World.create_player(input)
+    var ship = $World.create_player(input)
+    clients[client] = {"input": input, "ship": ship}
     $DebugOverlay.add_stat("Misses", input, "misses", false)
     $DebugOverlay.add_stat("Last Received Tick", input, "latest_received_tick", false)
     var _1 = $TCPServer.connect("on_receive", input, "deserialize")
@@ -74,28 +76,18 @@ func create_tcp_server_input(client):
 func create_web_socket_server_input(client):
     var input = NetworkServerPlayerInput.new("WebSocketPlayer", client)
     $Inputs.add_child(input)
-    $World.create_player(input)
+    var ship = $World.create_player(input)
+    clients[client] = {"input": input, "ship": ship}
     $DebugOverlay.add_stat("Misses", input, "misses", false)
     var _1 = $WebSocketServer.connect("on_receive", input, "deserialize")
     console_write_ln("A Client has connected!")
 
-func remove_server_input(client):
+func remove_client(client):
     console_write_ln("A Client has disconnected!")
-    var input = get_input_by_client(client)
+    var input = clients[client].input
     $World.delete_player(input)
     input.queue_free();
-
-func get_input_by_client(client):
-    for input in $Inputs.get_children():
-        if input.client == client:
-            return input
-    return null
-
-func get_ship_by_client(client):
-    for ship in $World/Ships.get_children():
-        if ship.input && ship.input.client == client:
-            return ship
-    return null
+    clients.erase(client)
 
 func console_write_ln(message):
     print(message)

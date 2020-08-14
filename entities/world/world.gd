@@ -33,6 +33,7 @@ func create_player(input):
     objects.append(ship)
     $Players.add_player(ship, input)
     $PlayerMonitor.add_player_input(input)
+    return ship
 
 func create_bullet(gun_position, gun_rotation, ship, speed):
     var bullet = Scene.BULLET.instance()

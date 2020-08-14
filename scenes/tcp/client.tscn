@@ -61,6 +61,7 @@ modulate = Color( 0.501961, 0.501961, 0, 0.196078 )
 modulate = Color( 0.501961, 0, 0.501961, 0.196078 )
 
 [node name="PredictedWorld" parent="." instance=ExtResource( 12 )]
+enable = false
 
 [node name="Inputs" type="Node" parent="."]
 

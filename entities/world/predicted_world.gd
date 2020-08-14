@@ -1,12 +1,13 @@
 extends Node2D
 
+export var enable = true
 export var smoothing_rate = 0.15
 
 var entity_list = []
+var ship_id = -1
 var input = InputData.new()
 var server_tick_sync
 var last_received_tick = 0
-var enable = true
 var types = {
     "Ship": Scene.SHIP,
     "Asteroid": Scene.ASTEROID,
@@ -17,6 +18,8 @@ onready var containers = {
     "Ship": $Ships, "Asteroid": $Asteroids, "Bullet": $Bullets }
 
 func simulate(_delta):
+    var ship = get_entity_by_id(ship_id)
+    if ship: ship.update_input(input)
     if not enable: return
     for entity in entity_list:
         var other_entity = extrapolated_world.get_entity_by_id(entity.id)
@@ -26,15 +29,16 @@ func simulate(_delta):
                 entity.linear_interpolate(other_entity, smoothing_rate)
 
 func receive(dictionary):
-    if not enable: return
     if dictionary.tick < last_received_tick:
         return
     else:
         last_received_tick = dictionary.tick
     
+    ship_id = dictionary.client.ship_id
     create_new_entities(dictionary)
     remove_deleted_entities(dictionary)
     
+    if not enable: return
     for entity in entity_list:
         var entry = get_dictionary_entry_by_id(dictionary, entity.id)
         entity.from_dictionary(entry)
@@ -77,9 +81,6 @@ func create_entity(dictionary, entry):
     entity.connect("tree_exited", self, "erase_entity", [entity])
     containers[type].add_child(entity)
     entity.from_dictionary(entry)
-    
-    if entity.id == dictionary.client.ship_id:
-        entity.input = input
 
 func erase_entity(entity):
     entity_list.erase(entity)

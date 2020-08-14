@@ -156,11 +156,11 @@ We also need some kind of estimate on change in value. If using physics objects,
 
 This has no collision checking or smoothness between receiving packets. Hence the image will jump around if the estimates are wrong, which they often will be. But we now have a good estimate of how much in the future the client needs to operate for smooth gameplay on the server, and ~~pretty good~~ so/so guess of where objects should be given the most recent packet.
 
-*Tangent Note: This may be a form of Dead Reckoning, as we are passing velocities... but, we really can't guarantee anything with these velocities, but I think you must have some guarantees when working with Dead Reckoning. So, maybe not at all?*
+*Tangent Note: This may be a form of Dead Reckoning, as we are passing velocities... but, we really can't guarantee anything with these velocities, but I think you must have some guarantees when working with Dead Reckoning. So, maybe... errr, yeah, maybe not Dead Reckoning at all...*
 
 ### Prediction World
 
-At this point, we know what data we are receiving from the server. We know how to smooth that out via **Interpolation World**. We know how to kind-of predict the future time (*cough* *cough*, I mean client current time) via **Extrapolation World**. So, are we done? Nope. In fact, trying to play the game in **Extrapolation World** is just awful. We need a GOOD prediction that feels right. Hence, no more mr. dumb client... We are running all Physics and Game Logic straight on the client.
+At this point, we know what data we are receiving from the server. We know how to smooth that out via **Interpolation World**. We know how to kind-of predict the future time (*cough* *cough*, I mean client current time) via **Extrapolation World**. So, are we done? Nope. In fact, trying to play the game in **Extrapolation World** is just awful. We need a GOOD prediction that feels right. Hence, no more Mr. dumb client... We are running all Physics and Game Logic straight on the client.
 
 Are we throwing out everything we've done thus far? Well, kind-of? **Interpolation World** has its use cases (more for like observation instead of interaction while not using heavy resources to predict the world). **Extrapolation World** can be used to help with prediction misses/server reconciliation, but not really useful in actual gameplay. So... yeah, this will start off as a brand new world.
 
