@@ -38,13 +38,6 @@ func calculate_rtt(client_tick, offset):
         if client_tick_sent_times.keys()[i] < client_tick:
             client_tick_sent_times.erase(client_tick_sent_times.keys()[i])
 
-func record_client_receive_message(message):
-    var dictionary = parse_json(message)
-    var server_tick = dictionary.tick
-    var client_tick = int(dictionary.client_tick)
-    var offset = dictionary.offset
-    record_client_recieve(server_tick, client_tick, offset)
-
 func record_client_recieve(server_tick, client_tick, offset):
     if server_tick <= last_received_server_tick:
         return

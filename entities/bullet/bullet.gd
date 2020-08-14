@@ -1,6 +1,8 @@
 class_name Bullet
 extends "res://entities/rigid_body_2d/rigid_body_2d.gd"
 
+var id = -1
+
 onready var data = $Data
 
 func _ready():
@@ -51,9 +53,10 @@ func linear_interpolate(other, t):
 
 func to_dictionary():
     return {
+        "id": id,
         "type": "Bullet",
-        "position": var2str(global_position),
+        "position": global_position,
         "rotation": global_rotation,
-        "scale": var2str($CollisionShape2D.scale),
-        "linear_velocity": var2str(linear_velocity),
+        "scale": $CollisionShape2D.scale,
+        "linear_velocity": linear_velocity,
         "angular_velocity": angular_velocity }

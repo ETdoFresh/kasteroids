@@ -46,17 +46,21 @@ func _process(delta):
         if has_node("TCPServer"):
             for client in $TCPServer.clients:
                 var input = get_input_by_client(client)
-                var ship = get_ship_by_client(client)
                 var client_tick = input.latest_received_tick
                 var offset = input.time - input.latest_received_time
-                $LatencySimulator.send(client, $World.serialize(client_tick, offset, ship))
+                var ship_id = -1 #get_ship_by_client(client)
+                var world_dictionary = $World.to_dictionary(client_tick, offset, ship_id)
+                var json = to_json(world_dictionary)
+                $LatencySimulator.send(client, json)
         if has_node("WebSocketServer"):
             for client in $WebSocketServer.clients:
                 var input = get_input_by_client(client)
                 var ship = get_ship_by_client(client)
                 var client_tick = input.latest_received_tick
                 var offset = input.time - input.latest_received_time
-                $WebSocketServer.send(client, $World.serialize(client_tick, offset, ship))
+                var world_dictionary = $World.to_dictionary(client_tick, offset, ship)
+                var json = to_json(world_dictionary)
+                $WebSocketServer.send(client, json)
 
 func create_tcp_server_input(client):
     var input = NetworkServerPlayerInput.new("TCPPlayer", client)

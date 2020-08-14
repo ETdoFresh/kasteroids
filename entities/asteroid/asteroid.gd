@@ -9,6 +9,7 @@ export var min_scale = 0.75
 export var max_scale = 1.0
 
 var random = RandomNumberGenerator.new()
+var id = -1
 
 onready var data = $Data
 
@@ -51,9 +52,10 @@ func linear_interpolate(other, t):
 
 func to_dictionary():
     return {
+        "id": id,
         "type": "Asteroid",
-        "position": var2str(global_position),
+        "position": global_position,
         "rotation": global_rotation,
-        "scale": var2str($CollisionShape2D.scale),
-        "linear_velocity": var2str(linear_velocity),
+        "scale": $CollisionShape2D.scale,
+        "linear_velocity": linear_velocity,
         "angular_velocity": angular_velocity }

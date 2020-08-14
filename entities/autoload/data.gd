@@ -75,12 +75,10 @@ func deserialize_int(queue : PoolStringQueue):
 func deserialize_string(queue : PoolStringQueue):
     return queue.pop_front().replace("{comma}", ",")
     
-func instance_to_dictionary(instance):
-    var dictionary = inst2dict(instance)
+func instance_to_dictionary(instance, keys = null):
+    var dictionary = var2strs(inst2dict(instance))
     for key in dictionary.keys():
-        if key in instance:
-            dictionary[key] = var2str(instance[key])
-        else:
+        if not key in instance || (keys != null && not keys.has(key)):
             dictionary.erase(key)
     return dictionary
 
@@ -89,8 +87,8 @@ func dictionary_to_instance(dictionary, instance):
         if key in instance:
             instance[key] = str2var(dictionary[key])
 
-func instance_to_json(instance):
-    return to_json(instance_to_dictionary(instance))
+func instance_to_json(instance, keys = null):
+    return to_json(instance_to_dictionary(instance, keys))
 
 func json_to_instance(json, instance):
     var dictionary = parse_json(json)
@@ -111,3 +109,84 @@ func list_to_csv(list):
 
 func csv_to_list(csv):
     return csv.split(",", false)
+
+func str2vars_json(json):
+    return str2vars(parse_json(json))
+
+func str2vars(variant):
+    if variant is Dictionary:
+        return str2vars_dictionary(variant)
+    elif variant is Array:
+        return str2vars_array(variant)
+    else:
+        return str2var(variant)
+
+func str2vars_dictionary(dictionary):
+    for key in dictionary.keys():
+        var value = dictionary[key]
+        if value is Dictionary:
+            str2vars_dictionary(value)
+        elif value is Array:
+            str2vars_array(value)
+        elif value is String:
+            dictionary[key] = str2var(value)
+            print("key %s value %s type %s" % [key, value, typeof(value)])
+    return dictionary
+
+func str2vars_array(array):
+    for i in range(array.size()):
+        var value = array[i]
+        if value is Dictionary:
+            str2vars_dictionary(value)
+        elif value is Array:
+            str2vars_array(value)
+        else:
+            array[i] = str2var(value)
+    return array
+
+func var2strs_json(variant):
+    return to_json(var2strs(variant))
+
+func var2strs(variant):
+    if variant is Dictionary:
+        return var2strs_dictionary(variant)
+    elif variant is Array:
+        return var2strs_array(variant)
+    elif variant is Node && variant.has_method("to_dictionary"):
+        return var2strs_dictionary(variant.to_dictionary())
+    else:
+        return var2str(variant)
+
+func var2strs_dictionary(dictionary):
+    for key in dictionary.keys():
+        var value = dictionary[key]
+        if value is Dictionary:
+            var2strs_dictionary(value)
+        elif value is Array:
+            var2strs_array(value)
+        elif value is Node && value.has_method("to_dictionary"):
+            dictionary[key] = var2strs_dictionary(value.to_dictionary())
+        elif value is int:
+            pass
+        elif value is float:
+            pass
+        else:
+            dictionary[key] = var2str(value)
+    return dictionary
+
+func var2strs_array(array):
+    for i in range(array.size()):
+        var value = array[i]
+        if value is Dictionary:
+            var2strs_dictionary(value)
+        elif value is Array:
+            var2strs_array(value)
+        elif value is Node && value.has_method("to_dictionary"):
+            array[i] = var2strs_dictionary(value.to_dictionary())
+        elif value is int:
+            pass
+        elif value is float:
+            pass
+        else:
+            array[i] = var2str(value)
+    return array

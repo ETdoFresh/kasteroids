@@ -2,7 +2,7 @@ extends Node2D
 
 var type = "update"
 var tick = 0
-var client = {}
+var client = {"tick": -1, "offset": -1, "ship_id": -1}
 var objects = []
 
 func _ready():
@@ -12,24 +12,15 @@ func _ready():
             object.data.id = ID.reserve()
             objects.append(object)
 
-func to_dictionary(client_tick, offset, ship):
-    return {
-        "type": type,
-        "tick": tick,
-        "client": {
-            "client_tick": client_tick,
-            "offset": offset,
-            "ship": ship.id if ship else -1},
-        "objects": get_object_dictionary_list()}
-
-func get_object_dictionary_list():
-    var object_dictionary_list = []
-    for object in objects:
-        object_dictionary_list.append(object.to_dictionary())
-    return object_dictionary_list
+func to_dictionary(client_tick, offset, ship_id):
+    client.tick = client_tick
+    client.offset = offset
+    client.ship_id = ship_id
+    return Data.instance_to_dictionary(self)
 
 func simulate():
-    $Players.update_ship_inputs()
+    pass
+    #$Players.update_ship_inputs()
     #Physics.step(Settings.tick_rate)
 
 func create_player(input):

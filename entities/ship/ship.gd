@@ -3,6 +3,7 @@ extends Node2D
 
 signal gun_fired(gun_position, gun_rotation, ship, velocity_magnitude)
 
+var id = -1
 var input = InputData.new()
 var collision_layer setget set_collision_layer
 var collision_mask setget set_collision_mask
@@ -83,12 +84,23 @@ func linear_interpolate(other, t):
 func to_dictionary():
     var state = get_active_state()
     return {
+        "id": id,
         "type": "Ship",
-        "position": var2str(state.global_position if state else -Vector2.ONE),
+        "position": state.global_position if state else -Vector2.ONE,
         "rotation": state.global_rotation if state else -1,
-        "scale": var2str(state.get_node("CollisionShape2D").scale if state else -Vector2.ONE),
-        "linear_velocity": var2str(state.linear_velocity if state else -Vector2.ONE),
+        "scale": state.get_node("CollisionShape2D").scale if state else -Vector2.ONE,
+        "linear_velocity": state.linear_velocity if state else -Vector2.ONE,
         "angular_velocity": state.angular_velocity if state else -1 }
+
+func from_dictionary(dictionary):
+    var state = get_active_state()
+    if dictionary.has("id"): id = dictionary["id"]
+    if state:
+        if dictionary.has("position"): state.queue_position(dictionary["position"])
+        if dictionary.has("rotation"): state.queue_position(dictionary["rotation"])
+        if dictionary.has("scale"): state.get_node("CollisionShape2D").scale = dictionary["scale"]
+        if dictionary.has("linear_velocity"): state.linear_velocity = dictionary["linear_velocity"]
+        if dictionary.has("angular_velocity"): state.angular_velocity = dictionary["angular_velocity"]
 
 func get_active_state():
     if state_machine and state_machine.active_state:
