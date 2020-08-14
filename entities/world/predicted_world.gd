@@ -17,17 +17,15 @@ onready var containers = {
     "Ship": $Ships, "Asteroid": $Asteroids, "Bullet": $Bullets }
 
 func simulate(_delta):
-    return
     if not enable: return
     for entity in entity_list:
-        var other_entity = extrapolated_world.get_entity_by_id(entity.data.id)
+        var other_entity = extrapolated_world.get_entity_by_id(entity.id)
         if other_entity != null:
             if entity.has_method("linear_interpolate"):
-                pass
+                return
                 entity.linear_interpolate(other_entity, smoothing_rate)
 
 func receive(dictionary):
-    return
     if not enable: return
     if dictionary.tick < last_received_tick:
         return
@@ -38,13 +36,12 @@ func receive(dictionary):
     remove_deleted_entities(dictionary)
     
     for entity in entity_list:
-        var entry = get_dictionary_entry_by_id(dictionary, entity.data.id)
-        entity.data.from_dictionary(entry)
+        var entry = get_dictionary_entry_by_id(dictionary, entity.id)
+        entity.from_dictionary(entry)
         
         if entry.type in ["\"Asteroid\"", "\"Bullet\""]:
-            entity.linear_velocity = entity.data.linear_velocity
-            entity.angular_velocity = entity.data.angular_velocity
-            entity.data.instance_name = entity.data.instance_name
+            entity.linear_velocity = entry.linear_velocity
+            entity.angular_velocity = entry.angular_velocity
 
 func create_new_entities(dictionary):
     for entry in dictionary.objects:
@@ -55,13 +52,13 @@ func create_new_entities(dictionary):
 func remove_deleted_entities(dictionary):
     for i in range(entity_list.size() - 1, -1, -1):
         var entity = entity_list[i]
-        if not get_dictionary_entry_by_id(dictionary, entity.data.id):
+        if not get_dictionary_entry_by_id(dictionary, entity.id):
             entity_list.remove(i)
             entity.queue_free()
 
 func get_entity_by_id(id):
     for entity in entity_list:
-        if entity.data.id == int(id):
+        if entity.id == int(id):
             return entity
     return null
 
@@ -72,18 +69,17 @@ func get_dictionary_entry_by_id(dictionary, id):
     return null
 
 func create_entity(dictionary, entry):
-    var type = entry.type.replace("\"", "")
+    var type = entry.type
     var entity = types[type].instance()
     entity_list.append(entity)
     entity.collision_layer = Data.get_physics_layer_id_by_name("client")
     entity.collision_mask = Data.get_physics_layer_id_by_name("client")
     entity.connect("tree_exited", self, "erase_entity", [entity])
     containers[type].add_child(entity)
-    entity.data.from_dictionary(entry)
+    entity.from_dictionary(entry)
     
-    if type == "Ship":
-        if entity.data.id == dictionary.ship_id:
-            entity.input = input
+    if entity.id == dictionary.client.ship_id:
+        entity.input = input
 
 func erase_entity(entity):
     entity_list.erase(entity)

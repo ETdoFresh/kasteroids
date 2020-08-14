@@ -12,7 +12,7 @@ var right = false
 var fire_button = false
 var next_state = false
 var previous_state = false
-var input_name = "WASD Keyboard Plus GUI"
+var username = "WASD Keyboard Plus GUI"
 
 onready var repeater = $Repeater
 
@@ -42,7 +42,7 @@ func _unhandled_input(event):
 
 func serialize():
     var serialized = {
-        "name": input_name, 
+        "username": username, 
         "tick": tick, 
         "horizontal": horizontal, 
         "vertical": vertical, 

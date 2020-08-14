@@ -52,12 +52,14 @@ func linear_interpolate(other, t):
     if (position - other.position).length() > snapping_distance:
         queue_position(other.position)
         queue_rotation(other.rotation)
-        linear_velocity = other.data.linear_velocity
-        angular_velocity = other.data.angular_velocity
+        if other.get("linear_velocity"):
+            linear_velocity = other.linear_velocity
+            angular_velocity = other.angular_velocity
     else:
         queue_position(position.linear_interpolate(other.position, t))
         queue_rotation(lerp_angle(rotation, other.rotation, t))
         # TODO: This should be predicted, maybe lerped, but it's in the past...
         # So, this should be removed, and prediction code should be placed.
-        linear_velocity = other.data.linear_velocity
-        angular_velocity = other.data.angular_velocity
+        if other.get("linear_velocity"):
+            linear_velocity = other.linear_velocity
+            angular_velocity = other.angular_velocity

@@ -2,7 +2,7 @@ class_name NetworkServerPlayerInput
 extends Node
 
 var client
-var input_name
+var username
 var received_inputs = {}
 var horizontal = 0
 var vertical = 0
@@ -15,7 +15,7 @@ var time = 0
 var misses = 0
 
 func _init(init_name_prefix, init_client):
-    input_name = init_name_prefix + " " + String(randi() % 10000)
+    username = init_name_prefix + " " + String(randi() % 10000)
     client = init_client
 
 func _process(delta):
@@ -27,7 +27,7 @@ func deserialize(from_client, serialized):
     var list = parse_json(serialized)
     for item in list:
         item.tick = int(item.tick)
-        input_name = item.name
+        username = item.username
         if not received_inputs.has(item.tick):
             received_inputs[item.tick] = item
 

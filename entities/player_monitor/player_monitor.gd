@@ -10,7 +10,7 @@ func _process(_delta):
         
         if player_inputs.size() > i:
             var player_input = player_inputs[i]
-            player_ui.player_name.text = player_input.input_name
+            player_ui.player_name.text = player_input.username
             player_ui.player_up.pressed = player_input.vertical < 0
             player_ui.player_down.pressed = player_input.vertical > 0
             player_ui.player_left.pressed = player_input.horizontal < 0

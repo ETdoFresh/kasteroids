@@ -26,7 +26,7 @@ func _enter_tree():
         $WebSocketClient.open("wss://etdofresh.synology.me:11001")
 
 func _ready():
-    $Inputs/Input.input_name = Data.get_username()
+    $Inputs/Input.username = Data.get_username()
     
     if has_node("LatestReceivedWorld"): worlds.append(get_node("LatestReceivedWorld"))
     if has_node("InterpolatedWorld"): worlds.append(get_node("InterpolatedWorld"))

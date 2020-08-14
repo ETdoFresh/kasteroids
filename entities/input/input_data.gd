@@ -1,8 +1,6 @@
 class_name InputData
 extends Reference
 
-export var input_name = "Local Player"
-
 var horizontal = 0
 var vertical = 0
 var fire = false

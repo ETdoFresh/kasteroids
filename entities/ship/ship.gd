@@ -45,6 +45,8 @@ func update_input(update_input):
         if key in update_input:
             input[key] = update_input[key]
     
+    if update_input.get("username"): username = update_input.username
+    
     if state_machine:
         for state in state_machine.states:
             if "input" in state:
@@ -84,14 +86,15 @@ func to_dictionary():
         "rotation": state.global_rotation if state else -1,
         "scale": state.get_node("CollisionShape2D").scale if state else -Vector2.ONE,
         "linear_velocity": state.linear_velocity if state else -Vector2.ONE,
-        "angular_velocity": state.angular_velocity if state else -1 }
+        "angular_velocity": state.angular_velocity if state else -1,
+        "username": username }
 
 func from_dictionary(dictionary):
     var state = get_active_state()
     if dictionary.has("id"): id = dictionary["id"]
     if state:
         if dictionary.has("position"): state.queue_position(dictionary["position"])
-        if dictionary.has("rotation"): state.queue_position(dictionary["rotation"])
+        if dictionary.has("rotation"): state.queue_rotation(dictionary["rotation"])
         if dictionary.has("scale"): state.get_node("CollisionShape2D").scale = dictionary["scale"]
         if dictionary.has("linear_velocity"): state.linear_velocity = dictionary["linear_velocity"]
         if dictionary.has("angular_velocity"): state.angular_velocity = dictionary["angular_velocity"]

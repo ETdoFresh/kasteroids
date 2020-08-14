@@ -51,3 +51,11 @@ func to_dictionary():
         "scale": $CollisionShape2D.scale,
         "linear_velocity": linear_velocity,
         "angular_velocity": angular_velocity }
+
+func from_dictionary(dictionary):
+    if dictionary.has("id"): id = dictionary.id
+    if dictionary.has("position"): queue_position(dictionary.position)
+    if dictionary.has("rotation"): queue_rotation(dictionary.rotation)
+    if dictionary.has("scale"): $CollisionShape2D.scale = dictionary.scale
+    if dictionary.has("linear_velocity"): linear_velocity = dictionary.linear_velocity
+    if dictionary.has("angular_velocity"): angular_velocity = dictionary.angular_velocity
