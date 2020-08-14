@@ -9,7 +9,7 @@ func _ready():
     var _1 = $Tick.connect("tick", self, "simulate")
     for group in [$Asteroids, $Bullets, $Ships]:
         for object in group.get_children():
-            object.data.id = ID.reserve()
+            object.id = ID.reserve()
             objects.append(object)
 
 func to_dictionary(client_tick, offset, ship_id):
@@ -27,7 +27,7 @@ func create_player(input):
     var ship = Scene.SHIP.instance()
     ship.position = Vector2(630, 360)
     ship.connect("gun_fired", self, "create_bullet")
-    ship.connect("tree_exited", $Serializer, "remove_object", [ship])
+    ship.connect("tree_exited", self, "remove_object", [ship])
     $Ships.add_child(ship)
     objects.append(ship)
     $Players.add_player(ship, input)
@@ -38,7 +38,7 @@ func create_bullet(gun_position, gun_rotation, ship, speed):
     bullet.global_position = gun_position
     bullet.global_rotation = gun_rotation
     bullet.add_collision_exception_with(ship)
-    bullet.connect("tree_exited", $Serializer, "remove_object", [bullet])
+    bullet.connect("tree_exited", self, "remove_object", [bullet])
     var relative_velocity = ship.linear_velocity
     bullet.linear_velocity = relative_velocity + Vector2(0, -speed).rotated(gun_rotation)
     $Bullets.add_child(bullet)

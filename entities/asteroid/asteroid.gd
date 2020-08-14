@@ -11,20 +11,11 @@ export var max_scale = 1.0
 var random = RandomNumberGenerator.new()
 var id = -1
 
-onready var data = $Data
-
 func _ready():
     random.randomize()
     randomize_spin()
     randomize_speed()
     randomize_scale()
-
-func _physics_process(_delta):
-    data.position = position
-    data.rotation = rotation
-    data.scale = $CollisionShape2D.scale
-    data.linear_velocity = linear_velocity
-    data.angular_velocity = angular_velocity
 
 func _integrate_forces(state):
     ._integrate_forces(state)

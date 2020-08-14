@@ -1,9 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://entities/bullet/bullet.svg" type="Texture" id=1]
 [ext_resource path="res://entities/wrap/wrap.gd" type="Script" id=2]
 [ext_resource path="res://entities/bullet/bullet.gd" type="Script" id=3]
-[ext_resource path="res://entities/data/data.gd" type="Script" id=4]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 6.40146
@@ -30,8 +29,4 @@ autostart = true
 
 [node name="Wrap" type="Node" parent="."]
 script = ExtResource( 2 )
-
-[node name="Data" type="Node" parent="."]
-script = ExtResource( 4 )
-type = "Bullet"
 [connection signal="timeout" from="DestroyAfter" to="." method="_on_DestroyAfter_timeout"]

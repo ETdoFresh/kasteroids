@@ -76,7 +76,8 @@ func deserialize_string(queue : PoolStringQueue):
     return queue.pop_front().replace("{comma}", ",")
     
 func instance_to_dictionary(instance, keys = null):
-    var dictionary = var2strs(inst2dict(instance))
+    var dictionary = inst2dict(instance).duplicate(true)
+    var2strs(dictionary)
     for key in dictionary.keys():
         if not key in instance || (keys != null && not keys.has(key)):
             dictionary.erase(key)
@@ -130,7 +131,6 @@ func str2vars_dictionary(dictionary):
             str2vars_array(value)
         elif value is String:
             dictionary[key] = str2var(value)
-            print("key %s value %s type %s" % [key, value, typeof(value)])
     return dictionary
 
 func str2vars_array(array):

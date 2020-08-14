@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://entities/ship/ship.svg" type="Texture" id=1]
 [ext_resource path="res://entities/state_machine/state_machine.gd" type="Script" id=2]
@@ -9,7 +9,6 @@
 [ext_resource path="res://entities/ship/exploding.gd" type="Script" id=7]
 [ext_resource path="res://entities/ship/upright_label.gd" type="Script" id=8]
 [ext_resource path="res://entities/ship/normal.gd" type="Script" id=9]
-[ext_resource path="res://entities/data/data.gd" type="Script" id=10]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 18.624, 29.835, -18.352, 27.065, 3.1, -31.974 )
@@ -183,10 +182,6 @@ valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="Data" type="Node" parent="."]
-script = ExtResource( 10 )
-type = "Ship"
 
 [node name="Name" type="Node2D" parent="."]
 script = ExtResource( 8 )

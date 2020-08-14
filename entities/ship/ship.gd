@@ -9,13 +9,13 @@ var collision_layer setget set_collision_layer
 var collision_mask setget set_collision_mask
 var linear_velocity
 var angular_velocity
+var username = ""
 
 onready var state_machine = $States
-onready var data = $Data
 
 func _process(_delta):
     $Name.position = state_machine.active_state.position
-    if input: $Name/Label.text = data.instance_name
+    $Name/Label.text = username
 
 func _physics_process(_delta):
     if input.fire:
@@ -36,12 +36,6 @@ func _physics_process(_delta):
         var state = state_machine.active_state
         linear_velocity = state.linear_velocity if state.get("linear_velocity") else Vector2.ZERO
         angular_velocity = state.angular_velocity if state.get("angular_velocity") else 0
-        data.position = state.global_position
-        data.rotation = state.global_rotation
-        data.scale = state.get_node("CollisionShape2D").scale
-        data.linear_velocity = linear_velocity
-        data.angular_velocity = angular_velocity
-        data.instance_name = input.input_name
 
 func state_name():
     return state_machine.active_state_name
