@@ -47,7 +47,7 @@ func receive(dictionary):
             entity.data.instance_name = entity.data.instance_name
 
 func create_new_entities(dictionary):
-    for entry in dictionary.entries:
+    for entry in dictionary.objects:
         var entity = get_entity_by_id(entry.id)
         if not entity:
             create_entity(dictionary, entry)
@@ -66,7 +66,7 @@ func get_entity_by_id(id):
     return null
 
 func get_dictionary_entry_by_id(dictionary, id):
-    for entry in dictionary.entries:
+    for entry in dictionary.objects:
         if int(entry.id) == id:
             return entry
     return null

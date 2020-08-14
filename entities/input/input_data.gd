@@ -10,4 +10,4 @@ var previous_state = false
 var next_state = false
 
 func keys():
-    return ["horizontal", "vertical", "fire", "previous_state", "next_state", "client"]
+    return ["horizontal", "vertical", "fire", "previous_state", "next_state"]

@@ -5,7 +5,6 @@ var server_tick_sync
 onready var place_holder_data = $PlaceHolderData
 
 func simulate(_delta):
-    return
     if server_tick_sync:
         var tick = server_tick_sync.smooth_tick_rounded
         var rtt = server_tick_sync.rtt
@@ -14,5 +13,4 @@ func simulate(_delta):
         $Interpolation.interpolate(interpolated_tick)
 
 func receive(dictionary):
-    return
     $Interpolation.add_history(dictionary)

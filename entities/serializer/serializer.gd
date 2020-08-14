@@ -12,7 +12,7 @@ var dictionary = {
     "client_tick": client_tick,
     "offset": offset,
     "ship_id": -1,
-    "entries": dictionary_list}
+    "objects": dictionary_list}
 
 func serialize():
     if tick != dictionary.tick:

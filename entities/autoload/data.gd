@@ -129,7 +129,7 @@ func str2vars_dictionary(dictionary):
             str2vars_dictionary(value)
         elif value is Array:
             str2vars_array(value)
-        elif value is String:
+        else:
             dictionary[key] = str2var(value)
     return dictionary
 
@@ -166,10 +166,6 @@ func var2strs_dictionary(dictionary):
             var2strs_array(value)
         elif value is Node && value.has_method("to_dictionary"):
             dictionary[key] = var2strs_dictionary(value.to_dictionary())
-        elif value is int:
-            pass
-        elif value is float:
-            pass
         else:
             dictionary[key] = var2str(value)
     return dictionary
@@ -183,10 +179,6 @@ func var2strs_array(array):
             var2strs_array(value)
         elif value is Node && value.has_method("to_dictionary"):
             array[i] = var2strs_dictionary(value.to_dictionary())
-        elif value is int:
-            pass
-        elif value is float:
-            pass
         else:
             array[i] = var2str(value)
     return array

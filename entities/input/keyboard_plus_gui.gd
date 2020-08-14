@@ -41,7 +41,12 @@ func _unhandled_input(event):
             self[variable[i]] = false
 
 func serialize():
-    var serialized = {"name": input_name, "tick": tick, "horizontal": horizontal, "vertical": vertical, "fire": fire}
+    var serialized = {
+        "name": input_name, 
+        "tick": tick, 
+        "horizontal": horizontal, 
+        "vertical": vertical, 
+        "fire": fire }
     if repeater:
         return repeater.add(serialized)
     else:

@@ -44,10 +44,10 @@ func _ready():
         #existing_input.connect("tree_exited", latest_received_world,"delete_player", [existing_input])
     
     if has_node("TCPClient"):
-        var _1 = $TCPClient.connect("on_receive", self, "deserialize")
+        var _1 = $TCPClient.connect("on_receive", self, "process_message")
         
     if has_node("WebSocketClient"):
-        var _1 = $WebSocketClient.connect("on_receive", self, "deserialize")
+        var _1 = $WebSocketClient.connect("on_receive", self, "process_message")
     
     $DebugOverlay.add_stat("RTT", server_tick_sync, "rtt", false)
     $DebugOverlay.add_stat("Lastest Received Server Tick", server_tick_sync, "last_received_server_tick", false)
@@ -97,9 +97,10 @@ func console_write_ln(message):
     if has_node("UI/Console"): $UI/Console.write_line(message)
     if has_node("UI/Banner"): $UI/Banner.set_text(message)
 
-func deserialize(message):
+func process_message(message):
     var dictionary = Data.str2vars_json(message)
     received_kbps.add_data(message)
     server_tick_sync.record_client_recieve(dictionary.tick, dictionary.client.tick, dictionary.client.offset)
     for world in worlds:
-        world.receive(dictionary)
+        if dictionary.type == "update":
+            world.receive(dictionary)

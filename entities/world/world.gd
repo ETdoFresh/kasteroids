@@ -19,12 +19,13 @@ func to_dictionary(client_tick, offset, ship_id):
     return Data.instance_to_dictionary(self)
 
 func simulate():
-    pass
-    #$Players.update_ship_inputs()
+    tick = $Tick.tick
+    $Players.update_ship_inputs()
     #Physics.step(Settings.tick_rate)
 
 func create_player(input):
     var ship = Scene.SHIP.instance()
+    ship.id = ID.reserve()
     ship.position = Vector2(630, 360)
     ship.connect("gun_fired", self, "create_bullet")
     ship.connect("tree_exited", self, "remove_object", [ship])
@@ -35,6 +36,7 @@ func create_player(input):
 
 func create_bullet(gun_position, gun_rotation, ship, speed):
     var bullet = Scene.BULLET.instance()
+    bullet.id = ID.reserve()
     bullet.global_position = gun_position
     bullet.global_rotation = gun_rotation
     bullet.add_collision_exception_with(ship)
@@ -53,4 +55,5 @@ func delete_player(input):
     $PlayerMonitor.remove_player_input(input)
 
 func remove_object(object):
+    ID.release(object.id)
     objects.erase(object)

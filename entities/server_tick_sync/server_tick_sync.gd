@@ -2,7 +2,7 @@ extends Node
 
 signal tick
 
-var rtt_window = SlidingWindow.new(5)
+var rtt_window = SlidingWindow.new(300)
 var rtt = 0.5
 var delay = -1
 var prediction = -1
