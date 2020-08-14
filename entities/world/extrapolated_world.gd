@@ -13,7 +13,6 @@ onready var containers = {
     "Ship": $Ships, "Asteroid": $Asteroids, "Bullet": $Bullets }
 
 func simulate(_delta):
-    return
     if not server_tick_sync:
         return
     
@@ -24,10 +23,8 @@ func simulate(_delta):
             entity.position += entity.get_meta("linear_velocity") * time
             entity.rotation = entity.get_meta("extrapolated_rotation")
             entity.rotation += entity.get_meta("angular_velocity") * time
-            entity.scale = entity.data.scale
 
 func receive(dictionary):
-    return
     if dictionary.tick < last_tick_received:
         return
     else:
@@ -37,12 +34,12 @@ func receive(dictionary):
     remove_deleted_entities(dictionary)
     
     for entity in entity_list:
-        var entry = get_dictionary_entry_by_id(dictionary, entity.data.id)
-        entity.data.from_dictionary(entry)
-        entity.set_meta("extrapolated_position", entity.data.position)
-        entity.set_meta("extrapolated_rotation", entity.data.rotation)
-        entity.set_meta("linear_velocity", entity.data.linear_velocity)
-        entity.set_meta("angular_velocity", entity.data.angular_velocity)
+        var entry = get_dictionary_entry_by_id(dictionary, entity.id)
+        entity.set_meta("extrapolated_position", entry.position)
+        entity.set_meta("extrapolated_rotation", entry.rotation)
+        entity.set_meta("linear_velocity", entry.linear_velocity)
+        entity.set_meta("angular_velocity", entry.angular_velocity)
+        entity.scale = entry.scale
 
 func create_new_entities(dictionary):
     for entry in dictionary.objects:
@@ -53,13 +50,13 @@ func create_new_entities(dictionary):
 func remove_deleted_entities(dictionary):
     for i in range(entity_list.size() - 1, -1, -1):
         var entity = entity_list[i]
-        if not get_dictionary_entry_by_id(dictionary, entity.data.id):
+        if not get_dictionary_entry_by_id(dictionary, entity.id):
             entity_list.remove(i)
             entity.queue_free()
 
 func get_entity_by_id(id):
     for entity in entity_list:
-        if entity.data.id == int(id):
+        if entity.id == int(id):
             return entity
     return null
 
@@ -70,8 +67,8 @@ func get_dictionary_entry_by_id(dictionary, id):
     return null
 
 func create_entity(entry):
-    var type = entry.type.replace("\"", "")
+    var type = entry.type
     var entity = types[type].instance()
     entity_list.append(entity)
     containers[type].add_child(entity)
-    entity.data.from_dictionary(entry)
+    entity.from_dictionary(entry)

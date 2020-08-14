@@ -119,7 +119,7 @@ func get_dictionary_entry_by_id(dictionary, id):
     return null
 
 func create_entity(entry):
-    var type = entry.type.replace("\"", "")
+    var type = entry.type
     var entity = types[type].instance()
     entity_list.append(entity)
     containers[type].add_child(entity)
