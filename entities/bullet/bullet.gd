@@ -48,3 +48,12 @@ func linear_interpolate(other, t):
     else:
         queue_position(position.linear_interpolate(other.position, t))
     queue_rotation(lerp_angle(rotation, other.rotation, t))
+
+func to_dictionary():
+    return {
+        "type": "Bullet",
+        "position": var2str(global_position),
+        "rotation": global_rotation,
+        "scale": var2str($CollisionShape2D.scale),
+        "linear_velocity": var2str(linear_velocity),
+        "angular_velocity": angular_velocity }

@@ -79,3 +79,19 @@ func set_collision_mask(value):
 func linear_interpolate(other, t):
     if $States.active_state && $States.active_state.has_method("linear_interpolate"):
         $States.active_state.linear_interpolate(other, t)
+
+func to_dictionary():
+    var state = get_active_state()
+    return {
+        "type": "Ship",
+        "position": var2str(state.global_position if state else -Vector2.ONE),
+        "rotation": state.global_rotation if state else -1,
+        "scale": var2str(state.get_node("CollisionShape2D").scale if state else -Vector2.ONE),
+        "linear_velocity": var2str(state.linear_velocity if state else -Vector2.ONE),
+        "angular_velocity": state.angular_velocity if state else -1 }
+
+func get_active_state():
+    if state_machine and state_machine.active_state:
+        return state_machine.active_state
+    else:
+        return null

@@ -156,20 +156,31 @@ We also need some kind of estimate on change in value. If using physics objects,
 
 This has no collision checking or smoothness between receiving packets. Hence the image will jump around if the estimates are wrong, which they often will be. But we now have a good estimate of how much in the future the client needs to operate for smooth gameplay on the server, and ~~pretty good~~ so/so guess of where objects should be given the most recent packet.
 
+*Tangent Note: This may be a form of Dead Reckoning, as we are passing velocities... but, we really can't guarantee anything with these velocities, but I think you must have some guarantees when working with Dead Reckoning. So, maybe not at all?*
+
 ### Prediction World
 
 At this point, we know what data we are receiving from the server. We know how to smooth that out via **Interpolation World**. We know how to kind-of predict the future time (*cough* *cough*, I mean client current time) via **Extrapolation World**. So, are we done? Nope. In fact, trying to play the game in **Extrapolation World** is just awful. We need a GOOD prediction that feels right. Hence, no more mr. dumb client... We are running all Physics and Game Logic straight on the client.
 
 Are we throwing out everything we've done thus far? Well, kind-of? **Interpolation World** has its use cases (more for like observation instead of interaction while not using heavy resources to predict the world). **Extrapolation World** can be used to help with prediction misses/server reconciliation, but not really useful in actual gameplay. So... yeah, this will start off as a brand new world.
 
-Much like Server World, we start off with Asteroids and Ships. The server will tell us which ship we are controlling and the initial transform and velocities of our objects. Simulation starts. Hence both server and client are running the same physics simulation code and game logic code. If the entire world was deterministic, we would know exactly what the world at the next step would look like. Besides some internal non-determinism in physics engine, rounding problems, etc... the biggest non-deterministic behavior is the other players! So there is truly no way to predict exactly what is going to happen in the next steps given your input and the game code. So here's our process  then.
+Much like Server World, we start off with Asteroids and Ships. The server will tell us which ship we are controlling and the initial transform and velocities of our objects. Simulation starts. Hence both server and client are running the same physics simulation code and game logic code. If the entire world was deterministic, we would know exactly what the world at the next step would look like. Besides some internal non-determinism in physics engine, rounding problems, etc... the biggest non-deterministic behavior is the other players! So there is truly no way to predict exactly what is going to happen in the next steps given your input and the game code. But running the simulation locally is the best we got!
 
-Simulate the world in the future. When receiving packets about the past, check them against our history. If they match! Great! Keep on keeping-on! Otherwise, report a "prediction miss"! Before the simulation can continue, we have to figure out how to correct our mistakes... in comes server reconciliation.
+### Server Reconciliation for (Predicted World, Extrapolation World) Tuple
 
-### Server Reconciliation (Physics World, Extrapolation World)
+As we mentioned before, **Extrapolation World** is an OK guess for where the world should be at the current client tick. At this point, extrapolation world is the best guess we have of where the server will be at *extrapolation_tick*. Hence we slowly interpolate from **Prediction World** to **Extrapolation World** by a *smoothing_factor*. A smoothing factor of 1 will teleport an object to the latest Extrapolation World point, where a value of 0.1 may smoothly nudge an object towards it's destination.
 
-Move towards Extrapolation World, slowly, not to rattle the player.
+An important property to include in server reconciliation is how to handle BIG changes. Being position, rotation, or other variables... how should we handle them. Jump to the correct position or is it ok that the position is wrong for a while longer as we nudge it back to the correct spot? Will it be jarring for the user. Is it OK? Or is "being in the moment" the most important factor, and we have to snap these variables into place?
 
-### Server Reconciliation (Physics World, Physics Resimulation World)
+The problem with using our linear extrapolation is the incorrectness of the values in **Extrapolation World**. In fact, sometimes **Predicted World** may be closer to the correct value than **Extrapolation World** with all it's collision checking. In **Extrapolation World**, some objects' targets will be in walls, jerk frequently, and does not lead to the best playing experience. Hence we propose creating the next world for reconciliation, **Re-simulation World**.
 
-Move towards Physics Resimulation World, slowly, not to rattle the player.
+### Re-simulation World
+
+A client-side world that takes place in the same future tick as **Extrapolation World** and **Predicted World**. The difference being in what happens during *receiving server data* and *server reconciliation*. 
+
+When receiving server data, this world checks its history to ensure that what we predicted is in-line with what the server has sent. If it is different, we rollback to the *received_server_tick*, and re-simulate by running *world.simulate()* until we reach *extrapolation_tick*. At this point, we are current and can proceed running the simulation locally until we receive the next packet.
+
+### Server Reconciliation for (Predicted World, Re-simulation World) Tuple
+
+Honestly, there is no real difference between **Server Reconciliation for (Predicted World, Re-simulation World) Tuple** and **Server Reconciliation for (Predicted World, Extrapolation World) Tuple**. **Predicted World** will nudge objects towards **Re-simulation World** at some *smoothing_rate* or snap if the distance is too big.
+

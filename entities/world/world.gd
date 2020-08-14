@@ -1,18 +1,32 @@
 extends Node2D
 
+var type = "update"
+var tick = 0
+var client = {}
+var objects = []
+
 func _ready():
     var _1 = $Tick.connect("tick", self, "simulate")
     for group in [$Asteroids, $Bullets, $Ships]:
-        for child in group.get_children():
-            child.data.id = ID.reserve()
-            $Serializer.add_entity(child)
+        for object in group.get_children():
+            object.data.id = ID.reserve()
+            objects.append(object)
 
-func serialize(client_tick, offset, ship):
-    $Serializer.dictionary.tick = $Tick.tick
-    $Serializer.dictionary.client_tick = client_tick
-    $Serializer.dictionary.offset = offset
-    $Serializer.dictionary.ship_id = ship.data.id
-    return $Serializer.serialize()
+func to_dictionary(client_tick, offset, ship):
+    return {
+        "type": type,
+        "tick": tick,
+        "client": {
+            "client_tick": client_tick,
+            "offset": offset,
+            "ship": ship.id if ship else -1},
+        "objects": get_object_dictionary_list()}
+
+func get_object_dictionary_list():
+    var object_dictionary_list = []
+    for object in objects:
+        object_dictionary_list.append(object.to_dictionary())
+    return object_dictionary_list
 
 func simulate():
     $Players.update_ship_inputs()
@@ -22,9 +36,9 @@ func create_player(input):
     var ship = Scene.SHIP.instance()
     ship.position = Vector2(630, 360)
     ship.connect("gun_fired", self, "create_bullet")
-    ship.connect("tree_exited", $Serializer, "remove_entity", [ship])
+    ship.connect("tree_exited", $Serializer, "remove_object", [ship])
     $Ships.add_child(ship)
-    $Serializer.add_entity(ship)
+    objects.append(ship)
     $Players.add_player(ship, input)
     $PlayerMonitor.add_player_input(input)
 
@@ -33,11 +47,11 @@ func create_bullet(gun_position, gun_rotation, ship, speed):
     bullet.global_position = gun_position
     bullet.global_rotation = gun_rotation
     bullet.add_collision_exception_with(ship)
-    bullet.connect("tree_exited", $Serializer, "remove_entity", [bullet])
+    bullet.connect("tree_exited", $Serializer, "remove_object", [bullet])
     var relative_velocity = ship.linear_velocity
     bullet.linear_velocity = relative_velocity + Vector2(0, -speed).rotated(gun_rotation)
     $Bullets.add_child(bullet)
-    $Serializer.add_entity(bullet)
+    objects.append(bullet)
 
 func delete_player(input):
     for player in $Players.get_children():
@@ -46,3 +60,6 @@ func delete_player(input):
             player.queue_free()
         
     $PlayerMonitor.remove_player_input(input)
+
+func remove_object(object):
+    objects.erase(object)
