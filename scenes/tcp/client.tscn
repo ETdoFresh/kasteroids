@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://entities/input/keyboard_plus_gui.tscn" type="PackedScene" id=1]
 [ext_resource path="res://entities/world/client_world.tscn" type="PackedScene" id=2]
@@ -15,6 +15,7 @@
 [ext_resource path="res://entities/kbps/kbps.gd" type="Script" id=13]
 [ext_resource path="res://entities/menu_button/menu_button.tscn" type="PackedScene" id=14]
 [ext_resource path="res://entities/server_tick_sync/server_tick_sync.gd" type="Script" id=15]
+[ext_resource path="res://entities/world/server_reconciliation.gd" type="Script" id=16]
 
 [sub_resource type="Gradient" id=1]
 colors = PoolColorArray( 0, 0.00392157, 0.384314, 1, 0.23587, 0.248374, 0.460938, 1 )
@@ -61,6 +62,7 @@ modulate = Color( 0.501961, 0.501961, 0, 0.196078 )
 modulate = Color( 0.501961, 0, 0.501961, 0.196078 )
 
 [node name="PredictedWorld" parent="." instance=ExtResource( 12 )]
+modulate = Color( 1, 1, 1, 0.501961 )
 enable = false
 
 [node name="Inputs" type="Node" parent="."]
@@ -97,3 +99,6 @@ script = ExtResource( 13 )
 
 [node name="ServerTickSync" type="Node" parent="."]
 script = ExtResource( 15 )
+
+[node name="ServerReconciliation" type="Node2D" parent="."]
+script = ExtResource( 16 )

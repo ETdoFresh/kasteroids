@@ -40,6 +40,8 @@ func linear_interpolate(other, t):
         queue_position(position.linear_interpolate(other.position, t))
     queue_rotation(lerp_angle(rotation, other.rotation, t))
     queue_scale($CollisionShape2D.scale.linear_interpolate(other.scale, t))
+    linear_velocity = other.linear_velocity
+    angular_velocity = other.angular_velocity
 
 func to_dictionary():
     return {

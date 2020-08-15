@@ -28,6 +28,9 @@ func _enter_tree():
 func _ready():
     $Inputs/Input.username = Data.get_username()
     
+    $ServerReconciliation.source_world = $PredictedWorld
+    $ServerReconciliation.target_world = $ExtrapolatedWorld
+    
     if has_node("LatestReceivedWorld"): worlds.append(get_node("LatestReceivedWorld"))
     if has_node("InterpolatedWorld"): worlds.append(get_node("InterpolatedWorld"))
     if has_node("ExtrapolatedWorld"): worlds.append(get_node("ExtrapolatedWorld"))
