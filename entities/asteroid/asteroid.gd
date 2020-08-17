@@ -1,5 +1,5 @@
 class_name Asteroid
-extends "res://entities/rigid_body_2d/rigid_body_2d.gd"
+extends KinematicBody2D
 
 export var min_angular_velocity = -3.0
 export var max_angular_velocity = 3.0
@@ -10,6 +10,8 @@ export var max_scale = 1.0
 
 var random = RandomNumberGenerator.new()
 var id = -1
+var linear_velocity = Vector2.ZERO
+var angular_velocity = 0
 
 func _ready():
     random.randomize()
@@ -17,9 +19,16 @@ func _ready():
     randomize_speed()
     randomize_scale()
 
-func _integrate_forces(state):
-    ._integrate_forces(state)
-    $Wrap.wrap(state)
+func _physics_process(delta):
+    if linear_velocity.length() > max_linear_velocity:
+        linear_velocity = max_linear_velocity.normalized() * max_linear_velocity
+    
+    if abs(angular_velocity) > max_angular_velocity:
+        angular_velocity = sign(angular_velocity) * max_angular_velocity
+    
+    var _1 = move_and_collide(linear_velocity * delta)
+    global_rotation += angular_velocity * delta
+    $Wrap.wrap(self)
 
 func randomize_spin():
     angular_velocity = random.randf_range(min_angular_velocity, max_angular_velocity)
@@ -31,17 +40,6 @@ func randomize_speed():
 
 func randomize_scale():
     $CollisionShape2D.scale *= random.randf_range(min_scale, max_scale)
-
-var snapping_distance = 100
-func linear_interpolate(other, t):
-    if (position - other.position).length() > snapping_distance:
-        queue_position(other.position)
-    else:
-        queue_position(position.linear_interpolate(other.position, t))
-    queue_rotation(lerp_angle(rotation, other.rotation, t))
-    queue_scale($CollisionShape2D.scale.linear_interpolate(other.scale, t))
-    linear_velocity = other.linear_velocity
-    angular_velocity = other.angular_velocity
 
 func to_dictionary():
     return {
@@ -55,8 +53,8 @@ func to_dictionary():
 
 func from_dictionary(dictionary):
     if dictionary.has("id"): id = dictionary.id
-    if dictionary.has("position"): queue_position(dictionary.position)
-    if dictionary.has("rotation"): queue_rotation(dictionary.rotation)
+    if dictionary.has("position"): global_position = dictionary.position
+    if dictionary.has("rotation"): global_rotation = dictionary.rotation
     if dictionary.has("scale"): $CollisionShape2D.scale = dictionary.scale
     if dictionary.has("linear_velocity"): linear_velocity = dictionary.linear_velocity
     if dictionary.has("angular_velocity"): angular_velocity = dictionary.angular_velocity

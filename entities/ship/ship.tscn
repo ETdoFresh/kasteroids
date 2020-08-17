@@ -50,11 +50,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Ghost" type="RigidBody2D" parent="States"]
+[node name="Ghost" type="KinematicBody2D" parent="States"]
 visible = false
-gravity_scale = 0.0
-linear_damp = 0.0
-angular_damp = 0.0
 script = ExtResource( 9 )
 
 [node name="Sprite" type="Sprite" parent="States/Ghost"]
@@ -99,10 +96,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Normal" type="RigidBody2D" parent="States"]
-gravity_scale = 0.0
-linear_damp = 0.0
-angular_damp = 0.0
+[node name="Normal" type="KinematicBody2D" parent="States"]
 script = ExtResource( 9 )
 
 [node name="Sprite" type="Sprite" parent="States/Normal"]
@@ -147,11 +141,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Dead" type="RigidBody2D" parent="States"]
+[node name="Dead" type="KinematicBody2D" parent="States"]
 visible = false
-gravity_scale = 0.0
-linear_damp = 1.5
-angular_damp = 1.5
 script = ExtResource( 7 )
 
 [node name="Sprite" type="Sprite" parent="States/Dead"]

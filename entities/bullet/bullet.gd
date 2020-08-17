@@ -1,11 +1,13 @@
 class_name Bullet
-extends "res://entities/rigid_body_2d/rigid_body_2d.gd"
+extends KinematicBody2D
 
 var id = -1
+var max_linear_velocity = 800
+var linear_velocity = Vector2.ZERO
+var angular_velocity = 0
 
 func _ready():
-    #warning-ignore:return_value_discarded
-    connect("body_entered", self, "_on_self_body_entered")
+    var _1 = $DestroyAfter.connect("timeout", self, "destroy")
 
 func start(position, rotation, rigidbody, velocity_magnitude):
     global_position = position
@@ -15,15 +17,15 @@ func start(position, rotation, rigidbody, velocity_magnitude):
     var ship_velocity = rigidbody.linear_velocity
     linear_velocity = ship_velocity + Vector2(0, -velocity_magnitude).rotated(rotation)
 
-func _integrate_forces(state):
-    ._integrate_forces(state)
-    $Wrap.wrap(state)
-
-func _on_DestroyAfter_timeout():
-    destroy()
-
-func _on_self_body_entered(_body):
-    destroy()
+func _physics_process(delta):
+    if linear_velocity.length() > max_linear_velocity:
+        linear_velocity = linear_velocity.normalized() * max_linear_velocity
+    
+    var collision = move_and_collide(linear_velocity * delta)
+    if collision:
+        destroy()
+    
+    $Wrap.wrap(self)
 
 func destroy():
     var bullet_particles = Scene.BULLET_PARTICLES.instance()
@@ -33,14 +35,6 @@ func destroy():
     bullet_particles.position = global_position
     bullet_particles.emitting = true
     queue_free()
-
-var snapping_distance = 200
-func linear_interpolate(other, t):
-    if (position - other.position).length() > snapping_distance:
-        queue_position(other.position)
-    else:
-        queue_position(position.linear_interpolate(other.position, t))
-    queue_rotation(lerp_angle(rotation, other.rotation, t))
 
 func to_dictionary():
     return {
@@ -54,8 +48,8 @@ func to_dictionary():
 
 func from_dictionary(dictionary):
     if dictionary.has("id"): id = dictionary.id
-    if dictionary.has("position"): queue_position(dictionary.position)
-    if dictionary.has("rotation"): queue_rotation(dictionary.rotation)
+    if dictionary.has("position"): global_position = dictionary.position
+    if dictionary.has("rotation"): global_rotation = dictionary.rotation
     if dictionary.has("scale"): $CollisionShape2D.scale = dictionary.scale
     if dictionary.has("linear_velocity"): linear_velocity = dictionary.linear_velocity
     if dictionary.has("angular_velocity"): angular_velocity = dictionary.angular_velocity

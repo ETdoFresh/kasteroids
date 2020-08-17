@@ -7,13 +7,7 @@
 [sub_resource type="CircleShape2D" id=1]
 radius = 6.40146
 
-[node name="Bullet" type="RigidBody2D"]
-mass = 0.15
-gravity_scale = 0.0
-contacts_reported = 1
-contact_monitor = true
-linear_damp = 0.0
-angular_damp = 0.0
+[node name="Bullet" type="KinematicBody2D"]
 script = ExtResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="."]
@@ -29,4 +23,3 @@ autostart = true
 
 [node name="Wrap" type="Node" parent="."]
 script = ExtResource( 2 )
-[connection signal="timeout" from="DestroyAfter" to="." method="_on_DestroyAfter_timeout"]

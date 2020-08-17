@@ -1,4 +1,7 @@
-extends RigidBody2D
+extends KinematicBody2D
+
+var linear_velocity = Vector2.ZERO
+var angular_velocity = 0
 
 func _integrate_forces(state):
     $Wrap.wrap(state)
