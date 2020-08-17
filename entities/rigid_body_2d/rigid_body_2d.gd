@@ -24,11 +24,9 @@ func _integrate_forces(state):
     state.set_transform(transform)
 
 func queue_position(position):
-    global_position = position
     queued_position = position
 
 func queue_rotation(rotation):
-    global_rotation = rotation
     queued_rotation = rotation
 
 func queue_scale(scale):
