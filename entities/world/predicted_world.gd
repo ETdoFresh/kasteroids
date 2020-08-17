@@ -121,8 +121,8 @@ func create_entity(entry):
     entity.collision_layer = Data.get_physics_layer_id_by_name("client")
     entity.collision_mask = Data.get_physics_layer_id_by_name("client")
     entity.connect("tree_exited", self, "erase_entity", [entity])
-    containers[type].add_child(entity)
     entity.from_dictionary(entry)
+    containers[type].add_child(entity)
 
 func erase_entity(entity):
     entity_list.erase(entity)
