@@ -22,48 +22,54 @@ onready var containers = {
 func simulate(_delta):
     tick = server_tick_sync.smooth_tick_rounded
     var ship = lookup(entity_list, "id", ship_id)
-    if ship: ship.update_input(input)
+    if ship: 
+        ship.update_input(input)
     history.append(to_dictionary())
 
-func receive(dictionary):
-    if dictionary.tick < last_received_tick:
+func receive(received):
+    if received.tick < last_received_tick:
         return
     else:
-        last_received_tick = dictionary.tick
+        last_received_tick = received.tick
     
-    ship_id = dictionary.client.ship_id
-    create_new_entities(dictionary)
-    remove_deleted_entities(dictionary)
+    ship_id = received.client.ship_id
+    create_new_entities(received)
+    remove_deleted_entities(received)
     
-    var recorded = lookup(history, "tick", dictionary.tick)
+    var historical_state = lookup(history, "tick", received.tick)
     
-    for object in recorded.objects:
-        var other_object = lookup(dictionary.objects, "id", object.id)
-        if not other_object: continue
+    for object in historical_state.objects:
+        var other_object = lookup(received.objects, "id", object.id)
+        if not other_object:
+            continue
         var delta = get_delta(object, other_object)
-        for i in range(dictionary.tick, tick + 1):
-            var history_item = lookup(history, "tick", i)
-            if history_item == null:
+        for i in range(received.tick, tick + 1):
+            var historical_entry = lookup(history, "tick", i)
+            if historical_entry == null:
                 continue
-            var history_object = lookup(history_item.objects, "id", object.id)
-            if history_object == null: 
+            var historical_object = lookup(historical_entry.objects, "id", object.id)
+            if historical_object == null: 
                 continue
-            apply_delta(history_object, delta)
+            apply_delta(historical_object, delta)
         
         var entity = lookup(entity_list, "id", object.id)
-        if not entity: continue
-        var current = lookup(history, "tick", tick)
-        if not current: continue
-        var current_object = lookup(current.objects, "id", object.id)
-        if not current_object: continue
-        entity.linear_interpolate(current_object, 1)
+        if entity == null:
+            continue
+        var current_state = lookup(history, "tick", tick)
+        if not current_state:
+            continue
+        var current_object = lookup(current_state.objects, "id", object.id)
+        if not current_object:
+            continue
+        entity.from_dictionary(current_object)
         continue
     
     for i in range(history.size() - 1, -1, -1):
-        if history[i].tick < dictionary.tick:
+        if history[i].tick < received.tick:
             history.remove(i)
     
-    if not enable: return
+    if not enable:
+        return
 
 func get_delta(source, target):
     var delta = {}
@@ -74,12 +80,16 @@ func get_delta(source, target):
     if "scale" in source && "scale" in target:
         delta["scale"] = target.scale - source.scale
     if "linear_velocity" in source && "linear_velocity" in target:
-        delta["linear_velocity"] = target.linear_velocity
+        delta["linear_velocity"] = target.linear_velocity - source.linear_velocity
     if "angular_velocity" in source && "angular_velocity" in target:
-        delta["angular_velocity"] = target.angular_velocity
+        delta["angular_velocity"] = target.angular_velocity - source.angular_velocity
     return delta
 
 func apply_delta(source, delta):
+    if source is Node && source.has_method("apply_delta"):
+        source.apply_delta(delta)
+        return
+    
     if "position" in source && "position" in delta:
         source["position"] += delta.position
     if "rotation" in source && "rotation" in delta:
@@ -87,9 +97,9 @@ func apply_delta(source, delta):
     if "scale" in source && "scale" in delta:
         source["scale"] += delta.scale
     if "linear_velocity" in source && "linear_velocity" in delta:
-        source["linear_velocity"] = delta.linear_velocity
+        source["linear_velocity"] += delta.linear_velocity
     if "angular_velocity" in source && "angular_velocity" in delta:
-        source["angular_velocity"] = delta.angular_velocity
+        source["angular_velocity"] += delta.angular_velocity
 
 func create_new_entities(dictionary):
     for entry in dictionary.objects:

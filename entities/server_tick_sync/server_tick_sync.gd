@@ -23,6 +23,7 @@ func _process(delta):
     time += delta
     update_server_tick()
     update_smooth_tick(delta)
+    
 
 func calculate_rtt(client_tick, offset):
     if client_tick == 0:
