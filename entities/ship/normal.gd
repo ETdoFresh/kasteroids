@@ -26,9 +26,30 @@ func _physics_process(delta):
     
     angular_velocity = rotation_dir * spin_thrust * delta
     
-    var _1 = move_and_collide(linear_velocity * delta)
+    var collision = move_and_collide(linear_velocity * delta)
+    if collision:
+        bounce(collision)
     global_rotation += angular_velocity
     $Wrap.wrap(self)
+
+func bounce(collision : KinematicCollision2D):
+    var collider = collision.collider
+    var ma = mass
+    var mb = collider.mass
+    var va = linear_velocity
+    var vb = collider.linear_velocity
+    var n = collision.normal
+    var cr = 0.2 # Coefficient of Restitution
+    var j = -(1.0 + cr) * ((va - vb).dot(n))
+    j /= (1.0/ma + 1.0/mb)
+    linear_velocity = va + (j / ma) * n
+    collider.linear_velocity = vb - (j / ma) * n
+    # If you need to consider more accuracy maybe?
+    #var collision_velocity_ratio = 1
+    #if va.length() > 0:
+    #    collision_velocity_ratio = linear_velocity.length() / va.length()
+    #position += linear_velocity.normalized() * collision.remainder.length() * collision_velocity_ratio
+    print ("%s|%s: %s %s %s %s %s %s %s %s" % [name, collider.name, ma, mb, va, vb, n , cr ,j, linear_velocity])
 
 func change_position(new_position):
     self.new_position = new_position

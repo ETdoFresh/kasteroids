@@ -12,7 +12,7 @@ var random = RandomNumberGenerator.new()
 var id = -1
 var linear_velocity = Vector2.ZERO
 var angular_velocity = 0
-var mass = 5
+var mass = 1.0
 
 func _ready():
     random.randomize()
@@ -34,10 +34,23 @@ func _physics_process(delta):
     $Wrap.wrap(self)
 
 func bounce(collision : KinematicCollision2D):
-    var other_mass = collision.collider.mass
-    var other_velocity = collision.collider.linear_velocity
-    var reflected_velocity = other_velocity.reflect(collision.normal)
-    linear_velocity += reflected_velocity.normalized() * other_velocity.length() * other_mass
+    var collider = collision.collider
+    var ma = mass
+    var mb = collider.mass
+    var va = linear_velocity
+    var vb = collider.linear_velocity
+    var n = collision.normal
+    var cr = 0.2 # Coefficient of Restitution
+    var j = -(1.0 + cr) * ((va - vb).dot(n))
+    j /= (1.0/ma + 1.0/mb)
+    linear_velocity = va + (j / ma) * n
+    collider.linear_velocity = vb - (j / ma) * n
+    # If you need to consider more accuracy maybe?
+    #var collision_velocity_ratio = 1
+    #if va.length() > 0:
+    #    collision_velocity_ratio = linear_velocity.length() / va.length()
+    #position += linear_velocity.normalized() * collision.remainder.length() * collision_velocity_ratio
+    print ("%s|%s: %s %s %s %s %s %s %s %s" % [name, collider.name, ma, mb, va, vb, n , cr ,j, linear_velocity])
 
 func randomize_spin():
     angular_velocity = random.randf_range(min_angular_velocity, max_angular_velocity)
