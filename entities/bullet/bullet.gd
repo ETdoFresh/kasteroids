@@ -5,6 +5,7 @@ var id = -1
 var max_linear_velocity = 800
 var linear_velocity = Vector2.ZERO
 var angular_velocity = 0
+var mass = 10 #0.15
 
 func _ready():
     var _1 = $DestroyAfter.connect("timeout", self, "destroy")

@@ -10,6 +10,7 @@ var rotation_dir = 0
 var linear_velocity = Vector2.ZERO
 var linear_acceleration = Vector2.ZERO
 var angular_velocity = 0
+var mass = 1
 
 onready var gun = $Gun
 

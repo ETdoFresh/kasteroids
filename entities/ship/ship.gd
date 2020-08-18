@@ -7,8 +7,9 @@ var id = -1
 var input = InputData.new()
 var collision_layer setget set_collision_layer
 var collision_mask setget set_collision_mask
-var linear_velocity
-var angular_velocity
+var linear_velocity = Vector2.ZERO
+var angular_velocity = 0
+var mass = 1
 var username = ""
 
 onready var state_machine = $States

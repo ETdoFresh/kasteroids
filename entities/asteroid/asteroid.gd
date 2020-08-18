@@ -12,6 +12,7 @@ var random = RandomNumberGenerator.new()
 var id = -1
 var linear_velocity = Vector2.ZERO
 var angular_velocity = 0
+var mass = 5
 
 func _ready():
     random.randomize()
@@ -21,14 +22,22 @@ func _ready():
 
 func _physics_process(delta):
     if linear_velocity.length() > max_linear_velocity:
-        linear_velocity = max_linear_velocity.normalized() * max_linear_velocity
+        linear_velocity = linear_velocity.normalized() * max_linear_velocity
     
     if abs(angular_velocity) > max_angular_velocity:
         angular_velocity = sign(angular_velocity) * max_angular_velocity
     
-    var _1 = move_and_collide(linear_velocity * delta)
+    var collision = move_and_collide(linear_velocity * delta)
+    if collision:
+        bounce(collision)
     global_rotation += angular_velocity * delta
     $Wrap.wrap(self)
+
+func bounce(collision : KinematicCollision2D):
+    var other_mass = collision.collider.mass
+    var other_velocity = collision.collider.linear_velocity
+    var reflected_velocity = other_velocity.reflect(collision.normal)
+    linear_velocity += reflected_velocity.normalized() * other_velocity.length() * other_mass
 
 func randomize_spin():
     angular_velocity = random.randf_range(min_angular_velocity, max_angular_velocity)
