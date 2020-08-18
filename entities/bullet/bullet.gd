@@ -25,7 +25,7 @@ func _physics_process(delta):
     var collision = move_and_collide(linear_velocity * delta)
     if collision:
         bounce(collision)
-        destroy()
+        #destroy()
     
     $Wrap.wrap(self)
 
@@ -36,17 +36,23 @@ func bounce(collision : KinematicCollision2D):
     var va = linear_velocity
     var vb = collider.linear_velocity
     var n = collision.normal
-    var cr = 0.2 # Coefficient of Restitution
-    var j = -(1.0 + cr) * ((va - vb).dot(n))
-    j /= (1.0/ma + 1.0/mb)
+    var cr = 1.0 # Coefficient of Restitution
+    var wa = angular_velocity
+    var wb = collider.angular_velocity
+    var ra = collision.position - position
+    var rb = collision.position - collider.position
+    var ia = ma * ra * ra # Rotational Inertia
+    var ib = mb * rb * rb # Rotational Inertia
+    var la = wa * ia # Angular Momementum
+    var lb = wb * ib # Angular Momementum
+    var raxn = ra.project(n)
+    var rbxn = rb.project(n)
+    var j = -(1.0 + cr) * ((va - vb).dot(n)) # Impulse Magnitude
+    j /= (1.0/ma + 1.0/mb) #+ ((ia * raxn).project(ra) + (ib * rbxn).project(rb)).dot(n)
     linear_velocity = va + (j / ma) * n
     collider.linear_velocity = vb - (j / ma) * n
-    # If you need to consider more accuracy maybe?
-    #var collision_velocity_ratio = 1
-    #if va.length() > 0:
-    #    collision_velocity_ratio = linear_velocity.length() / va.length()
-    #position += linear_velocity.normalized() * collision.remainder.length() * collision_velocity_ratio
-    print ("%s|%s: %s %s %s %s %s %s %s %s" % [name, collider.name, ma, mb, va, vb, n , cr ,j, linear_velocity])
+    #angular_velocity = wa + (ia * ra.project(j * n)).length()
+    #collider.angular_velocity = wb - (ib * rb.project(j * n)).length()
 
 func destroy():
     var bullet_particles = Scene.BULLET_PARTICLES.instance()
