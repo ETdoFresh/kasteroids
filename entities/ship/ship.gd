@@ -9,7 +9,7 @@ var collision_layer setget set_collision_layer
 var collision_mask setget set_collision_mask
 var linear_velocity = Vector2.ZERO
 var angular_velocity = 0
-var mass = 1
+var mass = 1.0
 var username = ""
 
 onready var state_machine = $States

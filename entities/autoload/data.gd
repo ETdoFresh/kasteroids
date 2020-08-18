@@ -3,6 +3,47 @@ extends Node
 const USERNAME_PATH = "user://local_storage_username.tres"
 const ID = {}
 
+func bounce(obj, collision):
+    var collider = collision.collider
+    var ma = obj.mass
+    var mb = collider.mass
+    var va = obj.linear_velocity
+    var vb = collider.linear_velocity
+    var n = collision.normal
+    var cr = 0.2 # Coefficient of Restitution
+    var wa = obj.angular_velocity
+    var wb = collider.angular_velocity
+    var ra = collision.position - obj.global_position
+    var rb = collision.position - collider.global_position
+    var rv = va + cross_fv(wa, ra) - vb - cross_fv(wb, rb) # Relative Velocity
+    rv = va - vb
+    var cv = rv.dot(n) # Contact Velocity
+    var ia = ma * ra.length_squared() # Rotational Inertia
+    var ib = mb * rb.length_squared() # Rotational Inertia
+    var iia = 1.0 / ia
+    var iib = 1.0 / ib
+    var ra_x_n = cross(ra, n)
+    var rb_x_n = cross(rb, n)
+    var iia_ra_x_n = iia * ra_x_n
+    var iib_rb_x_n = iib * rb_x_n
+    var angular_denominator = cross_fv(iia_ra_x_n, ra) + cross_fv(iib_rb_x_n, rb)
+    angular_denominator = angular_denominator.dot(n)
+    var j = -(1.0 + cr) * cv # Impulse Magnitude
+    j /= (1.0/ma + 1.0/mb) + angular_denominator
+    obj.linear_velocity = va + (j / ma) * n
+    collider.linear_velocity = vb - (j / ma) * n
+    obj.angular_velocity = wa + iia * cross(ra, j * n)
+    collider.angular_velocity = wb - iib * cross(rb, j * n)
+
+func cross_vf(v : Vector2, f : float):
+    return Vector2(f * v.y, -f * v.x)
+
+func cross_fv(f : float, v : Vector2):
+    return Vector2(-f * v.y, f * v.x)
+
+func cross(a : Vector2, b : Vector2):
+    return a.x * b.y - a.y * b.x;
+
 func copy_values(keys, source, destination):
     for key in keys:
         if key in source && key in destination:

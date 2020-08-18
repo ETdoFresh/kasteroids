@@ -40,22 +40,10 @@ func bounce(collision : KinematicCollision2D):
     var vb = collider.linear_velocity
     var n = collision.normal
     var cr = 1.0 # Coefficient of Restitution
-    var wa = angular_velocity
-    var wb = collider.angular_velocity
-    var ra = collision.position - position
-    var rb = collision.position - collider.position
-    var ia = ma * ra * ra # Rotational Inertia
-    var ib = mb * rb * rb # Rotational Inertia
-    var la = wa * ia # Angular Momementum
-    var lb = wb * ib # Angular Momementum
-    var raxn = ra.project(n)
-    var rbxn = rb.project(n)
-    var j = -(1.0 + cr) * ((va - vb).dot(n)) # Impulse Magnitude
-    j /= (1.0/ma + 1.0/mb) + ((ia * raxn).project(ra) + (ib * rbxn).project(rb)).dot(n)
+    var j = -(1.0 + cr) * (va - vb).dot(n) # Impulse Magnitude
+    j /= (1.0/ma + 1.0/mb)
     linear_velocity = va + (j / ma) * n
-    collider.linear_velocity = vb - (j / ma) * n
-    #angular_velocity = wa + (ia * ra.project(j * n)).length()
-    #collider.angular_velocity = wb - (ib * rb.project(j * n)).length()
+    collider.linear_velocity = vb - (j /mb) * n
 
 func change_position(new_position):
     self.new_position = new_position
