@@ -19,11 +19,13 @@ onready var extrapolated_world = get_parent().get_node("ExtrapolatedWorld")
 onready var containers = { 
     "Ship": $Ships, "Asteroid": $Asteroids, "Bullet": $Bullets }
 
-func simulate(_delta):
+func simulate(delta):
     tick = server_tick_sync.smooth_tick_rounded
     var ship = lookup(entity_list, "id", ship_id)
     if ship: 
         ship.update_input(input)
+    for entity in entity_list:
+        entity.simulate(delta)
     history.append(to_dictionary())
 
 func receive(received):

@@ -10,6 +10,7 @@ var collision_mask setget set_collision_mask
 var linear_velocity = Vector2.ZERO
 var angular_velocity = 0
 var mass = 1.0
+var bounce = 0.0
 var username = ""
 
 onready var state_machine = $States
@@ -37,6 +38,11 @@ func _physics_process(_delta):
         var state = state_machine.active_state
         linear_velocity = state.linear_velocity if state.get("linear_velocity") else Vector2.ZERO
         angular_velocity = state.angular_velocity if state.get("angular_velocity") else 0
+
+func simulate(delta):
+    var state = get_active_state()
+    if state:
+        state.simulate(delta)
 
 func state_name():
     return state_machine.active_state_name
@@ -94,8 +100,8 @@ func from_dictionary(dictionary):
     var state = get_active_state()
     if dictionary.has("id"): id = dictionary["id"]
     if state:
-        if dictionary.has("position"): state.queue_position(dictionary["position"])
-        if dictionary.has("rotation"): state.queue_rotation(dictionary["rotation"])
+        if dictionary.has("position"): state.position = dictionary["position"]
+        if dictionary.has("rotation"): state.rotation = dictionary["rotation"]
         if dictionary.has("scale"): state.get_node("CollisionShape2D").scale = dictionary["scale"]
         if dictionary.has("linear_velocity"): state.linear_velocity = dictionary["linear_velocity"]
         if dictionary.has("angular_velocity"): state.angular_velocity = dictionary["angular_velocity"]

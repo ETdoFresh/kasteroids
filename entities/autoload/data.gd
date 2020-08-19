@@ -10,7 +10,7 @@ func bounce(obj, collision):
     var va = obj.linear_velocity
     var vb = collider.linear_velocity
     var n = collision.normal
-    var cr = 0.2 # Coefficient of Restitution
+    var cr = obj.bounce # Coefficient of Restitution
     var wa = obj.angular_velocity
     var wb = collider.angular_velocity
     var ra = collision.position - obj.global_position
@@ -31,9 +31,12 @@ func bounce(obj, collision):
     var j = -(1.0 + cr) * cv # Impulse Magnitude
     j /= (1.0/ma + 1.0/mb) + angular_denominator
     obj.linear_velocity = va + (j / ma) * n
-    collider.linear_velocity = vb - (j / ma) * n
+    collider.linear_velocity = vb - (j / mb) * n
     obj.angular_velocity = wa + iia * cross(ra, j * n)
     collider.angular_velocity = wb - iib * cross(rb, j * n)
+    
+    if collider.has_method("destroy"):
+        collider.destroy()
 
 func cross_vf(v : Vector2, f : float):
     return Vector2(f * v.y, -f * v.x)

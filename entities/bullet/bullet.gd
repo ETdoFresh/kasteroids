@@ -2,10 +2,11 @@ class_name Bullet
 extends KinematicBody2D
 
 var id = -1
-var max_linear_velocity = 800
+var max_linear_velocity = 800 + 500
 var linear_velocity = Vector2.ZERO
 var angular_velocity = 0
 var mass = 0.15
+var bounce = 0.0
 
 func _ready():
     var _1 = $DestroyAfter.connect("timeout", self, "destroy")
@@ -18,18 +19,18 @@ func start(position, rotation, rigidbody, velocity_magnitude):
     var ship_velocity = rigidbody.linear_velocity
     linear_velocity = ship_velocity + Vector2(0, -velocity_magnitude).rotated(rotation)
 
-func _physics_process(delta):
+func simulate(delta):
     if linear_velocity.length() > max_linear_velocity:
         linear_velocity = linear_velocity.normalized() * max_linear_velocity
     
     var collision = move_and_collide(linear_velocity * delta)
     if collision:
-        bounce(collision)
-        #destroy()
+        bounce_collision(collision)
+        destroy()
     
     $Wrap.wrap(self)
 
-func bounce(collision : KinematicCollision2D):
+func bounce_collision(collision : KinematicCollision2D):
     Data.bounce(self, collision)
 
 func destroy():

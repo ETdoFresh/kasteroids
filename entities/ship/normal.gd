@@ -11,6 +11,7 @@ var linear_velocity = Vector2.ZERO
 var linear_acceleration = Vector2.ZERO
 var angular_velocity = 0
 var mass = 1
+var bounce = 0.0
 
 onready var gun = $Gun
 
@@ -18,7 +19,7 @@ func _process(_delta):
     thrust = Vector2(0, input.vertical * engine_thrust)
     rotation_dir = input.horizontal
 
-func _physics_process(delta):
+func simulate(delta):
     linear_acceleration = thrust.rotated(global_rotation)
     linear_velocity += linear_acceleration * delta
     if linear_velocity.length() > max_speed:
@@ -28,18 +29,18 @@ func _physics_process(delta):
     
     var collision = move_and_collide(linear_velocity * delta)
     if collision:
-        bounce(collision)
+        bounce_collision(collision)
     global_rotation += angular_velocity
     $Wrap.wrap(self)
 
-func bounce(collision : KinematicCollision2D):
+func bounce_collision(collision : KinematicCollision2D):
     var collider = collision.collider
     var ma = mass
     var mb = collider.mass
     var va = linear_velocity
     var vb = collider.linear_velocity
     var n = collision.normal
-    var cr = 1.0 # Coefficient of Restitution
+    var cr = bounce # Coefficient of Restitution
     var j = -(1.0 + cr) * (va - vb).dot(n) # Impulse Magnitude
     j /= (1.0/ma + 1.0/mb)
     linear_velocity = va + (j / ma) * n
