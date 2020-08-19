@@ -23,7 +23,8 @@ func simulate():
     $Players.update_ship_inputs()
     for group in [$Asteroids, $Bullets, $Ships]:
         for object in group.get_children():
-            object.simulate(Settings.tick_rate)
+            if object.is_inside_tree():
+                object.simulate(Settings.tick_rate)
 
 func create_player(input):
     var ship = Scene.SHIP.instance()
@@ -50,11 +51,9 @@ func create_bullet(gun_position, gun_rotation, ship, speed):
     objects.append(bullet)
 
 func delete_player(input):
-    for player in $Players.get_children():
-        if player.input == input:
-            player.ship.queue_free()
-            player.queue_free()
-        
+    var player = $Players.lookup("input", input)
+    player.ship.queue_free()
+    $Players.remove_player_by_input(input)
     $PlayerMonitor.remove_player_input(input)
 
 func remove_object(object):

@@ -72,16 +72,21 @@ func receive(received):
     remove_deleted_entities(received)
     
     var historical_state = lookup(history, "tick", received.tick)
-    
     var is_miss = false
-    for object in historical_state.objects:
-        var other_object = lookup(received.objects, "id", object.id)
-        if not other_object:
-            continue
-        var delta = get_delta(object, other_object)
-        if delta.position.length() >= 2 || delta.rotation >= 2:
-            is_miss = true
-            break
+    
+    if historical_state:
+        for object in historical_state.objects:
+            var other_object = lookup(received.objects, "id", object.id)
+            if not other_object:
+                continue
+            var delta = get_delta(object, other_object)
+            if delta.position.length() >= 2 || delta.rotation >= 0.05:
+                is_miss = true
+                break
+    else:
+        historical_state = to_dictionary()
+        historical_state.tick = received.tick
+        is_miss = true
     
     for i in range(history.size() - 1, -1, -1):
         if history[i].tick < received.tick:
@@ -174,5 +179,5 @@ func to_log(title, log_tick, log_input, objects):
     debug_file.store_string("Input: %s,%s,%s " % [log_input.horizontal, log_input.vertical, log_input.fire])
     for object in objects:
         var object_name = object.name if "name" in object else object.type
-        debug_file.store_string("%s: %s,%s,%s,%s " % [object_name, object.position, object.rotation, object.linear_velocity, object.angular_velocity])
+        debug_file.store_string("%s: %s,%s " % [object_name, object.position, object.rotation])
     debug_file.store_string("\n")
