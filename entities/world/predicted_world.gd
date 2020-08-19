@@ -16,9 +16,18 @@ var types = {
     "Asteroid": Scene.ASTEROID,
     "Bullet": Scene.BULLET }
 
+var debug_file : File
+
 onready var extrapolated_world = get_parent().get_node("ExtrapolatedWorld")
 onready var containers = { 
     "Ship": $Ships, "Asteroid": $Asteroids, "Bullet": $Bullets }
+
+func _enter_tree():
+    debug_file = File.new()
+    var _1 = debug_file.open("res://predicted_world.log", File.WRITE)
+
+func _exit_tree():
+    debug_file.close()
 
 func simulate(delta):
     tick = server_tick_sync.smooth_tick_rounded
@@ -28,6 +37,7 @@ func simulate(delta):
     for entity in entity_list:
         entity.simulate(delta)
     history.append(to_dictionary())
+    to_log("Simulate: ", tick, input, entity_list)
 
 func rewrite(state, new_state):
     state.objects = new_state.objects
@@ -55,7 +65,8 @@ func receive(received):
         return
     else:
         last_received_tick = received.tick
-    
+   
+    to_log("Received: ", received.tick, input, received.objects)
     ship_id = received.client.ship_id
     create_new_entities(received)
     remove_deleted_entities(received)
@@ -68,7 +79,7 @@ func receive(received):
         if not other_object:
             continue
         var delta = get_delta(object, other_object)
-        if delta.position.length() >= 0.1 || delta.rotation >= 1:
+        if delta.position.length() >= 2 || delta.rotation >= 2:
             is_miss = true
             break
     
@@ -78,11 +89,14 @@ func receive(received):
     
     if is_miss:
         misses += 1
+        to_log("Rewind to: ", historical_state.tick, historical_state.input, historical_state.objects)
         rewrite(historical_state, received)
         rewind_to(historical_state)
-        for historical_tick in range(historical_state.tick, server_tick_sync.smooth_tick + 1):
+        to_log("Rewrite: ", historical_state.tick, historical_state.input, historical_state.objects)
+        for historical_tick in range(historical_state.tick + 1, server_tick_sync.smooth_tick + 1):
             var historical_state2 = lookup(history, "tick", historical_tick)
             resimulate(historical_state2)
+            to_log("Resimulate: ", historical_state2.tick, historical_state2.input, historical_state2.objects)
 
 func get_delta(source, target):
     var delta = {}
@@ -153,3 +167,12 @@ func to_dictionary():
         objects.append(entity.to_dictionary())
     var input_dict = inst2dict(input)
     return {"tick": tick, "input": input_dict, "objects": objects}
+
+func to_log(title, log_tick, log_input, objects):
+    debug_file.store_string("%s: " % title)
+    debug_file.store_string("Tick: %s " % log_tick)
+    debug_file.store_string("Input: %s,%s,%s " % [log_input.horizontal, log_input.vertical, log_input.fire])
+    for object in objects:
+        var object_name = object.name if "name" in object else object.type
+        debug_file.store_string("%s: %s,%s,%s,%s " % [object_name, object.position, object.rotation, object.linear_velocity, object.angular_velocity])
+    debug_file.store_string("\n")

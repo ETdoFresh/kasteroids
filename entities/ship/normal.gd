@@ -15,11 +15,9 @@ var bounce = 0.0
 
 onready var gun = $Gun
 
-func _process(_delta):
+func simulate(delta):
     thrust = Vector2(0, input.vertical * engine_thrust)
     rotation_dir = input.horizontal
-
-func simulate(delta):
     linear_acceleration = thrust.rotated(global_rotation)
     linear_velocity += linear_acceleration * delta
     if linear_velocity.length() > max_speed:

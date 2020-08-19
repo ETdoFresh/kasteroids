@@ -48,19 +48,10 @@ func state_name():
     return state_machine.active_state_name
 
 func update_input(update_input):
-    for key in input.keys():
-        if key in update_input:
-            input[key] = update_input[key]
-    
-    if update_input.get("username"): username = update_input.username
-    
-    if state_machine:
-        for state in state_machine.states:
-            if "input" in state:
-                for key in state.input.keys():
-                    if key in update_input:
-                        state.input[key] = update_input[key]
-    
+    input = update_input
+    var state = get_active_state()
+    if state:
+        state.input = update_input
 
 func set_position(new_position):
     position = new_position
