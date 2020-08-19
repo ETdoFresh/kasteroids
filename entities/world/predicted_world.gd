@@ -84,15 +84,13 @@ func receive(received):
                 is_miss = true
                 break
     else:
-        historical_state = to_dictionary()
-        historical_state.tick = received.tick
         is_miss = true
     
     for i in range(history.size() - 1, -1, -1):
         if history[i].tick < received.tick:
             history.remove(i)
     
-    if is_miss:
+    if is_miss && historical_state:
         misses += 1
         to_log("Rewind to: ", historical_state.tick, historical_state.input, historical_state.objects)
         rewrite(historical_state, received)
