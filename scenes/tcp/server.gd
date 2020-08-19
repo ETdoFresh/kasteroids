@@ -1,5 +1,7 @@
 extends Node
 
+const SERVER_VERSION = "v0.0.1"
+
 export var update_rate = 10
 
 var update_timer = 0.0
@@ -15,7 +17,8 @@ func _ready():
         if has_node("Kbps"):
             $DebugOverlay.add_stat("Kbps", $Kbps, "value", false)
 
-func _enter_tree():    
+func _enter_tree():
+    console_write_ln("Kasteroids Server %s" % SERVER_VERSION)
     if has_node("TCPServer"):
         console_write_ln("Starting Server...")
         var _1 = $TCPServer.connect("on_open", self, "create_tcp_server_input")
