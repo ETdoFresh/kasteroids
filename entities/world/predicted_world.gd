@@ -10,6 +10,7 @@ var input = InputData.new()
 var server_tick_sync
 var last_received_tick = 0
 var history = []
+var misses = 0
 var types = {
     "Ship": Scene.SHIP,
     "Asteroid": Scene.ASTEROID,
@@ -28,6 +29,27 @@ func simulate(delta):
         entity.simulate(delta)
     history.append(to_dictionary())
 
+func rewrite(state, new_state):
+    state.objects = new_state.objects
+
+func rewind_to(state):
+    for object in state.objects:
+        var entity = lookup(entity_list, "id", object.id)
+        if entity == null:
+            continue
+        var state_object = lookup(state.objects, "id", object.id)
+        if not state_object:
+            continue
+        entity.from_dictionary(state_object)
+
+func resimulate(state):
+    var ship = lookup(entity_list, "id", ship_id)
+    if ship: 
+        ship.update_input(state.input)
+    for entity in entity_list:
+        entity.simulate(Settings.tick_rate)
+    state.objects = to_dictionary().objects
+
 func receive(received):
     if received.tick < last_received_tick:
         return
@@ -40,38 +62,27 @@ func receive(received):
     
     var historical_state = lookup(history, "tick", received.tick)
     
+    var is_miss = false
     for object in historical_state.objects:
         var other_object = lookup(received.objects, "id", object.id)
         if not other_object:
             continue
         var delta = get_delta(object, other_object)
-        for i in range(received.tick, tick + 1):
-            var historical_entry = lookup(history, "tick", i)
-            if historical_entry == null:
-                continue
-            var historical_object = lookup(historical_entry.objects, "id", object.id)
-            if historical_object == null: 
-                continue
-            apply_delta(historical_object, delta)
-        
-        var entity = lookup(entity_list, "id", object.id)
-        if entity == null:
-            continue
-        var current_state = lookup(history, "tick", tick)
-        if not current_state:
-            continue
-        var current_object = lookup(current_state.objects, "id", object.id)
-        if not current_object:
-            continue
-        entity.from_dictionary(current_object)
-        continue
+        if delta.position.length() >= 0.1 || delta.rotation >= 1:
+            is_miss = true
+            break
     
     for i in range(history.size() - 1, -1, -1):
         if history[i].tick < received.tick:
             history.remove(i)
     
-    if not enable:
-        return
+    if is_miss:
+        misses += 1
+        rewrite(historical_state, received)
+        rewind_to(historical_state)
+        for historical_tick in range(historical_state.tick, server_tick_sync.smooth_tick + 1):
+            var historical_state2 = lookup(history, "tick", historical_tick)
+            resimulate(historical_state2)
 
 func get_delta(source, target):
     var delta = {}
@@ -140,5 +151,5 @@ func to_dictionary():
     var objects = []
     for entity in entity_list:
         objects.append(entity.to_dictionary())
-    var input_dict = Data.instance_to_dictionary(input)
+    var input_dict = inst2dict(input)
     return {"tick": tick, "input": input_dict, "objects": objects}

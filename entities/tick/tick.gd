@@ -7,7 +7,7 @@ var previous_tick = 0
 var tick = 0
 var time = 0
 
-func _physics_process(delta):
+func _process(delta):
     precise_tick += delta * Settings.ticks_per_second
     tick = int(round(precise_tick))
     time += delta

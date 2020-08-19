@@ -64,6 +64,7 @@ func _ready():
     $DebugOverlay.add_stat("Received Packets/Sec", received_kbps, "count", false)
     $DebugOverlay.add_stat("Sent Kbps/Sec", sent_kbps, "value", false)
     $DebugOverlay.add_stat("Sent Packets/Sec", sent_kbps, "count", false)
+    $DebugOverlay.add_stat("Prediction Misses", $PredictedWorld, "misses", false)
 
 func update_input():
     $Inputs/Input.tick = server_tick_sync.smooth_tick_rounded

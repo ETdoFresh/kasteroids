@@ -13,16 +13,14 @@ onready var containers = {
     "Ship": $Ships, "Asteroid": $Asteroids, "Bullet": $Bullets }
 
 func simulate(_delta):
-    if not server_tick_sync:
-        return
-    
-    var time = (server_tick_sync.smooth_tick - last_tick_received) * Settings.tick_rate
-    for entity in entity_list:
-        if entity.has_meta("extrapolated_position"):
-            entity.position = entity.get_meta("extrapolated_position")
-            entity.position += entity.get_meta("linear_velocity") * time
-            entity.rotation = entity.get_meta("extrapolated_rotation")
-            entity.rotation += entity.get_meta("angular_velocity") * time
+    if server_tick_sync:    
+        var time = (server_tick_sync.smooth_tick - last_tick_received) * Settings.tick_rate
+        for entity in entity_list:
+            if entity.has_meta("extrapolated_position"):
+                entity.position = entity.get_meta("extrapolated_position")
+                entity.position += entity.get_meta("linear_velocity") * time
+                entity.rotation = entity.get_meta("extrapolated_rotation")
+                entity.rotation += entity.get_meta("angular_velocity") * time
 
 func receive(dictionary):
     if dictionary.tick < last_tick_received:

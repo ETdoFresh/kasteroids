@@ -28,8 +28,8 @@ gradient = SubResource( 1 )
 script = ExtResource( 3 )
 
 [node name="DebugOverlay" parent="." instance=ExtResource( 4 )]
-offset = Vector2( 800, 380 )
-transform = Transform2D( 1, 0, 0, 1, 800, 380 )
+offset = Vector2( 800, 350 )
+transform = Transform2D( 1, 0, 0, 1, 800, 350 )
 
 [node name="TCPClient" type="Node" parent="."]
 script = ExtResource( 5 )
@@ -67,6 +67,7 @@ modulate = Color( 0.501961, 0.25098, 0.25098, 0.25098 )
 enable = false
 
 [node name="PresentationWorld" parent="." instance=ExtResource( 17 )]
+visible = false
 modulate = Color( 0, 0.501961, 0.501961, 0.501961 )
 
 [node name="Inputs" type="Node" parent="."]
