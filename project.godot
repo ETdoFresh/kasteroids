@@ -127,6 +127,7 @@ Data="*res://entities/autoload/data.gd"
 Scene="*res://entities/autoload/scene.gd"
 Settings="*res://entities/autoload/settings.gd"
 ID="*res://entities/autoload/id.gd"
+CSV="*res://entities/csv_writer/csv.gd"
 
 [display]
 

@@ -13,8 +13,11 @@ func remove_player_by_input(input):
     var player = lookup("input", input)
     if player: players.erase(player)
 
-func update_ship_inputs():
+func update_ship_inputs(tick):
     for player in players:
+        if player.input.has_method("set_state_at_tick"):
+            if not player.input.set_state_at_tick(tick):
+                player.input.misses += 1
         player.ship.update_input(player.input)
 
 func lookup(key, value):

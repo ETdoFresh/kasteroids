@@ -16,18 +16,14 @@ var types = {
     "Asteroid": Scene.ASTEROID,
     "Bullet": Scene.BULLET }
 
-var debug_file : File
-
 onready var extrapolated_world = get_parent().get_node("ExtrapolatedWorld")
 onready var containers = { 
     "Ship": $Ships, "Asteroid": $Asteroids, "Bullet": $Bullets }
 
 func _enter_tree():
-    debug_file = File.new()
-    var _1 = debug_file.open("res://predicted_world.log", File.WRITE)
-
-func _exit_tree():
-    debug_file.close()
+    CSV.write_line("res://predicted_world.csv",
+     ["Action","Tick","Horizontal","Vertical","Fire","Name1","Position1X","Position1Y","Rotation1","Name2","Position2X","Position2Y","Rotation2",
+      "Name3","Position3X","Position3Y","Rotation3","Name4","Position4X","Position4Y","Rotation4","Name5","Position5X","Position5Y","Rotation5"])
 
 func simulate(delta):
     tick = server_tick_sync.smooth_tick_rounded
@@ -37,7 +33,7 @@ func simulate(delta):
     for entity in entity_list:
         entity.simulate(delta)
     history.append(to_dictionary())
-    to_log("Simulate: ", tick, input, entity_list)
+    to_log("Simulate", tick, input, entity_list)
 
 func rewrite(state, new_state):
     state.objects = new_state.objects
@@ -66,7 +62,7 @@ func receive(received):
     else:
         last_received_tick = received.tick
    
-    to_log("Received: ", received.tick, input, received.objects)
+    to_log("Received", received.tick, input, received.objects)
     ship_id = received.client.ship_id
     create_new_entities(received)
     remove_deleted_entities(received)
@@ -92,14 +88,14 @@ func receive(received):
     
     if is_miss && historical_state:
         misses += 1
-        to_log("Rewind to: ", historical_state.tick, historical_state.input, historical_state.objects)
+        to_log("Rewind", historical_state.tick, historical_state.input, historical_state.objects)
         rewrite(historical_state, received)
         rewind_to(historical_state)
-        to_log("Rewrite: ", historical_state.tick, historical_state.input, historical_state.objects)
+        to_log("Rewrite", historical_state.tick, historical_state.input, historical_state.objects)
         for historical_tick in range(historical_state.tick + 1, server_tick_sync.smooth_tick + 1):
             var historical_state2 = lookup(history, "tick", historical_tick)
             resimulate(historical_state2)
-            to_log("Resimulate: ", historical_state2.tick, historical_state2.input, historical_state2.objects)
+            to_log("Resimulate", historical_state2.tick, historical_state2.input, historical_state2.objects)
 
 func get_delta(source, target):
     var delta = {}
@@ -171,11 +167,15 @@ func to_dictionary():
     var input_dict = inst2dict(input)
     return {"tick": tick, "input": input_dict, "objects": objects}
 
-func to_log(title, log_tick, log_input, objects):
-    debug_file.store_string("%s: " % title)
-    debug_file.store_string("Tick: %s " % log_tick)
-    debug_file.store_string("Input: %s,%s,%s " % [log_input.horizontal, log_input.vertical, log_input.fire])
+func to_log(action, log_tick, log_input, objects):
+    var values = []
+    values.append(action)
+    values.append(log_tick)
+    values.append(log_input.horizontal)
+    values.append(log_input.vertical)
+    values.append(log_input.fire)
     for object in objects:
-        var object_name = object.name if "name" in object else object.type
-        debug_file.store_string("%s: %s,%s " % [object_name, object.position, object.rotation])
-    debug_file.store_string("\n")
+        values.append(object.name if "name" in object else object.type)
+        values.append(object.position)
+        values.append(object.rotation)
+    CSV.write_line("res://predicted_world.csv", values)

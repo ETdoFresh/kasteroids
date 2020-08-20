@@ -1,6 +1,6 @@
 extends Node
 
-const SERVER_VERSION = "v0.0.1"
+const SERVER_VERSION = "v0.0.2"
 
 export var update_rate = 10
 
@@ -37,11 +37,6 @@ func _enter_tree():
         console_write_ln("Awaiting new connection...")
 
 func _process(delta):
-    for input in $Inputs.get_children():
-        if input is NetworkServerPlayerInput:
-            if not input.set_state_at_tick($World/Tick.tick):
-                input.misses += 1
-    
     if has_node("TCPServer") || has_node("WebSocketServer"):
         update_timer += delta
         if update_timer < 1.0 / update_rate: return

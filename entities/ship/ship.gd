@@ -39,6 +39,7 @@ func state_name():
 
 func update_input(update_input):
     input = update_input
+    username = input.username if "username" in input else username
     var state = get_active_state()
     if state:
         state.input = update_input

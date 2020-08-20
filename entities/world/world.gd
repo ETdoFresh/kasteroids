@@ -11,6 +11,22 @@ func _ready():
         for object in group.get_children():
             object.id = ID.reserve()
             objects.append(object)
+    CSV.write_line("res://server_world.csv",
+     ["Action","Tick","Horizontal","Vertical","Fire","Name1","Position1X","Position1Y","Rotation1","Name2","Position2X","Position2Y","Rotation2",
+      "Name3","Position3X","Position3Y","Rotation3","Name4","Position4X","Position4Y","Rotation4","Name5","Position5X","Position5Y","Rotation5"])
+
+func to_log(action, log_tick, log_input, log_objects):
+    var values = []
+    values.append(action)
+    values.append(log_tick)
+    values.append(log_input.horizontal)
+    values.append(log_input.vertical)
+    values.append(log_input.fire)
+    for object in log_objects:
+        values.append(object.name if "name" in object else object.type)
+        values.append(object.position)
+        values.append(object.rotation)
+    CSV.write_line("res://server_world.csv", values)
 
 func to_dictionary(client_tick, offset, ship_id):
     client.tick = client_tick
@@ -20,11 +36,12 @@ func to_dictionary(client_tick, offset, ship_id):
 
 func simulate():
     tick = $Tick.tick
-    $Players.update_ship_inputs()
-    for group in [$Asteroids, $Bullets, $Ships]:
-        for object in group.get_children():
-            if object.is_inside_tree():
-                object.simulate(Settings.tick_rate)
+    $Players.update_ship_inputs(tick)
+    for object in objects:
+        object.simulate(Settings.tick_rate)
+    
+    var input = $Players.players[0].input if $Players.players.size() > 0 else InputData.new()
+    to_log("Simulate", tick, input, objects)
 
 func create_player(input):
     var ship = Scene.SHIP.instance()
