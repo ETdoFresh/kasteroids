@@ -15,7 +15,7 @@
 [ext_resource path="res://entities/kbps/kbps.gd" type="Script" id=13]
 [ext_resource path="res://entities/menu_button/menu_button.tscn" type="PackedScene" id=14]
 [ext_resource path="res://entities/server_tick_sync/server_tick_sync.gd" type="Script" id=15]
-[ext_resource path="res://entities/world/presentation_world.tscn" type="PackedScene" id=17]
+[ext_resource path="res://entities/world/interpolated_predicted_world.tscn" type="PackedScene" id=16]
 
 [sub_resource type="Gradient" id=1]
 colors = PoolColorArray( 0, 0.00392157, 0.384314, 1, 0.23587, 0.248374, 0.460938, 1 )
@@ -53,20 +53,23 @@ __meta__ = {
 }
 
 [node name="LatestReceivedWorld" parent="." instance=ExtResource( 2 )]
+visible = false
 modulate = Color( 0.25098, 0.25098, 0.560784, 0.196078 )
 
 [node name="InterpolatedWorld" parent="." instance=ExtResource( 10 )]
+visible = false
 modulate = Color( 0.501961, 0.501961, 0, 0.196078 )
 
 [node name="ExtrapolatedWorld" parent="." instance=ExtResource( 11 )]
+visible = false
 modulate = Color( 0.501961, 0, 0.501961, 0.196078 )
 
 [node name="PredictedWorld" parent="." instance=ExtResource( 12 )]
+visible = false
 modulate = Color( 0.501961, 0.25098, 0.25098, 0.25098 )
 enable = false
 
-[node name="PresentationWorld" parent="." instance=ExtResource( 17 )]
-modulate = Color( 0, 0.501961, 0.501961, 0.501961 )
+[node name="InterpolatedPredictedWorld" parent="." instance=ExtResource( 16 )]
 
 [node name="Inputs" type="Node" parent="."]
 

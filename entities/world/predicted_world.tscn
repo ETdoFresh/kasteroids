@@ -1,7 +1,6 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://entities/world/predicted_world.gd" type="Script" id=2]
-[ext_resource path="res://entities/data/data.gd" type="Script" id=4]
 [ext_resource path="res://entities/world/base_world.tscn" type="PackedScene" id=5]
 
 [node name="PredictedWorld" instance=ExtResource( 5 )]
@@ -14,6 +13,3 @@ script = ExtResource( 2 )
 [node name="Asteroids" type="Node2D" parent="." index="2"]
 
 [node name="Players" type="Node2D" parent="." index="3"]
-
-[node name="PlaceHolderData" type="Node" parent="." index="4"]
-script = ExtResource( 4 )

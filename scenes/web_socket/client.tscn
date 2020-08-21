@@ -14,7 +14,7 @@
 [ext_resource path="res://entities/kbps/kbps.gd" type="Script" id=12]
 [ext_resource path="res://entities/menu_button/menu_button.tscn" type="PackedScene" id=13]
 [ext_resource path="res://entities/server_tick_sync/server_tick_sync.gd" type="Script" id=14]
-[ext_resource path="res://entities/world/presentation_world.tscn" type="PackedScene" id=15]
+[ext_resource path="res://entities/world/interpolated_predicted_world.tscn" type="PackedScene" id=15]
 
 [sub_resource type="Gradient" id=1]
 colors = PoolColorArray( 0, 0.00392157, 0.384314, 1, 0.23587, 0.248374, 0.460938, 1 )
@@ -57,9 +57,10 @@ visible = false
 modulate = Color( 0.501961, 0, 0.501961, 0.196078 )
 
 [node name="PredictedWorld" parent="." instance=ExtResource( 9 )]
-
-[node name="PresentationWorld" parent="." instance=ExtResource( 15 )]
 visible = false
+modulate = Color( 1, 0, 0, 0.25098 )
+
+[node name="InterpolatedPredictedWorld" parent="." instance=ExtResource( 15 )]
 
 [node name="Inputs" type="Node" parent="."]
 

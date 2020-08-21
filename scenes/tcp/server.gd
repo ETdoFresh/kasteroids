@@ -1,6 +1,6 @@
 extends Node
 
-const SERVER_VERSION = "v0.0.3"
+const SERVER_VERSION = "v0.0.4"
 
 export var update_rate = 10
 

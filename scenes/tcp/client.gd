@@ -32,6 +32,7 @@ func _ready():
     if has_node("InterpolatedWorld"): worlds.append(get_node("InterpolatedWorld"))
     if has_node("ExtrapolatedWorld"): worlds.append(get_node("ExtrapolatedWorld"))
     if has_node("PredictedWorld"): worlds.append(get_node("PredictedWorld"))
+    if has_node("InterpolatedPredictedWorld"): worlds.append(get_node("InterpolatedPredictedWorld"))
     
     server_tick_sync.connect("tick", self, "update_input")
     for world in worlds:

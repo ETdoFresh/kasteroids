@@ -57,7 +57,7 @@ func get_physics_layer_id_by_name(layer_name):
         var settings_layer_name = ProjectSettings.get_setting(
             str("layer_names/2d_physics/layer_", i))
         if layer_name == settings_layer_name:
-            return i
+            return int(pow(2, i - 1))
     return 0
 
 func get_id(category):
