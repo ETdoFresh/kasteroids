@@ -64,6 +64,8 @@ func update_smooth_tick(delta):
     if future_tick - smooth_tick >= Settings.ticks_per_second:
         smooth_tick = future_tick
         previous_smooth_tick_rounded = int(round(smooth_tick))
+    if smooth_tick - previous_smooth_tick_rounded >= Settings.ticks_per_second:
+        previous_smooth_tick_rounded = int(round(smooth_tick))
     
     var rate = future_tick - smooth_tick
     if rate < 0: rate = future_tick / (smooth_tick + rate * rate * Settings.ticks_per_second)
