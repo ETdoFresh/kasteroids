@@ -116,3 +116,32 @@ margin_top = 32.0
 margin_right = 450.0
 margin_bottom = 70.0
 custom_fonts/font = ExtResource( 3 )
+
+[node name="ClientURL" type="VBoxContainer" parent="."]
+margin_left = 810.0
+margin_top = 488.0
+margin_right = 1260.0
+margin_bottom = 558.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="ClientURL"]
+margin_right = 450.0
+margin_bottom = 28.0
+custom_fonts/font = ExtResource( 3 )
+text = "Websocket Client URL"
+
+[node name="Value" type="LineEdit" parent="ClientURL"]
+margin_top = 32.0
+margin_right = 450.0
+margin_bottom = 70.0
+custom_fonts/font = ExtResource( 3 )
+text = "wss://etdofresh-games.ddns.net:11001"
+
+[node name="Version" type="Label" parent="."]
+margin_left = 1228.0
+margin_top = 696.0
+margin_right = 1268.0
+margin_bottom = 710.0
+text = "v0.0.0"

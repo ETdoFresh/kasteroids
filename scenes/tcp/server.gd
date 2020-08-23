@@ -1,7 +1,5 @@
 extends Node
 
-const SERVER_VERSION = "v0.0.4"
-
 export var update_rate = 10
 
 var update_timer = 0.0
@@ -18,7 +16,6 @@ func _ready():
             $DebugOverlay.add_stat("Kbps", $Kbps, "value", false)
 
 func _enter_tree():
-    console_write_ln("Kasteroids Server %s" % SERVER_VERSION)
     if has_node("TCPServer"):
         console_write_ln("Starting Server...")
         var _1 = $TCPServer.connect("on_open", self, "create_tcp_server_input")
@@ -31,8 +28,10 @@ func _enter_tree():
         console_write_ln("Starting Server...")
         var _1 = $WebSocketServer.connect("on_open", self, "create_web_socket_server_input")
         var _2 = $WebSocketServer.connect("on_close", self, "remove_client")
-        var _3 = $WebSocketServer.listen()
-        #var _3 = $WebSocketServer.listen_insecure()
+        if get_parent() == get_tree().get_root():
+            var _3 = $WebSocketServer.listen()
+        else:
+            var _3 = $WebSocketServer.listen_insecure()
         var _4 = $WebSocketServer.connect("on_receive", $Kbps, "add_client_data")
         console_write_ln("Awaiting new connection...")
 

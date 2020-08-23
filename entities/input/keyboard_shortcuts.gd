@@ -44,9 +44,9 @@ func _input(event):
                         return
                 
                 if event.scancode == KEY_6: # +Control
-                    if get_parent().has_node("PresentationWorld"):
-                        get_parent().get_node("PresentationWorld").visible = \
-                            not get_parent().get_node("PresentationWorld").visible
+                    if get_parent().has_node("InterpolatedPredictedWorld"):
+                        get_parent().get_node("InterpolatedPredictedWorld").visible = \
+                            not get_parent().get_node("InterpolatedPredictedWorld").visible
                         return
                 
                 if event.scancode == KEY_P: # +Control

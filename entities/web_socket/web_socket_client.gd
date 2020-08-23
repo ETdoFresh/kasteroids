@@ -16,9 +16,9 @@ func _process(_delta):
 
 func open(url = "ws://localhost:11001"):
     if url.to_lower().begins_with("wss") &&  OS.get_name() != "HTML5":
-        client.verify_ssl = false
         client.trusted_ssl_certificate = X509Certificate.new()
-        client.trusted_ssl_certificate.load("res://keys/cert.crt")
+        client.trusted_ssl_certificate.load("res://keys/chain.crt")
+        client.verify_ssl = true
     client.connect("connection_established", self, "check_for_connection")
     client.connect("connection_closed", self, "check_for_disconnection")
     client.connect("data_received", self, "check_for_received_data")

@@ -23,7 +23,10 @@ func _enter_tree():
         var _1 = $WebSocketClient.connect("on_open", self, "show_connected_to_server")
         var _2 = $WebSocketClient.connect("on_close", self, "show_disconnected_to_server")
         #$WebSocketClient.open()
-        $WebSocketClient.open("wss://etdofresh.synology.me:11001")
+        if get_parent() == get_tree().get_root():
+            $WebSocketClient.open(Settings.client_url)
+        else:
+            $WebSocketClient.open()
 
 func _ready():
     $Inputs/Input.username = Data.get_username()
