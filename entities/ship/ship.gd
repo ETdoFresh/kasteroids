@@ -71,6 +71,7 @@ func to_dictionary():
 func from_dictionary(dictionary):
     var state = get_active_state()
     if dictionary.has("id"): id = dictionary["id"]
+    if dictionary.has("username"): username = dictionary["username"]
     if state:
         if dictionary.has("position"): state.position = dictionary["position"]
         if dictionary.has("rotation"): state.rotation = dictionary["rotation"]
