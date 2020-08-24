@@ -7,17 +7,10 @@ var linear_velocity = Vector2.ZERO
 var angular_velocity = 0
 var mass = 0.15
 var bounce = 0.0
+var ship_id = -1
 
 func _ready():
     var _1 = $DestroyAfter.connect("timeout", self, "destroy")
-
-func start(position, rotation, rigidbody, velocity_magnitude):
-    global_position = position
-    global_rotation = rotation
-    add_collision_exception_with(rigidbody)
-    
-    var ship_velocity = rigidbody.linear_velocity
-    linear_velocity = ship_velocity + Vector2(0, -velocity_magnitude).rotated(rotation)
 
 func simulate(delta):
     if linear_velocity.length() > max_linear_velocity:
@@ -50,7 +43,8 @@ func to_dictionary():
         "rotation": global_rotation,
         "scale": $CollisionShape2D.scale,
         "linear_velocity": linear_velocity,
-        "angular_velocity": angular_velocity }
+        "angular_velocity": angular_velocity,
+        "ship_id": ship_id }
 
 func from_dictionary(dictionary):
     if dictionary.has("id"): id = dictionary.id
@@ -59,3 +53,4 @@ func from_dictionary(dictionary):
     if dictionary.has("scale"): $CollisionShape2D.scale = dictionary.scale
     if dictionary.has("linear_velocity"): linear_velocity = dictionary.linear_velocity
     if dictionary.has("angular_velocity"): angular_velocity = dictionary.angular_velocity
+    if dictionary.has("ship_id"): ship_id = dictionary.ship_id

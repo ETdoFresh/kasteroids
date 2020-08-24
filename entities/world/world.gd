@@ -55,15 +55,16 @@ func create_player(input):
     $PlayerMonitor.add_player_input(input)
     return ship
 
-func create_bullet(gun_position, gun_rotation, ship, speed):
+func create_bullet(gun, ship):
     var bullet = Scene.BULLET.instance()
     bullet.id = ID.reserve()
-    bullet.global_position = gun_position
-    bullet.global_rotation = gun_rotation
-    bullet.add_collision_exception_with(ship)
+    bullet.global_position = gun.global_position
+    bullet.global_rotation = gun.global_rotation
+    bullet.ship_id = ship.id
+    bullet.add_collision_exception_with(ship.get_active_state())
     bullet.connect("tree_exited", self, "remove_object", [bullet])
-    var relative_velocity = ship.linear_velocity
-    bullet.linear_velocity = relative_velocity + Vector2(0, -speed).rotated(gun_rotation)
+    var relative_velocity = ship.get_active_state().linear_velocity
+    bullet.linear_velocity = relative_velocity + Vector2(0, -gun.shoot_velocity).rotated(gun.global_rotation)
     $Bullets.add_child(bullet)
     objects.append(bullet)
 

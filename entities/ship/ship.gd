@@ -1,7 +1,7 @@
 class_name Ship
 extends Node2D
 
-signal gun_fired(gun_position, gun_rotation, ship, velocity_magnitude)
+signal gun_fired(gun, ship)
 
 var id = -1
 var input = InputData.new()
@@ -26,7 +26,7 @@ func simulate(delta):
                 var gun = state.get_node("Gun")
                 if gun.is_ready:
                     gun.fire()
-                    emit_signal("gun_fired", gun.global_position, gun.global_rotation, state, gun.shoot_velocity)
+                    emit_signal("gun_fired", gun, self)
     
     # Just some DEBUG code to test different states...
     if input.previous_state:

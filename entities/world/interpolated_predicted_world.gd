@@ -78,6 +78,10 @@ func create_entity(entry):
     entity.connect("tree_exited", self, "erase_entity", [entity])
     entity.from_dictionary(entry)
     containers[type].add_child(entity)
+    if type == "Bullet" && "ship_id" in entry:
+        var ship = lookup(entity_list, "id", ship_id)
+        if ship:
+            entity.add_collision_exception_with(ship.get_active_state())
 
 func erase_entity(entity):
     entity_list.erase(entity)
