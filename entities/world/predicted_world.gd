@@ -16,6 +16,7 @@ var types = {
     "Asteroid": Scene.ASTEROID,
     "Bullet": Scene.BULLET }
 
+onready var screen_size = get_viewport().get_visible_rect().size 
 onready var extrapolated_world = get_parent().get_node("ExtrapolatedWorld")
 onready var containers = { 
     "Ship": $Ships, "Asteroid": $Asteroids, "Bullet": $Bullets }
@@ -100,9 +101,24 @@ func receive(received):
 func get_delta(source, target):
     var delta = {}
     if "position" in source && "position" in target:
-        delta["position"] = target.position - source.position
+        var delta_x = target.position.x - source.position.x
+        if abs(target.position.x - (source.position.x + screen_size.x)) < abs(delta_x):
+            delta_x = target.position.x - (source.position.x + screen_size.x)
+        if abs(target.position.x - (source.position.x - screen_size.x)) < abs(delta_x):
+            delta_x = target.position.x - (source.position.x - screen_size.x)
+        var delta_y = target.position.y - source.position.y
+        if abs(target.position.y - (source.position.y + screen_size.y)) < abs(delta_y):
+            delta_y = target.position.y - (source.position.y + screen_size.y)
+        if abs(target.position.y - (source.position.y - screen_size.y)) < abs(delta_y):
+            delta_y = target.position.y - (source.position.y - screen_size.y)
+        delta["position"] = Vector2(delta_x, delta_y)
     if "rotation" in source && "rotation" in target:
-        delta["rotation"] = target.rotation - source.rotation
+        var delta_rotation = target.rotation - source.rotation
+        if abs(target.rotation - (source.rotation - 2 * PI)) < abs(delta_rotation):
+            delta_rotation = target.rotation - (source.rotation - 2 * PI)
+        if abs(target.rotation - (source.rotation - 2 * PI)) < abs(delta_rotation):
+            delta_rotation = target.rotation - (source.rotation - 2 * PI)
+        delta["rotation"] = delta_rotation
     if "scale" in source && "scale" in target:
         delta["scale"] = target.scale - source.scale
     if "linear_velocity" in source && "linear_velocity" in target:
