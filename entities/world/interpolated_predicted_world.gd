@@ -2,6 +2,7 @@ extends Node2D
 
 export var enable = true
 export var smoothing_rate = 0.15
+export var snapping_distance = 200
 
 var tick = 0
 var entity_list = []
@@ -33,8 +34,13 @@ func simulate(delta):
         var interpolation_rate = 0.2
         var a = entity.to_dictionary()
         var b = other_entity.to_dictionary()
+        var new_position
+        if (a.position - b.position).length() < snapping_distance:
+            new_position = a.position.linear_interpolate(b.position, interpolation_rate)
+        else:
+            new_position = b.position
         entity.from_dictionary({
-            "position": a.position.linear_interpolate(b.position, interpolation_rate),
+            "position": new_position,
             "rotation": lerp_angle(a.rotation, b.rotation, interpolation_rate),
             "linear_velocity": a.linear_velocity.linear_interpolate(b.linear_velocity, interpolation_rate),
             "angular_velocity": lerp(a.angular_velocity, b.angular_velocity, interpolation_rate),
