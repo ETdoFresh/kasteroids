@@ -27,12 +27,6 @@ func simulate(delta):
                 if gun.is_ready:
                     gun.fire()
                     emit_signal("gun_fired", gun, self)
-    
-    # Just some DEBUG code to test different states...
-    if input.previous_state:
-        state_machine.set_previous_state()
-    elif input.next_state:
-        state_machine.set_next_state()
 
 func state_name():
     return state_machine.active_state_name

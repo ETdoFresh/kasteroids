@@ -1,6 +1,6 @@
 extends Node
 
-const VERSION = "v0.0.7"
+const VERSION = "v0.0.8"
 
 var client_url = "wss://etdofresh-games.ddns.net:11001"
 var ticks_per_second = 60 setget set_ticks_per_second

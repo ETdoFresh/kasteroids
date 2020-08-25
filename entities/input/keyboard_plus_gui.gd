@@ -10,8 +10,6 @@ var down = false
 var left = false
 var right = false
 var fire_button = false
-var next_state = false
-var previous_state = false
 var username = "WASD Keyboard Plus GUI"
 
 onready var repeater = $Repeater
@@ -26,9 +24,6 @@ func _process(_delta):
     if right || $GUIInput.right: horizontal += 1
     
     fire = fire_button || $GUIInput.fire
-    
-    next_state = Input.is_action_just_pressed("player_next_state") || $GUIInput.next_state
-    previous_state = Input.is_action_just_pressed("player_previous_state") || $GUIInput.previous_state
 
 func _unhandled_input(event):
     var actions = ["player_up", "player_down", "player_left", "player_right", "player_fire"]

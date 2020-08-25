@@ -100,35 +100,3 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Fire"
 script = ExtResource( 2 )
-
-[node name="RightControls2" type="GridContainer" parent="."]
-visible = false
-anchor_left = 1.0
-anchor_right = 1.0
-margin_left = -116.29
-margin_top = 16.2901
-margin_right = -16.29
-margin_bottom = 216.29
-size_flags_horizontal = 3
-size_flags_vertical = 3
-__meta__ = {
-"_edit_group_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="PreviousState" type="Button" parent="RightControls2"]
-margin_right = 103.0
-margin_bottom = 97.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-text = "Previous State"
-script = ExtResource( 2 )
-
-[node name="NextState" type="Button" parent="RightControls2"]
-margin_top = 101.0
-margin_right = 103.0
-margin_bottom = 198.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-text = "Next State"
-script = ExtResource( 2 )
