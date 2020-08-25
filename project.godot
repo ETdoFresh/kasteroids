@@ -9,12 +9,12 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "KinematicBody2D",
+"base": "RigidBody2D",
 "class": "Asteroid",
 "language": "GDScript",
 "path": "res://entities/asteroid/asteroid.gd"
 }, {
-"base": "KinematicBody2D",
+"base": "RigidBody2D",
 "class": "Bullet",
 "language": "GDScript",
 "path": "res://entities/bullet/bullet.gd"

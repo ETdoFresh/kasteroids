@@ -23,64 +23,36 @@ func _enter_tree():
         var _3 = $TCPServer.listen()
         var _4 = $TCPServer.connect("on_receive", $Kbps, "add_client_data")
         console_write_ln("Awaiting new connection...")
-    
-    if has_node("WebSocketServer"):
-        console_write_ln("Starting Server...")
-        var _1 = $WebSocketServer.connect("on_open", self, "create_web_socket_server_input")
-        var _2 = $WebSocketServer.connect("on_close", self, "remove_client")
-        if get_parent() == get_tree().get_root():
-            var _3 = $WebSocketServer.listen()
-        else:
-            var _3 = $WebSocketServer.listen_insecure()
-        var _4 = $WebSocketServer.connect("on_receive", $Kbps, "add_client_data")
-        console_write_ln("Awaiting new connection...")
 
 func _process(delta):
-    if has_node("TCPServer") || has_node("WebSocketServer"):
+    if has_node("TCPServer"):
         update_timer += delta
         if update_timer < 1.0 / update_rate: return
         update_timer -= 1.0 / update_rate
-        #$TCPServer.broadcast($World.serialize())
-        if has_node("TCPServer"):
-            for client in $TCPServer.clients:
-                var input = clients[client].input
-                var ship_id = clients[client].ship.id
-                var client_tick = input.latest_received_tick
-                var offset = input.time - input.latest_received_time
-                var world_dictionary = $World.to_dictionary(client_tick, offset, ship_id)
-                var json = to_json(world_dictionary)
-                $LatencySimulator.send(client, json)
-        if has_node("WebSocketServer"):
-            for client in $WebSocketServer.clients:
-                var input = clients[client].input
-                var ship_id = clients[client].ship.id
-                var client_tick = input.latest_received_tick
-                var offset = input.time - input.latest_received_time
-                var world_dictionary = $World.to_dictionary(client_tick, offset, ship_id)
-                var json = to_json(world_dictionary)
-                $WebSocketServer.send(client, json)
+        for client in $TCPServer.clients:
+            var input = clients[client].input
+            var ship_id = clients[client].ship.id
+            var client_tick = input.latest_received_tick
+            var offset = input.time - input.latest_received_time
+            var world_dictionary = $World.to_dictionary(client_tick, offset, ship_id)
+            var json = to_json(world_dictionary)
+            $LatencySimulator.send(client, json)
 
 func create_tcp_server_input(client):
     var input = NetworkServerPlayerInput.new("TCPPlayer", client)
     $Inputs.add_child(input)
     var ship = $World.create_player(input)
-    clients[client] = {"input": input, "ship": ship}
+    var host = client.get_connected_host()
+    var port = client.get_connected_port()
+    clients[client] = {"input": input, "ship": ship, "host": host, "port": port}
     $DebugOverlay.add_stat("Misses", input, "misses", false)
     $DebugOverlay.add_stat("Last Received Tick", input, "latest_received_tick", false)
     var _1 = $TCPServer.connect("on_receive", input, "deserialize")
-    console_write_ln("A Client has connected!")
-
-func create_web_socket_server_input(client):
-    var input = NetworkServerPlayerInput.new("WebSocketPlayer", client)
-    $Inputs.add_child(input)
-    var ship = $World.create_player(input)
-    clients[client] = {"input": input, "ship": ship}
-    $DebugOverlay.add_stat("Misses", input, "misses", false)
-    var _1 = $WebSocketServer.connect("on_receive", input, "deserialize")
-    console_write_ln("A Client has connected!")
+    console_write_ln("A Client has connected! %s:%s" % [host, port])
 
 func remove_client(client):
-    console_write_ln("A Client has disconnected!")
+    var c = clients[client]
+    console_write_ln("A Client has disconnected! %s:%s" % [c.host, c.port])
     var input = clients[client].input
     $World.delete_player(input)
     input.queue_free();

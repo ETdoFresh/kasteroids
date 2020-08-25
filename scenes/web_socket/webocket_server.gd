@@ -44,13 +44,16 @@ func create_web_socket_server_input(client):
     var input = NetworkServerPlayerInput.new("WebSocketPlayer", client)
     $Inputs.add_child(input)
     var ship = $World.create_player(input)
-    clients[client] = {"input": input, "ship": ship}
+    var host = client.get_connected_host()
+    var port = client.get_connected_port()
+    clients[client] = {"input": input, "ship": ship, "host": host, "port": port }
     # $DebugOverlay.add_stat("Misses", input, "misses", false) Causes problems!!!!
     var _1 = $WebSocketServer.connect("on_receive", input, "deserialize")
-    console_write_ln("A Client has connected!")
+    console_write_ln("A Client has connected! %s:%s" % [host, port])
 
 func remove_client(client):
-    console_write_ln("A Client has disconnected!")
+    var c = clients[client]
+    console_write_ln("A Client has disconnected! %s:%s" % [c.host, c.port])
     var input = clients[client].input
     $World.delete_player(input)
     input.queue_free();
