@@ -21,10 +21,7 @@ func _init(init_name_prefix, init_client):
 func _process(delta):
     time += delta
 
-func deserialize(from_client, serialized):
-    if from_client != client: return
-    
-    var list = parse_json(serialized)
+func deserialize(list):
     for item in list:
         item.tick = int(item.tick)
         username = item.username

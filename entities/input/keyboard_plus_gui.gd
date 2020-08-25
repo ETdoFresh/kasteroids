@@ -35,14 +35,17 @@ func _unhandled_input(event):
         elif event.is_action_released(actions[i]):
             self[variable[i]] = false
 
-func serialize():
-    var serialized = {
+func to_list():
+    var item = {
         "username": username, 
         "tick": tick, 
         "horizontal": horizontal, 
         "vertical": vertical, 
         "fire": fire }
     if repeater:
-        return repeater.add(serialized)
+        return repeater.add(item)
     else:
-        return to_json([serialized])
+        return [item]
+
+func to_dictionary():
+    return {"type": "input", "list": to_list()}

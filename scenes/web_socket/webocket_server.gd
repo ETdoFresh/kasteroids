@@ -48,7 +48,7 @@ func create_web_socket_server_input(client):
     var port = client.get_connected_port()
     clients[client] = {"input": input, "ship": ship, "host": host, "port": port }
     # $DebugOverlay.add_stat("Misses", input, "misses", false) Causes problems!!!!
-    var _1 = $WebSocketServer.connect("on_receive", input, "deserialize")
+    var _1 = $WebSocketServer.connect("on_receive", self, "process_message")
     console_write_ln("A Client has connected! %s:%s" % [host, port])
 
 func remove_client(client):
@@ -63,3 +63,11 @@ func console_write_ln(message):
     print(message)
     if has_node("UI/Console"): $UI/Console.write_line(message)
     if has_node("UI/Banner"): $UI/Banner.set_text(message)
+
+func process_message(client, message):
+    var dictionary = parse_json(message)
+    if dictionary.type == "input":
+        clients[client].input.deserialize(dictionary.list)
+    if dictionary.type == "chat":
+        dictionary.message = "%s: %s" % [clients[client].input.username, dictionary.message]
+        $WebSocketServer.broadcast(to_json(dictionary))

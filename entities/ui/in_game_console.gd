@@ -20,7 +20,7 @@ func _input(event):
 
 func submit_line(line):
     line_edit.clear()
-    write_line(line)
+    #write_line(line) # Display when receiving not sending...
     line_edit.visible = false
     instructions.visible = true
     line_edit.release_focus()

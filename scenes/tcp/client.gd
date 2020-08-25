@@ -10,6 +10,7 @@ onready var latest_received_world = $LatestReceivedWorld
 onready var server_tick_sync = $ServerTickSync
 onready var received_kbps = $ReceivedKbps
 onready var sent_kbps = $SentKbps
+onready var console = $UI/Console
 
 func _enter_tree():
     if has_node("TCPClient"):
@@ -66,10 +67,20 @@ func _ready():
     $DebugOverlay.add_stat("Sent Kbps/Sec", sent_kbps, "value", false)
     $DebugOverlay.add_stat("Sent Packets/Sec", sent_kbps, "count", false)
     $DebugOverlay.add_stat("Prediction Misses", $PredictedWorld, "misses", false)
+    console.connect("submitted_line", self, "send_chat")
 
 func update_input():
     $Inputs/Input.tick = server_tick_sync.smooth_tick_rounded
-    input_message = $Inputs/Input.serialize()
+    input_message = to_json($Inputs/Input.to_dictionary())
+
+func send_chat(chat_message):
+    var message = to_json({"type": "chat", "message": chat_message})
+    if has_node("TCPClient"):
+        $LatencySimulator.send($TCPClient.client, message)
+        sent_kbps.add_data(message)
+    if has_node("WebSocketClient"):
+        $WebSocketClient.send(message)
+        sent_kbps.add_data(message)
 
 func _process(delta):
     if has_node("TCPClient") || has_node("WebSocketClient"):
@@ -105,7 +116,11 @@ func console_write_ln(message):
 func process_message(message):
     var dictionary = Data.str2vars_json(message)
     received_kbps.add_data(message)
-    server_tick_sync.record_client_recieve(dictionary.tick, dictionary.client.tick, dictionary.client.offset)
-    for world in worlds:
-        if dictionary.type == "update":
+    
+    if dictionary.type == "update":
+        server_tick_sync.record_client_recieve(dictionary.tick, dictionary.client.tick, dictionary.client.offset)
+        for world in worlds:
             world.receive(dictionary)
+    
+    if dictionary.type == "chat":
+        $UI/Console.write_line(dictionary.message)

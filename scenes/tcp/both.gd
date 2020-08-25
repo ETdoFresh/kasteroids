@@ -5,7 +5,7 @@ var future_time = 0
 func _ready():
     $Client/LatestReceivedWorld/Background.visible = false
     $Server/KeyboardShortcuts.queue_free()
-    $Client/UI.visible = false
+    $Server/UI.visible = false
     $Client/Background.visible = false
     $Client/DebugOverlay.add_stat("Seconds in Future", self, "future_time", false)
 
