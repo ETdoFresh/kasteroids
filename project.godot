@@ -9,12 +9,12 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "RigidBody2D",
+"base": "KinematicBody2D",
 "class": "Asteroid",
 "language": "GDScript",
 "path": "res://entities/asteroid/asteroid.gd"
 }, {
-"base": "RigidBody2D",
+"base": "KinematicBody2D",
 "class": "Bullet",
 "language": "GDScript",
 "path": "res://entities/bullet/bullet.gd"
@@ -69,7 +69,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://entities/serializer/serializer.gd"
 }, {
-"base": "Node2D",
+"base": "KinematicBody2D",
 "class": "Ship",
 "language": "GDScript",
 "path": "res://entities/ship/ship.gd"

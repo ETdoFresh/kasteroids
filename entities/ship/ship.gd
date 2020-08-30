@@ -1,17 +1,24 @@
 class_name Ship
-extends Node2D
+extends KinematicBody2D
 
-signal gun_fired(gun, ship)
+signal bullet_created(bullet)
 
 var id = -1
+var username = ""
 var input = InputData.new()
-var collision_layer setget set_collision_layer
-var collision_mask setget set_collision_mask
+var thrust = Vector2()
+var rotation_dir = 0
+var linear_velocity = Vector2.ZERO
+var linear_acceleration = Vector2.ZERO
+var angular_velocity = 0
 var mass = 1.0
 var bounce = 0.0
-var username = ""
 
 onready var state_machine = $States
+onready var gun = $Gun
+
+func _ready():
+    gun.connect("bullet_created", self, "create_bullet")
 
 func _process(_delta):
     $Name.position = state_machine.active_state.position
@@ -19,14 +26,49 @@ func _process(_delta):
 
 func simulate(delta):
     var state = get_active_state()
-    if state:
-        state.simulate(delta)
-        if input.fire:
-            if state.has_node("Gun"):
-                var gun = state.get_node("Gun")
-                if gun.is_ready:
-                    gun.fire()
-                    emit_signal("gun_fired", gun, self)
+    var engine_thrust = state.engine_thrust if state && "engine_thrust" in state else 0
+    var max_speed = state.max_speed if state && "max_speed" in state else 0
+    var spin_thrust = state.spin_thrust if state && "spin_thrust" in state else 0
+    thrust = Vector2(0, input.vertical * engine_thrust)
+    rotation_dir = input.horizontal
+    linear_acceleration = thrust.rotated(global_rotation)
+    linear_velocity += linear_acceleration * delta
+    if linear_velocity.length() > max_speed:
+        linear_velocity = linear_velocity.normalized() * max_speed
+    
+    angular_velocity = rotation_dir * spin_thrust * delta
+    
+    var collision = move_and_collide(linear_velocity * delta)
+    if collision:
+        bounce_collision(collision)
+    global_rotation += angular_velocity
+    $Wrap.wrap(self)
+    
+    if input.fire:
+        if gun.is_ready:
+            gun.fire()
+    
+    $Name.global_rotation = 0
+
+func bounce_collision(collision : KinematicCollision2D):
+    var collider = collision.collider
+    var ma = mass
+    var mb = collider.mass
+    var va = linear_velocity
+    var vb = collider.linear_velocity
+    var n = collision.normal
+    var cr = bounce # Coefficient of Restitution
+    var j = -(1.0 + cr) * (va - vb).dot(n) # Impulse Magnitude
+    j /= (1.0/ma + 1.0/mb)
+    linear_velocity = va + (j / ma) * n
+    collider.linear_velocity = vb - (j /mb) * n
+
+func create_bullet(bullet):
+    bullet.ship_id = id
+    bullet.add_collision_exception_with(self)
+    var relative_velocity = linear_velocity
+    bullet.linear_velocity += relative_velocity
+    emit_signal("bullet_created", bullet)
 
 func state_name():
     return state_machine.active_state_name
@@ -34,44 +76,26 @@ func state_name():
 func update_input(update_input):
     input = update_input
     username = input.username if "username" in input else username
-    var state = get_active_state()
-    if state:
-        state.input = update_input
-
-func set_collision_layer(value):
-    collision_layer = value
-    for state in $States.get_children():
-        if state.get("collision_layer"):
-            state.collision_layer = collision_layer
-
-func set_collision_mask(value):
-    collision_mask = value
-    for state in $States.get_children():
-        if state.get("collision_mask"):
-            state.collision_mask = collision_mask
 
 func to_dictionary():
-    var state = get_active_state()
     return {
         "id": id,
         "type": "Ship",
-        "position": state.global_position if state else -Vector2.ONE,
-        "rotation": state.global_rotation if state else -1,
-        "scale": state.get_node("CollisionShape2D").scale if state else -Vector2.ONE,
-        "linear_velocity": state.linear_velocity if state else -Vector2.ONE,
-        "angular_velocity": state.angular_velocity if state else -1,
+        "position": global_position,
+        "rotation": global_rotation,
+        "scale": $CollisionShape2D.scale,
+        "linear_velocity": linear_velocity,
+        "angular_velocity": angular_velocity,
         "username": username }
 
 func from_dictionary(dictionary):
-    var state = get_active_state()
     if dictionary.has("id"): id = dictionary["id"]
     if dictionary.has("username"): username = dictionary["username"]
-    if state:
-        if dictionary.has("position"): state.position = dictionary["position"]
-        if dictionary.has("rotation"): state.rotation = dictionary["rotation"]
-        if dictionary.has("scale"): state.get_node("CollisionShape2D").scale = dictionary["scale"]
-        if dictionary.has("linear_velocity"): state.linear_velocity = dictionary["linear_velocity"]
-        if dictionary.has("angular_velocity"): state.angular_velocity = dictionary["angular_velocity"]
+    if dictionary.has("position"): global_position = dictionary["position"]
+    if dictionary.has("rotation"): global_rotation = dictionary["rotation"]
+    if dictionary.has("scale"): $CollisionShape2D.scale = dictionary["scale"]
+    if dictionary.has("linear_velocity"): linear_velocity = dictionary["linear_velocity"]
+    if dictionary.has("angular_velocity"): angular_velocity = dictionary["angular_velocity"]
 
 func get_active_state():
     if state_machine and state_machine.active_state:

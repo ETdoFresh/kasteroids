@@ -7,7 +7,6 @@
 [ext_resource path="res://entities/input/keyboard_shortcuts.gd" type="Script" id=5]
 [ext_resource path="res://music/destroy_asteroids_music.tscn" type="PackedScene" id=6]
 
-
 [node name="Local" type="Node"]
 script = ExtResource( 1 )
 
