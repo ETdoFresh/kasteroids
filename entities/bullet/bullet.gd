@@ -7,6 +7,7 @@ var linear_velocity = Vector2.ZERO
 var angular_velocity = 0
 var mass = 0.15
 var bounce = 0.0
+var ship = null
 var ship_id = -1
 
 func _ready():

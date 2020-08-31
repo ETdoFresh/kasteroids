@@ -64,6 +64,7 @@ func bounce_collision(collision : KinematicCollision2D):
     collider.linear_velocity = vb - (j /mb) * n
 
 func create_bullet(bullet):
+    bullet.ship = self
     bullet.ship_id = id
     bullet.add_collision_exception_with(self)
     var relative_velocity = linear_velocity

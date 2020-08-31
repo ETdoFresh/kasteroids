@@ -15,6 +15,7 @@ var types = {
     "Ship": Scene.SHIP,
     "Asteroid": Scene.ASTEROID,
     "Bullet": Scene.BULLET }
+var new_predicted_entities = []
 
 onready var screen_size = get_viewport().get_visible_rect().size 
 onready var extrapolated_world = get_parent().get_node("ExtrapolatedWorld")
@@ -32,6 +33,8 @@ func simulate(delta):
     if ship: 
         ship.update_input(input)
     for entity in entity_list:
+        entity.simulate(delta)
+    for entity in new_predicted_entities:
         entity.simulate(delta)
     history.append(to_dictionary())
     to_log("Simulate", tick, input, entity_list)
@@ -158,20 +161,25 @@ func remove_deleted_entities(dictionary):
 
 func create_entity(entry):
     var type = entry.type
-    var entity = types[type].instance()
+    var entity = claim_new_entity(entry)
+    if not entity:
+        entity = types[type].instance()
+        entity.collision_layer = Data.get_physics_layer_id_by_name("predicted_world")
+        entity.collision_mask = Data.get_physics_layer_id_by_name("predicted_world")
+        entity.connect("tree_exited", self, "erase_entity", [entity])
+        entity.from_dictionary(entry)
+        containers[type].add_child(entity)
     entity_list.append(entity)
-    entity.collision_layer = Data.get_physics_layer_id_by_name("client")
-    entity.collision_mask = Data.get_physics_layer_id_by_name("client")
-    entity.connect("tree_exited", self, "erase_entity", [entity])
-    entity.from_dictionary(entry)
-    containers[type].add_child(entity)
     if type == "Bullet" && "ship_id" in entry:
         var ship = lookup(entity_list, "id", ship_id)
         if ship:
-            entity.add_collision_exception_with(ship.get_active_state())
+            entity.add_collision_exception_with(ship)
+    if entity.has_signal("bullet_created"):
+        entity.connect("bullet_created", self, "create_bullet")
 
 func erase_entity(entity):
     entity_list.erase(entity)
+    new_predicted_entities.erase(entity)
 
 func lookup(list, key, value):
     for item in list:
@@ -199,3 +207,25 @@ func to_log(action, log_tick, log_input, objects):
         values.append(object.position)
         values.append(object.rotation)
     CSV.write_line("res://predicted_world.csv", values)
+
+func claim_new_entity(entry):
+    if new_predicted_entities.size() > 0:
+        var entity = new_predicted_entities[0]
+        entity.id = entry.id
+        entity.get_node("SyncTimer").queue_free()
+        new_predicted_entities.remove(0)
+        return entity
+
+func create_bullet(bullet):
+    new_predicted_entities.append(bullet)
+    var sync_timer = Timer.new()
+    sync_timer.name = "SyncTimer"
+    sync_timer.wait_time = 0.5
+    sync_timer.one_shot = true
+    sync_timer.autostart = true
+    sync_timer.connect("timeout", bullet, "queue_free")
+    bullet.add_child(sync_timer)
+    bullet.collision_layer = Data.get_physics_layer_id_by_name("predicted_world")
+    bullet.collision_mask = Data.get_physics_layer_id_by_name("predicted_world")
+    bullet.connect("tree_exited", self, "erase_entity", [bullet])
+    $Bullets.add_child(bullet)

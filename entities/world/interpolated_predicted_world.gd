@@ -81,7 +81,7 @@ func create_entity(entry):
     if type == "Bullet" && "ship_id" in entry:
         var ship = lookup(entity_list, "id", ship_id)
         if ship:
-            entity.add_collision_exception_with(ship.get_active_state())
+            entity.add_collision_exception_with(ship)
 
 func erase_entity(entity):
     entity_list.erase(entity)
