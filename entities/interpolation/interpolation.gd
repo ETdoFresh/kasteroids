@@ -39,9 +39,10 @@ func interpolate(tick):
     
     if before == after:
         for entry in before.objects:
-            var node = get_entity_by_id(entry.id)
-            if node.is_inside_tree():
-                node.from_dictionary(entry)
+            if entry:
+                var node = get_entity_by_id(entry.id)
+                if node.is_inside_tree():
+                    node.from_dictionary(entry)
         return
     
     var t = 0
@@ -53,6 +54,9 @@ func interpolate(tick):
     var b
     for before_entry in before.objects:
         for after_entry in after.objects:
+            if not before_entry || not after_entry:
+                continue
+            
             if before_entry.id == after_entry.id:
                 var node = get_entity_by_id(before_entry.id)
                 if not node.is_inside_tree():
@@ -91,8 +95,9 @@ func get_after(tick):
 func create_instances(before, after):
     for state in [before, after]:
         for entry in state.objects:
-            if not get_entity_by_id(entry.id):
-                create_entity(entry)
+            if entry:
+                if not get_entity_by_id(entry.id):
+                    create_entity(entry)
 
 func delete_instances(before, after):
     for entity in entity_list:
@@ -114,8 +119,9 @@ func get_entity_by_id(id):
 
 func get_dictionary_entry_by_id(dictionary, id):
     for entry in dictionary.objects:
-        if int(entry.id) == id:
-            return entry
+        if entry:
+            if int(entry.id) == id:
+                return entry
     return null
 
 func create_entity(entry):

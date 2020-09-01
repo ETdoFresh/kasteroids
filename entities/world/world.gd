@@ -23,9 +23,14 @@ func to_log(action, log_tick, log_input, log_objects):
     values.append(log_input.vertical)
     values.append(log_input.fire)
     for object in log_objects:
-        values.append(object.name if "name" in object else object.type)
-        values.append(object.position)
-        values.append(object.rotation)
+        if object:
+            values.append(object.name if "name" in object else object.type)
+            values.append(object.position)
+            values.append(object.rotation)
+        else:
+            values.append("Null")
+            values.append("N/A")
+            values.append("N/A")
     CSV.write_line("res://server_world.csv", values)
 
 func to_dictionary(client_tick, offset, ship_id):
@@ -38,7 +43,8 @@ func simulate():
     tick = $Tick.tick
     $Players.update_ship_inputs(tick)
     for object in objects:
-        object.simulate(Settings.tick_rate)
+        if object:
+            object.simulate(Settings.tick_rate)
     
     var input = $Players.players[0].input if $Players.players.size() > 0 else InputData.new()
     to_log("Simulate", tick, input, objects)

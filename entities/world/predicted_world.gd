@@ -47,13 +47,14 @@ func rewrite(state, new_state):
 
 func rewind_to(state):
     for object in state.objects:
-        var entity = lookup(entity_list, "id", object.id)
-        if entity == null:
-            continue
-        var state_object = lookup(state.objects, "id", object.id)
-        if not state_object:
-            continue
-        entity.from_dictionary(state_object)
+        if object:
+            var entity = lookup(entity_list, "id", object.id)
+            if entity == null:
+                continue
+            var state_object = lookup(state.objects, "id", object.id)
+            if not state_object:
+                continue
+            entity.from_dictionary(state_object)
 
 func resimulate(state):
     var ship = lookup(entity_list, "id", ship_id)
@@ -162,10 +163,11 @@ func apply_delta(source, delta):
 
 func create_new_entities(dictionary):
     for entry in dictionary.objects:
-        var entity = lookup(entity_list, "id", entry.id)
-        var on_delete_list = lookup(delete_list, "id", entry.id)
-        if not entity && not on_delete_list:
-            create_entity(entry)
+        if entry:
+            var entity = lookup(entity_list, "id", entry.id)
+            var on_delete_list = lookup(delete_list, "id", entry.id)
+            if not entity && not on_delete_list:
+                create_entity(entry)
 
 func remove_deleted_entities(dictionary):
     for i in range(entity_list.size() - 1, -1, -1):
@@ -200,9 +202,10 @@ func erase_entity(entity):
 
 func lookup(list, key, value):
     for item in list:
-        if key in item:
-            if item[key] == value:
-                return item
+        if item:
+            if key in item:
+                if item[key] == value:
+                    return item
     return null
 
 func to_dictionary():
@@ -220,9 +223,14 @@ func to_log(action, log_tick, log_input, objects):
     values.append(log_input.vertical)
     values.append(log_input.fire)
     for object in objects:
-        values.append(object.name if "name" in object else object.type)
-        values.append(object.position)
-        values.append(object.rotation)
+        if object:
+            values.append(object.name if "name" in object else object.type)
+            values.append(object.position)
+            values.append(object.rotation)
+        else:
+            values.append("Null")
+            values.append("N/A")
+            values.append("N/A")
     CSV.write_line("res://predicted_world.csv", values)
 
 func claim_new_entity(entry):

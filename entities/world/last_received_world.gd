@@ -19,9 +19,10 @@ func receive(dictionary):
 
 func create_new_entities(dictionary):
     for entry in dictionary.objects:
-        var entity = get_entity_by_id(entry.id)
-        if not entity:
-            create_entity(entry)
+        if entry:
+            var entity = get_entity_by_id(entry.id)
+            if not entity:
+                create_entity(entry)
 
 func remove_deleted_entities(dictionary):
     for i in range(entity_list.size() - 1, -1, -1):
@@ -43,8 +44,9 @@ func get_entity_by_id(id):
 
 func get_dictionary_entry_by_id(dictionary, id):
     for entry in dictionary.objects:
-        if entry.id == id:
-            return entry
+        if entry:
+            if entry.id == id:
+                return entry
     return null
 
 func create_entity(entry):

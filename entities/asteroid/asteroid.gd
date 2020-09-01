@@ -1,6 +1,7 @@
 class_name Asteroid
 extends KinematicBody2D
 
+export var enabled = true
 export var min_angular_velocity = -3.0
 export var max_angular_velocity = 3.0
 export var min_linear_velocity = 20.0
@@ -16,10 +17,13 @@ var mass = 5.0
 var bounce = 0.0
 
 func _ready():
-    random.randomize()
-    randomize_spin()
-    randomize_speed()
-    randomize_scale()
+    if not enabled:
+        queue_free()
+    else:
+        random.randomize()
+        randomize_spin()
+        randomize_speed()
+        randomize_scale()
 
 func simulate(delta):
     if linear_velocity.length() > max_linear_velocity * 10:
