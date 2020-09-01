@@ -11,6 +11,7 @@ var left = false
 var right = false
 var fire_button = false
 var username = "WASD Keyboard Plus GUI"
+var history = {}
 
 onready var repeater = $Repeater
 
@@ -49,3 +50,21 @@ func to_list():
 
 func to_dictionary():
     return {"type": "input", "list": to_list()}
+
+# warning-ignore:shadowed_variable
+func record(tick):
+    history[tick] = {}
+    for key in ["horizontal", "vertical", "fire"]:
+        history[tick][key] = self[key]
+
+# warning-ignore:shadowed_variable
+func rewind(tick):
+    if history.has(tick):
+        for key in ["horizontal", "vertical", "fire"]:
+            self[key] = history[tick][key]
+
+# warning-ignore:shadowed_variable
+func erase_history(tick):
+    for history_tick in history.keys():
+        if history_tick < tick:
+            history.erase(history_tick)

@@ -12,10 +12,13 @@ func _ready():
             object.id = ID.reserve()
             objects.append(object)
     CSV.write_line("res://server_world.csv",
-     ["Action","Tick","Horizontal","Vertical","Fire","Name1","Position1X","Position1Y","Rotation1","Name2","Position2X","Position2Y","Rotation2",
-      "Name3","Position3X","Position3Y","Rotation3","Name4","Position4X","Position4Y","Rotation4","Name5","Position5X","Position5Y","Rotation5"])
+     ["Action","Tick","Horizontal","Vertical","Fire","ID1","Name1","Position1X","Position1Y","Rotation1","ID2","Name2","Position2X","Position2Y","Rotation2",
+      "ID3","Name3","Position3X","Position3Y","Rotation3","ID4","Name4","Position4X","Position4Y","Rotation4","ID5","Name5","Position5X","Position5Y","Rotation5"])
 
 func to_log(action, log_tick, log_input, log_objects):
+    if not action in ["Simulate"]:
+        return
+    
     var values = []
     values.append(action)
     values.append(log_tick)
@@ -24,6 +27,7 @@ func to_log(action, log_tick, log_input, log_objects):
     values.append(log_input.fire)
     for object in log_objects:
         if object:
+            values.append(object.id)
             values.append(object.name if "name" in object else object.type)
             values.append(object.position)
             values.append(object.rotation)
@@ -58,7 +62,15 @@ func create_player(input):
     $PlayerMonitor.add_player_input(input)
     ship.connect("bullet_created", $Bullets, "add_child")
     ship.connect("bullet_created", self, "add_object")
+    ship.connect("bullet_created", self, "debug_bullet_create")
     return ship
+
+func debug_bullet_create(bullet):
+    bullet.connect("tree_exited", self, "debug_bullet_destroy")
+    CSV.write_line("res://bullet.csv", [tick, "server_create_bullet"])
+
+func debug_bullet_destroy():
+    CSV.write_line("res://bullet.csv", [tick, "server_destroy_bullet"])
 
 func delete_player(input):
     var player = $Players.lookup("input", input)
@@ -70,7 +82,9 @@ func add_object(object):
     object.id = ID.reserve()
     objects.append(object)
     object.connect("tree_exited", self, "remove_object", [object])
+    CSV.write_line("res://object.csv", ["create",tick,object.id,-1,object.position,object.rotation])
 
 func remove_object(object):
+    CSV.write_line("res://object.csv", ["remove",tick,object.id,-1,object.position,object.rotation])
     ID.release(object.id)
     objects.erase(object)

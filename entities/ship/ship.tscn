@@ -90,10 +90,6 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="Cooldown" type="Timer" parent="Gun"]
-wait_time = 0.2
-one_shot = true
-
 [node name="Wrap" type="Node" parent="."]
 script = ExtResource( 4 )
 

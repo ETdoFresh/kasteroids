@@ -77,7 +77,8 @@ func create_new_entities(dictionary):
     for entry in dictionary.objects:
         if entry:
             var entity = lookup(entity_list, "id", entry.id)
-            if not entity:
+            var on_delete_list = lookup(delete_list, "id", entry.id)
+            if not entity && not on_delete_list:
                 create_entity(entry)
 
 func remove_deleted_entities(dictionary):

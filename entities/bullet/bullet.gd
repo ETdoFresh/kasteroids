@@ -1,6 +1,8 @@
 class_name Bullet
 extends KinematicBody2D
 
+export var destroy_time = 1.0
+
 var id = -1
 var max_linear_velocity = 800 + 500
 var linear_velocity = Vector2.ZERO
@@ -9,11 +11,19 @@ var mass = 0.15
 var bounce = 0.0
 var ship = null
 var ship_id = -1
+var timer = 0
+var create_position
+var history = {}
 
-func _ready():
-    var _1 = $DestroyAfter.connect("timeout", self, "destroy")
+func _enter_tree():
+    create_position = global_position
 
 func simulate(delta):
+    timer += delta
+    if timer >= destroy_time:
+        destroy()
+        return
+    
     if linear_velocity.length() > max_linear_velocity:
         linear_velocity = linear_velocity.normalized() * max_linear_velocity
     
@@ -21,6 +31,7 @@ func simulate(delta):
     if collision:
         bounce_collision(collision)
         destroy()
+        return
     
     $Wrap.wrap(self)
 
@@ -45,6 +56,7 @@ func to_dictionary():
         "scale": $CollisionShape2D.scale,
         "linear_velocity": linear_velocity,
         "angular_velocity": angular_velocity,
+        "create_position": create_position,
         "ship_id": ship_id }
 
 func from_dictionary(dictionary):
@@ -55,3 +67,15 @@ func from_dictionary(dictionary):
     if dictionary.has("linear_velocity"): linear_velocity = dictionary.linear_velocity
     if dictionary.has("angular_velocity"): angular_velocity = dictionary.angular_velocity
     if dictionary.has("ship_id"): ship_id = dictionary.ship_id
+
+func record(tick):
+    history[tick] = to_dictionary()
+
+func rewind(tick):
+    if history.has(tick):
+        from_dictionary(history[tick])
+
+func erase_history(tick):
+    for history_tick in history.keys():
+        if history_tick < tick:
+            history.erase(history_tick)

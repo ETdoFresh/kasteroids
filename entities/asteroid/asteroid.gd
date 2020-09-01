@@ -15,6 +15,7 @@ var linear_velocity = Vector2.ZERO
 var angular_velocity = 0
 var mass = 5.0
 var bounce = 0.0
+var history = {}
 
 func _ready():
     if not enabled:
@@ -69,3 +70,15 @@ func from_dictionary(dictionary):
     if dictionary.has("scale"): $CollisionShape2D.scale = dictionary.scale
     if dictionary.has("linear_velocity"): linear_velocity = dictionary.linear_velocity
     if dictionary.has("angular_velocity"): angular_velocity = dictionary.angular_velocity
+
+func record(tick):
+    history[tick] = to_dictionary()
+
+func rewind(tick):
+    if history.has(tick):
+        from_dictionary(history[tick])
+
+func erase_history(tick):
+    for history_tick in history.keys():
+        if history_tick < tick:
+            history.erase(history_tick)

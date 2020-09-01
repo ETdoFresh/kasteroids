@@ -13,6 +13,7 @@ var linear_acceleration = Vector2.ZERO
 var angular_velocity = 0
 var mass = 1.0
 var bounce = 0.0
+var history = {}
 
 onready var state_machine = $States
 onready var gun = $Gun
@@ -44,9 +45,9 @@ func simulate(delta):
     global_rotation += angular_velocity
     $Wrap.wrap(self)
     
+    gun.simulate(delta)
     if input.fire:
-        if gun.is_ready:
-            gun.fire()
+        gun.fire()
     
     $Name.global_rotation = 0
 
@@ -103,3 +104,18 @@ func get_active_state():
         return state_machine.active_state
     else:
         return null
+
+func record(tick):
+    history[tick] = to_dictionary()
+    gun.record(tick)
+
+func rewind(tick):
+    if history.has(tick):
+        from_dictionary(history[tick])
+    gun.rewind(tick)
+
+func erase_history(tick):
+    for history_tick in history.keys():
+        if history_tick < tick:
+            history.erase(history_tick)
+    gun.erase_history(tick)
