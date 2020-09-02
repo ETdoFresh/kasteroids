@@ -12,7 +12,7 @@ onready var received_kbps = $ReceivedKbps
 onready var sent_kbps = $SentKbps
 onready var console = $UI/Console
 
-func _enter_tree():
+func _ready():
     if has_node("TCPClient"):
         console_write_ln("Connecting to Server...")
         var _1 = $TCPClient.connect("on_open", self, "show_connected_to_server")
@@ -28,8 +28,7 @@ func _enter_tree():
             $WebSocketClient.open(Settings.client_url)
         else:
             $WebSocketClient.open()
-
-func _ready():
+    
     $Inputs/Input.username = Data.get_username()
     
     if has_node("LatestReceivedWorld"): worlds.append(get_node("LatestReceivedWorld"))

@@ -77,7 +77,11 @@ func receive(received):
             is_miss = true
             break
         else:
-            var object = entity.history[received.tick]
+            var object = null
+            if entity.has_node("History"):
+                object = entity.history.history[received.tick]
+            else:
+                object = entity.history[received.tick]
             var other_object = lookup(received.objects, "id", entity.id)
             if not other_object:
                 continue
@@ -177,9 +181,9 @@ func create_entity(entry):
         entity.collision_layer = Data.get_physics_layer_id_by_name("predicted_world")
         entity.collision_mask = Data.get_physics_layer_id_by_name("predicted_world")
         entity.connect("tree_exited", self, "erase_entity", [entity])
-        entity.from_dictionary(entry)
         entity_list.append(entity)
         containers[type].add_child(entity)
+        entity.from_dictionary(entry)
         if type == "Bullet" && "ship_id" in entry:
             var ship = lookup(entity_list, "id", ship_id)
             if ship:

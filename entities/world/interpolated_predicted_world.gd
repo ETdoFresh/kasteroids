@@ -97,8 +97,8 @@ func create_entity(entry):
         entity.collision_layer = Data.get_physics_layer_id_by_name("interpolated_predicted_world")
         entity.collision_mask = Data.get_physics_layer_id_by_name("interpolated_predicted_world")
         entity.connect("tree_exited", self, "erase_entity", [entity])
-        entity.from_dictionary(entry)
         containers[type].add_child(entity)
+        entity.from_dictionary(entry)
         if type == "Bullet" && "ship_id" in entry:
             var ship = lookup(entity_list, "id", ship_id)
             if ship:
