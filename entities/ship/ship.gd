@@ -55,6 +55,7 @@ func simulate(delta):
 
 func bounce_collision(collision : KinematicCollision2D):
     var collider = collision.collider
+    collider = collider.physics if "physics" in collider else collider
     var ma = mass
     var mb = collider.mass
     var va = linear_velocity

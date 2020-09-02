@@ -10,6 +10,7 @@ func _ready():
     for group in [$Asteroids, $Bullets, $Ships]:
         for object in group.get_children():
             object.id = ID.reserve()
+            if "physics" in object: object.physics.collision_manager = $CollisionManager
             objects.append(object)
     CSV.write_line("res://server_world.csv",
      ["Action","Tick","Horizontal","Vertical","Fire","ID1","Name1","Position1X","Position1Y","Rotation1","ID2","Name2","Position2X","Position2Y","Rotation2",
@@ -49,6 +50,7 @@ func simulate():
     for object in objects:
         if object:
             object.simulate(Settings.tick_rate)
+    $CollisionManager.resolve()
     
     var input = $Players.players[0].input if $Players.players.size() > 0 else InputData.new()
     to_log("Simulate", tick, input, objects)

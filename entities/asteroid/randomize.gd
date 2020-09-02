@@ -16,12 +16,12 @@ func randomize_asteroid(asteroid):
     randomize_scale(asteroid)
 
 func randomize_spin(asteroid):
-    asteroid.angular_velocity = random.randf_range(min_angular_velocity, max_angular_velocity)
+    asteroid.physics.angular_velocity = random.randf_range(min_angular_velocity, max_angular_velocity)
 
 func randomize_speed(asteroid):
     var random_direction = Vector2(1,0).rotated(random.randf() * 2 * PI)
-    asteroid.linear_velocity = random_direction
-    asteroid.linear_velocity *= random.randf_range(min_linear_velocity, max_linear_velocity)
+    asteroid.physics.linear_velocity = random_direction
+    asteroid.physics.linear_velocity *= random.randf_range(min_linear_velocity, max_linear_velocity)
 
 func randomize_scale(asteroid):
     asteroid.collision_shape_2d.scale *= random.randf_range(min_scale, max_scale)

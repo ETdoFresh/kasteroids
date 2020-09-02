@@ -2,13 +2,13 @@
 
 [ext_resource path="res://entities/asteroid/asteroid1.svg" type="Texture" id=1]
 [ext_resource path="res://entities/asteroid/asteroid.gd" type="Script" id=2]
-[ext_resource path="res://entities/wrap/wrap.gd" type="Script" id=3]
+[ext_resource path="res://entities/history/history.tscn" type="PackedScene" id=3]
 [ext_resource path="res://entities/asteroid/8BIT_RETRO_Explosion_Short_Distant_mono.ogg" type="AudioStream" id=4]
 [ext_resource path="res://entities/sound_player/sound_player2.gd" type="Script" id=5]
-[ext_resource path="res://entities/asteroid/randomize.gd" type="Script" id=7]
-[ext_resource path="res://entities/asteroid/serializer.gd" type="Script" id=8]
-[ext_resource path="res://entities/asteroid/network.gd" type="Script" id=9]
-[ext_resource path="res://entities/asteroid/history.gd" type="Script" id=10]
+[ext_resource path="res://entities/asteroid/randomize_asteroid.tscn" type="PackedScene" id=6]
+[ext_resource path="res://entities/asteroid/serializer.tscn" type="PackedScene" id=7]
+[ext_resource path="res://entities/asteroid/physics.tscn" type="PackedScene" id=8]
+[ext_resource path="res://entities/wrap/wrap.tscn" type="PackedScene" id=10]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 72.0791
@@ -28,17 +28,12 @@ stream = ExtResource( 4 )
 volume_db = -10.0
 script = ExtResource( 5 )
 
-[node name="Wrap" type="Node" parent="."]
-script = ExtResource( 3 )
+[node name="Wrap" parent="." instance=ExtResource( 10 )]
 
-[node name="History" type="Node" parent="."]
-script = ExtResource( 10 )
+[node name="History" parent="." instance=ExtResource( 3 )]
 
-[node name="Network" type="Node" parent="."]
-script = ExtResource( 9 )
+[node name="RandomizeAsteroid" parent="." instance=ExtResource( 6 )]
 
-[node name="RandomizeAsteroid" type="Node" parent="."]
-script = ExtResource( 7 )
+[node name="Serializer" parent="." instance=ExtResource( 7 )]
 
-[node name="Serializer" type="Node" parent="."]
-script = ExtResource( 8 )
+[node name="Physics" parent="." instance=ExtResource( 8 )]

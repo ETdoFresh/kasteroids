@@ -1,28 +1,29 @@
 class_name Asteroid
-extends KinematicRigidBody2D
+extends KinematicBody2D
 
 onready var collision_shape_2d = $CollisionShape2D
 onready var wrap = $Wrap
 onready var collision_sound = $CollisionSound
 onready var randomize_asteroid = $RandomizeAsteroid
 onready var history = $History
-onready var network = $Network
 onready var serializer = $Serializer
+onready var physics = $Physics
 
-var id setget set_id, get_id
-func set_id(v): $Network.id = v
-func get_id(): return $Network.id
+var id = -1
 
 func _ready():
-    var _1 = connect("collided", self, "play_collision_sound")
+    physics.connect("collided", self, "play_collision_sound")
     randomize_asteroid.randomize_asteroid(self)
 
 func simulate(delta):
-    .simulate(delta)
+    physics.simulate(self, delta)
     wrap.wrap(self)
 
+func play_collision_sound(_collision):
+    collision_sound.play_sound()
+
 func to_dictionary():
-    return serializer.to_dictionary(self)
+    return serializer.to_dictionary(self, "Asteroid")
 
 func from_dictionary(dictionary):
     serializer.from_dictionary(self, dictionary)
@@ -35,6 +36,3 @@ func rewind(tick):
 
 func erase_history(tick):
     history.erase_history(tick)
-
-func play_collision_sound(collision):
-    collision_sound.play_sound()

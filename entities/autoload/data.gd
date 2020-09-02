@@ -4,15 +4,17 @@ const USERNAME_PATH = "user://local_storage_username.tres"
 const ID = {}
 
 func bounce(obj, collision):
+    var obj_physics = obj.physics if "physics" in obj else obj
     var collider = collision.collider
-    var ma = obj.mass
-    var mb = collider.mass
-    var va = obj.linear_velocity
-    var vb = collider.linear_velocity
+    var collider_physics = collider.physics if "physics" in collider else collider
+    var ma = obj_physics.mass
+    var mb = collider_physics.mass
+    var va = obj_physics.linear_velocity
+    var vb = collider_physics.linear_velocity
     var n = collision.normal
-    var cr = obj.bounce # Coefficient of Restitution
-    var wa = obj.angular_velocity
-    var wb = collider.angular_velocity
+    var cr = obj_physics.bounce # Coefficient of Restitution
+    var wa = obj_physics.angular_velocity
+    var wb = collider_physics.angular_velocity
     var ra = collision.position - obj.global_position
     var rb = collision.position - collider.global_position
     var rv = va + cross_fv(wa, ra) - vb - cross_fv(wb, rb) # Relative Velocity
@@ -30,13 +32,10 @@ func bounce(obj, collision):
     angular_denominator = angular_denominator.dot(n)
     var j = -(1.0 + cr) * cv # Impulse Magnitude
     j /= (1.0/ma + 1.0/mb) + angular_denominator
-    obj.linear_velocity = va + (j / ma) * n
-    collider.linear_velocity = vb - (j / mb) * n
-    obj.angular_velocity = wa + iia * cross(ra, j * n)
-    collider.angular_velocity = wb - iib * cross(rb, j * n)
-    
-    if collider.has_method("destroy"):
-        collider.destroy()
+    obj_physics.linear_velocity = va + (j / ma) * n
+    obj_physics.angular_velocity = wa + iia * cross(ra, j * n)
+    collider_physics.linear_velocity = vb - (j / mb) * n
+    collider_physics.angular_velocity = wb - iib * cross(rb, j * n)
 
 func cross_vf(v : Vector2, f : float):
     return Vector2(f * v.y, -f * v.x)

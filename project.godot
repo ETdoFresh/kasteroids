@@ -9,7 +9,7 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "KinematicRigidBody2D",
+"base": "KinematicBody2D",
 "class": "Asteroid",
 "language": "GDScript",
 "path": "res://entities/asteroid/asteroid.gd"
@@ -43,11 +43,6 @@ _global_script_classes=[ {
 "class": "KeyboardShortcuts",
 "language": "GDScript",
 "path": "res://entities/input/keyboard_shortcuts.gd"
-}, {
-"base": "KinematicBody2D",
-"class": "KinematicRigidBody2D",
-"language": "GDScript",
-"path": "res://entities/kinematic_rigid_body_2d/kinematic_rigid_body_2d.gd"
 }, {
 "base": "Node",
 "class": "LatencySimulator",
@@ -112,7 +107,6 @@ _global_script_class_icons={
 "InputData": "",
 "KeyboardPlusGUI": "",
 "KeyboardShortcuts": "",
-"KinematicRigidBody2D": "",
 "LatencySimulator": "",
 "NetworkConnection": "",
 "NetworkServerPlayerInput": "",
@@ -140,6 +134,7 @@ Scene="*res://entities/autoload/scene.gd"
 Settings="*res://entities/autoload/settings.gd"
 ID="*res://entities/autoload/id.gd"
 CSV="*res://entities/csv_writer/csv.gd"
+CollisionResolver="*res://entities/collisions/collision_resolver.gd"
 
 [display]
 
