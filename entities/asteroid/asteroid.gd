@@ -35,7 +35,7 @@ func simulate(delta):
     
     var collision = move_and_collide(linear_velocity * delta)
     if collision:
-        $CollisionSound.play()
+        $CollisionSound.play_sound()
         bounce_collision(collision)
     global_rotation += angular_velocity * delta
     $Wrap.wrap(self)

@@ -16,13 +16,13 @@ RUN wget https://downloads.tuxfamily.org/godotengine/3.2.2/Godot_v3.2.2-stable_l
     mv Godot_v3.2.2-stable_linux_server.64 /usr/local/bin/godot-server && \
     rm -f Godot_v3.2.2-stable_linux_server.64.zip
 
-RUN mkdir app app/entities app/example_projects app/fonts app/icon app/keys app/scenes
 COPY ./.import app/.import
 COPY ./entities app/entities
 COPY ./example_projects app/example_projects
 COPY ./fonts app/fonts
 COPY ./icon app/icon
 COPY ./keys app/keys
+COPY ./music app/music
 COPY ./scenes app/scenes
 COPY ./default_env.tres app/default_env.tres
 COPY ./project.godot app/project.godot
