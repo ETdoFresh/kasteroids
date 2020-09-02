@@ -3,7 +3,7 @@
 [ext_resource path="res://entities/asteroid/asteroid1.svg" type="Texture" id=1]
 [ext_resource path="res://entities/asteroid/asteroid.gd" type="Script" id=2]
 [ext_resource path="res://entities/wrap/wrap.gd" type="Script" id=3]
-[ext_resource path="res://entities/asteroid/8BIT_RETRO_Explosion_Short_Distant_mono.wav" type="AudioStream" id=4]
+[ext_resource path="res://entities/asteroid/8BIT_RETRO_Explosion_Short_Distant_mono.ogg" type="AudioStream" id=4]
 [ext_resource path="res://entities/sound_player/sound_player2.gd" type="Script" id=5]
 
 [sub_resource type="CircleShape2D" id=1]

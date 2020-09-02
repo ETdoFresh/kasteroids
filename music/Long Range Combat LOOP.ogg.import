@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Long Range Combat LOOP.ogg-853870f6f57452919863016e38914054.oggstr"
+
+[deps]
+
+source_file="res://music/Long Range Combat LOOP.ogg"
+dest_files=[ "res://.import/Long Range Combat LOOP.ogg-853870f6f57452919863016e38914054.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
