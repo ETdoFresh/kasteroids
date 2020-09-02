@@ -29,6 +29,9 @@ func _enter_tree():
       "ID3","Name3","Position3X","Position3Y","Rotation3","ID4","Name4","Position4X","Position4Y","Rotation4","ID5","Name5","Position5X","Position5Y","Rotation5"])
 
 func simulate(delta):
+    if server_tick_sync.smooth_tick_rounded <= tick:
+        return
+    
     tick = server_tick_sync.smooth_tick_rounded
     input.record(tick)
     var ship = lookup(entity_list, "id", ship_id)
@@ -38,7 +41,7 @@ func simulate(delta):
         entity.simulate(delta)
         entity.record(tick)
     for item in create_list:
-        if item.entity:
+        if item.entity && not entity_list.has(item.entity):
             item.entity.simulate(delta)
             item.entity.record(tick)
     to_log("Simulate", tick, input, entity_list)
@@ -229,24 +232,29 @@ func to_log(action, log_tick, log_input, objects):
     CSV.write_line("res://predicted_world.csv", values)
 
 func claim_new_entity(entry):
-    var unclaimed = lookup(create_list, "id", -1)
-    if unclaimed:
-        unclaimed.id = entry.id
-        var deleted_entity = lookup(delete_list, "local_id", unclaimed.local_id)
+    var closest = { "distance": 1000000, "unclaimed": null }
+    for unclaimed in create_list:
+        if unclaimed.id == -1:
+            var distance = (entry.create_position - unclaimed.create_position).length()
+            if distance < closest.distance:
+                closest = { "distance": distance, "unclaimed": unclaimed }
+    
+    if closest.unclaimed:
+        closest.unclaimed.id = entry.id
+        var deleted_entity = lookup(delete_list, "local_id", closest.unclaimed.local_id)
         if deleted_entity:
             deleted_entity.id = entry.id
         
-        var entity = unclaimed.entity
+        var entity = closest.unclaimed.entity
         if entity:
             entity.id = entry.id
             entity_list.append(entity)
-            CSV.write_line("res://object.csv", ["p_sync",tick,unclaimed.id,unclaimed.local_id,entity.position,entity.rotation])
+            CSV.write_line("res://object.csv", ["p_sync",tick,closest.unclaimed.id,closest.unclaimed.local_id,entity.position,entity.rotation])
             return entity
         else:
             return true
 
 func create_bullet(bullet):
-    create_list.append({"tick": tick, "id": -1, "local_id": local_id, "entity": bullet})
     local_id += 1
     bullet.collision_layer = Data.get_physics_layer_id_by_name("predicted_world")
     bullet.collision_mask = Data.get_physics_layer_id_by_name("predicted_world")
@@ -256,6 +264,8 @@ func create_bullet(bullet):
         bullet.add_collision_exception_with(other_bullet)
     
     $Bullets.add_child(bullet)
+    bullet.record(tick)
+    create_list.append({"tick": tick, "id": -1, "local_id": local_id, "entity": bullet, "create_position": bullet.global_position})
     CSV.write_line("res://object.csv", ["p_create",tick,bullet.id,local_id-1,bullet.position,bullet.rotation])
     debug_bullet_create(bullet)
 

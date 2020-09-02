@@ -12,6 +12,7 @@ var bounce = 0.0
 var ship = null
 var ship_id = -1
 var timer = 0
+var create_tick = -1
 var create_position
 var history = {}
 
@@ -29,6 +30,8 @@ func simulate(delta):
     
     var collision = move_and_collide(linear_velocity * delta)
     if collision:
+        if collision.collider.has_node("CollisionSound"):
+            collision.collider.get_node("CollisionSound").play()
         bounce_collision(collision)
         destroy()
         return
@@ -51,11 +54,12 @@ func to_dictionary():
     return {
         "id": id,
         "type": "Bullet",
-        "position": global_position,
-        "rotation": global_rotation,
+        "position": global_position if is_inside_tree() else position,
+        "rotation": global_rotation if is_inside_tree() else rotation,
         "scale": $CollisionShape2D.scale,
         "linear_velocity": linear_velocity,
         "angular_velocity": angular_velocity,
+        "create_tick": create_tick,
         "create_position": create_position,
         "ship_id": ship_id }
 
@@ -69,6 +73,8 @@ func from_dictionary(dictionary):
     if dictionary.has("ship_id"): ship_id = dictionary.ship_id
 
 func record(tick):
+    if create_tick < 0:
+        create_tick = tick
     history[tick] = to_dictionary()
 
 func rewind(tick):

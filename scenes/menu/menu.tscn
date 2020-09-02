@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://fonts/arial.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://scenes/menu/menu.gd" type="Script" id=2]
 [ext_resource path="res://fonts/arial_24.tres" type="DynamicFont" id=3]
 [ext_resource path="res://music/menu_music.tscn" type="PackedScene" id=4]
 [ext_resource path="res://fonts/avocado_64_2char.tres" type="DynamicFont" id=5]
+[ext_resource path="res://entities/sound_toggle/audio_toggles.tscn" type="PackedScene" id=6]
 
 [sub_resource type="DynamicFont" id=1]
 size = 21
@@ -163,3 +164,9 @@ margin_top = 696.0
 margin_right = 1268.0
 margin_bottom = 710.0
 text = "v0.0.0"
+
+[node name="AudioToggles" parent="." instance=ExtResource( 6 )]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 160.0
+margin_bottom = 85.0

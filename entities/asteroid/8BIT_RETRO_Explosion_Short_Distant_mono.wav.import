@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/8BIT_RETRO_Explosion_Short_Distant_mono.wav-b6d83412f79e30be21592d1c6f0d2eaa.sample"
+
+[deps]
+
+source_file="res://entities/asteroid/8BIT_RETRO_Explosion_Short_Distant_mono.wav"
+dest_files=[ "res://.import/8BIT_RETRO_Explosion_Short_Distant_mono.wav-b6d83412f79e30be21592d1c6f0d2eaa.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

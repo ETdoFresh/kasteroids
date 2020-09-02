@@ -42,19 +42,15 @@ margin_bottom = 725.0
 
 [node name="Asteroid1" parent="Asteroids" index="0" instance=ExtResource( 2 )]
 position = Vector2( 315.336, 222.286 )
-enabled = false
 
 [node name="Asteroid2" parent="Asteroids" index="1" instance=ExtResource( 2 )]
 position = Vector2( 256.401, 533.168 )
-enabled = false
 
 [node name="Asteroid3" parent="Asteroids" index="2" instance=ExtResource( 2 )]
 position = Vector2( 932.498, 241.016 )
-enabled = false
 
 [node name="Asteroid4" parent="Asteroids" index="3" instance=ExtResource( 2 )]
 position = Vector2( 986.961, 520.447 )
-enabled = false
 
 [node name="Players" type="Node" parent="." index="5"]
 script = ExtResource( 3 )

@@ -56,12 +56,12 @@ func simulate():
 func create_player(input):
     var ship = Scene.SHIP.instance()
     ship.position = Vector2(630, 360)
-    add_object(ship)
     $Ships.add_child(ship)
+    add_object(ship)
     $Players.add_player(ship, input)
     $PlayerMonitor.add_player_input(input)
-    ship.connect("bullet_created", $Bullets, "add_child")
     ship.connect("bullet_created", self, "add_object")
+    ship.connect("bullet_created", $Bullets, "add_child")
     ship.connect("bullet_created", self, "debug_bullet_create")
     return ship
 
@@ -81,6 +81,7 @@ func delete_player(input):
 func add_object(object):
     object.id = ID.reserve()
     objects.append(object)
+    object.record(tick)
     object.connect("tree_exited", self, "remove_object", [object])
     CSV.write_line("res://object.csv", ["create",tick,object.id,-1,object.position,object.rotation])
 

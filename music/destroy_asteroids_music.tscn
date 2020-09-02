@@ -1,8 +1,9 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://music/Orbit LOOP.wav" type="AudioStream" id=1]
+[ext_resource path="res://music/music_player.gd" type="Script" id=2]
 
 [node name="Music" type="AudioStreamPlayer"]
 stream = ExtResource( 1 )
 volume_db = -15.0
-autoplay = true
+script = ExtResource( 2 )
