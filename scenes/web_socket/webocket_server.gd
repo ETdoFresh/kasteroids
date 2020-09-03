@@ -37,7 +37,7 @@ func _process(delta):
             var client_tick = input.latest_received_tick
             var offset = input.time - input.latest_received_time
             var world_dictionary = $World.to_dictionary(client_tick, offset, ship_id)
-            var json = to_json(world_dictionary)
+            var json = Data.var2strs_json(world_dictionary)
             $WebSocketServer.send(client, json)
 
 func create_web_socket_server_input(client):
