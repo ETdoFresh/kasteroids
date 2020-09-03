@@ -2,7 +2,7 @@ extends Node
 
 signal collided(collision)
 
-export var mass = 5.0
+export var mass = 1.0
 export var bounce_coeff = 0.0
 export var resolve_angular_velocity = true
 export var max_linear_velocity = 100.0
@@ -14,9 +14,9 @@ var angular_velocity = 0
 
 onready var parent = get_parent()
 
-func simulate(obj, delta):
-    if linear_velocity.length() > max_linear_velocity * 10:
-        linear_velocity = linear_velocity.normalized() * max_linear_velocity * 10
+func simulate(delta, obj):
+    if linear_velocity.length() > max_linear_velocity:
+        linear_velocity = linear_velocity.normalized() * max_linear_velocity
     
     if abs(angular_velocity) > max_angular_velocity:
         angular_velocity = sign(angular_velocity) * max_angular_velocity

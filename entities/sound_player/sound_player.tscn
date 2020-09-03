@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://entities/asteroid/8BIT_RETRO_Explosion_Short_Distant_mono.ogg" type="AudioStream" id=1]
+[ext_resource path="res://entities/sound_player/sound_player.gd" type="Script" id=2]
+
+[node name="SoundPlayer" type="AudioStreamPlayer"]
+stream = ExtResource( 1 )
+volume_db = -10.0
+script = ExtResource( 2 )

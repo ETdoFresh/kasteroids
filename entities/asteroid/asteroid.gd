@@ -16,7 +16,7 @@ func _ready():
     randomize_asteroid.randomize_asteroid(self)
 
 func simulate(delta):
-    physics.simulate(self, delta)
+    physics.simulate(delta, self)
     wrap.wrap(self)
 
 func play_collision_sound(_collision):

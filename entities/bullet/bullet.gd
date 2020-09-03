@@ -21,7 +21,7 @@ func _ready():
 
 func simulate(delta):
     destroy_timer.simulate(delta)
-    physics.simulate(self, delta)
+    physics.simulate(delta, self)
     wrap.wrap(self)
 
 func destroy(_collision):

@@ -36,7 +36,7 @@ func simulate(delta):
     input.record(tick)
     var ship = lookup(entity_list, "id", ship_id)
     if ship: 
-        ship.update_input(input)
+        ship.input = input
     for entity in entity_list:
         entity.simulate(delta)
         entity.record(tick)
@@ -108,7 +108,7 @@ func receive(received):
             input.rewind(resimulate_tick)
             var ship = lookup(entity_list, "id", ship_id)
             if ship:
-                ship.update_input(input)
+                ship.input = input
             for entity in entity_list:
                 entity.simulate(Settings.tick_rate)
                 entity.record(resimulate_tick)

@@ -31,6 +31,7 @@ func create_player(input):
     $Players.add_player(ship, input)
     $PlayerMonitor.add_player_input(input)
     ship.connect("bullet_created", self, "create_bullet")
+    ship.physics.collision_manager = collision_manager
     return ship
 
 func create_bullet(bullet):

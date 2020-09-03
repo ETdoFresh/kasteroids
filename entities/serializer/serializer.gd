@@ -10,6 +10,7 @@ func to_dictionary(obj, type_name):
     if "physics" in obj: dictionary["linear_velocity"] = obj.physics.linear_velocity
     if "physics" in obj: dictionary["angular_velocity"] = obj.physics.angular_velocity
     if "ship_id" in obj: dictionary["ship_id"] = obj.ship_id
+    if "username" in obj: dictionary["username"] = obj.username
     return dictionary
 
 func from_dictionary(obj, dictionary):
@@ -20,3 +21,5 @@ func from_dictionary(obj, dictionary):
     if dictionary.has("scale"): obj.collision_shape_2d.scale = dictionary.scale
     if dictionary.has("linear_velocity"): obj.physics.linear_velocity = dictionary.linear_velocity
     if dictionary.has("angular_velocity"): obj.physics.angular_velocity = dictionary.angular_velocity
+    if dictionary.has("ship_id"): obj.ship_id = dictionary.ship_id
+    if dictionary.has("username"): obj.username = dictionary.username

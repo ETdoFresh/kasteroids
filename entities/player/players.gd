@@ -18,7 +18,7 @@ func update_ship_inputs(tick):
         if player.input.has_method("set_state_at_tick"):
             if not player.input.set_state_at_tick(tick):
                 player.input.misses += 1
-        player.ship.update_input(player.input)
+        player.ship.input = player.input
 
 func lookup(key, value):
     for player in players:
