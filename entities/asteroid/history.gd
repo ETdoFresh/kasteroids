@@ -5,9 +5,11 @@ var history = {}
 func record(tick, dictionary):
     history[tick] = dictionary
 
-func rewind(tick, obj):
+func rewind(tick):
     if history.has(tick):
-        obj.from_dictionary(history[tick])
+        return history[tick]
+    else:
+        return null
 
 func erase_history(tick):
     for history_tick in history.keys():

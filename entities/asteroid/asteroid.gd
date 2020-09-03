@@ -32,7 +32,7 @@ func record(tick):
     history.record(tick, to_dictionary())
 
 func rewind(tick):
-    history.rewind(tick, self)
+    from_dictionary(history.rewind(tick, self))
 
 func erase_history(tick):
     history.erase_history(tick)
