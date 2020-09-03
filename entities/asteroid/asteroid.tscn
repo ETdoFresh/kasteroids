@@ -4,10 +4,10 @@
 [ext_resource path="res://entities/asteroid/asteroid.gd" type="Script" id=2]
 [ext_resource path="res://entities/history/history.tscn" type="PackedScene" id=3]
 [ext_resource path="res://entities/asteroid/8BIT_RETRO_Explosion_Short_Distant_mono.ogg" type="AudioStream" id=4]
-[ext_resource path="res://entities/sound_player/sound_player2.gd" type="Script" id=5]
+[ext_resource path="res://entities/sound_player/sound_player.gd" type="Script" id=5]
 [ext_resource path="res://entities/asteroid/randomize_asteroid.tscn" type="PackedScene" id=6]
-[ext_resource path="res://entities/asteroid/serializer.tscn" type="PackedScene" id=7]
-[ext_resource path="res://entities/asteroid/physics.tscn" type="PackedScene" id=8]
+[ext_resource path="res://entities/serializer/serializer.tscn" type="PackedScene" id=7]
+[ext_resource path="res://entities/physics/physics.tscn" type="PackedScene" id=8]
 [ext_resource path="res://entities/wrap/wrap.tscn" type="PackedScene" id=10]
 
 [sub_resource type="CircleShape2D" id=1]

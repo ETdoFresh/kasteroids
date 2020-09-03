@@ -1,32 +1,22 @@
-class_name Serializer
 extends Node
 
-var serialize_string : String
-var entity_list : Array = []
-var dictionary_list : Array = []
-var tick = 0
-var client_tick = 0
-var offset = 0
-var dictionary = {
-    "tick": tick,
-    "client_tick": client_tick,
-    "offset": offset,
-    "ship_id": -1,
-    "objects": dictionary_list}
+func to_dictionary(obj, type_name):
+    var dictionary = {}
+    dictionary["type"] = type_name
+    if "id" in obj: dictionary["id"] = obj.id
+    if "global_position" in obj: dictionary["position"] = obj.global_position
+    if "global_rotation" in obj: dictionary["rotation"] = obj.global_rotation
+    if "collision_shape_2d" in obj: dictionary["scale"] = obj.collision_shape_2d.scale
+    if "physics" in obj: dictionary["linear_velocity"] = obj.physics.linear_velocity
+    if "physics" in obj: dictionary["angular_velocity"] = obj.physics.angular_velocity
+    if "ship_id" in obj: dictionary["ship_id"] = obj.ship_id
+    return dictionary
 
-func serialize():
-    if tick != dictionary.tick:
-        dictionary_list.clear()
-        for entity in entity_list:
-            dictionary_list.append(entity.data.to_dictionary())
-    
-    serialize_string = to_json(dictionary)
-    return serialize_string
-
-func add_entity(entity):
-    entity_list.append(entity)
-    entity.data.id = ID.reserve()
-
-func remove_entity(entity):
-    entity_list.erase(entity)
-    ID.release(entity.data.id)
+func from_dictionary(obj, dictionary):
+    if not dictionary: return
+    if dictionary.has("id"): obj.id = dictionary.id
+    if dictionary.has("position"): obj.global_position = dictionary.position
+    if dictionary.has("rotation"): obj.global_rotation = dictionary.rotation
+    if dictionary.has("scale"): obj.collision_shape_2d.scale = dictionary.scale
+    if dictionary.has("linear_velocity"): obj.physics.linear_velocity = dictionary.linear_velocity
+    if dictionary.has("angular_velocity"): obj.physics.angular_velocity = dictionary.angular_velocity

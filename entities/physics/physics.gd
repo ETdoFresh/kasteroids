@@ -2,6 +2,8 @@ extends Node
 
 signal collided(collision)
 
+export var mass = 5.0
+export var bounce_coeff = 0.0
 export var resolve_angular_velocity = true
 export var max_linear_velocity = 100.0
 export var max_angular_velocity = 3.0
@@ -9,8 +11,6 @@ export var max_angular_velocity = 3.0
 var collision_manager
 var linear_velocity = Vector2.ZERO
 var angular_velocity = 0
-var mass = 5.0
-var bounce_coeff = 0.0
 
 onready var parent = get_parent()
 

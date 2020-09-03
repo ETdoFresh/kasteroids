@@ -21,7 +21,7 @@ func fire():
     var bullet = Scene.BULLET.instance()
     bullet.global_position = global_position
     bullet.global_rotation = global_rotation
-    bullet.linear_velocity = Vector2(0, -shoot_velocity).rotated(global_rotation)
+    bullet.starting_velocity = Vector2(0, -shoot_velocity).rotated(global_rotation)
     emit_signal("bullet_created", bullet)
 
 func record(tick):

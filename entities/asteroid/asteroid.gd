@@ -20,7 +20,7 @@ func simulate(delta):
     wrap.wrap(self)
 
 func play_collision_sound(_collision):
-    collision_sound.play_sound()
+    collision_sound.play()
 
 func to_dictionary():
     return serializer.to_dictionary(self, "Asteroid")
@@ -32,7 +32,7 @@ func record(tick):
     history.record(tick, to_dictionary())
 
 func rewind(tick):
-    from_dictionary(history.rewind(tick, self))
+    from_dictionary(history.rewind(tick))
 
 func erase_history(tick):
     history.erase_history(tick)

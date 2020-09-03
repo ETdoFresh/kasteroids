@@ -1,14 +1,14 @@
 extends Node
 
-func to_dictionary(obj, type_name):
-    return {
-        "id": obj.id,
-        "type": type_name,
-        "position": obj.global_position,
-        "rotation": obj.global_rotation,
-        "scale": obj.collision_shape_2d.scale,
-        "linear_velocity": obj.physics.linear_velocity,
-        "angular_velocity": obj.physics.angular_velocity }
+func to_dictionary(world, client, type_name):
+    var dictionary = {}
+    dictionary["type"] = type_name
+    dictionary["client"] = client
+    dictionary["tick"] = world.tick.tick
+    dictionary["objects"] = []
+    for object in world.objects:
+        dictionary.objects.append(object.to_dictionary())
+    return dictionary
 
 func from_dictionary(obj, dictionary):
     if not dictionary: return

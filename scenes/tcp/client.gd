@@ -116,7 +116,7 @@ func process_message(message):
     var dictionary = Data.str2vars_json(message)
     received_kbps.add_data(message)
     
-    if dictionary.type == "update":
+    if dictionary.type == "Update":
         server_tick_sync.record_client_recieve(dictionary.tick, dictionary.client.tick, dictionary.client.offset)
         for world in worlds:
             world.receive(dictionary)

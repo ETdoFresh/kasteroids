@@ -41,7 +41,7 @@ func bounce_no_angular_velocity(self_collider, collision):
     var va = self_collider.linear_velocity
     var vb = other_collider.linear_velocity
     var n = collision.normal
-    var cr = self_collider.bounce # Coefficient of Restitution
+    var cr = self_collider.bounce_coeff # Coefficient of Restitution
     var j = -(1.0 + cr) * (va - vb).dot(n) # Impulse Magnitude
     j /= (1.0/ma + 1.0/mb)
     self_collider.linear_velocity = va + (j / ma) * n

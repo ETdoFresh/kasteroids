@@ -42,7 +42,7 @@ func simulate(delta):
     var collision = move_and_collide(linear_velocity * delta)
     if collision:
         if collision.collider.has_node("CollisionSound"):
-            collision.collider.get_node("CollisionSound").play_sound()
+            collision.collider.get_node("CollisionSound").play()
         bounce_collision(collision)
     global_rotation += angular_velocity
     $Wrap.wrap(self)
@@ -72,7 +72,7 @@ func create_bullet(bullet):
     bullet.ship_id = id
     bullet.add_collision_exception_with(self)
     var relative_velocity = linear_velocity
-    bullet.linear_velocity += relative_velocity
+    bullet.starting_velocity += relative_velocity
     emit_signal("bullet_created", bullet)
 
 func state_name():
