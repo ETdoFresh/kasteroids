@@ -19,6 +19,7 @@ var delete_list = []
 var local_id = 0
 
 onready var predicted_world = get_parent().get_node("PredictedWorld")
+onready var collision_manager = $CollisionManager
 onready var containers = { 
     "Ship": $Ships, "Asteroid": $Asteroids, "Bullet": $Bullets }
 
@@ -32,6 +33,7 @@ func simulate(delta):
     for item in create_list:
         if item.entity:
             item.entity.simulate(delta)
+    collision_manager.resolve()
     
     for entity in entity_list:
         var other_entity = lookup(predicted_world.entity_list, "id", entity.id)
@@ -98,6 +100,7 @@ func create_entity(entry):
         entity.collision_mask = Data.get_physics_layer_id_by_name("interpolated_predicted_world")
         entity.connect("tree_exited", self, "erase_entity", [entity])
         containers[type].add_child(entity)
+        if "physics" in entity: entity.physics.collision_manager = collision_manager
         entity.from_dictionary(entry)
         if type == "Bullet" && "ship_id" in entry:
             var ship = lookup(entity_list, "id", ship_id)
@@ -144,6 +147,8 @@ func create_bullet(bullet):
     bullet.connect("tree_exited", self, "erase_entity", [bullet])
     
     for other_bullet in $Bullets.get_children():
-        bullet.add_collision_exception_with(other_bullet)
+        if other_bullet is KinematicBody2D:
+            bullet.add_collision_exception_with(other_bullet)
     
     $Bullets.add_child(bullet)
+    bullet.physics.collision_manager = collision_manager

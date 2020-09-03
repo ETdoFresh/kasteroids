@@ -1,6 +1,6 @@
 extends Node
 
-const VERSION = "v0.0.8"
+const VERSION = "v0.0.9"
 const SETTINGS_FILE = "user://settings.tres"
 
 signal music_changed(value)

@@ -42,12 +42,12 @@ func register_collision(collider1, collision : KinematicCollision2D):
 func resolve():
     for i in range(collisions.size() - 1, -1, -1):
         var collision = collisions[i]
-        if "physics" in collision.collider1:
+        if collision.collider1 && "physics" in collision.collider1:
             collision.collider1.physics.resolve({
                 "collider": collision.collider2_data, 
                 "position": collision.position,
                 "normal": collision.normal })
-        if "physics" in collision.collider2:
+        if collision.collider2 && "physics" in collision.collider2:
             collision.collider2.physics.resolve({
                 "collider": collision.collider1_data, 
                 "position": collision.position,

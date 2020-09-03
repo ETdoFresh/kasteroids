@@ -5,6 +5,7 @@ var id = -1
 var starting_velocity = Vector2.ZERO
 var ship = null
 var ship_id = -1
+var create_position
 
 onready var shoot_sound = $ShootSound
 onready var history = $History
@@ -13,6 +14,9 @@ onready var serializer = $Serializer
 onready var physics = $Physics
 onready var destroy_timer = $DestroyTimer
 onready var wrap = $Wrap
+
+func _enter_tree():
+    create_position = global_position
 
 func _ready():
     physics.connect("collided", self, "destroy")
@@ -28,7 +32,7 @@ func destroy(_collision):
     destroy_timer.destroy()
 
 func to_dictionary():
-    serializer.to_dictionary(self, "Bullet")
+    return serializer.to_dictionary(self, "Bullet")
 
 func from_dictionary(dictionary):
     serializer.from_dictionary(self, dictionary)

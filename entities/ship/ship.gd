@@ -5,6 +5,7 @@ signal bullet_created(bullet)
 
 var id = -1
 var input = InputData.new()
+var username = "Ship"
 
 onready var gun = $Gun
 onready var collision_shape_2d = $CollisionShape2D
@@ -24,7 +25,8 @@ func _ready():
 func _process(_delta):
     name_node.global_position = global_position
     if "username" in input:
-        name_label.text = input.username
+        username = input.username
+    name_label.text = username
 
 func simulate(delta):
     thrusters.simulate(delta, input, physics)

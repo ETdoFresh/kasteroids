@@ -18,15 +18,11 @@ var create_list = []
 var delete_list = []
 var local_id = 1
 
+onready var collision_manager = $CollisionManager
 onready var screen_size = get_viewport().get_visible_rect().size 
 onready var extrapolated_world = get_parent().get_node("ExtrapolatedWorld")
 onready var containers = { 
     "Ship": $Ships, "Asteroid": $Asteroids, "Bullet": $Bullets }
-
-func _enter_tree():
-    CSV.write_line("res://predicted_world.csv",
-     ["Action","Tick","Horizontal","Vertical","Fire","ID1","Name1","Position1X","Position1Y","Rotation1","ID2","Name2","Position2X","Position2Y","Rotation2",
-      "ID3","Name3","Position3X","Position3Y","Rotation3","ID4","Name4","Position4X","Position4Y","Rotation4","ID5","Name5","Position5X","Position5Y","Rotation5"])
 
 func simulate(delta):
     if server_tick_sync.smooth_tick_rounded <= tick:
@@ -44,7 +40,7 @@ func simulate(delta):
         if item.entity && not entity_list.has(item.entity):
             item.entity.simulate(delta)
             item.entity.record(tick)
-    to_log("Simulate", tick, input, entity_list)
+    collision_manager.resolve()
 
 
 func receive(received):
@@ -53,7 +49,6 @@ func receive(received):
     else:
         last_received_tick = received.tick
    
-    to_log("Received", received.tick, input, received.objects)
     ship_id = received.client.ship_id
     create_new_entities(received)
     remove_deleted_entities(received)
@@ -183,6 +178,7 @@ func create_entity(entry):
         entity.connect("tree_exited", self, "erase_entity", [entity])
         entity_list.append(entity)
         containers[type].add_child(entity)
+        if "physics" in entity: entity.physics.collision_manager = collision_manager
         entity.from_dictionary(entry)
         if type == "Bullet" && "ship_id" in entry:
             var ship = lookup(entity_list, "id", ship_id)
@@ -212,28 +208,6 @@ func to_dictionary():
         objects.append(entity.to_dictionary())
     var input_dict = inst2dict(input)
     return {"tick": tick, "input": input_dict, "objects": objects}
-
-func to_log(action, log_tick, log_input, objects):
-    if not action in ["Simulate"]:
-        return
-    
-    var values = []
-    values.append(action)
-    values.append(log_tick)
-    values.append(log_input.horizontal)
-    values.append(log_input.vertical)
-    values.append(log_input.fire)
-    for object in objects:
-        if object:
-            values.append(object.id)
-            values.append(object.name if "name" in object else object.type)
-            values.append(object.position)
-            values.append(object.rotation)
-        else:
-            values.append("Null")
-            values.append("N/A")
-            values.append("N/A")
-    CSV.write_line("res://predicted_world.csv", values)
 
 func claim_new_entity(entry):
     var closest = { "distance": 1000000, "unclaimed": null }
@@ -265,9 +239,11 @@ func create_bullet(bullet):
     bullet.connect("tree_exited", self, "erase_entity", [bullet])
     
     for other_bullet in $Bullets.get_children():
-        bullet.add_collision_exception_with(other_bullet)
+        if other_bullet is KinematicBody2D:
+            bullet.add_collision_exception_with(other_bullet)
     
     $Bullets.add_child(bullet)
+    bullet.physics.collision_manager = collision_manager
     bullet.record(tick)
     create_list.append({"tick": tick, "id": -1, "local_id": local_id, "entity": bullet, "create_position": bullet.global_position})
     CSV.write_line("res://object.csv", ["p_create",tick,bullet.id,local_id-1,bullet.position,bullet.rotation])
