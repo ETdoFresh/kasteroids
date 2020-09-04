@@ -31,10 +31,11 @@ func _process(delta):
         update_timer -= 1.0 / update_rate
         for client in $TCPServer.clients:
             var input = clients[client].input
-            var ship_id = clients[client].ship.id
-            var client_tick = input.latest_received_tick
-            var offset = input.time - input.latest_received_time
-            var world_dictionary = $World.to_dictionary(client_tick, offset, ship_id)
+            var client_data = {
+                "ship_id": clients[client].ship.id,
+                "tick": input.latest_received_tick,
+                "offset": input.time - input.latest_received_time}
+            var world_dictionary = $World.to_dictionary(client_data)
             var json = Data.var2strs_json(world_dictionary)
             $LatencySimulator.send(client, json)
 

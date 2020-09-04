@@ -119,7 +119,7 @@ func process_message(message):
     if dictionary.type == "Update":
         server_tick_sync.record_client_recieve(dictionary.tick, dictionary.client.tick, dictionary.client.offset)
         for world in worlds:
-            world.receive(dictionary)
+            world.received_data = dictionary
     
     if dictionary.type == "chat":
         $UI/Console.write_line(dictionary.message)

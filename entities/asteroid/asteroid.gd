@@ -1,6 +1,9 @@
 class_name Asteroid
 extends KinematicBody2D
 
+var id = -1
+var world = null
+
 onready var collision_shape_2d = $CollisionShape2D
 onready var wrap = $Wrap
 onready var collision_sound = $CollisionSound
@@ -8,8 +11,6 @@ onready var randomize_asteroid = $RandomizeAsteroid
 onready var history = $History
 onready var serializer = $Serializer
 onready var physics = $Physics
-
-var id = -1
 
 func _ready():
     physics.connect("collided", self, "play_collision_sound")
@@ -36,3 +37,7 @@ func rewind(tick):
 
 func erase_history(tick):
     history.erase_history(tick)
+
+func queue_delete():
+    if world: world.deletion_queue.append(self)
+    else: queue_free()

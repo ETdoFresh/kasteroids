@@ -4,110 +4,113 @@ export var enable = true
 export var smoothing_rate = 0.15
 
 var tick = 0
-var entity_list = []
+var objects = []
 var ship_id = -1
 var input = InputData.new()
 var server_tick_sync
 var last_received_tick = 0
 var misses = 0
+var received_data
 var types = {
     "Ship": Scene.SHIP,
     "Asteroid": Scene.ASTEROID,
     "Bullet": Scene.BULLET }
-var create_list = []
-var delete_list = []
+var creation_list = []
+var deletion_list = []
 var remove_from_tree_queue = []
 var local_id = 1
 
 onready var collision_manager = $CollisionManager
 onready var screen_size = get_viewport().get_visible_rect().size 
-onready var extrapolated_world = get_parent().get_node("ExtrapolatedWorld")
 onready var containers = { 
     "Ship": $Ships, "Asteroid": $Asteroids, "Bullet": $Bullets }
 
 func simulate(delta):
+    if received_data:
+        process_received_data()
+    
     if server_tick_sync.smooth_tick_rounded <= tick:
         return
     
     tick = server_tick_sync.smooth_tick_rounded
     input.record(tick)
-    var ship = lookup(entity_list, "id", ship_id)
+    var ship = lookup(objects, "id", ship_id)
     if ship: 
         ship.input = input
-    for entity in entity_list:
-        entity.simulate(delta)
-        entity.record(tick)
-    for item in create_list:
-        if item.entity && not entity_list.has(item.entity):
-            item.entity.simulate(delta)
-            item.entity.record(tick)
+    for object in objects:
+        object.simulate(delta)
+        object.record(tick)
+    for item in creation_list:
+        if item.object && not objects.has(item.object):
+            item.object.simulate(delta)
+            item.object.record(tick)
     collision_manager.resolve()
     remove_queued_from_tree()
 
-func receive(received):
-    if received.tick < last_received_tick:
+func process_received_data():
+    if received_data.tick < last_received_tick:
         return
     else:
-        last_received_tick = received.tick
+        last_received_tick = received_data.tick
    
-    ship_id = received.client.ship_id
-    create_new_entities(received)
-    remove_deleted_entities(received)
+    ship_id = received_data.client.ship_id
+    create_new_objects(received_data)
+    remove_deleted_objects(received_data)
     
-    for i in range(create_list.size() - 1, -1, -1):
-        if create_list[i].tick < received.tick:
-            if create_list[i].id == -1:
-                if create_list[i].entity:
-                    create_list[i].entity.queue_free()
-            create_list.remove(i)
+    for i in range(creation_list.size() - 1, -1, -1):
+        if creation_list[i].tick < received_data.tick:
+            if creation_list[i].id == -1:
+                if creation_list[i].object:
+                    creation_list[i].object.queue_free()
+            creation_list.remove(i)
     
-    for i in range(delete_list.size() - 1, -1, -1):
-        if delete_list[i].tick < received.tick:
-            delete_list.remove(i)
+    for i in range(deletion_list.size() - 1, -1, -1):
+        if deletion_list[i].tick < received_data.tick:
+            deletion_list.remove(i)
     
     var is_miss = false
-    for entity in entity_list:
-        if entity.id == -1:
+    for object in objects:
+        if object.id == -1:
             continue
-        if not entity.history.has(received.tick):
+        if not object.history.has(received_data.tick):
             is_miss = true
             break
         else:
-            var object = null
-            if entity.has_node("History"):
-                object = entity.history.history[received.tick]
+            var historic_object = null
+            if object.has_node("History"):
+                historic_object = object.history.history[received_data.tick]
             else:
-                object = entity.history[received.tick]
-            var other_object = lookup(received.objects, "id", entity.id)
+                historic_object = object.history[received_data.tick]
+            var other_object = lookup(received_data.objects, "id", object.id)
             if not other_object:
                 continue
-            var delta = get_delta(object, other_object)
+            var delta = get_delta(historic_object, other_object)
             if delta.position.length() >= 2 || delta.rotation >= 0.05:
                 is_miss = true
                 break
     
-    for entity in entity_list:
-        entity.erase_history(received.tick)
+    for object in objects:
+        object.erase_history(received_data.tick)
     
     if is_miss:
         misses += 1
-        #to_log("Rewind", received.tick, historical_state.input, historical_state.objects)
-        for entity in entity_list:
-            entity.rewind(received.tick)
+        #to_log("Rewind", received_data.tick, historical_state.input, historical_state.objects)
+        for object in objects:
+            object.rewind(received_data.tick)
         #to_log("Rewrite", historical_state.tick, historical_state.input, historical_state.objects)
-        for entity in entity_list:
-            var correct_values = lookup(received.objects, "id", entity.id)
+        for object in objects:
+            var correct_values = lookup(received_data.objects, "id", object.id)
             if correct_values:
-                entity.from_dictionary(correct_values)
+                object.from_dictionary(correct_values)
         #to_log("Resimulate", historical_state2.tick, historical_state2.input, historical_state2.objects)
-        for resimulate_tick in range(received.tick + 1, server_tick_sync.smooth_tick + 1):
+        for resimulate_tick in range(received_data.tick + 1, server_tick_sync.smooth_tick + 1):
             input.rewind(resimulate_tick)
-            var ship = lookup(entity_list, "id", ship_id)
+            var ship = lookup(objects, "id", ship_id)
             if ship:
                 ship.input = input
-            for entity in entity_list:
-                entity.simulate(Settings.tick_rate)
-                entity.record(resimulate_tick)
+            for object in objects:
+                object.simulate(Settings.tick_rate)
+                object.record(resimulate_tick)
 
 func get_delta(source, target):
     var delta = {}
@@ -154,59 +157,59 @@ func apply_delta(source, delta):
     if "angular_velocity" in source && "angular_velocity" in delta:
         source["angular_velocity"] += delta.angular_velocity
 
-func create_new_entities(dictionary):
+func create_new_objects(dictionary):
     for entry in dictionary.objects:
         if entry:
-            var entity = lookup(entity_list, "id", entry.id)
-            var on_delete_list = lookup(delete_list, "id", entry.id)
-#            if on_delete_list && dictionary.tick > on_delete_list.tick:
-#                on_delete_list.entity.recreate()
-#                on_delete_list.entity.from_dictionary(entry)
-#                entity_list.append(on_delete_list.entity)
-#                delete_list.erase(on_delete_list)
+            var object = lookup(objects, "id", entry.id)
+            var on_deletion_list = lookup(deletion_list, "id", entry.id)
+#            if on_deletion_list && dictionary.tick > on_deletion_list.tick:
+#                on_deletion_list.object.recreate()
+#                on_deletion_list.object.from_dictionary(entry)
+#                objects.append(on_deletion_list.object)
+#                deletion_list.erase(on_deletion_list)
 #            elif ...
-            if not entity && not on_delete_list:
-                create_entity(entry)
+            if not object && not on_deletion_list:
+                create_object(entry)
 
-func remove_deleted_entities(dictionary):
-    for i in range(entity_list.size() - 1, -1, -1):
-        var entity = entity_list[i]
-        if not lookup(dictionary.objects, "id", entity.id):
-            entity_list.remove(i)
-            entity.queue_free()
+func remove_deleted_objects(dictionary):
+    for i in range(objects.size() - 1, -1, -1):
+        var object = objects[i]
+        if not lookup(dictionary.objects, "id", object.id):
+            objects.remove(i)
+            object.queue_free()
     
-    for i in range(delete_list.size() - 1, -1, -1):
-        var delete_item = delete_list[i]
+    for i in range(deletion_list.size() - 1, -1, -1):
+        var delete_item = deletion_list[i]
         if not lookup(dictionary.objects, "id", delete_item.id):
-            if delete_item.entity:
-                delete_item.entity.queue_free()
-            delete_list.remove(i)
+            if delete_item.object:
+                delete_item.object.queue_free()
+            deletion_list.remove(i)
 
-func create_entity(entry):
+func create_object(entry):
     var type = entry.type
-    var entity = claim_new_entity(entry)
-    if not entity:
-        entity = types[type].instance()
-        entity.collision_layer = Data.get_physics_layer_id_by_name("predicted_world")
-        entity.collision_mask = Data.get_physics_layer_id_by_name("predicted_world")
-        entity.connect("tree_exited", self, "erase_entity", [entity])
-        entity_list.append(entity)
-        containers[type].add_child(entity)
-        if "physics" in entity: entity.physics.collision_manager = collision_manager
-        entity.from_dictionary(entry)
+    var object = claim_new_object(entry)
+    if not object:
+        object = types[type].instance()
+        object.collision_layer = Data.get_physics_layer_id_by_name("predicted_world")
+        object.collision_mask = Data.get_physics_layer_id_by_name("predicted_world")
+        object.connect("tree_exited", self, "erase_object", [object])
+        objects.append(object)
+        containers[type].add_child(object)
+        if "physics" in object: object.physics.collision_manager = collision_manager
+        object.from_dictionary(entry)
         if type == "Bullet" && "ship_id" in entry:
-            var ship = lookup(entity_list, "id", ship_id)
+            var ship = lookup(objects, "id", ship_id)
             if ship:
-                entity.add_collision_exception_with(ship)
-        if entity.has_signal("bullet_created"):
-            entity.connect("bullet_created", self, "create_bullet")
+                object.add_collision_exception_with(ship)
+        if object.has_signal("bullet_created"):
+            object.connect("bullet_created", self, "create_bullet")
 
-func erase_entity(entity):
-    var created_entity = lookup(create_list, "entity", entity)
-    var created_local_id = created_entity.local_id if created_entity else -1
-    CSV.write_line("res://object.csv", ["p_erase",tick,entity.id,created_local_id,entity.position,entity.rotation])
-    delete_list.append({"tick": tick, "id": entity.id, "local_id": created_local_id, "entity": entity})
-    entity_list.erase(entity)
+func erase_object(object):
+    var created_object = lookup(creation_list, "object", object)
+    var created_local_id = created_object.local_id if created_object else -1
+    CSV.write_line("res://object.csv", ["p_erase",tick,object.id,created_local_id,object.position,object.rotation])
+    deletion_list.append({"tick": tick, "id": object.id, "local_id": created_local_id, "object": object})
+    objects.erase(object)
 
 func lookup(list, key, value):
     for item in list:
@@ -218,14 +221,14 @@ func lookup(list, key, value):
 
 func to_dictionary():
     var objects = []
-    for entity in entity_list:
-        objects.append(entity.to_dictionary())
+    for object in objects:
+        objects.append(object.to_dictionary())
     var input_dict = inst2dict(input)
     return {"tick": tick, "input": input_dict, "objects": objects}
 
-func claim_new_entity(entry):
+func claim_new_object(entry):
     var closest = { "distance": 1000000, "unclaimed": null }
-    for unclaimed in create_list:
+    for unclaimed in creation_list:
         if unclaimed.id == -1:
             var distance = (entry.create_position - unclaimed.create_position).length()
             if distance < closest.distance:
@@ -233,16 +236,16 @@ func claim_new_entity(entry):
     
     if closest.unclaimed:
         closest.unclaimed.id = entry.id
-        var deleted_entity = lookup(delete_list, "local_id", closest.unclaimed.local_id)
-        if deleted_entity:
-            deleted_entity.id = entry.id
+        var deleted_object = lookup(deletion_list, "local_id", closest.unclaimed.local_id)
+        if deleted_object:
+            deleted_object.id = entry.id
         
-        var entity = closest.unclaimed.entity
-        if entity:
-            entity.id = entry.id
-            entity_list.append(entity)
-            CSV.write_line("res://object.csv", ["p_sync",tick,closest.unclaimed.id,closest.unclaimed.local_id,entity.position,entity.rotation])
-            return entity
+        var object = closest.unclaimed.object
+        if object:
+            object.id = entry.id
+            objects.append(object)
+            CSV.write_line("res://object.csv", ["p_sync",tick,closest.unclaimed.id,closest.unclaimed.local_id,object.position,object.rotation])
+            return object
         else:
             return true
 
@@ -250,7 +253,7 @@ func create_bullet(bullet):
     local_id += 1
     bullet.collision_layer = Data.get_physics_layer_id_by_name("predicted_world")
     bullet.collision_mask = Data.get_physics_layer_id_by_name("predicted_world")
-    bullet.connect("tree_exited", self, "erase_entity", [bullet])
+    bullet.connect("tree_exited", self, "erase_object", [bullet])
     
     for other_bullet in $Bullets.get_children():
         if other_bullet is KinematicBody2D:
@@ -259,7 +262,7 @@ func create_bullet(bullet):
     $Bullets.add_child(bullet)
     bullet.physics.collision_manager = collision_manager
     bullet.record(tick)
-    create_list.append({"tick": tick, "id": -1, "local_id": local_id, "entity": bullet, "create_position": bullet.global_position})
+    creation_list.append({"tick": tick, "id": -1, "local_id": local_id, "object": bullet, "create_position": bullet.global_position})
     CSV.write_line("res://object.csv", ["p_create",tick,bullet.id,local_id-1,bullet.position,bullet.rotation])
     debug_bullet_create(bullet)
 

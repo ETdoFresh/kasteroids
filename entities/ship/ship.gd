@@ -4,6 +4,7 @@ extends KinematicBody2D
 signal bullet_created(bullet)
 
 var id = -1
+var world = null
 var input = InputData.new()
 var username = "Ship"
 
@@ -65,3 +66,7 @@ func rewind(tick):
 func erase_history(tick):
     history.erase_history(tick)
     gun.erase_history(tick)
+
+func queue_delete():
+    if world: world.deletion_queue.append(self)
+    else: queue_free()

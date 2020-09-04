@@ -1,6 +1,7 @@
 extends Node2D
 
-var entity_list = []
+var objects = []
+var received_data
 var types = {
     "Ship": Scene.SHIP_CLIENT,
     "Asteroid": Scene.ASTEROID_CLIENT,
@@ -10,48 +11,36 @@ onready var containers = {
     "Ship": $Ships, "Asteroid": $Asteroids, "Bullet": $Bullets }
 
 func simulate(_delta):
-    pass
+    if received_data:
+        process_received_data()
 
-func receive(dictionary):
-    create_new_entities(dictionary)
-    remove_deleted_entities(dictionary)
-    update_entities(dictionary)
+func process_received_data():
+    create_new_objects(received_data)
+    remove_deleted_objects(received_data)
+    update_objects(received_data)
+    received_data = null
 
-func create_new_entities(dictionary):
+func create_new_objects(dictionary):
     for entry in dictionary.objects:
         if entry:
-            var entity = get_entity_by_id(entry.id)
-            if not entity:
-                create_entity(entry)
+            if not List.lookup(objects, "id", entry.id):
+                create_object(entry)
 
-func remove_deleted_entities(dictionary):
-    for i in range(entity_list.size() - 1, -1, -1):
-        var entity = entity_list[i]
-        if not get_dictionary_entry_by_id(dictionary, entity.id):
-            entity_list.remove(i)
-            entity.queue_free()
+func remove_deleted_objects(dictionary):
+    for i in range(objects.size() - 1, -1, -1):
+        var object = objects[i]
+        if not List.lookup(dictionary.objects, "id", object.id):
+            objects.remove(i)
+            object.queue_free()
 
-func update_entities(dictionary):
-    for entity in entity_list:
-        var entry = get_dictionary_entry_by_id(dictionary, entity.id)
-        entity.from_dictionary(entry)
+func update_objects(dictionary):
+    for object in objects:
+        var entry = List.lookup(dictionary.objects, "id", object.id)
+        object.from_dictionary(entry)
 
-func get_entity_by_id(id):
-    for entity in entity_list:
-        if entity.id == id:
-            return entity
-    return null
-
-func get_dictionary_entry_by_id(dictionary, id):
-    for entry in dictionary.objects:
-        if entry:
-            if entry.id == id:
-                return entry
-    return null
-
-func create_entity(entry):
+func create_object(entry):
     var type = entry.type
-    var entity = types[type].instance()
-    entity_list.append(entity)
-    containers[type].add_child(entity)
-    entity.from_dictionary(entry)
+    var object = types[type].instance()
+    objects.append(object)
+    containers[type].add_child(object)
+    object.from_dictionary(entry)

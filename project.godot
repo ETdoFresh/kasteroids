@@ -129,6 +129,7 @@ Settings="*res://entities/autoload/settings.gd"
 ID="*res://entities/autoload/id.gd"
 CSV="*res://entities/csv_writer/csv.gd"
 CollisionResolver="*res://entities/collisions/collision_resolver.gd"
+List="*res://entities/autoload/list.gd"
 
 [display]
 

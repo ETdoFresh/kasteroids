@@ -2,6 +2,7 @@ class_name Bullet
 extends KinematicBody2D
 
 var id = -1
+var world = null
 var starting_velocity = Vector2.ZERO
 var ship = null
 var ship_id = -1
@@ -48,3 +49,7 @@ func rewind(tick):
 
 func erase_history(tick):
     history.erase_history(tick)
+
+func queue_delete():
+    if world: world.deletion_queue.append(self)
+    else: queue_free()
