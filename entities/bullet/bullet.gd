@@ -24,12 +24,15 @@ func _ready():
     shoot_sound.play()
 
 func simulate(delta):
-    destroy_timer.simulate(delta)
     physics.simulate(delta, self)
     wrap.wrap(self)
+    destroy_timer.simulate(delta)
 
 func destroy(_collision):
     destroy_timer.destroy()
+
+func recreate():
+    destroy_timer.recreate()
 
 func to_dictionary():
     return serializer.to_dictionary(self, "Bullet")

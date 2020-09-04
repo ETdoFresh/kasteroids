@@ -4,7 +4,9 @@ export var destroy_time = 1.0
 
 var timer = 0
 
-onready var parent = get_parent()
+onready var bullet = get_parent()
+onready var container = bullet.get_parent()
+onready var world = container.get_parent()
 
 func simulate(delta):
     timer += delta
@@ -14,9 +16,10 @@ func simulate(delta):
 
 func destroy():
     var bullet_particles = Scene.BULLET_PARTICLES.instance()
-    var container = get_parent()
-    var world = container.get_parent()
     world.add_child(bullet_particles)
-    bullet_particles.position = parent.global_position
+    bullet_particles.position = bullet.global_position
     bullet_particles.emitting = true
-    parent.queue_free()
+    if world.has_meta("queue_remove_child"):
+        world.queue_remove_from_tree(bullet)
+    else:
+        bullet.queue_free()

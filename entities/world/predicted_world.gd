@@ -16,6 +16,7 @@ var types = {
     "Bullet": Scene.BULLET }
 var create_list = []
 var delete_list = []
+var remove_from_tree_queue = []
 var local_id = 1
 
 onready var collision_manager = $CollisionManager
@@ -41,7 +42,7 @@ func simulate(delta):
             item.entity.simulate(delta)
             item.entity.record(tick)
     collision_manager.resolve()
-
+    remove_queued_from_tree()
 
 func receive(received):
     if received.tick < last_received_tick:
@@ -158,6 +159,12 @@ func create_new_entities(dictionary):
         if entry:
             var entity = lookup(entity_list, "id", entry.id)
             var on_delete_list = lookup(delete_list, "id", entry.id)
+#            if on_delete_list && dictionary.tick > on_delete_list.tick:
+#                on_delete_list.entity.recreate()
+#                on_delete_list.entity.from_dictionary(entry)
+#                entity_list.append(on_delete_list.entity)
+#                delete_list.erase(on_delete_list)
+#            elif ...
             if not entity && not on_delete_list:
                 create_entity(entry)
 
@@ -167,6 +174,13 @@ func remove_deleted_entities(dictionary):
         if not lookup(dictionary.objects, "id", entity.id):
             entity_list.remove(i)
             entity.queue_free()
+    
+    for i in range(delete_list.size() - 1, -1, -1):
+        var delete_item = delete_list[i]
+        if not lookup(dictionary.objects, "id", delete_item.id):
+            if delete_item.entity:
+                delete_item.entity.queue_free()
+            delete_list.remove(i)
 
 func create_entity(entry):
     var type = entry.type
@@ -191,7 +205,7 @@ func erase_entity(entity):
     var created_entity = lookup(create_list, "entity", entity)
     var created_local_id = created_entity.local_id if created_entity else -1
     CSV.write_line("res://object.csv", ["p_erase",tick,entity.id,created_local_id,entity.position,entity.rotation])
-    delete_list.append({"tick": tick, "id": entity.id, "local_id": created_local_id})
+    delete_list.append({"tick": tick, "id": entity.id, "local_id": created_local_id, "entity": entity})
     entity_list.erase(entity)
 
 func lookup(list, key, value):
@@ -255,3 +269,10 @@ func debug_bullet_create(bullet):
 
 func debug_bullet_destroy(_bullet):
     CSV.write_line("res://bullet.csv", [tick, "client_destroy_bullet"])
+
+func queue_remove_from_tree(child):
+    remove_from_tree_queue.append(child)
+
+func remove_queued_from_tree():
+    for node in remove_from_tree_queue:
+        node.get_parent().remove_child(node)
