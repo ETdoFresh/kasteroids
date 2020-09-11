@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/8BIT_RETRO_Explosion_Short_Distant_mono.ogg-47dd0b680e5ba1c1e26cc9ecb98033e0.oggstr"
+
+[deps]
+
+source_file="res://sounds/8BIT_RETRO_Explosion_Short_Distant_mono.ogg"
+dest_files=[ "res://.import/8BIT_RETRO_Explosion_Short_Distant_mono.ogg-47dd0b680e5ba1c1e26cc9ecb98033e0.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

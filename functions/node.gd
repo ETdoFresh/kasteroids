@@ -1,6 +1,6 @@
 class_name NodeFunctions
 
-static func to_object(child_node : Node) -> Dictionary:
+static func to_dictionary(child_node : Node) -> Dictionary:
     var object = {}
     if "type" in child_node: object["type"] = child_node.type
     if "global_position" in child_node: object["position"] = child_node.global_position
@@ -18,7 +18,7 @@ static func to_object(child_node : Node) -> Dictionary:
     if "max_linear_velocity" in child_node: object["max_linear_velocity"] = child_node.max_linear_velocity
     if "min_scale" in child_node: object["min_scale"] = child_node.min_scale
     if "max_scale" in child_node: object["max_scale"] = child_node.max_scale
-    if child_node is Sprite: object["sprite"] = child_node
+    if child_node is KinematicBody2D: object["node"] = child_node
     return object
 
 static func update_display(object : Dictionary) -> Dictionary:

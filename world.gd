@@ -1,19 +1,20 @@
 extends Node2D
 
 const ASTEROID = AsteroidFunctions
-const LIST = ListFunctions
 const DICTIONARY = DictionaryFunctions
-const PHYSICS = PhysicsFunctions
+const LIST = ListFunctions
 const NODE = NodeFunctions
-const WRAP = WrapFunctions
+const PHYSICS = PhysicsFunctions
 const SHIP = ShipFunctions
+const SOUND = SoundFunctions
+const WRAP = WrapFunctions
 
 onready var current_state = empty_state()
 onready var label = $Label
 
 func _ready():
     var state = current_state
-    state.objects = LIST.map(get_children(), funcref(NODE, "to_object"))
+    state.objects = LIST.map(get_children(), funcref(NODE, "to_dictionary"))
     state.objects = LIST.filtered_map(state.objects, funcref(ASTEROID, "is_asteroid"), funcref(ASTEROID, "randomize_angular_velocity"))
     state.objects = LIST.filtered_map(state.objects, funcref(ASTEROID, "is_asteroid"), funcref(ASTEROID, "randomize_linear_velocity"))
     state.objects = LIST.filtered_map(state.objects, funcref(ASTEROID, "is_asteroid"), funcref(ASTEROID, "randomize_scale"))
@@ -39,11 +40,10 @@ static func simulate(state : Dictionary, delta : float) -> Dictionary:
     state = DICTIONARY.update(state, "tick", state.tick + 1)
     state.objects = LIST.filtered_map1(state.objects, funcref(SHIP, "is_ship"), funcref(SHIP, "apply_input"), delta)
     state.objects = LIST.filtered_map(state.objects, funcref(SHIP, "is_ship"), funcref(SHIP, "limit_speed"))
-    state.objects = LIST.map1(state.objects, funcref(PHYSICS, "move"), delta)
-    #state.objects = LIST.map1(state.objects, funcref(PHYSICS, "move_and_collide"), delta)
-    #state.objects = LIST.map1(state.objects, funcref(PHYSICS, "add_collision_data_to_other_object"), state.objects)
-    #state.objects = LIST.map1(state.objects, funcref(PHYSICS, "bounce"), delta)
-    #state.objects = List.map(state.objects, funcref(SOUND, "play_collision_sound"))
+    state.objects = LIST.map1(state.objects, funcref(PHYSICS, "move_and_collide"), delta)
+    state.objects = PHYSICS.add_collisions_to_other_colliders(state.objects)
+    state.objects = LIST.filtered_map(state.objects, funcref(PHYSICS, "has_collided"), funcref(SOUND, "play_collision_sound"))
+    state.objects = PHYSICS.resolve_collisions(state.objects)
     state.objects = LIST.map(state.objects, funcref(WRAP, "wrap"))
     state.objects = LIST.map(state.objects, funcref(NODE, "update_display"))
     return state

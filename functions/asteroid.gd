@@ -22,5 +22,5 @@ static func randomize_scale(asteroid : Dictionary) -> Dictionary:
     asteroid = asteroid.duplicate()
     var min_scl = asteroid.min_scale
     var max_scl = asteroid.max_scale
-    asteroid.scale = Vector2.ONE * Random.randf_range(min_scl, max_scl)
+    asteroid.scale *= Random.randf_range(min_scl, max_scl)
     return asteroid
