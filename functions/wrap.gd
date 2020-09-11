@@ -1,4 +1,4 @@
-extends Node
+class_name WrapFunctions
 
 static func wrap(object : Dictionary) -> Dictionary:
     if not "position" in object: return object

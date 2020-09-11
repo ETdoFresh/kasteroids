@@ -1,4 +1,4 @@
-extends Node
+class_name ListFunctions
 
 static func copy(list : Array, deep : bool = false) -> Array:
     return list.duplicate(deep)
@@ -30,4 +30,24 @@ static func filter(list : Array, func_ref : FuncRef) -> Array:
     for item in list:
         if func_ref.call_func(item):
             result.append(item)
+    return result
+
+static func filtered_map(list : Array, filter_func_ref : FuncRef, map_func_ref : FuncRef) -> Array:
+    var result = []
+    result.resize(list.size())
+    for i in range(list.size()):
+        if filter_func_ref.call_func(list[i]):
+            result[i] = map_func_ref.call_func(list[i])
+        else:
+            result[i] = list[i]
+    return result
+
+static func filtered_map1(list : Array, filter_func_ref : FuncRef, map_func_ref : FuncRef, arg) -> Array:
+    var result = []
+    result.resize(list.size())
+    for i in range(list.size()):
+        if filter_func_ref.call_func(list[i]):
+            result[i] = map_func_ref.call_func(list[i], arg)
+        else:
+            result[i] = list[i]
     return result

@@ -1,4 +1,4 @@
-extends Node
+class_name DictionaryFunctions
 
 static func copy(dictionary : Dictionary, deep : bool = false) -> Dictionary:
     return dictionary.duplicate(deep)
