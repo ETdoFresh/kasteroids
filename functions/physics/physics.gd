@@ -1,34 +1,19 @@
 class_name PhysicsFunctions
 
-static func move(object : Dictionary, delta : float) -> Dictionary:
-    if not "linear_velocity" in object: return object
-    if not "angular_velocity" in object: return object
-    object = object.duplicate()
-    object.position += object.linear_velocity * delta
-    object.rotation += object.angular_velocity * delta
-    return object
+const COLLISION = CollisionFunctions
+const ID = IdFunctions
+const LIST = ListFunctions
+const PHYSICS_NODES = PhysicsNodesFunctions
 
-static func move_and_collide(object : Dictionary, delta : float) -> Dictionary:
-    if not "node" in object: return object
-    object = object.duplicate()
-    if not "collisions" in object: object["collisions"] = []
-    if not "has_collided" in object: object["has_collided"] = false
-    var kinematic_body : KinematicBody2D = object.node
-    kinematic_body.global_position = object.position
-    kinematic_body.global_rotation = object.rotation
-    kinematic_body.get_node("CollisionShape2D").scale = object.scale
-    kinematic_body.rotate(object.angular_velocity * delta)
-    var collision : KinematicCollision2D = kinematic_body.move_and_collide(object.linear_velocity * delta)
-    if collision:
-        object.has_collided = true
-        object.collisions.append({
-            "other": collision.collider,
-            "normal": collision.normal,
-            "position": collision.position,
-            "remain": collision.remainder})
-    object.position = kinematic_body.global_position
-    object.rotation = kinematic_body.global_rotation
-    return object
+static func simulate(objects: Array, delta: float) -> Array:
+    objects = objects.duplicate()
+    objects = LIST.map(objects, funcref(PHYSICS_NODES, "setup_physical_bodies")) # Side-effect
+    objects = LIST.map1(objects, funcref(PHYSICS_NODES, "move_and_collide"), delta) # Both
+    objects = LIST.map(objects, funcref(PHYSICS_NODES, "update_objects_from_physical_bodies"))
+    var _collisions = LIST.filter(objects, funcref(COLLISION, "has_collision"))
+    # TODO: Handle Collisions
+    # TODO: Collide Event on Object?
+    return objects
 
 static func add_collisions_to_other_colliders(objects: Array) -> Array:
     objects = objects.duplicate()
@@ -37,10 +22,10 @@ static func add_collisions_to_other_colliders(objects: Array) -> Array:
         for other_object in objects:
             if "collisions" in other_object:
                 for collision in other_object.collisions:
-                    if collision.other == objects[i].node:
+                    if collision.other == objects[i]:
                         objects[i] = objects[i].duplicate()
                         objects[i].collisions.append({
-                            "other": other_object.node,
+                            "other": other_object.id,
                             "normal": -collision.normal,
                             "position": collision.position,
                             "remainder": 0.0})
@@ -52,12 +37,10 @@ static func has_collided(object: Dictionary) -> bool:
 static func resolve_collisions(objects: Array) -> Array:
     objects = objects.duplicate()
     for i in range(objects.size()):
-        if not "has_collided" in objects[i]: continue
-        if not objects[i].has_collided: continue
         if not "collisions" in objects[i]: continue
         if objects[i].collisions.size() == 0: continue
-        objects[i] = objects[i].duplicate()
-        # TODO: Handle collisions :)
+        for collision in objects[i].collisions:
+            objects[i] = bounce_no_angular_velocity(objects[i], collision)
         objects[i].collisions.clear()
     return objects
 

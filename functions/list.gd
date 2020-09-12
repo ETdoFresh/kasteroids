@@ -51,3 +51,9 @@ static func filtered_map1(list : Array, filter_func_ref : FuncRef, map_func_ref 
         else:
             result[i] = list[i]
     return result
+
+static func index_of(object, list: Array) -> int:
+    for i in range(list.size()):
+        if list[i] == object:
+            return i
+    return -1

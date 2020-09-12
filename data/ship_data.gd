@@ -5,8 +5,11 @@ const type = "Ship"
 export var speed = 800
 export var spin = 10
 export var linear_velocity = Vector2.ZERO
+export var angular_velocity = 0.0
 export var mass = 1.0
 export var bounce_coeff = 0.7
+
+var id = -1
 
 onready var collision_shape_2d = $CollisionShape2D
 onready var input = $Input

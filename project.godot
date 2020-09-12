@@ -15,9 +15,19 @@ _global_script_classes=[ {
 "path": "res://functions/asteroid.gd"
 }, {
 "base": "Reference",
+"class": "CollisionFunctions",
+"language": "GDScript",
+"path": "res://functions/physics/collision.gd"
+}, {
+"base": "Reference",
 "class": "DictionaryFunctions",
 "language": "GDScript",
 "path": "res://functions/dictionary.gd"
+}, {
+"base": "Reference",
+"class": "IdFunctions",
+"language": "GDScript",
+"path": "res://functions/id.gd"
 }, {
 "base": "Reference",
 "class": "JSONBeautifier",
@@ -37,7 +47,12 @@ _global_script_classes=[ {
 "base": "Reference",
 "class": "PhysicsFunctions",
 "language": "GDScript",
-"path": "res://functions/physics.gd"
+"path": "res://functions/physics/physics.gd"
+}, {
+"base": "Reference",
+"class": "PhysicsNodesFunctions",
+"language": "GDScript",
+"path": "res://functions/physics/physics_nodes.gd"
 }, {
 "base": "Reference",
 "class": "ShipFunctions",
@@ -45,9 +60,19 @@ _global_script_classes=[ {
 "path": "res://functions/ship.gd"
 }, {
 "base": "Reference",
+"class": "ShortcutFunctions",
+"language": "GDScript",
+"path": "res://functions/shortcut.gd"
+}, {
+"base": "Reference",
 "class": "SoundFunctions",
 "language": "GDScript",
 "path": "res://functions/sound.gd"
+}, {
+"base": "Reference",
+"class": "StateFunctions",
+"language": "GDScript",
+"path": "res://functions/state.gd"
 }, {
 "base": "Reference",
 "class": "WrapFunctions",
@@ -56,13 +81,18 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "AsteroidFunctions": "",
+"CollisionFunctions": "",
 "DictionaryFunctions": "",
+"IdFunctions": "",
 "JSONBeautifier": "",
 "ListFunctions": "",
 "NodeFunctions": "",
 "PhysicsFunctions": "",
+"PhysicsNodesFunctions": "",
 "ShipFunctions": "",
+"ShortcutFunctions": "",
 "SoundFunctions": "",
+"StateFunctions": "",
 "WrapFunctions": ""
 }
 

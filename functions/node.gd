@@ -3,9 +3,13 @@ class_name NodeFunctions
 static func to_dictionary(child_node : Node) -> Dictionary:
     var object = {}
     if "type" in child_node: object["type"] = child_node.type
+    if "id" in child_node: object["id"] = child_node.id
     if "global_position" in child_node: object["position"] = child_node.global_position
     if "global_rotation" in child_node: object["rotation"] = child_node.global_rotation
-    if "global_scale" in child_node: object["scale"] = child_node.global_scale
+    if "sprite" in child_node:
+        if "global_scale" in child_node: object["scale"] = child_node.sprite.global_scale
+    else:
+        if "global_scale" in child_node: object["scale"] = child_node.global_scale
     if "linear_velocity" in child_node: object["linear_velocity"] = child_node.linear_velocity
     if "angular_velocity" in child_node: object["angular_velocity"] = child_node.angular_velocity
     if "input" in child_node: object["input"] = child_node.input
@@ -18,13 +22,16 @@ static func to_dictionary(child_node : Node) -> Dictionary:
     if "max_linear_velocity" in child_node: object["max_linear_velocity"] = child_node.max_linear_velocity
     if "min_scale" in child_node: object["min_scale"] = child_node.min_scale
     if "max_scale" in child_node: object["max_scale"] = child_node.max_scale
+    if "mass" in child_node: object["mass"] = child_node.mass
+    if "bounce_coeff" in child_node: object["bounce_coeff"] = child_node.bounce_coeff
+    if "randomize_angular_velocity" in child_node: object["randomize_angular_velocity"] = child_node.randomize_angular_velocity
+    if "randomize_linear_velocity" in child_node: object["randomize_linear_velocity"] = child_node.randomize_linear_velocity
+    if "randomize_scale" in child_node: object["randomize_scale"] = child_node.randomize_scale
     if child_node is KinematicBody2D: object["node"] = child_node
     return object
 
 static func update_display(object : Dictionary) -> Dictionary:
-    if not "sprite" in object: return object
-    var sprite = object.sprite
-    if "global_position" in sprite: sprite.global_position = object.position
-    if "global_rotation" in sprite: sprite.global_rotation = object.rotation
-    if "global_scale" in sprite: sprite.global_scale = object.scale
+    if not "node" in object: return object
+    var node = object.node
+    if "sprite" in node: node.sprite.global_scale = object.scale
     return object

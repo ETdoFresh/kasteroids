@@ -4,6 +4,7 @@ static func is_ship(object : Dictionary) -> bool:
     return "type" in object and object.type == "Ship"
 
 static func apply_input(ship : Dictionary, delta: float) -> Dictionary:
+    if not is_ship(ship): return ship
     ship = ship.duplicate()
     var thrust = Vector2(0, ship.input.vertical * ship.speed)
     var linear_acceleration = thrust.rotated(ship.rotation)
@@ -14,6 +15,7 @@ static func apply_input(ship : Dictionary, delta: float) -> Dictionary:
     return ship
 
 static func limit_speed(ship : Dictionary) -> Dictionary:
+    if not is_ship(ship): return ship
     ship = ship.duplicate()
     if ship.linear_velocity.length() > ship.speed:
         ship.linear_velocity = ship.linear_velocity.normalized() * ship.speed

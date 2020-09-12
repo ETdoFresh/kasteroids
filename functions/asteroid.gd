@@ -4,6 +4,7 @@ static func is_asteroid(object : Dictionary) -> bool:
     return "type" in object and object.type == "Asteroid"
 
 static func randomize_angular_velocity(asteroid : Dictionary) -> Dictionary:
+    if not asteroid.randomize_angular_velocity: return asteroid
     asteroid = asteroid.duplicate()
     var min_vel = asteroid.min_angular_velocity
     var max_vel = asteroid.max_angular_velocity
@@ -11,6 +12,7 @@ static func randomize_angular_velocity(asteroid : Dictionary) -> Dictionary:
     return asteroid
 
 static func randomize_linear_velocity(asteroid : Dictionary) -> Dictionary:
+    if not asteroid.randomize_linear_velocity: return asteroid
     asteroid = asteroid.duplicate()
     var min_vel = asteroid.min_linear_velocity
     var max_vel = asteroid.max_linear_velocity
@@ -19,6 +21,7 @@ static func randomize_linear_velocity(asteroid : Dictionary) -> Dictionary:
     return asteroid
 
 static func randomize_scale(asteroid : Dictionary) -> Dictionary:
+    if not asteroid.randomize_scale: return asteroid
     asteroid = asteroid.duplicate()
     var min_scl = asteroid.min_scale
     var max_scl = asteroid.max_scale
