@@ -48,9 +48,10 @@ static func add_collision_to_other_collider(object: Dictionary, other_objects: A
         if other_object.collision.other == object:
             object = object.duplicate()
             object["collision"] = {
-                "other": other_object, 
+                "other": other_object,
                 "position": other_object.collision.position,
                 "normal": -other_object.collision.normal,
-                "remainder": 0.0}
+                "remainder": Vector2.ZERO,
+                "is_other": true}
             return object
     return object

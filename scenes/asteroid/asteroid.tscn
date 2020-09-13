@@ -1,0 +1,52 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://data/asteroid_data.gd" type="Script" id=1]
+[ext_resource path="res://sounds/8BIT_RETRO_Explosion_Short_Distant_mono.ogg" type="AudioStream" id=2]
+[ext_resource path="res://graphics/asteroid1.svg" type="Texture" id=3]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 105.774
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 25.0437
+
+[node name="Asteroid" type="KinematicBody2D"]
+position = Vector2( 433.932, 254.737 )
+script = ExtResource( 1 )
+randomize_angular_velocity = false
+randomize_linear_velocity = false
+randomize_scale = false
+bounce_coeff = 1.0
+
+[node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0.840942, -11.7725 )
+scale = Vector2( 0.5, 0.5 )
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2( -2.94739, 17.6588 )
+scale = Vector2( 0.5, 0.5 )
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="."]
+position = Vector2( 47.9312, 20.602 )
+scale = Vector2( 0.5, 0.5 )
+shape = SubResource( 2 )
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="."]
+position = Vector2( -36.9994, -46.6697 )
+scale = Vector2( 0.5, 0.5 )
+shape = SubResource( 2 )
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="."]
+position = Vector2( -55.0786, 44.988 )
+scale = Vector2( 0.5, 0.5 )
+shape = SubResource( 2 )
+
+[node name="CollisionSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 2 )
+volume_db = -2.0

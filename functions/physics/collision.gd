@@ -1,5 +1,7 @@
 class_name CollisionFunctions
 
+const COLLISION_MARKER_SCENE = preload("res://scenes/collision_marker/collision_marker.tscn")
+
 static func has_collision(object: Dictionary) -> bool:
     return "collision" in object and object.collision
 
@@ -9,6 +11,26 @@ static func get_collision(object: Dictionary):
 static func clear_collision(object: Dictionary) -> Dictionary:
     object = object.duplicate()
     object["collision"] = null
+    return object
+
+static func add_collision_markers(objects: Array, world: Node) -> Array:
+    for object in objects:
+        if object.collision:
+            var collision_marker = COLLISION_MARKER_SCENE.instance()
+            collision_marker.position = object.collision.position
+            collision_marker.normal = object.collision.normal
+            collision_marker.position1 = object.position
+            collision_marker.is_other = "is_other" in object.collision
+            world.add_child(collision_marker)
+    return objects
+
+static func apply_remainder(object: Dictionary) -> Dictionary:
+    if not "collision" in object: return object
+    if not object.collision: return object
+    object = object.duplicate()
+    var remainder_length = object.collision.remainder.length()
+    var normalized_linear_velocity = object.linear_velocity.normalized()
+    object.position += remainder_length * normalized_linear_velocity
     return object
 
 static func bounce(object: Dictionary, collision) -> Dictionary:
@@ -55,6 +77,7 @@ static func bounce_no_angular_velocity(object: Dictionary):
     var cr = object.bounce_coeff # Coefficient of Restitution
     var j = -(1.0 + cr) * (va - vb).dot(n) # Impulse Magnitude
     j /= (1.0/ma + 1.0/mb)
+    object = object.duplicate()
     object.linear_velocity = va + (j / ma) * n
     return object
 

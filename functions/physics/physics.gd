@@ -13,4 +13,5 @@ static func simulate(objects: Array, delta: float) -> Array:
     objects = LIST.map1(objects, funcref(PHYSICS_NODES, "replace_collision_with_dictionary"), objects)
     objects = LIST.map1(objects, funcref(PHYSICS_NODES, "add_collision_to_other_collider"), objects)
     objects = LIST.map(objects, funcref(COLLISION, "bounce_no_angular_velocity"))
+    objects = LIST.map(objects, funcref(COLLISION, "apply_remainder"))
     return objects

@@ -1,0 +1,4 @@
+[gd_resource type="ConvexPolygonShape2D" format=2]
+
+[resource]
+points = PoolVector2Array( -97.491, -134.114, 76.803, -126.951, 145.039, 74.597, 88.186, 82.843, 75.636, 145.832, -143.208, 101.385, -137.01, 66.039, -117.097, 58.803 )
