@@ -18,9 +18,9 @@ static func initial_state(children: Array):
     state.objects = LIST.map(children, funcref(NODE, "to_dictionary"))
     state.objects = ID.assign_ids(state.objects)
     state.objects = LIST.map(state.objects, funcref(ID, "write_id_to_node")) # Side-effect
-    state.objects = LIST.filtered_map(state.objects, funcref(ASTEROID, "is_asteroid"), funcref(ASTEROID, "randomize_angular_velocity"))
-    state.objects = LIST.filtered_map(state.objects, funcref(ASTEROID, "is_asteroid"), funcref(ASTEROID, "randomize_linear_velocity"))
-    state.objects = LIST.filtered_map(state.objects, funcref(ASTEROID, "is_asteroid"), funcref(ASTEROID, "randomize_scale"))
+    state.objects = LIST.map(state.objects, funcref(ASTEROID, "randomize_angular_velocity"))
+    state.objects = LIST.map(state.objects, funcref(ASTEROID, "randomize_linear_velocity"))
+    state.objects = LIST.map(state.objects, funcref(ASTEROID, "randomize_scale"))
     state.objects = LIST.map(state.objects, funcref(NODE, "update_display")) # Side-effect
     #state.objects = LIST.map(state.objects, funcref(PHYSICS, "create_physical_object"))
     return state
