@@ -29,8 +29,11 @@ static func apply_remainder(object: Dictionary) -> Dictionary:
     if not object.collision: return object
     object = object.duplicate()
     var remainder_length = object.collision.remainder.length()
-    var normalized_linear_velocity = object.linear_velocity.normalized()
-    object.position += remainder_length * normalized_linear_velocity
+    var travel_length = object.collision.travel.length()
+    var remaining_percent = remainder_length / (travel_length + remainder_length)
+    var delta = object.collision.delta
+    var new_travel = object.linear_velocity * delta
+    object.position += new_travel * remaining_percent
     return object
 
 static func bounce(object: Dictionary, collision) -> Dictionary:
@@ -75,11 +78,19 @@ static func bounce_no_angular_velocity(object: Dictionary):
     var vb = other.linear_velocity
     var n = object.collision.normal
     var cr = object.bounce_coeff # Coefficient of Restitution
+    
+    if same_direction(va, n):
+        if not same_direction(vb, n):
+            return object
+    
     var j = -(1.0 + cr) * (va - vb).dot(n) # Impulse Magnitude
     j /= (1.0/ma + 1.0/mb)
     object = object.duplicate()
     object.linear_velocity = va + (j / ma) * n
     return object
+
+static func same_direction(v1, v2):
+    return sign(v1.x) == sign(v2.x) && sign(v1.y) == sign(v2.y)
 
 static func cross_vf(v : Vector2, f : float):
     return Vector2(f * v.y, -f * v.x)

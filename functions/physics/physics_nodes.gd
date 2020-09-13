@@ -22,6 +22,7 @@ static func move_and_collide(object : Dictionary, delta : float) -> Dictionary:
     object = object.duplicate()
     kinematic_body.rotate(object.angular_velocity * delta)
     object["collision"] = kinematic_body.move_and_collide(object.linear_velocity * delta)
+    object["delta"] = delta
     return object
 
 static func replace_collision_with_dictionary(object: Dictionary, other_objects: Array) -> Dictionary:
@@ -35,7 +36,9 @@ static func replace_collision_with_dictionary(object: Dictionary, other_objects:
                 "other": other_object, 
                 "position": object.collision.position,
                 "normal": object.collision.normal,
-                "remainder": object.collision.remainder}
+                "remainder": object.collision.remainder,
+                "travel": object.collision.travel,
+                "delta": object.delta}
             return object
     return object
 
@@ -51,7 +54,9 @@ static func add_collision_to_other_collider(object: Dictionary, other_objects: A
                 "other": other_object,
                 "position": other_object.collision.position,
                 "normal": -other_object.collision.normal,
-                "remainder": Vector2.ZERO,
+                "remainder": other_object.collision.remainder,
+                "travel": other_object.collision.travel,
+                "delta": other_object.collision.delta,
                 "is_other": true}
             return object
     return object
