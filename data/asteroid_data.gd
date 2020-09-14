@@ -18,6 +18,11 @@ export var bounce_coeff = 0.2
 
 var id = -1
 
-onready var collision_shape_2d = $CollisionShape2D
+onready var collision_shapes_2d = []
 onready var collision_sound = $CollisionSound
 onready var sprite = $Sprite
+
+func _ready():
+    for child in get_children():
+        if child is CollisionShape2D:
+            collision_shapes_2d.append(child)

@@ -1,6 +1,6 @@
 class_name PhysicsNodesFunctions
 
-static func setup_physical_body(object: Dictionary) -> Dictionary:
+static func update_physical_body(object: Dictionary) -> Dictionary:
     if not "node" in object: return object
     var kinematic_body : KinematicBody2D = object.node
     kinematic_body.global_position = object.position
@@ -8,55 +8,56 @@ static func setup_physical_body(object: Dictionary) -> Dictionary:
     kinematic_body.get_node("CollisionShape2D").scale = object.scale
     return object
 
-static func update_object_from_physical_body(object: Dictionary) -> Dictionary:
-    if not "node" in object: return object
-    var kinematic_body : KinematicBody2D = object.node
+static func move(object : Dictionary, delta : float) -> Dictionary:
+    if not "linear_velocity" in object: return object
+    if not "angular_velocity" in object: return object
+    if not "position" in object: return object
+    if not "rotation" in object: return object
     object = object.duplicate()
-    object.position = kinematic_body.global_position
-    object.rotation = kinematic_body.global_rotation
+    object["travel"] =  object.linear_velocity * delta
+    object.position += object.linear_velocity * delta
+    object.rotation += object.angular_velocity * delta
     return object
 
-static func move_and_collide(object : Dictionary, delta : float) -> Dictionary:
+static func collide(object : Dictionary, other_objects : Array) -> Dictionary:
     if not "node" in object: return object
-    var kinematic_body : KinematicBody2D = object.node
+    if not "collision_shapes_2d" in object.node: return object
     object = object.duplicate()
-    kinematic_body.rotate(object.angular_velocity * delta)
-    object["collision"] = kinematic_body.move_and_collide(object.linear_velocity * delta)
-    object["delta"] = delta
+    for collision_shape_2d in object.node.collision_shapes_2d:
+        var shape = collision_shape_2d.shape
+        var transform = collision_shape_2d.global_transform
+        var motion = object.travel
+        for other_object in other_objects:
+            if not "node" in other_object: continue
+            if not "collision_shapes_2d" in other_object.node: return other_object
+            if object.node == other_object.node: continue
+            for other_collision_shape_2d in other_object.node.collision_shapes_2d:
+                var other_shape = other_collision_shape_2d.shape
+                var other_transform = other_collision_shape_2d.global_transform
+                var other_motion = other_object.travel
+                if collide_with_motion(shape, transform, motion, other_shape, other_transform, other_motion):
+                    object["collisions"].append(get_collision_data(other_object,
+                        shape, transform, motion, other_shape, other_transform, other_motion))
+                    break # Only consider one collision per pair of objects
     return object
 
-static func replace_collision_with_dictionary(object: Dictionary, other_objects: Array) -> Dictionary:
-    if not "collision" in object: return object
-    if not object.collision: return object
-    for other_object in other_objects:
-        if not "node" in other_object: continue
-        if object.collision.collider == other_object.node:
-            object = object.duplicate()
-            object.collision = {
-                "other": other_object, 
-                "position": object.collision.position,
-                "normal": object.collision.normal,
-                "remainder": object.collision.remainder,
-                "travel": object.collision.travel,
-                "delta": object.delta}
-            return object
-    return object
+static func collide_with_motion(shape, transform, motion, other_shape, other_transform, other_motion):
+    return shape.collide_with_motion(transform, motion, other_shape, other_transform, other_motion)
 
-static func add_collision_to_other_collider(object: Dictionary, other_objects: Array) -> Dictionary:
-    if "collision" in object and object.collision: return object
-    for other_object in other_objects:
-        if not "collision" in other_object: continue
-        if not other_object.collision: continue
-        if not "other" in other_object.collision: continue
-        if other_object.collision.other == object:
-            object = object.duplicate()
-            object["collision"] = {
-                "other": other_object,
-                "position": other_object.collision.position,
-                "normal": -other_object.collision.normal,
-                "remainder": other_object.collision.remainder,
-                "travel": other_object.collision.travel,
-                "delta": other_object.collision.delta,
-                "is_other": true}
-            return object
-    return object
+static func get_collision_data(other_object, shape, transform, motion, other_shape, other_transform, other_motion):
+    var contacts = shape.collide_with_motion_and_get_contacts(transform, motion, other_shape, other_transform, other_motion)
+    var average_contact = Vector2.ZERO
+    for contact in contacts: average_contact += contact
+    average_contact /= contacts.size()
+    var to_contact = average_contact - other_transform.get_origin()
+    var penetration = 0
+    if other_shape is CircleShape2D:
+        penetration = other_shape.radius * other_object.scale.x - to_contact.length()
+    penetration = max(penetration, 0)
+    var normal = to_contact.normalized()
+    return {
+        "other_mass": other_object.mass,
+        "other_linear_velocity": other_object.linear_velocity,
+        "position": average_contact,
+        "normal": normal,
+        "penetration": penetration}

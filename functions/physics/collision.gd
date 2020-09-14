@@ -3,37 +3,31 @@ class_name CollisionFunctions
 const COLLISION_MARKER_SCENE = preload("res://scenes/collision_marker/collision_marker.tscn")
 
 static func has_collision(object: Dictionary) -> bool:
-    return "collision" in object and object.collision
+    return "collisions" in object and object.collision.size() > 0
 
-static func get_collision(object: Dictionary):
-    return object.collision
-
-static func clear_collision(object: Dictionary) -> Dictionary:
+static func clear_collisions(object: Dictionary) -> Dictionary:
     object = object.duplicate()
-    object["collision"] = null
+    object["collisions"] = []
     return object
 
 static func add_collision_markers(objects: Array, world: Node) -> Array:
     for object in objects:
-        if object.collision:
+        if not object.collisions: continue
+        for collision in object.collisions:
             var collision_marker = COLLISION_MARKER_SCENE.instance()
-            collision_marker.position = object.collision.position
-            collision_marker.normal = object.collision.normal
+            collision_marker.position = collision.position
+            collision_marker.normal = collision.normal
             collision_marker.position1 = object.position
-            collision_marker.is_other = "is_other" in object.collision
+            #collision_marker.is_other = "is_other" in object.collision
             world.add_child(collision_marker)
     return objects
 
-static func apply_remainder(object: Dictionary) -> Dictionary:
-    if not "collision" in object: return object
-    if not object.collision: return object
+static func fix_penetration(object: Dictionary) -> Dictionary:
+    if not "collisions" in object: return object
+    if object.collisions.size() == 0: return object
     object = object.duplicate()
-    var remainder_length = object.collision.remainder.length()
-    var travel_length = object.collision.travel.length()
-    var remaining_percent = remainder_length / (travel_length + remainder_length)
-    var delta = object.collision.delta
-    var new_travel = object.linear_velocity * delta
-    object.position += new_travel * remaining_percent
+    for collision in object.collisions:
+        object.position += collision.penetration * collision.normal
     return object
 
 static func bounce(object: Dictionary, collision) -> Dictionary:
@@ -69,28 +63,21 @@ static func bounce(object: Dictionary, collision) -> Dictionary:
     return object
 
 static func bounce_no_angular_velocity(object: Dictionary):
-    if not "collision" in object: return object
-    if not object.collision: return object
-    var other = object.collision.other
-    var ma = object.mass
-    var mb = other.mass
-    var va = object.linear_velocity
-    var vb = other.linear_velocity
-    var n = object.collision.normal
-    var cr = object.bounce_coeff # Coefficient of Restitution
-    
-    if same_direction(va, n):
-        if not same_direction(vb, n):
-            return object
-    
-    var j = -(1.0 + cr) * (va - vb).dot(n) # Impulse Magnitude
-    j /= (1.0/ma + 1.0/mb)
+    if not "collisions" in object: return object
     object = object.duplicate()
-    object.linear_velocity = va + (j / ma) * n
+    for collision in object.collisions:
+        var ma = object.mass
+        var mb = collision.other_mass
+        var va = object.linear_velocity
+        var vb = collision.other_linear_velocity
+        var n = collision.normal
+        var cr = object.bounce_coeff # Coefficient of Restitution
+        if (va - vb).dot(n) > 0: continue # Don't resolve same direction collisions
+        var j = -(1.0 + cr) * (va - vb).dot(n) # Impulse Magnitude
+        j /= (1.0/ma + 1.0/mb)
+        object.linear_velocity = va + (j / ma) * n
+        continue
     return object
-
-static func same_direction(v1, v2):
-    return sign(v1.x) == sign(v2.x) && sign(v1.y) == sign(v2.y)
 
 static func cross_vf(v : Vector2, f : float):
     return Vector2(f * v.y, -f * v.x)

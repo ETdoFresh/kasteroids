@@ -13,10 +13,6 @@ radius = 25.0437
 [node name="Asteroid" type="KinematicBody2D"]
 position = Vector2( 433.932, 254.737 )
 script = ExtResource( 1 )
-randomize_angular_velocity = false
-randomize_linear_velocity = false
-randomize_scale = false
-bounce_coeff = 1.0
 
 [node name="Sprite" type="Sprite" parent="."]
 scale = Vector2( 0.5, 0.5 )

@@ -29,7 +29,7 @@ script = ExtResource( 3 )
 position = Vector2( 960, 540 )
 script = ExtResource( 5 )
 speed = 500
-bounce_coeff = 1.0
+bounce_coeff = 0.5
 
 [node name="Sprite" type="Sprite" parent="Ship"]
 scale = Vector2( 0.5, 0.5 )
@@ -43,8 +43,8 @@ shape = SubResource( 1 )
 script = ExtResource( 4 )
 
 [node name="Asteroid1" parent="." instance=ExtResource( 2 )]
-position = Vector2( 1201.85, 220.796 )
-linear_velocity = Vector2( 60, 20 )
+position = Vector2( 366.05, 256.151 )
+randomize_scale = false
 
 [node name="Label" type="Label" parent="Asteroid1"]
 margin_left = -20.0
@@ -62,6 +62,7 @@ __meta__ = {
 
 [node name="Asteroid2" parent="." instance=ExtResource( 2 )]
 position = Vector2( 326.452, 744.055 )
+randomize_scale = false
 
 [node name="Label2" type="Label" parent="Asteroid2"]
 anchor_left = 0.5
@@ -83,7 +84,7 @@ __meta__ = {
 
 [node name="Asteroid3" parent="." instance=ExtResource( 2 )]
 position = Vector2( 1384.28, 234.938 )
-linear_velocity = Vector2( 0, 40 )
+randomize_scale = false
 
 [node name="Label2" type="Label" parent="Asteroid3"]
 anchor_left = 0.5
@@ -105,6 +106,7 @@ __meta__ = {
 
 [node name="Asteroid4" parent="." instance=ExtResource( 2 )]
 position = Vector2( 1488.94, 735.57 )
+randomize_scale = false
 
 [node name="Label2" type="Label" parent="Asteroid4"]
 anchor_left = 0.5
