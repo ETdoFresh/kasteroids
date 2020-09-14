@@ -1,10 +1,19 @@
 class_name ShipFunctions
 
+static func update(ship: Dictionary, delta: float) -> Dictionary:
+    if not is_ship(ship): return ship
+    ship = apply_input(ship, delta)
+    ship = limit_speed(ship)
+    ship = cooldown(ship, delta)
+    return ship
+
 static func is_ship(object : Dictionary) -> bool:
     return "type" in object and object.type == "Ship"
 
+static func is_ready_to_fire(ship: Dictionary) -> bool:
+    return ship.cooldown_timer <= 0
+
 static func apply_input(ship : Dictionary, delta: float) -> Dictionary:
-    if not is_ship(ship): return ship
     ship = ship.duplicate()
     var thrust = Vector2(0, ship.input.vertical * ship.speed)
     var linear_acceleration = thrust.rotated(ship.rotation)
@@ -15,8 +24,13 @@ static func apply_input(ship : Dictionary, delta: float) -> Dictionary:
     return ship
 
 static func limit_speed(ship : Dictionary) -> Dictionary:
-    if not is_ship(ship): return ship
     ship = ship.duplicate()
     if ship.linear_velocity.length() > ship.speed:
         ship.linear_velocity = ship.linear_velocity.normalized() * ship.speed
+    return ship
+
+static func cooldown(ship: Dictionary, delta: float) -> Dictionary:
+    if ship.cooldown_timer > 0:
+        ship = ship.duplicate()
+        ship.cooldown_timer -= delta
     return ship

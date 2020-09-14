@@ -28,6 +28,8 @@ static func to_dictionary(child_node : Node) -> Dictionary:
     if "randomize_linear_velocity" in child_node: object["randomize_linear_velocity"] = child_node.randomize_linear_velocity
     if "randomize_scale" in child_node: object["randomize_scale"] = child_node.randomize_scale
     if "gun" in child_node: object["gun"] = child_node.gun
+    if "cooldown" in child_node: object["cooldown"] = child_node.cooldown
+    if "cooldown_timer" in child_node: object["cooldown_timer"] = child_node.cooldown_timer
     if child_node is KinematicBody2D: object["node"] = child_node
     return object
 
