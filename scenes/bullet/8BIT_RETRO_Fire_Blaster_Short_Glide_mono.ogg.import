@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/8BIT_RETRO_Fire_Blaster_Short_Glide_mono.ogg-f12e228c3a798080bbfe235bf4230949.oggstr"
+
+[deps]
+
+source_file="res://scenes/bullet/8BIT_RETRO_Fire_Blaster_Short_Glide_mono.ogg"
+dest_files=[ "res://.import/8BIT_RETRO_Fire_Blaster_Short_Glide_mono.ogg-f12e228c3a798080bbfe235bf4230949.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

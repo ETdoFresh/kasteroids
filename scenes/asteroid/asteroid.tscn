@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://data/asteroid_data.gd" type="Script" id=1]
+[ext_resource path="res://scenes/asteroid/asteroid_data.gd" type="Script" id=1]
 [ext_resource path="res://sounds/8BIT_RETRO_Explosion_Short_Distant_mono.ogg" type="AudioStream" id=2]
 [ext_resource path="res://graphics/asteroid1.svg" type="Texture" id=3]
 

@@ -1,6 +1,7 @@
 class_name StateFunctions
 
 const ASTEROID = AsteroidFunctions
+const BULLET = BulletFunctions
 const ID = IdFunctions
 const DICTIONARY = DictionaryFunctions
 const LIST = ListFunctions
@@ -25,10 +26,10 @@ static func initial_state(children: Array):
     #state.objects = LIST.map(state.objects, funcref(PHYSICS, "create_physical_object"))
     return state
 
-static func simulate(state : Dictionary, delta : float) -> Dictionary:
+static func simulate(state: Dictionary, delta: float, world: Node) -> Dictionary:
     state = DICTIONARY.update(state, "tick", state.tick + 1)
     state.objects = LIST.map1(state.objects, funcref(SHIP, "apply_input"), delta)
-    #state.objects = LIST.map(state.objects, funcref(BULLET, "create_bullets")) # Side-effect
+    state.objects = BULLET.shoot_bullets(state.objects, world)
     state.objects = LIST.map(state.objects, funcref(SHIP, "limit_speed"))
     state.objects = PHYSICS.simulate(state.objects, delta)
     state.objects = LIST.map(state.objects, funcref(WRAP, "wrap"))

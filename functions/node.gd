@@ -27,6 +27,7 @@ static func to_dictionary(child_node : Node) -> Dictionary:
     if "randomize_angular_velocity" in child_node: object["randomize_angular_velocity"] = child_node.randomize_angular_velocity
     if "randomize_linear_velocity" in child_node: object["randomize_linear_velocity"] = child_node.randomize_linear_velocity
     if "randomize_scale" in child_node: object["randomize_scale"] = child_node.randomize_scale
+    if "gun" in child_node: object["gun"] = child_node.gun
     if child_node is KinematicBody2D: object["node"] = child_node
     return object
 
@@ -34,4 +35,14 @@ static func update_display(object : Dictionary) -> Dictionary:
     if not "node" in object: return object
     var node = object.node
     if "sprite" in node: node.sprite.global_scale = object.scale
+    return object
+
+static func create_instance(object: Dictionary, world: Node) -> Dictionary:
+    if not "type" in object: return object
+    if "node" in object and object.node: return object
+    object = object.duplicate()
+    object["node"] = SceneMap.get_scene(object.type).instance()
+    object.node.position = object.position
+    object.node.rotation = object.rotation
+    world.add_child(object.node)
     return object

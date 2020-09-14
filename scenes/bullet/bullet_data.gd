@@ -1,18 +1,17 @@
 extends Node
 
-const type = "Ship"
+const type = "Bullet"
 
-export var speed = 800
-export var spin = 10
 export var linear_velocity = Vector2.ZERO
 export var angular_velocity = 0.0
-export var mass = 1.0
-export var bounce_coeff = 0.7
+export var mass = 0.15
+export var bounce_coeff = 0.2
 
 var id = -1
 
 onready var collision_shapes_2d = []
-onready var input = $Input
+onready var spawn_sound = $SpawnSound
+#onready var collision_sound = $CollisionSound
 onready var sprite = $Sprite
 
 func _ready():
