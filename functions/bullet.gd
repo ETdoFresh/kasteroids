@@ -21,8 +21,14 @@ static func shoot_bullets(objects: Array, world: Node) -> Array:
             new_bullet.rotation = ship.gun.global_rotation
             new_bullet.linear_velocity = Vector2(0, -800).rotated(ship.gun.global_rotation)
             new_bullet.spawn_sound.play()
-            new_objects.append(NODE.to_dictionary(new_bullet))
+            new_objects.append(new_bullet_from_node(new_bullet))
     return new_objects
+
+static func new_bullet_from_node(bullet_node: Node) -> Dictionary:
+    var bullet = NODE.to_dictionary(bullet_node)
+    bullet["destroy_timer"] = bullet_node.destroy_timer
+    bullet["destroy_time"] = bullet_node.destroy_time
+    return bullet
 
 static func is_bullet(object: Dictionary) -> bool:
     return "type" in object and object.type == "Bullet"
@@ -39,4 +45,12 @@ static func spawn_bullet_particles_on_destroy(object: Dictionary, world: Node) -
         bullet_particles.emitting = true
         bullet_particles.global_position = object.position
         world.add_child(bullet_particles)
+    return object
+
+static func delete_on_timer(object: Dictionary, delta: float) -> Dictionary:
+    if is_bullet(object):
+        object = object.duplicate()
+        object.destroy_timer += delta
+        if object.destroy_timer >= object.destroy_time:
+            object["queue_free"] = true
     return object
