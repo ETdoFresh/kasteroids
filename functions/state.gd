@@ -34,6 +34,8 @@ static func simulate(state: Dictionary, delta: float, world: Node) -> Dictionary
     state.objects = PHYSICS.simulate(state.objects, delta)
     state.objects = LIST.map(state.objects, funcref(WRAP, "wrap"))
     state.objects = LIST.map(state.objects, funcref(SOUND, "play_collision_sound")) # Side-effect
-    #state.objects = LIST.map(state.objects, funcref(BULLET, "delete_bullets")) # Side-effect
+    state.objects = LIST.map(state.objects, funcref(BULLET, "delete_on_collide"))
+    state.objects = LIST.map(state.objects, funcref(NODE, "queue_free"))
+    state.objects = OBJECT.queue_free(state.objects)
     state.objects = LIST.map(state.objects, funcref(NODE, "update_display"))
     return state

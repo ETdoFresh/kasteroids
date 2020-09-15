@@ -1,5 +1,6 @@
 class_name BulletFunctions
 
+const COLLISION = CollisionFunctions
 const NODE = NodeFunctions
 const SHIP = ShipFunctions
 
@@ -20,3 +21,12 @@ static func shoot_bullets(objects: Array, world: Node) -> Array:
             new_bullet.spawn_sound.play()
             new_objects.append(NODE.to_dictionary(new_bullet))
     return new_objects
+
+static func is_bullet(object: Dictionary) -> bool:
+    return "type" in object and object.type == "Bullet"
+
+static func delete_on_collide(object: Dictionary) -> Dictionary:
+    if is_bullet(object) and COLLISION.has_collision(object):
+        object = object.duplicate()
+        object["queue_free"] = true
+    return object

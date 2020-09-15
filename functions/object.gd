@@ -1,5 +1,8 @@
 class_name ObjectFunctions
 
+const LIST = ListFunctions
+const QUEUE_FREE = QueueFreeFunctions
+
 static func id_equals(object: Dictionary, id: int) -> bool:
     return "id" in object and object.id == id
 
@@ -33,3 +36,8 @@ static func write_id_to_node(object: Dictionary) -> Dictionary:
     if "node" in object:
         object.node.id = object.id
     return object
+
+static func queue_free(objects: Array) -> Array:
+    if LIST.some(objects, funcref(QUEUE_FREE, "is_queue_free")):
+        objects = LIST.not_filter(objects, funcref(QUEUE_FREE, "is_queue_free"))
+    return objects

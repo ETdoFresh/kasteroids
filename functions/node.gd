@@ -1,5 +1,7 @@
 class_name NodeFunctions
 
+const QUEUE_FREE = QueueFreeFunctions
+
 static func to_dictionary(child_node : Node) -> Dictionary:
     var object = {}
     if "type" in child_node: object["type"] = child_node.type
@@ -34,17 +36,18 @@ static func to_dictionary(child_node : Node) -> Dictionary:
     return object
 
 static func update_display(object : Dictionary) -> Dictionary:
-    if not "node" in object: return object
+    if not has_node(object): return object
     var node = object.node
     if "sprite" in node: node.sprite.global_scale = object.scale
     return object
 
-static func create_instance(object: Dictionary, world: Node) -> Dictionary:
-    if not "type" in object: return object
-    if "node" in object and object.node: return object
+static func has_node(object: Dictionary) -> Dictionary:
+    return "node" in object and object.node
+
+static func queue_free(object: Dictionary) -> Dictionary:
+    if not QUEUE_FREE.is_queue_free(object): return object
+    if not has_node(object): return object
     object = object.duplicate()
-    object["node"] = SceneMap.get_scene(object.type).instance()
-    object.node.position = object.position
-    object.node.rotation = object.rotation
-    world.add_child(object.node)
+    object.node.queue_free()
+    var _1 = object.erase("node")
     return object

@@ -29,7 +29,7 @@ static func narrow_phase(objects: Array, object: Dictionary) -> Array:
     return new_objects
 
 static func has_collision(object: Dictionary) -> bool:
-    return "collisions" in object and object.collision.size() > 0
+    return "collisions" in object and object.collisions.size() > 0
 
 static func clear_collisions(object: Dictionary) -> Dictionary:
     if not has_shapes(object): return object
