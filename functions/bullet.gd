@@ -17,5 +17,6 @@ static func shoot_bullets(objects: Array, world: Node) -> Array:
             new_bullet.position = ship.gun.global_position
             new_bullet.rotation = ship.gun.global_rotation
             new_bullet.linear_velocity = Vector2(0, -800).rotated(ship.gun.global_rotation)
+            new_bullet.spawn_sound.play()
             new_objects.append(NODE.to_dictionary(new_bullet))
     return new_objects

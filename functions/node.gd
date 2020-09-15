@@ -30,7 +30,7 @@ static func to_dictionary(child_node : Node) -> Dictionary:
     if "gun" in child_node: object["gun"] = child_node.gun
     if "cooldown" in child_node: object["cooldown"] = child_node.cooldown
     if "cooldown_timer" in child_node: object["cooldown_timer"] = child_node.cooldown_timer
-    if child_node is KinematicBody2D: object["node"] = child_node
+    if child_node is Node2D: object["node"] = child_node
     return object
 
 static func update_display(object : Dictionary) -> Dictionary:

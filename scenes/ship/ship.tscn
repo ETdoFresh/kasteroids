@@ -6,7 +6,7 @@
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 5.826, -63.185, 35.807, 56.874, -39.299, 57.318 )
 
-[node name="Ship" type="KinematicBody2D"]
+[node name="Ship" type="Node2D"]
 position = Vector2( 960, 540 )
 script = ExtResource( 1 )
 speed = 500

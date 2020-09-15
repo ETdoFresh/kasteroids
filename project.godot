@@ -15,6 +15,11 @@ _global_script_classes=[ {
 "path": "res://functions/asteroid.gd"
 }, {
 "base": "Reference",
+"class": "BoundingBoxFunctions",
+"language": "GDScript",
+"path": "res://functions/physics/bounding_box.gd"
+}, {
+"base": "Reference",
 "class": "BulletFunctions",
 "language": "GDScript",
 "path": "res://functions/bullet.gd"
@@ -30,11 +35,6 @@ _global_script_classes=[ {
 "path": "res://functions/dictionary.gd"
 }, {
 "base": "Reference",
-"class": "IdFunctions",
-"language": "GDScript",
-"path": "res://functions/id.gd"
-}, {
-"base": "Reference",
 "class": "JSONBeautifier",
 "language": "GDScript",
 "path": "res://plugins/json_beautifier.gd"
@@ -48,6 +48,11 @@ _global_script_classes=[ {
 "class": "NodeFunctions",
 "language": "GDScript",
 "path": "res://functions/node.gd"
+}, {
+"base": "Reference",
+"class": "ObjectFunctions",
+"language": "GDScript",
+"path": "res://functions/object.gd"
 }, {
 "base": "Reference",
 "class": "PhysicsFunctions",
@@ -91,13 +96,14 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "AsteroidFunctions": "",
+"BoundingBoxFunctions": "",
 "BulletFunctions": "",
 "CollisionFunctions": "",
 "DictionaryFunctions": "",
-"IdFunctions": "",
 "JSONBeautifier": "",
 "ListFunctions": "",
 "NodeFunctions": "",
+"ObjectFunctions": "",
 "PhysicsFunctions": "",
 "PhysicsNodesFunctions": "",
 "SceneMap": "",
@@ -159,10 +165,6 @@ player_fire={
 , Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":1,"pressed":false,"doubleclick":false,"script":null)
  ]
 }
-
-[physics]
-
-common/physics_fps=75
 
 [rendering]
 
