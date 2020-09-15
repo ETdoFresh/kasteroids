@@ -2,6 +2,7 @@ class_name BulletFunctions
 
 const BULLET_PARTICLES = preload("res://scenes/bullet/bullet_particles.tscn")
 const COLLISION = CollisionFunctions
+const COLLISION_EXCEPTION = CollisionExceptionFunctions
 const NODE = NodeFunctions
 const QUEUE_FREE = QueueFreeFunctions
 const SHIP = ShipFunctions
@@ -20,14 +21,16 @@ static func shoot_bullets(objects: Array, world: Node) -> Array:
             new_bullet.position = ship.gun.global_position
             new_bullet.rotation = ship.gun.global_rotation
             new_bullet.linear_velocity = Vector2(0, -800).rotated(ship.gun.global_rotation)
+            new_bullet.linear_velocity += ship.linear_velocity
             new_bullet.spawn_sound.play()
-            new_objects.append(new_bullet_from_node(new_bullet))
+            new_objects.append(new_bullet_from_node(new_bullet, ship))
     return new_objects
 
-static func new_bullet_from_node(bullet_node: Node) -> Dictionary:
+static func new_bullet_from_node(bullet_node: Node, ship) -> Dictionary:
     var bullet = NODE.to_dictionary(bullet_node)
     bullet["destroy_timer"] = bullet_node.destroy_timer
     bullet["destroy_time"] = bullet_node.destroy_time
+    bullet = COLLISION_EXCEPTION.add_collision_exception(bullet, ship)
     return bullet
 
 static func is_bullet(object: Dictionary) -> bool:

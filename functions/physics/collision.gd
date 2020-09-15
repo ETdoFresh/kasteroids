@@ -1,5 +1,6 @@
 class_name CollisionFunctions
 
+const COLLISION_EXCEPTION = CollisionExceptionFunctions
 const COLLISION_MARKER_SCENE = preload("res://scenes/collision_marker/collision_marker.tscn")
 const LIST = ListFunctions
 const OBJECT = ObjectFunctions
@@ -11,6 +12,8 @@ static func broad_phase(objects: Array, object: Dictionary) -> Array:
     for other in objects:
         if object.id == other.id: continue
         if not "bounding_box" in other: continue
+        if COLLISION_EXCEPTION.has_collision_exception(object, other.id): continue
+        if COLLISION_EXCEPTION.has_collision_exception(other, object.id): continue
         if object.bounding_box.intersects(other.bounding_box):
             object = object.duplicate()
             object.broad_phase = LIST.append(object.broad_phase, other.id)

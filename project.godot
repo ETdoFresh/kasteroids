@@ -25,6 +25,11 @@ _global_script_classes=[ {
 "path": "res://functions/bullet.gd"
 }, {
 "base": "Reference",
+"class": "CollisionExceptionFunctions",
+"language": "GDScript",
+"path": "res://functions/physics/collision_exception.gd"
+}, {
+"base": "Reference",
 "class": "CollisionFunctions",
 "language": "GDScript",
 "path": "res://functions/physics/collision.gd"
@@ -103,6 +108,7 @@ _global_script_class_icons={
 "AsteroidFunctions": "",
 "BoundingBoxFunctions": "",
 "BulletFunctions": "",
+"CollisionExceptionFunctions": "",
 "CollisionFunctions": "",
 "DictionaryFunctions": "",
 "JSONBeautifier": "",
