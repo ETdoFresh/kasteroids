@@ -11,7 +11,7 @@ static func append(list : Array, value) -> Array:
     result.append(value)
     return result
 
-static func update(list: Array, index: int, value):
+static func update(list: Array, index: int, value) -> Array:
     list = list.duplicate()
     list[index] = value
     return list
@@ -65,12 +65,16 @@ static func find_index(list: Array, func_ref: FuncRef) -> int:
             return i
     return -1
 
-static func fill(list: Array, index: int, func_ref: FuncRef):
+static func fill(list: Array, index: int, func_ref: FuncRef) -> Array:
+    list = list.duplicate()
     for i in range(index, list.size()):
         list[i] = func_ref.call_func(list[i])
+    return list
 
-static func copy_within(list: Array, from_i: int, to_i: int):
+static func copy_within(list: Array, from_i: int, to_i: int) -> Array:
+    list = list.duplicate()
     list[to_i] = list[from_i]
+    return list
 
 static func some(list: Array, func_ref: FuncRef) -> bool:
     for i in range(list.size()):

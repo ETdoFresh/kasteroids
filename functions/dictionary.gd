@@ -17,3 +17,66 @@ static func update(dictionary : Dictionary, key, value) -> Dictionary:
     var result = copy(dictionary)
     result[key] = value
     return result
+
+static func map(dictionary: Dictionary, func_ref : FuncRef) -> Dictionary:
+    var result = {}
+    for key in dictionary.keys():
+        result[key] = func_ref.call_func(dictionary[key])
+    return result
+
+static func filter(dictionary: Dictionary, func_ref : FuncRef) -> Dictionary:
+    var result = {}
+    for key in dictionary:
+        if func_ref.call_func(dictionary[key]):
+            result[key] = dictionary[key]
+    return result
+
+static func not_filter(dictionary: Dictionary, func_ref : FuncRef) -> Dictionary:
+    var result = {}
+    for key in dictionary:
+        if not func_ref.call_func(dictionary[key]):
+            result[key] = dictionary[key]
+    return result
+
+static func reduce(dictionary: Dictionary, func_ref : FuncRef, first = null):
+    var accumulator = first
+    var start = 0
+    if accumulator == null:
+        accumulator = dictionary[dictionary.keys()[0]]
+        start = 1
+    for i in range(start, dictionary.keys().size()):
+        accumulator = func_ref.call_func(accumulator, dictionary[dictionary.keys()[i]])
+    return accumulator
+
+static func map1(dictionary: Dictionary, func_ref : FuncRef, arg) -> Array:
+    var result = {}
+    for key in dictionary.keys():
+        result[key] = func_ref.call_func(dictionary[key], arg)
+    return result
+
+static func find(dictionary: Dictionary, func_ref : FuncRef):
+    for key in dictionary.keys():
+        if dictionary[key] == func_ref.call_func(dictionary[key]):
+            return dictionary[key]
+
+static func find_key(dictionary: Dictionary, func_ref : FuncRef):
+    for key in dictionary.keys():
+        if dictionary[key] == func_ref.call_func(dictionary[key]):
+            return key
+
+static func copy_within(dictionary: Dictionary, from_key, to_key):
+    dictionary = dictionary.duplicate()
+    dictionary[to_key] = dictionary[from_key]
+    return dictionary
+
+static func some(dictionary: Dictionary, func_ref : FuncRef) -> bool:
+    for key in dictionary.keys():
+        if func_ref.call_func(dictionary[key]):
+            return true
+    return false
+
+static func every(dictionary: Dictionary, func_ref : FuncRef) -> bool:
+    for key in dictionary.keys():
+        if func_ref.call_func(dictionary[key]):
+            return false
+    return true
