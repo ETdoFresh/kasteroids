@@ -1,7 +1,9 @@
 class_name BulletFunctions
 
+const BULLET_PARTICLES = preload("res://scenes/bullet/bullet_particles.tscn")
 const COLLISION = CollisionFunctions
 const NODE = NodeFunctions
+const QUEUE_FREE = QueueFreeFunctions
 const SHIP = ShipFunctions
 
 static func shoot_bullets(objects: Array, world: Node) -> Array:
@@ -29,4 +31,12 @@ static func delete_on_collide(object: Dictionary) -> Dictionary:
     if is_bullet(object) and COLLISION.has_collision(object):
         object = object.duplicate()
         object["queue_free"] = true
+    return object
+
+static func spawn_bullet_particles_on_destroy(object: Dictionary, world: Node) -> Dictionary:
+    if is_bullet(object) and QUEUE_FREE.is_queue_free(object):
+        var bullet_particles = BULLET_PARTICLES.instance()
+        bullet_particles.emitting = true
+        bullet_particles.global_position = object.position
+        world.add_child(bullet_particles)
     return object

@@ -35,7 +35,8 @@ static func simulate(state: Dictionary, delta: float, world: Node) -> Dictionary
     state.objects = LIST.map(state.objects, funcref(WRAP, "wrap"))
     state.objects = LIST.map(state.objects, funcref(SOUND, "play_collision_sound")) # Side-effect
     state.objects = LIST.map(state.objects, funcref(BULLET, "delete_on_collide"))
-    state.objects = LIST.map(state.objects, funcref(NODE, "queue_free"))
+    state.objects = LIST.map1(state.objects, funcref(BULLET, "spawn_bullet_particles_on_destroy"), world) # Side-effect
+    state.objects = LIST.map(state.objects, funcref(NODE, "queue_free")) # Side-effect
     state.objects = OBJECT.queue_free(state.objects)
     state.objects = LIST.map(state.objects, funcref(NODE, "update_display"))
     return state
