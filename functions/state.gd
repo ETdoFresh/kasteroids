@@ -12,35 +12,41 @@ static func empty_state() -> Dictionary:
     return {"tick": 0, "objects": {}, "next_id": 1}
 
 static func initial_state(children: Array):
-    return exec_on(exec_on(reduce(map(children,
-        funcref(NodeFunctions, "to_dictionary")),
-        funcref(ObjectFunctions, "assign_id"), empty_state()),
-        "objects", funcref(InitializeFunctions, "randomize_asteroids")),
-        "objects", funcref(NodeFunctions, "update_sprite_scale")) # Side-effect
+    var result = children
+    result = map(result, funcref(NodeFunctions, "to_dictionary"))
+    result = reduce(result, funcref(ObjectFunctions, "assign_id"), empty_state())
+    result = exec_on(result, "objects", funcref(InitializeFunctions, "randomize_asteroids"))
+    result = exec_on(result, "objects", funcref(NodeFunctions, "update_sprite_scale")) # Side-effect)
+    return result
 
 static func simulate(state: Dictionary, delta: float, world: Node) -> Dictionary:
-    return exec_on(delete_objects(map_on(map_on(map_on(map_on(map_on(map_on(exec_on(add_bullets(exec_on(merge(state,
-        {"tick": state.tick + 1, "delta": delta, "world": world}),
-        "objects", funcref(SimulateFunctions, "simulate_ships"), delta), 
-        world), # add_bullets() # Side-effect
-        "objects", funcref(SimulateFunctions, "simulate_physics"), delta), 
-        "objects", funcref(WrapFunctions, "wrap")),
-        "objects", funcref(SoundFunctions, "play_collision_sound")), # Side-effect
-        "objects", funcref(BulletFunctions, "delete_on_collide")),
-        "objects", funcref(BulletFunctions, "delete_on_timer"), delta),
-        "objects", funcref(BulletFunctions, "spawn_bullet_particles_on_destroy"), world), # Side-effect
-        "objects", funcref(NodeFunctions, "queue_free")) # Side-effect
-        ), # delete_objects()
-        "objects", funcref(NodeFunctions, "update_sprite_scale")) # Side-effect
+    var result = state
+    result = merge(result, {"tick": state.tick + 1, "delta": delta, "world": world})
+    result = exec_on(result, "objects", funcref(SimulateFunctions, "simulate_ships"), delta)
+    result = add_bullets(result, world) # Side-effect
+    result = exec_on(result, "objects", funcref(SimulateFunctions, "simulate_ship_fire"))
+    result = exec_on(result, "objects", funcref(SimulateFunctions, "simulate_physics"), delta)
+    result = map_on(result, "objects", funcref(WrapFunctions, "wrap"))
+    result = map_on(result, "objects", funcref(SoundFunctions, "play_collision_sound")) # Side-effect
+    result = map_on(result, "objects", funcref(BulletFunctions, "delete_on_collide"))
+    result = map_on(result, "objects", funcref(BulletFunctions, "delete_on_timer"), delta)
+    result = map_on(result, "objects", funcref(BulletFunctions, "spawn_bullet_particles_on_destroy"), world)
+    result = map_on(result, "objects", funcref(NodeFunctions, "queue_free")) # Side-effect
+    result = delete_objects(result)
+    result = exec_on(result, "objects", funcref(NodeFunctions, "update_sprite_scale")) # Side-effect
+    return result
 
 static func add_bullets(state, world) -> Dictionary:
-    return merge(state, reduce(
+    var result = reduce(
         BulletFunctions.shoot_bullets(state.objects, world),
         funcref(ObjectFunctions, "assign_id"),
-        update(state, "objects", {})))
+        update(state, "objects", {}))
+    result = merge(result, state)
+    return result
 
 static func delete_objects(state) -> Dictionary:
-    return reduce(
+    var result = reduce(
         filter(state.objects, funcref(QueueFreeFunctions, "is_queue_free")).keys(),
         funcref(ObjectFunctions, "erase_objects"),
         state)
+    return result

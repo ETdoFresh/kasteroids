@@ -33,3 +33,10 @@ static func cooldown(ship: Dictionary, delta: float) -> Dictionary:
         ship = ship.duplicate()
         ship.cooldown_timer -= delta
     return ship
+
+static func fire(_key, ship: Dictionary) -> Dictionary:
+    if is_ready_to_fire(ship):
+        if ship.input.fire:
+            ship = ship.duplicate()
+            ship.cooldown_timer = ship.cooldown
+    return ship

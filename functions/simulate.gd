@@ -6,10 +6,18 @@ static func merge(dest, src): return DictionaryFunctions.merge(dest, src)
 static func reduce(dict, func_ref, acc): return DictionaryFunctions.reduce(dict, func_ref, acc)
 
 static func simulate_ships(_key, objects, delta):
-    return merge(objects,
-        map(filter(objects, 
-        funcref(ShipFunctions, "is_ship")),
-        funcref(ShipFunctions, "simulate"), delta))
+    var result = objects
+    result = filter(result, funcref(ShipFunctions, "is_ship"))
+    result = map(result, funcref(ShipFunctions, "simulate"), delta)
+    result = merge(objects, result)
+    return result
+
+static func simulate_ship_fire(_key, objects):
+    var result = objects
+    result = filter(result, funcref(ShipFunctions, "is_ship"))
+    result = map(result, funcref(ShipFunctions, "fire"))
+    result = merge(objects, result)
+    return result
 
 static func simulate_physics(_key, objects: Dictionary, delta: float) -> Dictionary:
     objects = objects.duplicate()
