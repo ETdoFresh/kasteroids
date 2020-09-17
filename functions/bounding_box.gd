@@ -1,9 +1,9 @@
-class_name BoundingBoxFunctions
+extends Node
 
-const COLLISION = CollisionFunctions
+var set_bounding_box = funcref(self, "_set_bounding_box")
 
-static func set_bounding_box(_key: int, object: Dictionary) -> Dictionary:
-    if not COLLISION.has_shapes(object): return object
+static func _set_bounding_box(_key: int, object: Dictionary) -> Dictionary:
+    if not Collision._has_shapes(object): return object
     object = object.duplicate()
     var bounding_box = Rect2(object.position, Vector2.ONE)
     for collision_shape_2d in object.node.collision_shapes_2d:

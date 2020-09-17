@@ -10,39 +10,9 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Reference",
-"class": "AsteroidFunctions",
-"language": "GDScript",
-"path": "res://functions/asteroid.gd"
-}, {
-"base": "Reference",
-"class": "BoundingBoxFunctions",
-"language": "GDScript",
-"path": "res://functions/physics/bounding_box.gd"
-}, {
-"base": "Reference",
-"class": "BulletFunctions",
-"language": "GDScript",
-"path": "res://functions/bullet.gd"
-}, {
-"base": "Reference",
-"class": "CollisionExceptionFunctions",
-"language": "GDScript",
-"path": "res://functions/physics/collision_exception.gd"
-}, {
-"base": "Reference",
-"class": "CollisionFunctions",
-"language": "GDScript",
-"path": "res://functions/physics/collision.gd"
-}, {
-"base": "Reference",
 "class": "DictionaryFunctions",
 "language": "GDScript",
 "path": "res://functions/dictionary.gd"
-}, {
-"base": "Reference",
-"class": "InitializeFunctions",
-"language": "GDScript",
-"path": "res://functions/initialize.gd"
 }, {
 "base": "Reference",
 "class": "JSONBeautifier",
@@ -55,34 +25,9 @@ _global_script_classes=[ {
 "path": "res://functions/list.gd"
 }, {
 "base": "Reference",
-"class": "NodeFunctions",
-"language": "GDScript",
-"path": "res://functions/node.gd"
-}, {
-"base": "Reference",
-"class": "ObjectFunctions",
-"language": "GDScript",
-"path": "res://functions/object.gd"
-}, {
-"base": "Reference",
-"class": "PhysicsFunctions",
-"language": "GDScript",
-"path": "res://functions/physics/physics.gd"
-}, {
-"base": "Reference",
-"class": "QueueFreeFunctions",
-"language": "GDScript",
-"path": "res://functions/queue_free.gd"
-}, {
-"base": "Reference",
 "class": "SceneMap",
 "language": "GDScript",
 "path": "res://functions/scene_map.gd"
-}, {
-"base": "Reference",
-"class": "ShipFunctions",
-"language": "GDScript",
-"path": "res://functions/ship.gd"
 }, {
 "base": "Reference",
 "class": "ShortcutFunctions",
@@ -90,46 +35,17 @@ _global_script_classes=[ {
 "path": "res://functions/shortcut.gd"
 }, {
 "base": "Reference",
-"class": "SimulateFunctions",
-"language": "GDScript",
-"path": "res://functions/simulate.gd"
-}, {
-"base": "Reference",
-"class": "SoundFunctions",
-"language": "GDScript",
-"path": "res://functions/sound.gd"
-}, {
-"base": "Reference",
 "class": "StateFunctions",
 "language": "GDScript",
 "path": "res://functions/state.gd"
-}, {
-"base": "Reference",
-"class": "WrapFunctions",
-"language": "GDScript",
-"path": "res://functions/wrap.gd"
 } ]
 _global_script_class_icons={
-"AsteroidFunctions": "",
-"BoundingBoxFunctions": "",
-"BulletFunctions": "",
-"CollisionExceptionFunctions": "",
-"CollisionFunctions": "",
 "DictionaryFunctions": "",
-"InitializeFunctions": "",
 "JSONBeautifier": "",
 "ListFunctions": "",
-"NodeFunctions": "",
-"ObjectFunctions": "",
-"PhysicsFunctions": "",
-"QueueFreeFunctions": "",
 "SceneMap": "",
-"ShipFunctions": "",
 "ShortcutFunctions": "",
-"SimulateFunctions": "",
-"SoundFunctions": "",
-"StateFunctions": "",
-"WrapFunctions": ""
+"StateFunctions": ""
 }
 
 [application]
@@ -141,6 +57,16 @@ config/icon="res://graphics/icon.png"
 [autoload]
 
 Random="*res://autoload/random.gd"
+Asteroid="*res://functions/asteroid.gd"
+NodeFunc="*res://functions/node.gd"
+ObjectFunc="*res://functions/object.gd"
+Ship="*res://functions/ship.gd"
+Wrap="*res://functions/wrap.gd"
+Sound="*res://functions/sound.gd"
+Bullet="*res://functions/bullet.gd"
+Physics="*res://functions/physics.gd"
+Collision="*res://functions/collision.gd"
+BoundingBox="*res://functions/bounding_box.gd"
 
 [display]
 

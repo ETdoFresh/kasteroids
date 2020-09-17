@@ -1,8 +1,12 @@
-class_name NodeFunctions
+extends Node
 
-const QUEUE_FREE = QueueFreeFunctions
+var to_dictionary = funcref(self, "_to_dictionary")
+var update_sprite_scale = funcref(self, "_update_sprite_scale")
+var has_node = funcref(self, "_has_node")
+var queue_delete = funcref(self, "_queue_delete")
+var is_queue_delete = funcref(self, "_is_queue_delete")
 
-static func to_dictionary(child_node : Node) -> Dictionary:
+func _to_dictionary(child_node : Node) -> Dictionary:
     var object = {}
     if "type" in child_node: object["type"] = child_node.type
     if "id" in child_node: object["id"] = child_node.id
@@ -35,19 +39,22 @@ static func to_dictionary(child_node : Node) -> Dictionary:
     if child_node is Node2D: object["node"] = child_node
     return object
 
-static func update_sprite_scale(_key, objects):
+func _update_sprite_scale(_key, objects):
     for object in objects.values():
         if "node" in object and object.node and "sprite" in object.node:
             object.node.sprite.global_scale = object.scale
     return objects
 
-static func has_node(object: Dictionary) -> Dictionary:
+func _has_node(object: Dictionary) -> Dictionary:
     return "node" in object and object.node
 
-static func queue_free(key: int, object: Dictionary) -> Dictionary:
-    if not QUEUE_FREE.is_queue_free(key, object): return object
-    if not has_node(object): return object
+func _queue_delete(key: int, object: Dictionary) -> Dictionary:
+    if not _is_queue_delete(key, object): return object
+    if not _has_node(object): return object
     object = object.duplicate()
     object.node.queue_free()
     var _1 = object.erase("node")
     return object
+
+func _is_queue_delete(_key, object: Dictionary) -> bool:
+    return "queue_delete" in object and object.queue_delete
