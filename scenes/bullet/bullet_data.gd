@@ -8,7 +8,6 @@ export var mass = 0.15
 export var bounce_coeff = 0.2
 export var destroy_time = 1
 
-var id = -1
 var destroy_timer = 0
 
 onready var collision_shapes_2d = []

@@ -40,6 +40,11 @@ _global_script_classes=[ {
 "path": "res://functions/dictionary.gd"
 }, {
 "base": "Reference",
+"class": "InitializeFunctions",
+"language": "GDScript",
+"path": "res://functions/initialize.gd"
+}, {
+"base": "Reference",
 "class": "JSONBeautifier",
 "language": "GDScript",
 "path": "res://plugins/json_beautifier.gd"
@@ -90,6 +95,11 @@ _global_script_classes=[ {
 "path": "res://functions/shortcut.gd"
 }, {
 "base": "Reference",
+"class": "SimulateFunctions",
+"language": "GDScript",
+"path": "res://functions/simulate.gd"
+}, {
+"base": "Reference",
 "class": "SoundFunctions",
 "language": "GDScript",
 "path": "res://functions/sound.gd"
@@ -111,6 +121,7 @@ _global_script_class_icons={
 "CollisionExceptionFunctions": "",
 "CollisionFunctions": "",
 "DictionaryFunctions": "",
+"InitializeFunctions": "",
 "JSONBeautifier": "",
 "ListFunctions": "",
 "NodeFunctions": "",
@@ -121,6 +132,7 @@ _global_script_class_icons={
 "SceneMap": "",
 "ShipFunctions": "",
 "ShortcutFunctions": "",
+"SimulateFunctions": "",
 "SoundFunctions": "",
 "StateFunctions": "",
 "WrapFunctions": ""

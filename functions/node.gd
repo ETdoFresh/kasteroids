@@ -35,11 +35,11 @@ static func to_dictionary(child_node : Node) -> Dictionary:
     if child_node is Node2D: object["node"] = child_node
     return object
 
-static func update_display(object : Dictionary) -> Dictionary:
-    if not has_node(object): return object
-    var node = object.node
-    if "sprite" in node: node.sprite.global_scale = object.scale
-    return object
+static func update_sprite_scale(key, state: Dictionary):
+    for object in state.objects.values():
+        if "node" in object and "sprite" in object.node:
+            object.node.sprite.global_scale = object.scale
+    return state
 
 static func has_node(object: Dictionary) -> Dictionary:
     return "node" in object and object.node

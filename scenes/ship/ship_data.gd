@@ -10,7 +10,6 @@ export var mass = 1.0
 export var bounce_coeff = 0.7
 export var cooldown = 0.2
 
-var id = -1
 var cooldown_timer = 0.0
 
 onready var collision_shapes_2d = []

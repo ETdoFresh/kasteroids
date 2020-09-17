@@ -1,7 +1,6 @@
 class_name ShipFunctions
 
-static func update(ship: Dictionary, delta: float) -> Dictionary:
-    if not is_ship(ship): return ship
+static func simulate(ship: Dictionary, delta: float) -> Dictionary:
     ship = apply_input(ship, delta)
     ship = limit_speed(ship)
     ship = cooldown(ship, delta)

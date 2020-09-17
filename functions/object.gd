@@ -1,5 +1,6 @@
 class_name ObjectFunctions
 
+const ASTEROID = AsteroidFunctions
 const LIST = ListFunctions
 const QUEUE_FREE = QueueFreeFunctions
 
@@ -18,26 +19,18 @@ static func set_by_id(objects: Array, id: int, new_object: Dictionary) -> Array:
         objects[i] = new_object
     return objects
 
-static func assign_ids(state: Dictionary):
+static func assign_id(entity: Dictionary, state: Dictionary):
     state = state.duplicate()
-    if not "next_id" in state:
-        state["next_id"] = 1
     state.objects = state.objects.duplicate()
-    for i in range(state.objects.size()):
-        var object = state.objects[i]
-        if "id" in object and object.id > 0: continue
-        object = object.duplicate()
-        object.id = state.next_id
-        state.next_id += 1
-        state.objects[i] = object
+    var key = state.next_id
+    state.objects[key] = entity
+    state.next_id += 1
     return state
-
-static func write_id_to_node(object: Dictionary) -> Dictionary:
-    if "node" in object:
-        object.node.id = object.id
-    return object
 
 static func queue_free(objects: Array) -> Array:
     if LIST.some(objects, funcref(QUEUE_FREE, "is_queue_free")):
         objects = LIST.not_filter(objects, funcref(QUEUE_FREE, "is_queue_free"))
     return objects
+
+static func objects(state_property_name: String, state_value: Dictionary) -> bool:
+    return state_property_name == "objects"

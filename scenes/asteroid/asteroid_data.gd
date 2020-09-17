@@ -16,8 +16,6 @@ export var angular_velocity = 0.0
 export var mass = 5.0
 export var bounce_coeff = 0.2
 
-var id = -1
-
 onready var collision_shapes_2d = []
 onready var collision_sound = $CollisionSound
 onready var sprite = $Sprite
