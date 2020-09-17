@@ -1,12 +1,12 @@
 class_name ShipFunctions
 
-static func simulate(ship: Dictionary, delta: float) -> Dictionary:
+static func simulate(_key: int, ship: Dictionary, delta: float) -> Dictionary:
     ship = apply_input(ship, delta)
     ship = limit_speed(ship)
     ship = cooldown(ship, delta)
     return ship
 
-static func is_ship(object : Dictionary) -> bool:
+static func is_ship(_key: int, object : Dictionary) -> bool:
     return "type" in object and object.type == "Ship"
 
 static func is_ready_to_fire(ship: Dictionary) -> bool:

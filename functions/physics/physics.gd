@@ -1,18 +1,22 @@
 class_name PhysicsFunctions
 
-const BOUNDING_BOX = BoundingBoxFunctions
-const COLLISION = CollisionFunctions
-const LIST = ListFunctions
-const PHYSICS_NODES = PhysicsNodesFunctions
+static func update_physical_body(_key: int, object: Dictionary) -> Dictionary:
+    if not "node" in object: return object
+    if not object.node: return object
+    object.node.global_position = object.position
+    object.node.global_rotation = object.rotation
+    object.node.get_node("CollisionShape2D").scale = object.scale
+    return object
 
-static func simulate(objects: Array, delta: float) -> Array:
-    objects = objects.duplicate()
-    objects = LIST.map1(objects, funcref(PHYSICS_NODES, "move"), delta)
-    objects = LIST.map(objects, funcref(PHYSICS_NODES, "update_physical_body")) # Side-effect
-    objects = LIST.map(objects, funcref(COLLISION, "clear_collisions"))
-    objects = LIST.map(objects, funcref(BOUNDING_BOX, "set_bounding_box"))
-    objects = LIST.reduce(objects, funcref(COLLISION, "broad_phase"), objects)
-    objects = LIST.reduce(objects, funcref(COLLISION, "narrow_phase"), objects)
-    objects = LIST.map(objects, funcref(COLLISION, "fix_penetration"))
-    objects = LIST.map(objects, funcref(COLLISION, "bounce_no_angular_velocity"))
-    return objects
+static func move(_key: int, object : Dictionary, delta : float) -> Dictionary:
+    if not is_physical(object): return object
+    object = object.duplicate()
+    object.position += object.linear_velocity * delta
+    object.rotation += object.angular_velocity * delta
+    return object
+
+static func is_physical(object: Dictionary):
+    return ("linear_velocity" in object
+        and "angular_velocity" in object
+        and "position" in object
+        and "rotation" in object)

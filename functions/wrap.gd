@@ -1,6 +1,6 @@
 class_name WrapFunctions
 
-static func wrap(object : Dictionary) -> Dictionary:
+static func wrap(_key: int, object : Dictionary) -> Dictionary:
     if not "position" in object: return object
     object = object.duplicate()
     while(object.position.x < 0): object.position.x += 1920

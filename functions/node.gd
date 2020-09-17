@@ -35,17 +35,17 @@ static func to_dictionary(child_node : Node) -> Dictionary:
     if child_node is Node2D: object["node"] = child_node
     return object
 
-static func update_sprite_scale(key, state: Dictionary):
-    for object in state.objects.values():
-        if "node" in object and "sprite" in object.node:
+static func update_sprite_scale(_key, objects):
+    for object in objects.values():
+        if "node" in object and object.node and "sprite" in object.node:
             object.node.sprite.global_scale = object.scale
-    return state
+    return objects
 
 static func has_node(object: Dictionary) -> Dictionary:
     return "node" in object and object.node
 
-static func queue_free(object: Dictionary) -> Dictionary:
-    if not QUEUE_FREE.is_queue_free(object): return object
+static func queue_free(key: int, object: Dictionary) -> Dictionary:
+    if not QUEUE_FREE.is_queue_free(key, object): return object
     if not has_node(object): return object
     object = object.duplicate()
     object.node.queue_free()

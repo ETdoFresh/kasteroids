@@ -1,10 +1,9 @@
 class_name AsteroidFunctions
 
-static func is_asteroid(object : Dictionary) -> bool:
+static func is_asteroid(_id: int, object: Dictionary) -> bool:
     return "type" in object and object.type == "Asteroid"
 
-static func randomize_angular_velocity(asteroid : Dictionary) -> Dictionary:
-    if not is_asteroid(asteroid): return asteroid
+static func randomize_angular_velocity(_id: int, asteroid: Dictionary) -> Dictionary:
     if not asteroid.randomize_angular_velocity: return asteroid
     asteroid = asteroid.duplicate()
     var min_vel = asteroid.min_angular_velocity
@@ -12,8 +11,7 @@ static func randomize_angular_velocity(asteroid : Dictionary) -> Dictionary:
     asteroid.angular_velocity = Random.randf_range(min_vel, max_vel)
     return asteroid
 
-static func randomize_linear_velocity(asteroid : Dictionary) -> Dictionary:
-    if not is_asteroid(asteroid): return asteroid
+static func randomize_linear_velocity(_id: int, asteroid: Dictionary) -> Dictionary:
     if not asteroid.randomize_linear_velocity: return asteroid
     asteroid = asteroid.duplicate()
     var min_vel = asteroid.min_linear_velocity
@@ -22,8 +20,7 @@ static func randomize_linear_velocity(asteroid : Dictionary) -> Dictionary:
     asteroid.linear_velocity *= Random.randf_range(min_vel, max_vel)
     return asteroid
 
-static func randomize_scale(asteroid : Dictionary) -> Dictionary:
-    if not is_asteroid(asteroid): return asteroid
+static func randomize_scale(_id: int, asteroid: Dictionary) -> Dictionary:
     if not asteroid.randomize_scale: return asteroid
     asteroid = asteroid.duplicate()
     var min_scl = asteroid.min_scale

@@ -4,37 +4,38 @@ const COLLISION_EXCEPTION = CollisionExceptionFunctions
 const COLLISION_MARKER_SCENE = preload("res://scenes/collision_marker/collision_marker.tscn")
 const LIST = ListFunctions
 const OBJECT = ObjectFunctions
-const PHYSICS_NODES = PhysicsNodesFunctions
 
-static func broad_phase(objects: Array, object: Dictionary) -> Array:
+static func broad_phase(objects: Dictionary, object_id: int, object: Dictionary) -> Dictionary:
     if not "bounding_box" in object: return objects
     var new_objects = objects.duplicate()
-    for other in objects:
-        if object.id == other.id: continue
+    for other_id in objects.keys():
+        var other = objects[other_id]
+        if object_id == other_id: continue
         if not "bounding_box" in other: continue
-        if COLLISION_EXCEPTION.has_collision_exception(object, other.id): continue
-        if COLLISION_EXCEPTION.has_collision_exception(other, object.id): continue
+        if COLLISION_EXCEPTION.has_collision_exception(object, other_id): continue
+        if COLLISION_EXCEPTION.has_collision_exception(other, object_id): continue
         if object.bounding_box.intersects(other.bounding_box):
             object = object.duplicate()
-            object.broad_phase = LIST.append(object.broad_phase, other.id)
-            new_objects = OBJECT.set_by_id(new_objects, object.id, object)
+            object.broad_phase = LIST.append(object.broad_phase, other_id)
+            new_objects[object_id] = object
     return new_objects
 
-static func narrow_phase(objects: Array, object: Dictionary) -> Array:
+static func narrow_phase(objects: Dictionary, _key: int, object: Dictionary) -> Dictionary:
     if not "broad_phase" in object: return objects
     if object.broad_phase.size() == 0: return objects
     var new_objects = objects.duplicate()
     for id in object.broad_phase:
-        var other_object = OBJECT.get_by_id(new_objects, id)
+        if not new_objects.has(id): continue
+        var other_object = new_objects[id]
         object = object.duplicate()
         object = _collide_pair(object, other_object)
-        new_objects = OBJECT.set_by_id(new_objects, object.id, object)
+        new_objects[id] = object
     return new_objects
 
 static func has_collision(object: Dictionary) -> bool:
     return "collisions" in object and object.collisions.size() > 0
 
-static func clear_collisions(object: Dictionary) -> Dictionary:
+static func clear_collisions(_key: int, object: Dictionary) -> Dictionary:
     if not has_shapes(object): return object
     object = object.duplicate()
     object["broad_phase"] = []
@@ -42,11 +43,14 @@ static func clear_collisions(object: Dictionary) -> Dictionary:
     return object
 
 static func has_shapes(object: Dictionary) -> bool:
-    return ("node" in object 
+    return ("node" in object
+        and object.node
         and "collision_shapes_2d" in object.node
         and object.node.collision_shapes_2d.size() > 0)
 
 static func _collide_pair(object: Dictionary, other_object: Dictionary) -> Dictionary:
+    if not has_shapes(object): return object
+    if not has_shapes(other_object): return object
     for collision_shape_2d in object.node.collision_shapes_2d:
         var shape = collision_shape_2d.shape
         var transform = collision_shape_2d.global_transform
@@ -94,7 +98,7 @@ static func add_collision_markers(objects: Array, world: Node) -> Array:
             world.add_child(collision_marker)
     return objects
 
-static func fix_penetration(object: Dictionary) -> Dictionary:
+static func fix_penetration(_key: int, object: Dictionary) -> Dictionary:
     if not "collisions" in object: return object
     if object.collisions.size() == 0: return object
     object = object.duplicate()
@@ -134,7 +138,7 @@ static func bounce(object: Dictionary, collision) -> Dictionary:
     object.angular_velocity = wa + iia * cross(ra, j * n)
     return object
 
-static func bounce_no_angular_velocity(object: Dictionary):
+static func bounce_no_angular_velocity(_key: int, object: Dictionary):
     if not "collisions" in object: return object
     object = object.duplicate()
     for collision in object.collisions:

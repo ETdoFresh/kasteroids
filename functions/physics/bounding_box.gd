@@ -2,7 +2,7 @@ class_name BoundingBoxFunctions
 
 const COLLISION = CollisionFunctions
 
-static func set_bounding_box(object: Dictionary) -> Dictionary:
+static func set_bounding_box(_key: int, object: Dictionary) -> Dictionary:
     if not COLLISION.has_shapes(object): return object
     object = object.duplicate()
     var bounding_box = Rect2(object.position, Vector2.ONE)

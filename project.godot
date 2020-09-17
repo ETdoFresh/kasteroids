@@ -70,11 +70,6 @@ _global_script_classes=[ {
 "path": "res://functions/physics/physics.gd"
 }, {
 "base": "Reference",
-"class": "PhysicsNodesFunctions",
-"language": "GDScript",
-"path": "res://functions/physics/physics_nodes.gd"
-}, {
-"base": "Reference",
 "class": "QueueFreeFunctions",
 "language": "GDScript",
 "path": "res://functions/queue_free.gd"
@@ -127,7 +122,6 @@ _global_script_class_icons={
 "NodeFunctions": "",
 "ObjectFunctions": "",
 "PhysicsFunctions": "",
-"PhysicsNodesFunctions": "",
 "QueueFreeFunctions": "",
 "SceneMap": "",
 "ShipFunctions": "",
