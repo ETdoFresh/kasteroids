@@ -1,4 +1,3 @@
-using System.Linq;
 using Godot;
 using IObjects = System.Collections.Generic.IEnumerable<DataObject>;
 
@@ -23,13 +22,10 @@ public class Ship : DataObject
 
 public static class ShipFunctions
 {
-    public static IObjects ApplyShipInputs(this IObjects objects, float delta)
+    public static IObjects ApplyInputs(this IObjects objects, float delta)
     {
         return objects
-            .Remove<Ship>()
-            .Concat(objects
-                .Get<Ship>()
-                .Select(ship => ApplyInput(ship, delta)));
+            .ApplyOn<Ship>(ship => ApplyInput(ship, delta));
     }
 
     public static Ship ApplyInput(Ship ship, float delta)

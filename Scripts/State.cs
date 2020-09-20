@@ -5,7 +5,6 @@ public class State
 {
     public int tick;
     public int nextId;
-    public float delta;
     public IObjects objects;
 
     public State() { }
@@ -27,9 +26,6 @@ public class State
 
     public State UpdateNextId(int newNextId)
         => new State(this) { nextId = newNextId };
-
-    public State UpdateDelta(float newDelta)
-        => new State(this) { delta = newDelta };
 
     public State IncrementTick() => UpdateTick(AddOne);
 

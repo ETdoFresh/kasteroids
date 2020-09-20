@@ -1,5 +1,4 @@
 using Godot;
-using System.Linq;
 using IObjects = System.Collections.Generic.IEnumerable<DataObject>;
 
 public class Asteroid : DataObject
@@ -22,12 +21,9 @@ public static class AsteroidFunctions
     public static IObjects RandomizeAsteroids(this IObjects objects)
     {
         return objects
-            .Remove<Asteroid>()
-            .Concat(objects
-                .Get<Asteroid>()
-                .Select(RandomizeLinearVelocity)
-                .Select(RandomizeAngularVelocity)
-                .Select(RandomizeScale));
+            .ApplyOn<Asteroid>(RandomizeLinearVelocity)
+            .ApplyOn<Asteroid>(RandomizeAngularVelocity)
+            .ApplyOn<Asteroid>(RandomizeScale);
     }
     
     public static Asteroid RandomizeLinearVelocity(Asteroid asteroid)

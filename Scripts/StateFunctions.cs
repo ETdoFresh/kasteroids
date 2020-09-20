@@ -19,17 +19,29 @@ public static class StateFunctions
         return state
             .IncrementTick()
             .UpdateObjects(objects => objects
-                .ApplyShipInputs(delta)
-                .CreateBullets()
-                .SetCooldowns()
-                .SimulatePhysics()
-                .WrapAroundScreen()
-                .PlayCollisionSounds()
-                .DeleteOnCollide()
-                .DeleteAfterDuration()
-                .SpawnParticles()
-                .DeleteObjects()
-                .UpdateSprites());
+                .ApplyInputs(delta)
+                .SimulateGame(delta))
+            .RecordHistory();
+    }
+
+    public static IObjects SimulateGame(this IObjects objects, float delta)
+    {
+        return objects
+            .CreateBullets()
+            .SetCooldowns()
+            .SimulatePhysics(delta)
+            .WrapAroundScreen()
+            .PlayCollisionSounds()
+            .DeleteOnCollide()
+            .DeleteAfterDuration(delta)
+            .SpawnParticles()
+            .DeleteObjects()
+            .UpdateSprites();
+    }
+
+    public static State RecordHistory(this State state)
+    {
+        return state;
     }
 
     public static IObjects SetCooldowns(this IObjects objects)
@@ -37,7 +49,7 @@ public static class StateFunctions
         return objects;
     }
 
-    public static IObjects SimulatePhysics(this IObjects objects)
+    public static IObjects SimulatePhysics(this IObjects objects, float delta)
     {
         return objects;
     }
@@ -54,7 +66,7 @@ public static class StateFunctions
     {
         return objects;
     }
-    public static IObjects DeleteAfterDuration(this IObjects objects)
+    public static IObjects DeleteAfterDuration(this IObjects objects, float delta)
     {
         return objects;
     }
