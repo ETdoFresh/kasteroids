@@ -8,6 +8,23 @@ public static class GodotExtensions
 {
     public static object[] EMPTY_ARG = new object[0];
 
+    public static State AddObjectsFromScene(this State state, Array objects)
+    {
+        return state.UpdateObjects(state.objects
+            .Cast<Node>()
+            .Select(ToDataObject));
+    }
+
+    public static State UpdateSprites(this State state)
+    {
+        return state.UpdateObjects(state.objects
+            .RemoveAsteroids()
+            .Concat(state.objects
+                .GetAsteroids()
+                .GetSprites()
+                .Select(UpdateSprite))); // Side-effect
+    }
+
     public static DataObject ToDataObject(Node node)
     {
         var dataObject = new DataObject();
@@ -27,31 +44,12 @@ public static class GodotExtensions
         return dataObject;
     }
 
-    public static State AddObjectsFromScene(this State state, Array objects)
-    {
-        state = state.Duplicate();
-        state.objects = objects
-            .Cast<Node>()
-            .Select(ToDataObject);
-        return state;
-    }
-
-     public static State UpdateSprites(this State state)
-    {
-        state.objects = state.objects
-            .RemoveAsteroids()
-            .Concat(state.objects
-                .GetSprites()
-                .Select(UpdateSprite));
-        return state;
-    }
-
     public static IEnumerable<Tuple<DataObject, Sprite>> GetSprites(this IEnumerable<DataObject> objects)
         => objects
             .Where(o => o.node.Get("Sprite") != null)
             .Select(o => new Tuple<DataObject, object>(o, o.node.Get("Sprite")))
             .Cast<Tuple<DataObject, Sprite>>();
-    
+
     public static DataObject UpdateSprite(Tuple<DataObject, Sprite> objectSpriteTuple)
     {
         var obj = objectSpriteTuple.Item1;
