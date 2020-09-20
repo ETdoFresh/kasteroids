@@ -3,30 +3,35 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using Array = Godot.Collections.Array;
+using IObjects = System.Collections.Generic.IEnumerable<DataObject>;
+using Object = Godot.Object;
 
 public static class GodotExtensions
 {
     public static object[] EMPTY_ARG = new object[0];
 
-    public static State AddObjectsFromScene(this State state, Array objects)
+    public static IObjects AddObjectsFromScene(this IObjects objects, Array children)
     {
-        return state.UpdateObjects(state.objects
-            .Cast<Node>()
-            .Select(ToDataObject));
+        return objects
+            .Concat(children
+                .Cast<Node>()
+                .Select(CreateDataObjectFromNode));
     }
 
-    public static State UpdateSprites(this State state)
+    public static IObjects UpdateSprites(this IObjects objects)
     {
-        return state.UpdateObjects(state.objects
-            .RemoveAsteroids()
-            .Concat(state.objects
-                .GetAsteroids()
+        return objects
+            .RemoveNode2DObjects()
+            .Concat(objects
                 .GetSprites()
-                .Select(UpdateSprite))); // Side-effect
+                .Select(UpdateSprite)); // Side-effect
     }
 
-    public static DataObject ToDataObject(Node node)
+    public static DataObject CreateDataObjectFromNode(Node node)
     {
+        if (node is ShipNode shipNode)
+            return shipNode.ship;
+        
         var dataObject = new DataObject();
         dataObject.node = node;
         dataObject.name = node.Name;
@@ -44,17 +49,27 @@ public static class GodotExtensions
         return dataObject;
     }
 
-    public static IEnumerable<Tuple<DataObject, Sprite>> GetSprites(this IEnumerable<DataObject> objects)
-        => objects
-            .Where(o => o.node.Get("Sprite") != null)
-            .Select(o => new Tuple<DataObject, object>(o, o.node.Get("Sprite")))
-            .Cast<Tuple<DataObject, Sprite>>();
+    public static IObjects RemoveNode2DObjects(this IObjects objects)
+        => objects.Where(o => !(o.node is Node2D));
 
-    public static DataObject UpdateSprite(Tuple<DataObject, Sprite> objectSpriteTuple)
+    public static IEnumerable<Tuple<DataObject, Node2D>> GetSprites(this IEnumerable<DataObject> objects)
+        => objects
+            .Where(o => o.node is Node2D)
+            .Select(o => new Tuple<DataObject, Node2D>(o, (Node2D)o.node))
+            .Cast<Tuple<DataObject, Node2D>>();
+
+    public static DataObject UpdateSprite(Tuple<DataObject, Node2D> objectNode2DTuple)
     {
-        var obj = objectSpriteTuple.Item1;
-        var sprite = objectSpriteTuple.Item2;
-        sprite.GlobalScale = obj.scale;
+        var obj = objectNode2DTuple.Item1;
+        var node = objectNode2DTuple.Item2;
+        node.GlobalPosition = obj.position;
+        node.GlobalRotation = obj.rotation;
+        node.GlobalScale = obj.scale;
         return obj;
+    }
+
+    public static T Get<T>(this Object godotObject, string property)
+    {
+        return (T)godotObject.Get(property);
     }
 }

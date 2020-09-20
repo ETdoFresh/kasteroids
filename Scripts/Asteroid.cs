@@ -1,6 +1,6 @@
 using Godot;
-using System.Collections.Generic;
 using System.Linq;
+using IObjects = System.Collections.Generic.IEnumerable<DataObject>;
 
 public class Asteroid : DataObject
 {
@@ -19,24 +19,16 @@ public class Asteroid : DataObject
 
 public static class AsteroidFunctions
 {
-    public static State RandomizeAsteroids(this State state)
+    public static IObjects RandomizeAsteroids(this IObjects objects)
     {
-        state = state.Duplicate();
-        state.objects = state.objects
-            .RemoveAsteroids()
-            .Concat(state.objects
-                .GetAsteroids()
+        return objects
+            .Remove<Asteroid>()
+            .Concat(objects
+                .Get<Asteroid>()
                 .Select(RandomizeLinearVelocity)
                 .Select(RandomizeAngularVelocity)
                 .Select(RandomizeScale));
-        return state;
     }
-
-    public static IEnumerable<DataObject> RemoveAsteroids(this IEnumerable<DataObject>objects)
-        => objects.Where(o => !(o is Asteroid));
-    
-    public static IEnumerable<Asteroid> GetAsteroids(this IEnumerable<DataObject>objects)
-        => objects.Where(o => o is Asteroid).Cast<Asteroid>();
     
     public static Asteroid RandomizeLinearVelocity(Asteroid asteroid)
     {

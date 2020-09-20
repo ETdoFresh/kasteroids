@@ -1,3 +1,5 @@
+using IObjects = System.Collections.Generic.IEnumerable<DataObject>;
+
 public static class StateFunctions
 {
     public static State EmptyState
@@ -6,26 +8,70 @@ public static class StateFunctions
     public static State InitialState(Godot.Collections.Array children)
     {
         return EmptyState
-            .AddObjectsFromScene(children)
-            .RandomizeAsteroids()
-            .UpdateSprites();
+            .UpdateObjects(objects => objects
+                .AddObjectsFromScene(children)
+                .RandomizeAsteroids()
+                .UpdateSprites()); // Side-effect
     }
 
     public static State UpdateState(State state, float delta)
     {
         return state
             .IncrementTick()
-            .UpdateDelta(delta)
-            .ApplyShipInputs()
-            .CreateObjects()
-            .SetCooldowns()
-            .SimulatePhysics()
-            .WrapAroundScreen()
-            .PlayCollisionSounds()
-            .DeleteOnCollide()
-            .DeleteAfterDuration()
-            .SpawnParticles()
-            .DeleteObjects()
-            .UpdateSprites();
+            .UpdateObjects(objects => objects
+                .ApplyShipInputs(delta)
+                .CreateBullets()
+                .SetCooldowns()
+                .SimulatePhysics()
+                .WrapAroundScreen()
+                .PlayCollisionSounds()
+                .DeleteOnCollide()
+                .DeleteAfterDuration()
+                .SpawnParticles()
+                .DeleteObjects()
+                .UpdateSprites());
+    }
+
+    public static IObjects SetCooldowns(this IObjects objects)
+    {
+        return objects;
+    }
+
+    public static IObjects SimulatePhysics(this IObjects objects)
+    {
+        return objects;
+    }
+
+    public static IObjects WrapAroundScreen(this IObjects objects)
+    {
+        return objects;
+    }
+    public static IObjects PlayCollisionSounds(this IObjects objects)
+    {
+        return objects;
+    }
+    public static IObjects DeleteOnCollide(this IObjects objects)
+    {
+        return objects;
+    }
+    public static IObjects DeleteAfterDuration(this IObjects objects)
+    {
+        return objects;
+    }
+    public static IObjects SpawnParticles(this IObjects objects)
+    {
+        return objects;
+    }
+    public static IObjects DeleteObjects(this IObjects objects)
+    {
+        return objects;
+    }
+}
+
+public static class BulletFunctions
+{
+    public static IObjects CreateBullets(this IObjects objects)
+    {
+        return objects;
     }
 }
