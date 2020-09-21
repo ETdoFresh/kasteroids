@@ -1,3 +1,5 @@
+using Godot;
+using System.Linq;
 using IObjects = System.Collections.Generic.IEnumerable<DataObject>;
 
 public static class StateFunctions
@@ -14,20 +16,20 @@ public static class StateFunctions
                 .UpdateSprites()); // Side-effect
     }
 
-    public static State UpdateState(State state, float delta)
+    public static State UpdateState(State state, float delta, Node world)
     {
         return state
             .IncrementTick()
             .UpdateObjects(objects => objects
                 .ApplyInputs(delta)
-                .SimulateGame(delta))
+                .SimulateGame(delta, world))
             .RecordHistory();
     }
 
-    public static IObjects SimulateGame(this IObjects objects, float delta)
+    public static IObjects SimulateGame(this IObjects objects, float delta, Node world)
     {
         return objects
-            .CreateBullets()
+            .CreateBullets(world)
             .SetCooldowns()
             .SimulatePhysics(delta)
             .WrapAroundScreen()
@@ -42,6 +44,16 @@ public static class StateFunctions
     public static State RecordHistory(this State state)
     {
         return state;
+    }
+
+    public static IObjects CreateBullets(this IObjects objects, Node world)
+    {
+        return objects
+            .Concat(objects
+                .Get<Ship>()
+                .GetIsReadyToFire()
+                .GetIsFiring()
+                .AddNewBulletsToObjects(world));
     }
 
     public static IObjects SetCooldowns(this IObjects objects)
@@ -75,14 +87,6 @@ public static class StateFunctions
         return objects;
     }
     public static IObjects DeleteObjects(this IObjects objects)
-    {
-        return objects;
-    }
-}
-
-public static class BulletFunctions
-{
-    public static IObjects CreateBullets(this IObjects objects)
     {
         return objects;
     }

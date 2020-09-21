@@ -13,6 +13,6 @@ public class World : Node
 
     public override void _Process(float delta)
     {
-        current_state = UpdateState(current_state, delta);
+        current_state = UpdateState(current_state, delta, this);
     }
 }

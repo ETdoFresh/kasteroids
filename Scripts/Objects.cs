@@ -20,4 +20,7 @@ public static class ObjectsFunctions
                 .Get<T>()
                 .Select(func));
     }
+
+    public static IEnumerable<T1> PerObject<T0, T1>(this IEnumerable<T0> objects, Func<T0, T1> func)
+        => objects.Select(func);
 }
