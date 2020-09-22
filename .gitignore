@@ -6,3 +6,4 @@
 .ionide
 **/[Bb]in
 **/[Oo]bj
+.fake

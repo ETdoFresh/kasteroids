@@ -17,12 +17,14 @@ module State =
         | Ship s -> Ship { s with position = move s.position s.linearVelocity delta }
         | Asteroid a -> Asteroid { a with position = move a.position a.linearVelocity delta }
         | Bullet b -> Bullet { b with position = move b.position b.linearVelocity delta }
+        | None -> None
 
     let applyAngularVelocity delta object = 
         match object with
         | Ship s -> Ship { s with rotation = rotate s.rotation s.angularVelocity delta }
         | Asteroid a -> Asteroid { a with rotation = rotate a.rotation a.angularVelocity delta }
         | Bullet b -> Bullet { b with rotation = rotate b.rotation b.angularVelocity delta }
+        | None -> None
 
     let stepTick tick = tick + 1
 
