@@ -1,12 +1,18 @@
-﻿Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kasteroids", "kasteroids.csproj", "{D8C6E769-96E8-4F40-B798-1C286D70A18B}"
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30309.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kasteroids", "kasteroids.csproj", "{D8C6E769-96E8-4F40-B798-1C286D70A18B}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharp", "FSharp\FSharp.fsproj", "{8D56B5F1-3499-4DEC-8D28-DD05C68B0B15}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-	Debug|Any CPU = Debug|Any CPU
-	ExportDebug|Any CPU = ExportDebug|Any CPU
-	ExportRelease|Any CPU = ExportRelease|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		ExportDebug|Any CPU = ExportDebug|Any CPU
+		ExportRelease|Any CPU = ExportRelease|Any CPU
+		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{D8C6E769-96E8-4F40-B798-1C286D70A18B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -15,5 +21,21 @@ Global
 		{D8C6E769-96E8-4F40-B798-1C286D70A18B}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
 		{D8C6E769-96E8-4F40-B798-1C286D70A18B}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
 		{D8C6E769-96E8-4F40-B798-1C286D70A18B}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+		{D8C6E769-96E8-4F40-B798-1C286D70A18B}.Release|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{D8C6E769-96E8-4F40-B798-1C286D70A18B}.Release|Any CPU.Build.0 = ExportRelease|Any CPU
+		{8D56B5F1-3499-4DEC-8D28-DD05C68B0B15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D56B5F1-3499-4DEC-8D28-DD05C68B0B15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D56B5F1-3499-4DEC-8D28-DD05C68B0B15}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D56B5F1-3499-4DEC-8D28-DD05C68B0B15}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{8D56B5F1-3499-4DEC-8D28-DD05C68B0B15}.ExportRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{8D56B5F1-3499-4DEC-8D28-DD05C68B0B15}.ExportRelease|Any CPU.Build.0 = Release|Any CPU
+		{8D56B5F1-3499-4DEC-8D28-DD05C68B0B15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D56B5F1-3499-4DEC-8D28-DD05C68B0B15}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {134AE182-23B3-4B5F-8C82-09B6ABEDF25C}
 	EndGlobalSection
 EndGlobal

@@ -2,4 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="FSharp\FSharp.fsproj" />
+  </ItemGroup>
 </Project>

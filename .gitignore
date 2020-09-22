@@ -2,3 +2,7 @@
 [Bb]uild/
 [Kk]eys/[Pp]*
 .mono
+.vs
+.ionide
+**/[Bb]in
+**/[Oo]bj
