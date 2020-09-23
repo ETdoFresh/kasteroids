@@ -1,20 +1,9 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using IObjects = System.Collections.Generic.IEnumerable<DataObject>;
 using IShips = System.Collections.Generic.IEnumerable<Ship>;
 
-public class ShipNode : Node2D
-{
-    public Ship ship = new Ship();
-
-    public override void _Ready()
-    {
-        ship.input.node = GetNode("Input");
-        ship.gun = GetNode<Node2D>("Gun");
-    }
-}
+public class ShipNode : FSharp.Ship { }
 
 public class Ship : DataObject
 {

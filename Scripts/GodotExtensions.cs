@@ -29,23 +29,23 @@ public static class GodotExtensions
 
     public static DataObject CreateDataObjectFromNode(Node node)
     {
-        if (node is ShipNode shipNode)
-            return shipNode.ship;
+        // if (node is ShipNode shipNode)
+        //     return shipNode.ship;
         
         var dataObject = new DataObject();
-        dataObject.node = node;
-        dataObject.name = node.Name;
-        var toDataObject = node.GetType().GetMethod("ToDataObject");
-        if (toDataObject != null)
-        {
-            dataObject = (DataObject)toDataObject.Invoke(node, EMPTY_ARG);
-        }
-        else if (node is Node2D node2D)
-        {
-            dataObject.position = node2D.GlobalPosition;
-            dataObject.rotation = node2D.GlobalRotation;
-            dataObject.scale = node2D.GlobalScale;
-        }
+        // dataObject.node = node;
+        // dataObject.name = node.Name;
+        // var toDataObject = node.GetType().GetMethod("ToDataObject");
+        // if (toDataObject != null)
+        // {
+        //     dataObject = (DataObject)toDataObject.Invoke(node, EMPTY_ARG);
+        // }
+        // else if (node is Node2D node2D)
+        // {
+        //     dataObject.position = node2D.GlobalPosition;
+        //     dataObject.rotation = node2D.GlobalRotation;
+        //     dataObject.scale = node2D.GlobalScale;
+        // }
         return dataObject;
     }
 

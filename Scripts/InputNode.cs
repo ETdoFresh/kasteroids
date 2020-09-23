@@ -1,4 +1,4 @@
-using System;
+public class InputNode : FSharp.InputNode { }
 
 public class InputData : DataObject
 {

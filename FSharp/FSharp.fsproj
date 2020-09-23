@@ -1,21 +1,19 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>FSharp</AssemblyName>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Include="Domain.fs" />
     <Compile Include="State.fs" />
     <Compile Include="Game.fs" />
     <Compile Include="World.fs" />
+    <Compile Include="Input.fs" />
+    <Compile Include="Ship.fs" />
   </ItemGroup>
-
   <ItemGroup>
     <Reference Include="GodotSharp">
       <HintPath>..\.mono\assemblies\Debug\GodotSharp.dll</HintPath>
     </Reference>
   </ItemGroup>
-
 </Project>

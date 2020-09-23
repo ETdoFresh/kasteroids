@@ -16,5 +16,4 @@ type World() =
         printState currentState
 
     override this._Process delta =
-        GD.Print delta
         currentState <- _process currentState
