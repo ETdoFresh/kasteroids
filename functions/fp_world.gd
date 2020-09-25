@@ -1,10 +1,11 @@
-var new_state = StateRecord.new({"tick": 0, "objects": []})
+func new_state(): 
+    return StateRecord.new(0, ObjectsRecord.new([]))
 
 func init(world: Node):
-    return new_state \
-        .with("objects", ExtArray.new(world.get_children()) \
-            .map("from_node_to_record") \
-            .filter("is_not_null"))
+    return new_state() \
+        .with("objects", ObjectsRecord.new(world.get_children()) \
+            .map(funcref(self, "from_node_to_record")) \
+            .filter(funcref(self, "is_not_null")))
 
 func process(state_record: StateRecord, _delta: float, _world: Node):
     return state_record \
@@ -13,15 +14,25 @@ func process(state_record: StateRecord, _delta: float, _world: Node):
             .apply_input() \
             .queue_create_bullets() \
             .set_cooldowns() \
-            .move() \
-            .spin() \
-            .collide() \
+            .apply_linear_acceleration() \
+            .apply_linear_velocity() \
+            .apply_angular_velocity() \
+            .add_new_collisions() \
             .resolve_collisions() \
             .queue_delete_bullet_on_collide() \
             .queue_delete_bullet_on_timeout() \
             .delete_objects() \
             .create_objects() \
             .update_objects())
+
+func from_node_to_record(node: Node):
+    if node.has_method("get_record"):
+        return node.record
+    else:
+        return null
+
+func is_not_null(obj: Object):
+    return obj != null
 
 ## Objects File
 func duplicate(): pass

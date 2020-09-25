@@ -14,6 +14,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/physics/angular_velocity_record.gd"
 }, {
+"base": "Record",
+"class": "ArrayRecord",
+"language": "GDScript",
+"path": "res://scenes/ext_array/array_record.gd"
+}, {
 "base": "Node2D",
 "class": "Asteroid",
 "language": "GDScript",
@@ -64,11 +69,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/ext_array/dictionary_record.gd"
 }, {
-"base": "Reference",
-"class": "ExtArray",
-"language": "GDScript",
-"path": "res://scenes/ext_array/ext_array.gd"
-}, {
 "base": "Record",
 "class": "FloatRecord",
 "language": "GDScript",
@@ -98,6 +98,11 @@ _global_script_classes=[ {
 "class": "MassRecord",
 "language": "GDScript",
 "path": "res://scenes/physics/mass_record.gd"
+}, {
+"base": "ArrayRecord",
+"class": "ObjectsRecord",
+"language": "GDScript",
+"path": "res://scenes/state/objects_record.gd"
 }, {
 "base": "Vector2Record",
 "class": "PositionRecord",
@@ -154,7 +159,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://functions/state.gd"
 }, {
-"base": "DictionaryRecord",
+"base": "Record",
 "class": "StateRecord",
 "language": "GDScript",
 "path": "res://scenes/state/state_record.gd"
@@ -166,6 +171,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "AngularVelocityRecord": "",
+"ArrayRecord": "",
 "Asteroid": "",
 "AsteroidRecord": "",
 "BounceRecord": "",
@@ -176,13 +182,13 @@ _global_script_class_icons={
 "CooldownTimerRecord": "",
 "DictionaryFunctions": "",
 "DictionaryRecord": "",
-"ExtArray": "",
 "FloatRecord": "",
 "InputRecord": "",
 "JSONBeautifier": "",
 "LinearVelocityRecord": "",
 "ListFunctions": "",
 "MassRecord": "",
+"ObjectsRecord": "",
 "PositionRecord": "",
 "Record": "",
 "RotationRecord": "",
@@ -207,6 +213,7 @@ config/icon="res://graphics/icon.png"
 [autoload]
 
 Random="*res://autoload/random.gd"
+FP="*res://functions/fp.gd"
 
 [display]
 

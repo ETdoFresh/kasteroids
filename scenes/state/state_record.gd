@@ -1,4 +1,12 @@
 class_name StateRecord
-extends DictionaryRecord
+extends Record
 
-func _init(dictionary).(dictionary): pass
+var tick: int
+var objects: ObjectsRecord
+
+func _init(init_tick: int, init_objects: ObjectsRecord):
+    tick = init_tick
+    objects = init_objects
+
+func copy():
+    return get_script().new(tick, objects)

@@ -7,17 +7,19 @@
 points = PoolVector2Array( 5.826, -63.185, 35.807, 56.874, -39.299, 57.318 )
 
 [node name="Ship" type="Node2D"]
+scale = Vector2( 0.5, 0.5 )
 script = ExtResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
-position = Vector2( -2, 0 )
-scale = Vector2( 0.5, 0.5 )
+position = Vector2( -3, 0 )
+rotation = -0.0349066
 texture = ExtResource( 3 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( -2, 0 )
-scale = Vector2( 0.5, 0.5 )
+position = Vector2( -3, 0 )
+rotation = -0.0349066
 shape = SubResource( 1 )
 
 [node name="Gun" type="Node2D" parent="."]
-position = Vector2( 1.00336, -28.8659 )
+position = Vector2( 0, -60 )
+rotation = -0.0349066
