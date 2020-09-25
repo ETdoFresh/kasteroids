@@ -7,50 +7,30 @@ module Game =
 
     let mutable state = { 
         tick = 0
-        objects = [
-            Ship {
-                position = { x = 0.0; y = 0.0 }
-                rotation = 0.0
-                scale = { x = 1.0; y = 1.0 }
-                linearVelocity = { x = 10.0; y = 0.0 }
-                angularVelocity = 0.0
-                input = {
-                    horizontal = 0.0
-                    vertical = 0.0
-                    fire = false }}]}
+        objects = [] }
 
-    let toObject (node: Node) =
-        let typeName = node.GetType().Name
-        match typeName with
-        | "ShipNode" -> Ship { 
-            position = downcast node.Get("GlobalPosition")
-            rotation = downcast node.Get("GlobalRotation")
-            scale = downcast node.Get("GlobalScale")
-            linearVelocity = downcast node.Get("LinearVelocity")
-            angularVelocity = downcast node.Get("AngularVelocity")
-            input = {horizontal = 0.0; vertical = 0.0; fire = false}}
-        | "AsteroidNode" -> Asteroid { 
-            position = downcast node.Get("GlobalPosition")
-            rotation = downcast node.Get("GlobalRotation")
-            scale = downcast node.Get("GlobalScale")
-            linearVelocity = downcast node.Get("LinearVelocity")
-            angularVelocity = downcast node.Get("AngularVelocity")}
-        | "BulletNode" -> Bullet { 
-            position = downcast node.Get("GlobalPosition")
-            rotation = downcast node.Get("GlobalRotation")
-            scale = downcast node.Get("GlobalScale")
-            linearVelocity = downcast node.Get("LinearVelocity")
-            angularVelocity = downcast node.Get("AngularVelocity")}
-        | _ -> None
-
-    let toNode (v: obj) = 
-        (downcast v: Node)
-
+    let toObject node =
+        let o = {
+            name = "Ship"
+            position = {x = 0.0; y = 0.0}
+            rotation = 0.0
+            scale = {x = 1.0; y = 1.0}
+            linearVelocity = {x = 0.0; y = 0.0}
+            angularVelocity = 0.0
+            speed = 800.0
+            spin = 10.0
+            cooldown = 0.2
+            cooldownTimer = 0.0
+            gun = {position = {x = 0.0; y = 0.0}; rotation = 0.0}
+            input = {horizontal = 0.0; vertical = 0.0; fire = false} }
+        (None : ObjectRecord)
+            
     let _ready (world: Node2D) state =
-        // let children = new list<Node>(world.GetChildren)
-        // children
-        // |> List.map toObject
-        state
+        let objects = 
+            Seq.cast<Node> (world.GetChildren())
+            |> Seq.map toObject
+            |> Seq.toList
+        { state with objects = objects }
 
     let _process state =
         step state (1.0 / 60.0)

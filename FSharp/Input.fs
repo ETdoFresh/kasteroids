@@ -1,32 +1,28 @@
 namespace FSharp
 
+open Domain
 open Godot
-
-type InputRecord = { 
-    horizontal: float
-    vertical: float
-    fire: bool }
 
 type InputNode() =
     inherit Node()
 
     [<Export>]
-    let mutable horizontal = 0.0
+    let mutable horizontal = 0.0f
     [<Export>]
-    let mutable vertical = 0.0
+    let mutable vertical = 0.0f
     [<Export>]
     let mutable fire = false
 
     member this.toRecord = { 
-        horizontal = horizontal
-        vertical = vertical
+        horizontal = float horizontal
+        vertical = float vertical
         fire = fire }
 
     override this._Process delta =
-        let right = float (Input.GetActionStrength "PlayerRight")
-        let left = float (Input.GetActionStrength "PlayerLeft")
-        let up = float (Input.GetActionStrength "PlayerUp")
-        let down = float (Input.GetActionStrength "PlayerDown")
+        let right = Input.GetActionStrength "PlayerRight"
+        let left = Input.GetActionStrength "PlayerLeft"
+        let up = Input.GetActionStrength "PlayerUp"
+        let down = Input.GetActionStrength "PlayerDown"
         horizontal <- right - left
         vertical <- down - up
         fire <- Input.IsActionPressed "PlayerFire"

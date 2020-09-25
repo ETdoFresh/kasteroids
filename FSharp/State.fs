@@ -1,27 +1,28 @@
 ﻿namespace FSharp
 
-module State =
-    open Domain
+open Domain
+open Godot
 
+module State =
     let printState state =
         printfn "%O" state
 
     let move (p: Position) (lv: LinearVelocity) (delta: float) =
-        { x = p.x + lv.x * delta; y = p.y + lv.y * delta }
+        {x = p.x + lv.x * delta; y = p.y + lv.y * delta}
 
     let rotate (r: Rotation) (av: AngularVelocity) (delta: float) =
         r + av * delta
 
     let applyLinearVelocity delta object = 
         match object with
-        | Ship s -> Ship { s with position = move s.position s.linearVelocity delta }
+        | ShipRecord s -> ShipRecord { s with position = move s.position s.linearVelocity delta }
         | Asteroid a -> Asteroid { a with position = move a.position a.linearVelocity delta }
         | Bullet b -> Bullet { b with position = move b.position b.linearVelocity delta }
         | None -> None
 
     let applyAngularVelocity delta object = 
         match object with
-        | Ship s -> Ship { s with rotation = rotate s.rotation s.angularVelocity delta }
+        | ShipRecord s -> ShipRecord { s with rotation = rotate s.rotation s.angularVelocity delta }
         | Asteroid a -> Asteroid { a with rotation = rotate a.rotation a.angularVelocity delta }
         | Bullet b -> Bullet { b with rotation = rotate b.rotation b.angularVelocity delta }
         | None -> None

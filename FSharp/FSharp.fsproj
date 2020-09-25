@@ -5,11 +5,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Domain.fs" />
+    <Compile Include="Input.fs" />
+    <Compile Include="Ship.fs" />
     <Compile Include="State.fs" />
     <Compile Include="Game.fs" />
     <Compile Include="World.fs" />
-    <Compile Include="Input.fs" />
-    <Compile Include="Ship.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="GodotSharp">

@@ -1,34 +1,19 @@
 namespace FSharp
 
+open Domain
 open Godot
-
-type GunRecord = {
-    position: Vector2
-    rotation: float32 }
-
-type ShipRecord = { 
-    name: string
-    position: Vector2
-    rotation: float32
-    scale: Vector2
-    speed: float
-    spin: float
-    cooldown: float
-    cooldownTimer: float
-    gun: GunRecord
-    input: InputRecord }
 
 type Ship() =
     inherit Node2D()
 
     [<Export>]
-    let mutable speed = 800.0
+    let mutable speed = 800.0f
 
     [<Export>]
-    let mutable spin = 10.0
+    let mutable spin = 10.0f
     
     [<Export>]
-    let mutable cooldown = 0.2
+    let mutable cooldown = 0.2f
 
     let mutable linearVelocity = Vector2.Zero
     let mutable angularVelocity = 0.0
@@ -38,14 +23,18 @@ type Ship() =
 
     member this.toRecord = { 
         name = this.Name
-        position = this.GlobalPosition
-        rotation = this.GlobalRotation
-        scale = this.GlobalScale
-        speed = speed
-        spin = spin
-        cooldown = cooldown
+        position = {x = float this.GlobalPosition.x; y = float this.GlobalPosition.y}
+        rotation = float this.GlobalRotation
+        scale = {x = float this.GlobalScale.x; y = float this.GlobalScale.y}
+        linearVelocity = {x = float linearVelocity.x; y = float linearVelocity.y}
+        angularVelocity = angularVelocity
+        speed = float speed
+        spin = float spin
+        cooldown = float cooldown
         cooldownTimer = cooldownTimer
-        gun = {position = gun.GlobalPosition; rotation = gun.GlobalRotation}
+        gun = {
+            position = {x = float gun.GlobalPosition.x; y = float gun.GlobalPosition.y}
+            rotation = float gun.GlobalRotation}
         input = input.toRecord
     }
 
