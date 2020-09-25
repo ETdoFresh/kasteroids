@@ -34,10 +34,14 @@ func set_record(new_record : ShipRecord):
     #gun.global_position.y = record.gun_position.y
     cooldown = record.cooldown.value
     cooldown_timer = record.cooldown_timer.value
+    input.horizontal = record.input.horizontal
+    input.vertical = record.input.vertical
+    input.fire = record.input.fire
 
 func get_record():
     if not record:
         record = ShipRecord.new()
+        record.node = self
         record.speed = SpeedRecord.new(speed)
         record.spin = SpinRecord.new(spin)
         record.position = PositionRecord.new(global_position)
@@ -52,4 +56,8 @@ func get_record():
         record.gun_rotation = RotationRecord.new(gun.global_rotation)
         record.cooldown = CooldownRecord.new(cooldown)
         record.cooldown_timer = CooldownTimerRecord.new(cooldown_timer)
+        record.input = InputRecord.new(input.horizontal, input.vertical, input.fire)
     return record
+
+func update_input():
+    record.input = InputRecord.new(input.horizontal, input.vertical, input.fire)

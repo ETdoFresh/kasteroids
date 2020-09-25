@@ -23,6 +23,7 @@ position = Vector2( -1, 0 )
 script = ExtResource( 3 )
 
 [node name="Ship" parent="." instance=ExtResource( 5 )]
+position = Vector2( 960, 540 )
 
 [node name="Input" type="Node" parent="Ship"]
 script = ExtResource( 4 )

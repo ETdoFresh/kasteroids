@@ -27,6 +27,7 @@ func set_record(new_record : AsteroidRecord):
 func get_record():
     if not record:
         record = AsteroidRecord.new()
+        record.node = self
         record.position = PositionRecord.new(global_position)
         record.rotation = RotationRecord.new(global_rotation)
         record.scale = ScaleRecord.new(global_scale)

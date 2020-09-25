@@ -1,6 +1,9 @@
 class_name AsteroidRecord
 extends Record
 
+# Node
+var node: Node
+
 # Transform
 var position: PositionRecord
 var rotation: RotationRecord

@@ -1,6 +1,9 @@
 class_name ShipRecord
 extends Record
 
+# Node
+var node: Node
+
 # Ship
 var speed: SpeedRecord
 var spin: SpinRecord
@@ -24,3 +27,6 @@ var gun_position: PositionRecord
 var gun_rotation: RotationRecord
 var cooldown: CooldownRecord
 var cooldown_timer: CooldownTimerRecord
+
+# Input
+var input: InputRecord
