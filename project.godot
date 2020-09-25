@@ -9,43 +9,169 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "FloatRecord",
+"class": "AngularVelocityRecord",
+"language": "GDScript",
+"path": "res://scenes/physics/angular_velocity_record.gd"
+}, {
+"base": "Node2D",
+"class": "Asteroid",
+"language": "GDScript",
+"path": "res://scenes/asteroid/asteroid.gd"
+}, {
+"base": "Record",
+"class": "AsteroidRecord",
+"language": "GDScript",
+"path": "res://scenes/asteroid/asteroid_record.gd"
+}, {
+"base": "FloatRecord",
+"class": "BounceRecord",
+"language": "GDScript",
+"path": "res://scenes/physics/bounce_record.gd"
+}, {
+"base": "CollisionShape2DRecord",
+"class": "CollisionShape2DCircleRecord",
+"language": "GDScript",
+"path": "res://scenes/physics/collision_shape_2d_circle_record.gd"
+}, {
+"base": "CollisionShape2DRecord",
+"class": "CollisionShape2DConvexPolygonRecord",
+"language": "GDScript",
+"path": "res://scenes/physics/collision_shape_2d_convex_polygon_record.gd"
+}, {
+"base": "Record",
+"class": "CollisionShape2DRecord",
+"language": "GDScript",
+"path": "res://scenes/physics/collision_shape_2d_record.gd"
+}, {
+"base": "FloatRecord",
+"class": "CooldownRecord",
+"language": "GDScript",
+"path": "res://scenes/ship/cooldown_record.gd"
+}, {
+"base": "FloatRecord",
+"class": "CooldownTimerRecord",
+"language": "GDScript",
+"path": "res://scenes/ship/cooldown_timer_record.gd"
+}, {
 "base": "Reference",
 "class": "DictionaryFunctions",
 "language": "GDScript",
 "path": "res://functions/dictionary.gd"
+}, {
+"base": "Record",
+"class": "FloatRecord",
+"language": "GDScript",
+"path": "res://scenes/record/float_record.gd"
 }, {
 "base": "Reference",
 "class": "JSONBeautifier",
 "language": "GDScript",
 "path": "res://plugins/json_beautifier.gd"
 }, {
+"base": "Vector2Record",
+"class": "LinearVelocityRecord",
+"language": "GDScript",
+"path": "res://scenes/physics/linear_velocity_record.gd"
+}, {
 "base": "Reference",
 "class": "ListFunctions",
 "language": "GDScript",
 "path": "res://functions/list.gd"
+}, {
+"base": "FloatRecord",
+"class": "MassRecord",
+"language": "GDScript",
+"path": "res://scenes/physics/mass_record.gd"
+}, {
+"base": "Vector2Record",
+"class": "PositionRecord",
+"language": "GDScript",
+"path": "res://scenes/transform/position_record.gd"
+}, {
+"base": "Reference",
+"class": "Record",
+"language": "GDScript",
+"path": "res://scenes/record/record.gd"
+}, {
+"base": "FloatRecord",
+"class": "RotationRecord",
+"language": "GDScript",
+"path": "res://scenes/transform/rotation_record.gd"
+}, {
+"base": "Vector2Record",
+"class": "ScaleRecord",
+"language": "GDScript",
+"path": "res://scenes/transform/scale_record.gd"
 }, {
 "base": "Reference",
 "class": "SceneMap",
 "language": "GDScript",
 "path": "res://functions/scene_map.gd"
 }, {
+"base": "Node2D",
+"class": "Ship",
+"language": "GDScript",
+"path": "res://scenes/ship/ship.gd"
+}, {
+"base": "Record",
+"class": "ShipRecord",
+"language": "GDScript",
+"path": "res://scenes/ship/ship_record.gd"
+}, {
 "base": "Reference",
 "class": "ShortcutFunctions",
 "language": "GDScript",
 "path": "res://functions/shortcut.gd"
 }, {
+"base": "FloatRecord",
+"class": "SpeedRecord",
+"language": "GDScript",
+"path": "res://scenes/ship/speed_record.gd"
+}, {
+"base": "FloatRecord",
+"class": "SpinRecord",
+"language": "GDScript",
+"path": "res://scenes/ship/spin_record.gd"
+}, {
 "base": "Reference",
 "class": "StateFunctions",
 "language": "GDScript",
 "path": "res://functions/state.gd"
+}, {
+"base": "Record",
+"class": "Vector2Record",
+"language": "GDScript",
+"path": "res://scenes/record/vector2_record.gd"
 } ]
 _global_script_class_icons={
+"AngularVelocityRecord": "",
+"Asteroid": "",
+"AsteroidRecord": "",
+"BounceRecord": "",
+"CollisionShape2DCircleRecord": "",
+"CollisionShape2DConvexPolygonRecord": "",
+"CollisionShape2DRecord": "",
+"CooldownRecord": "",
+"CooldownTimerRecord": "",
 "DictionaryFunctions": "",
+"FloatRecord": "",
 "JSONBeautifier": "",
+"LinearVelocityRecord": "",
 "ListFunctions": "",
+"MassRecord": "",
+"PositionRecord": "",
+"Record": "",
+"RotationRecord": "",
+"ScaleRecord": "",
 "SceneMap": "",
+"Ship": "",
+"ShipRecord": "",
 "ShortcutFunctions": "",
-"StateFunctions": ""
+"SpeedRecord": "",
+"SpinRecord": "",
+"StateFunctions": "",
+"Vector2Record": ""
 }
 
 [application]
@@ -57,16 +183,6 @@ config/icon="res://graphics/icon.png"
 [autoload]
 
 Random="*res://autoload/random.gd"
-Asteroid="*res://functions/asteroid.gd"
-NodeFunc="*res://functions/node.gd"
-ObjectFunc="*res://functions/object.gd"
-Ship="*res://functions/ship.gd"
-Wrap="*res://functions/wrap.gd"
-Sound="*res://functions/sound.gd"
-Bullet="*res://functions/bullet.gd"
-Physics="*res://functions/physics.gd"
-Collision="*res://functions/collision.gd"
-BoundingBox="*res://functions/bounding_box.gd"
 
 [display]
 

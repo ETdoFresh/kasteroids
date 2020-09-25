@@ -2,8 +2,8 @@
 
 [ext_resource path="res://fonts/arial.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://scenes/asteroid/asteroid.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Scripts/World.cs" type="Script" id=3]
-[ext_resource path="res://Scripts/InputNode.cs" type="Script" id=4]
+[ext_resource path="res://scenes/world/world.gd" type="Script" id=3]
+[ext_resource path="res://scenes/input/input.gd" type="Script" id=4]
 [ext_resource path="res://scenes/ship/ship.tscn" type="PackedScene" id=5]
 
 [sub_resource type="DynamicFontData" id=1]
@@ -29,7 +29,6 @@ script = ExtResource( 4 )
 
 [node name="Asteroid1" parent="." instance=ExtResource( 2 )]
 position = Vector2( 366.05, 256.151 )
-randomize_scale = false
 
 [node name="Label" type="Label" parent="Asteroid1"]
 margin_left = -20.0
@@ -47,7 +46,6 @@ __meta__ = {
 
 [node name="Asteroid2" parent="." instance=ExtResource( 2 )]
 position = Vector2( 326.452, 744.055 )
-randomize_scale = false
 
 [node name="Label2" type="Label" parent="Asteroid2"]
 anchor_left = 0.5
@@ -69,7 +67,6 @@ __meta__ = {
 
 [node name="Asteroid3" parent="." instance=ExtResource( 2 )]
 position = Vector2( 1384.28, 234.938 )
-randomize_scale = false
 
 [node name="Label2" type="Label" parent="Asteroid3"]
 anchor_left = 0.5
@@ -91,7 +88,6 @@ __meta__ = {
 
 [node name="Asteroid4" parent="." instance=ExtResource( 2 )]
 position = Vector2( 1488.94, 735.57 )
-randomize_scale = false
 
 [node name="Label2" type="Label" parent="Asteroid4"]
 anchor_left = 0.5
