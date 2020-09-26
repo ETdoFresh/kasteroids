@@ -7,3 +7,8 @@ func init(init_radius: float):
     var init = duplicate()
     init.radius = init_radius
     return init
+
+func duplicate():
+    var duplicate = get_script().new()
+    duplicate.radius = radius
+    return duplicate

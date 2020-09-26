@@ -17,3 +17,16 @@ var angular_velocity: AngularVelocityRecord
 
 # ColliderShape2D
 var collision_shape_2d: CollisionShape2DRecord
+
+func duplicate():
+    var duplicate = get_script().new()
+    duplicate.node = node
+    duplicate.position = position
+    duplicate.rotation = rotation
+    duplicate.scale = scale
+    duplicate.mass = mass
+    duplicate.bounce = bounce
+    duplicate.linear_velocity = linear_velocity
+    duplicate.angular_velocity = angular_velocity
+    duplicate.collision_shape_2d = collision_shape_2d
+    return duplicate

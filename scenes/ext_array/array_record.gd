@@ -8,6 +8,11 @@ func init(init_array: Array):
     init.array = init_array
     return init
 
+func duplicate():
+    var duplicate = get_script().new()
+    duplicate.array = array.duplicate()
+    return duplicate
+
 func is_empty() -> bool: return array.size() > 0
 func head(): return array[0]
 func head_or_null(): return null if is_empty() else array[0]

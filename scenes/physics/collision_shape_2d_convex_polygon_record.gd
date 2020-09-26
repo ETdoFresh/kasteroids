@@ -8,3 +8,8 @@ func init(array: Array):
     for item in array:
         init.points.append(Vector2Record.new().init(item))
     return init
+
+func duplicate():
+    var duplicate = get_script().new()
+    duplicate.points = points
+    return duplicate

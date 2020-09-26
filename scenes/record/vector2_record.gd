@@ -11,5 +11,11 @@ func init(init_vector2: Vector2):
     init.y = init_vector2.y
     return init
 
+func duplicate():
+    var duplicate = get_script().new()
+    duplicate.x = x
+    duplicate.y = y
+    return duplicate
+
 func get_vector2():
     return Vector2(x, y)

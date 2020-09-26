@@ -11,3 +11,10 @@ func init(init_horizontal: float, init_vertical: float, init_fire: bool):
     init.vertical = init_vertical
     init.fire = init_fire
     return init
+
+func duplicate():
+    var duplicate = get_script().new()
+    duplicate.horizontal = horizontal
+    duplicate.vertical = vertical
+    duplicate.fire = fire
+    return duplicate

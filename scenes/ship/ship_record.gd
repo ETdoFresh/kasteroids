@@ -31,3 +31,24 @@ var cooldown_timer: CooldownTimerRecord
 
 # Input
 var input: InputRecord
+
+func duplicate():
+    var duplicate = get_script().new()
+    duplicate.node = node
+    duplicate.speed = speed
+    duplicate.spin = spin
+    duplicate.position = position
+    duplicate.rotation = rotation
+    duplicate.scale = scale
+    duplicate.mass = mass
+    duplicate.bounce = bounce
+    duplicate.linear_acceleration = linear_acceleration
+    duplicate.linear_velocity = linear_velocity
+    duplicate.angular_velocity = angular_velocity
+    duplicate.collision_shape_2d = collision_shape_2d
+    duplicate.gun_position = gun_position
+    duplicate.gun_rotation = gun_rotation
+    duplicate.cooldown = cooldown
+    duplicate.cooldown_timer = cooldown_timer
+    duplicate.input = input
+    return duplicate
