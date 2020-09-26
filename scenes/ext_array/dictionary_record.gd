@@ -3,9 +3,6 @@ extends Record
 
 var dictionary: Dictionary
 
-func _init(init_dictionary: Dictionary):
-    dictionary = init_dictionary
-
 func is_empty() -> bool: return false
 func head(): pass
 func head_or_null(): pass

@@ -21,19 +21,20 @@ func set_record(new_record : AsteroidRecord):
     global_scale.y = record.scale.y
     mass = record.mass.value
     bounce = record.bounce.value
-    linear_velocity = record.linear_velocity.value
+    linear_velocity.x = record.linear_velocity.x
+    linear_velocity.y = record.linear_velocity.y
     angular_velocity = record.angular_velocity.value
 
 func get_record():
     if not record:
         record = AsteroidRecord.new()
         record.node = self
-        record.position = PositionRecord.new(global_position)
-        record.rotation = RotationRecord.new(global_rotation)
-        record.scale = ScaleRecord.new(global_scale)
-        record.mass = MassRecord.new(mass)
-        record.bounce = BounceRecord.new(bounce)
-        record.linear_velocity = LinearVelocityRecord.new(linear_velocity)
-        record.angular_velocity = AngularVelocityRecord.new(angular_velocity)
-        record.collision_shape_2d = CollisionShape2DCircleRecord.new(collision_shape_2d.shape.radius)
+        record.position = PositionRecord.new().init(global_position)
+        record.rotation = RotationRecord.new().init(global_rotation)
+        record.scale = ScaleRecord.new().init(global_scale)
+        record.mass = MassRecord.new().init(mass)
+        record.bounce = BounceRecord.new().init(bounce)
+        record.linear_velocity = LinearVelocityRecord.new().init(linear_velocity)
+        record.angular_velocity = AngularVelocityRecord.new().init(angular_velocity)
+        record.collision_shape_2d = CollisionShape2DCircleRecord.new().init(collision_shape_2d.shape.radius)
     return record

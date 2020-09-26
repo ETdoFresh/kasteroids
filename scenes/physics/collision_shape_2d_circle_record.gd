@@ -3,5 +3,7 @@ extends CollisionShape2DRecord
 
 var radius: float
 
-func _init(init_radius: float):
-    radius = init_radius
+func init(init_radius: float):
+    var init = duplicate()
+    init.radius = init_radius
+    return init

@@ -3,7 +3,13 @@ extends Record
 
 var x: float
 var y: float
+var vector2: Vector2 setget , get_vector2
 
-func _init(vector2: Vector2):
-    self.x = vector2.x
-    self.y = vector2.y
+func init(init_vector2: Vector2):
+    var init = duplicate()
+    init.x = init_vector2.x
+    init.y = init_vector2.y
+    return init
+
+func get_vector2():
+    return Vector2(x, y)

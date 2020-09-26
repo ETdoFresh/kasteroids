@@ -1,29 +1,33 @@
-func new_state(): 
-    return StateRecord.new(0, ObjectsRecord.new([]))
+class_name FPWorld
 
-func init(world: Node):
+func new_state(): 
+    return StateRecord.new().init(0, ObjectsRecord.new().init([]))
+
+func ready(world: Node):
     return new_state() \
-        .with("objects", ObjectsRecord.new(world.get_children()) \
+        .with("objects", ObjectsRecord.new().init(world.get_children()) \
             .map(funcref(self, "from_node_to_record")) \
             .filter(funcref(self, "is_not_null")))
 
-func process(state_record: StateRecord, _delta: float, _world: Node):
-    return state_record \
-        .increment_tick() \
-        .with("objects", state_record.objects \
+func process(state: StateRecord, delta: float, _world: Node):
+    return state \
+        .with("tick", state.tick + 1) \
+        .with("objects", state.objects \
             .apply_input() \
-            .queue_create_bullets() \
-            .set_cooldowns() \
-            .apply_linear_acceleration() \
-            .apply_linear_velocity() \
-            .apply_angular_velocity() \
-            .add_new_collisions() \
-            .resolve_collisions() \
-            .queue_delete_bullet_on_collide() \
-            .queue_delete_bullet_on_timeout() \
-            .delete_objects() \
-            .create_objects() \
-            .update_objects())
+            .apply_angular_velocity(delta) \
+            .apply_linear_acceleration(delta) \
+            .apply_linear_velocity(delta) \
+            .wrap_around_the_screen() \
+            .update_nodes()
+#            .queue_create_bullets() \
+#            .set_cooldowns() \
+#            .add_new_collisions() \
+#            .resolve_collisions() \
+#            .queue_delete_bullet_on_collide() \
+#            .queue_delete_bullet_on_timeout() \
+#            .delete_objects() \
+#            .create_objects() \
+        )
 
 func from_node_to_record(node: Node):
     if node.has_method("get_record"):

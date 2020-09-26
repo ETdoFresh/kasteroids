@@ -3,6 +3,8 @@ extends CollisionShape2DRecord
 
 var points: Array
 
-func _init(array: Array):
+func init(array: Array):
+    var init = duplicate()
     for item in array:
-        points.append(Vector2Record.new(item))
+        init.points.append(Vector2Record.new().init(item))
+    return init

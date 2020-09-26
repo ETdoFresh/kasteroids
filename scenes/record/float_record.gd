@@ -3,5 +3,7 @@ extends Record
 
 var value: float
 
-func _init(init_value: float):
-    value = init_value
+func init(init_value: float):
+    var init = duplicate()
+    init.value = init_value
+    return init

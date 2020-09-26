@@ -4,9 +4,8 @@ extends Record
 var tick: int
 var objects: ObjectsRecord
 
-func _init(init_tick: int, init_objects: ObjectsRecord):
-    tick = init_tick
-    objects = init_objects
-
-func copy():
-    return get_script().new(tick, objects)
+func init(init_tick: int, init_objects: ObjectsRecord):
+    var init = duplicate()
+    init.tick = init_tick
+    init.objects = init_objects
+    return init

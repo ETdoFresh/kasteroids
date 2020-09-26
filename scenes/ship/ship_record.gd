@@ -16,6 +16,7 @@ var scale: ScaleRecord
 # RigidBody2D
 var mass: MassRecord
 var bounce: BounceRecord
+var linear_acceleration: LinearAccelerationRecord
 var linear_velocity: LinearVelocityRecord
 var angular_velocity: AngularVelocityRecord
 

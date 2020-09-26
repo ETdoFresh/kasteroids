@@ -1,13 +1,12 @@
 class_name ArrayRecord
 extends Record
 
-var array: Array
+var array: Array = []
 
-func _init(init_array: Array):
-    array = init_array
-
-func copy():
-    return get_script().new(array.duplicate())
+func init(init_array: Array):
+    var init = duplicate()
+    init.array = init_array
+    return init
 
 func is_empty() -> bool: return array.size() > 0
 func head(): return array[0]
@@ -16,9 +15,17 @@ func tail(): return array[array.size() - 1]
 func tail_or_null(): return null if is_empty() else array[array.size() - 1]
 
 func map(func_ref: FuncRef):
-    var result = copy()
+    var result = duplicate()
     for i in range(array.size()):
         result.array[i] = func_ref.call_func(array[i])
+    return result
+
+func map_only(filter_func: FuncRef, map_func: FuncRef):
+    var result = duplicate()
+    for i in range(array.size()):
+        if filter_func.call_func(array[i]):
+            result.array[i] = map_func.call_func(array[i])
+            continue
     return result
 
 func for_each(func_ref: FuncRef):
@@ -27,7 +34,7 @@ func for_each(func_ref: FuncRef):
 func join(): return null
 
 func filter(func_ref):
-    var result = copy()
+    var result = duplicate()
     result.array = []
     for i in range(array.size()):
         if func_ref.call_func(array[i]):

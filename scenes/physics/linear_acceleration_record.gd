@@ -1,0 +1,2 @@
+class_name LinearAccelerationRecord
+extends Vector2Record
