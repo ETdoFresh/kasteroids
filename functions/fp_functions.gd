@@ -90,9 +90,10 @@ static func cap_max_speed(record: Record):
     else:
         return record
 
-static func is_ship_firing(shipRecord: ShipRecord):
-    return shipRecord.cooldown_timer.value == 0 and \
-        shipRecord.input.fire
+static func is_ship_firing(record: Record):
+    return record is ShipRecord and \
+        record.cooldown_timer.value <= 0 and \
+        record.input.fire
 
 static func create_bullet_record(shipRecord: ShipRecord):
     var ship_position = shipRecord.position.value
@@ -116,6 +117,7 @@ static func update_cooldown_timer(delta: float, shipRecord: ShipRecord):
     var cooldown_timer = shipRecord.cooldown_timer.value
     if cooldown_timer > 0:
         cooldown_timer -= delta
+        cooldown_timer = max(cooldown_timer, 0)
         cooldown_timer = shipRecord.cooldown_timer.init(cooldown_timer)
         return shipRecord.with("cooldown_timer", cooldown_timer)
     else:
@@ -132,5 +134,33 @@ static func has_destroy_timer(record: Record):
 static func update_destroy_timer(delta: float, record: Record):
     var new_destroy_timer = record.destroy_timer.value
     new_destroy_timer -= delta
+    new_destroy_timer = max(0, new_destroy_timer)
     new_destroy_timer = record.destroy_timer.init(new_destroy_timer)
     return record.with("destroy_timer", new_destroy_timer)
+
+static func is_destroy_timer_finished(record: Record):
+    return "destroy_timer" in record \
+        and record.destroy_timer.value <= 0
+
+static func queue_delete(record: Record):
+    return record.with("queue_delete", true)
+
+static func is_queue_delete(record: Record):
+    return record.queue_delete
+
+static func not_is_queue_delete(record: Record):
+    return not record.queue_delete
+
+static func node_queue_free(record: Record):
+    var _side_effect = record.node.queue_free()
+    return record
+
+static func is_bullet_destroyed(record: Record):
+    return record is BulletRecord and record.queue_delete
+
+static func spawn_bullet_particles(world: Node2D, bullet: BulletRecord):
+    var bullet_particles = Scene.BULLET_PARTICLES_SCENE.instance()
+    world.add_child(bullet_particles)
+    bullet_particles.emitting = true
+    bullet_particles.global_position = bullet.position.value
+    return bullet

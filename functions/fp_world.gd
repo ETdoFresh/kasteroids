@@ -15,18 +15,20 @@ func process(state: StateRecord, delta: float, world: Node):
         .with("objects", state.objects \
             .apply_input() \
             .queue_create_bullets() \
+            .set_cooldowns(delta) \
             .limit_velocity() \
             .apply_angular_velocity(delta) \
             .apply_linear_acceleration(delta) \
             .apply_linear_velocity(delta) \
             .wrap_around_the_screen() \
+            .update_destroy_timers(delta) \
+            .queue_delete_on_timeout() \
+            .spawn_bullet_particles_on_bullet_destroy(world) \
+            .delete_objects() \
             .update_nodes(world)
-#            .set_cooldowns() \
 #            .add_new_collisions() \
 #            .resolve_collisions() \
 #            .queue_delete_bullet_on_collide() \
-#            .queue_delete_bullet_on_timeout() \
-#            .delete_objects() \
 #            .create_objects() \
         )
 

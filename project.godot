@@ -65,11 +65,6 @@ _global_script_classes=[ {
 "path": "res://scenes/ship/cooldown_timer_record.gd"
 }, {
 "base": "FloatRecord",
-"class": "DestroyTimeRecord",
-"language": "GDScript",
-"path": "res://scenes/bullet/destroy_time_record.gd"
-}, {
-"base": "FloatRecord",
 "class": "DestroyTimerRecord",
 "language": "GDScript",
 "path": "res://scenes/bullet/destroy_timer_record.gd"
@@ -221,7 +216,6 @@ _global_script_class_icons={
 "CollisionShape2DRecord": "",
 "CooldownRecord": "",
 "CooldownTimerRecord": "",
-"DestroyTimeRecord": "",
 "DestroyTimerRecord": "",
 "DictionaryFunctions": "",
 "DictionaryRecord": "",

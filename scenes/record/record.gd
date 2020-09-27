@@ -1,5 +1,7 @@
 class_name Record
 
+var queue_delete = false
+
 func duplicate():
     var duplicate = get_script().new()
     for property in get_property_list():

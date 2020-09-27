@@ -19,7 +19,6 @@ var angular_velocity: AngularVelocityRecord
 var collision_shape_2d: CollisionShape2DRecord
 
 # Destroy Timer
-var destroy_time: DestroyTimeRecord
 var destroy_timer: DestroyTimerRecord
 
 func duplicate():
@@ -33,6 +32,5 @@ func duplicate():
     duplicate.linear_velocity = linear_velocity
     duplicate.angular_velocity = angular_velocity
     duplicate.collision_shape_2d = collision_shape_2d
-    duplicate.destroy_time = destroy_time
     duplicate.destroy_timer = destroy_timer
     return duplicate
