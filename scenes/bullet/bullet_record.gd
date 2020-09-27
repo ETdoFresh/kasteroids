@@ -1,13 +1,8 @@
-class_name ShipRecord
+class_name BulletRecord
 extends Record
 
 # Node
 var node: Node
-
-# Ship
-var speed: SpeedRecord
-var spin: SpinRecord
-var max_speed: MaxSpeedRecord
 
 # Transform
 var position: PositionRecord
@@ -17,40 +12,27 @@ var scale: ScaleRecord
 # RigidBody2D
 var mass: MassRecord
 var bounce: BounceRecord
-var linear_acceleration: LinearAccelerationRecord
 var linear_velocity: LinearVelocityRecord
 var angular_velocity: AngularVelocityRecord
 
 # ColliderShape2D
 var collision_shape_2d: CollisionShape2DRecord
 
-# Gun
-var gun_position: PositionRecord
-var gun_rotation: RotationRecord
-var cooldown: CooldownRecord
-var cooldown_timer: CooldownTimerRecord
-
-# Input
-var input: InputRecord
+# Destroy Timer
+var destroy_time: DestroyTimeRecord
+var destroy_timer: DestroyTimerRecord
 
 func duplicate():
     var duplicate = get_script().new()
     duplicate.node = node
-    duplicate.speed = speed
-    duplicate.spin = spin
-    duplicate.max_speed = max_speed
     duplicate.position = position
     duplicate.rotation = rotation
     duplicate.scale = scale
     duplicate.mass = mass
     duplicate.bounce = bounce
-    duplicate.linear_acceleration = linear_acceleration
     duplicate.linear_velocity = linear_velocity
     duplicate.angular_velocity = angular_velocity
     duplicate.collision_shape_2d = collision_shape_2d
-    duplicate.gun_position = gun_position
-    duplicate.gun_rotation = gun_rotation
-    duplicate.cooldown = cooldown
-    duplicate.cooldown_timer = cooldown_timer
-    duplicate.input = input
+    duplicate.destroy_time = destroy_time
+    duplicate.destroy_timer = destroy_timer
     return duplicate

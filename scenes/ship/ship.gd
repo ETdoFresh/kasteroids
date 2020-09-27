@@ -3,6 +3,7 @@ extends Node2D
 
 export var speed = 800.0
 export var spin = 10.0
+export var max_speed = 800.0
 export var mass = 1.0
 export var bounce = 0.7
 export var linear_acceleration = Vector2.ZERO
@@ -11,7 +12,7 @@ export var angular_velocity = 0.0
 export var cooldown = 0.2
 export var cooldown_timer = 0.0
 
-var record setget set_record, get_record
+var record
 
 onready var input = $Input
 onready var collision_shape_2d = $CollisionShape2D
@@ -20,8 +21,9 @@ onready var gun : Node2D = $Gun
 
 func set_record(new_record : ShipRecord):
     record = new_record
-    speed = record.speed
-    spin = record.spin
+    speed = record.speed.value
+    spin = record.spin.value
+    max_speed = record.max_speed.value
     global_position.x = record.position.x
     global_position.y = record.position.y
     global_rotation = record.rotation.value
@@ -48,6 +50,7 @@ func get_record():
         record.node = self
         record.speed = SpeedRecord.new().init(speed)
         record.spin = SpinRecord.new().init(spin)
+        record.max_speed = MaxSpeedRecord.new().init(max_speed)
         record.position = PositionRecord.new().init(global_position)
         record.rotation = RotationRecord.new().init(global_rotation)
         record.scale = ScaleRecord.new().init(global_scale)
@@ -57,8 +60,8 @@ func get_record():
         record.linear_velocity = LinearVelocityRecord.new().init(linear_velocity)
         record.angular_velocity = AngularVelocityRecord.new().init(angular_velocity)
         record.collision_shape_2d = CollisionShape2DConvexPolygonRecord.new().init(collision_shape_2d.shape.points)
-        record.gun_position = PositionRecord.new().init(gun.global_position)
-        record.gun_rotation = RotationRecord.new().init(gun.global_rotation)
+        record.gun_position = PositionRecord.new().init(gun.position)
+        record.gun_rotation = RotationRecord.new().init(gun.rotation)
         record.cooldown = CooldownRecord.new().init(cooldown)
         record.cooldown_timer = CooldownTimerRecord.new().init(cooldown_timer)
         record.input = InputRecord.new().init(input.horizontal, input.vertical, input.fire)

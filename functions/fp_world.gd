@@ -9,17 +9,18 @@ func ready(world: Node):
             .map(funcref(self, "from_node_to_record")) \
             .filter(funcref(self, "is_not_null")))
 
-func process(state: StateRecord, delta: float, _world: Node):
+func process(state: StateRecord, delta: float, world: Node):
     return state \
         .with("tick", state.tick + 1) \
         .with("objects", state.objects \
             .apply_input() \
+            .queue_create_bullets() \
+            .limit_velocity() \
             .apply_angular_velocity(delta) \
             .apply_linear_acceleration(delta) \
             .apply_linear_velocity(delta) \
             .wrap_around_the_screen() \
-            .update_nodes()
-#            .queue_create_bullets() \
+            .update_nodes(world)
 #            .set_cooldowns() \
 #            .add_new_collisions() \
 #            .resolve_collisions() \
@@ -31,7 +32,7 @@ func process(state: StateRecord, delta: float, _world: Node):
 
 func from_node_to_record(node: Node):
     if node.has_method("get_record"):
-        return node.record
+        return node.get_record()
     else:
         return null
 

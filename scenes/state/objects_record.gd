@@ -34,6 +34,23 @@ func wrap_around_the_screen():
     var wrap = funcref(FPFunctions, "wrap")
     return map_only(has_position, wrap)
 
-func update_nodes():
-    var _side_effect = map(funcref(FPFunctions, "update_node"))
+func update_nodes(world: Node):
+    var update_node = funcref(FPFunctions, "update_node")
+    var baker = FPBake.new().init(update_node, world)
+    var update_node_world_bake = baker.get_funcref()
+    var _side_effect = map(update_node_world_bake)
     return self
+
+func limit_velocity():
+    var has_max_speed = funcref(FPFunctions, "has_linear_velocity_and_max_speed")
+    var cap_max_speed = funcref(FPFunctions, "cap_max_speed")
+    return map_only(has_max_speed, cap_max_speed)
+
+func queue_create_bullets():
+    var is_ship = funcref(FPFunctions, "is_ship_record")
+    var is_ship_firing = funcref(FPFunctions, "is_ship_firing")
+    var create_bullet = funcref(FPFunctions, "create_bullet_record")
+    return concat( \
+        filter(is_ship) \
+        .filter(is_ship_firing) \
+        .map(create_bullet))

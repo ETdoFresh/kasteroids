@@ -34,6 +34,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/physics/bounce_record.gd"
 }, {
+"base": "Record",
+"class": "BulletRecord",
+"language": "GDScript",
+"path": "res://scenes/bullet/bullet_record.gd"
+}, {
 "base": "CollisionShape2DRecord",
 "class": "CollisionShape2DCircleRecord",
 "language": "GDScript",
@@ -58,6 +63,16 @@ _global_script_classes=[ {
 "class": "CooldownTimerRecord",
 "language": "GDScript",
 "path": "res://scenes/ship/cooldown_timer_record.gd"
+}, {
+"base": "FloatRecord",
+"class": "DestroyTimeRecord",
+"language": "GDScript",
+"path": "res://scenes/bullet/destroy_time_record.gd"
+}, {
+"base": "FloatRecord",
+"class": "DestroyTimerRecord",
+"language": "GDScript",
+"path": "res://scenes/bullet/destroy_timer_record.gd"
 }, {
 "base": "Reference",
 "class": "DictionaryFunctions",
@@ -118,6 +133,11 @@ _global_script_classes=[ {
 "class": "MassRecord",
 "language": "GDScript",
 "path": "res://scenes/physics/mass_record.gd"
+}, {
+"base": "FloatRecord",
+"class": "MaxSpeedRecord",
+"language": "GDScript",
+"path": "res://scenes/ship/max_speed_record.gd"
 }, {
 "base": "ArrayRecord",
 "class": "ObjectsRecord",
@@ -195,11 +215,14 @@ _global_script_class_icons={
 "Asteroid": "",
 "AsteroidRecord": "",
 "BounceRecord": "",
+"BulletRecord": "",
 "CollisionShape2DCircleRecord": "",
 "CollisionShape2DConvexPolygonRecord": "",
 "CollisionShape2DRecord": "",
 "CooldownRecord": "",
 "CooldownTimerRecord": "",
+"DestroyTimeRecord": "",
+"DestroyTimerRecord": "",
 "DictionaryFunctions": "",
 "DictionaryRecord": "",
 "FPBake": "",
@@ -212,6 +235,7 @@ _global_script_class_icons={
 "LinearVelocityRecord": "",
 "ListFunctions": "",
 "MassRecord": "",
+"MaxSpeedRecord": "",
 "ObjectsRecord": "",
 "PositionRecord": "",
 "Record": "",
@@ -238,6 +262,7 @@ config/icon="res://graphics/icon.png"
 
 Random="*res://autoload/random.gd"
 FP="*res://functions/fp.gd"
+Scene="*res://autoload/scene.gd"
 
 [display]
 

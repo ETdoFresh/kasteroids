@@ -3,7 +3,7 @@ extends Record
 
 var x: float
 var y: float
-var vector2: Vector2 setget , get_vector2
+var value: Vector2 setget , get_vector2
 
 func init(init_vector2: Vector2):
     var init = duplicate()

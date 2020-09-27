@@ -13,6 +13,17 @@ func duplicate():
     duplicate.array = array.duplicate()
     return duplicate
 
+func append(item):
+    var result = duplicate()
+    result.array.append(item)
+    return result
+
+func concat(other_array_record: ArrayRecord):
+    var result = duplicate()
+    for item in other_array_record.array:
+        result.array.append(item)
+    return result
+
 func is_empty() -> bool: return array.size() > 0
 func head(): return array[0]
 func head_or_null(): return null if is_empty() else array[0]
