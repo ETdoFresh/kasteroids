@@ -90,3 +90,33 @@ func spawn_bullet_particles_on_bullet_destroy(world: Node2D):
     var spawn_bullet_particles_world_bake = baker.get_funcref()
     var _side_effect = filter(is_bullet_destroyed).map(spawn_bullet_particles_world_bake)
     return self
+
+func add_new_collisions():
+    # TODO: Implement functions below
+    var create_collision_pair_record = funcref(FPFunctions, "create_collision_pair_record")
+    var has_bounding_box = funcref(FPFunctions, "has_bounding_box")
+    var update_bounding_box = funcref(FPFunctions, "update_bounding_box")
+    var can_collide = funcref(FPFunctions, "can_collide")
+    var broad_phase_search = funcref(FPFunctions, "broad_phase_search")
+    var narrow_phase_search = funcref(FPFunctions, "narrow_phase_search")
+    var pairs = pairs() \
+        .map(create_collision_pair_record) \
+        .map_only(has_bounding_box, update_bounding_box) \
+        .map_only(can_collide, broad_phase_search) \
+        .map_only(can_collide, narrow_phase_search)
+    var write_closest_collision = funcref(FPFunctions, "wite_closest_collision")
+    var baker = FPBake.new().init(write_closest_collision, pairs)
+    var write_closest_collision_pairs_bake = baker.get_funcref()
+    return map(write_closest_collision_pairs_bake)
+
+func resolve_collisions():
+    # TODO: Implement functions below
+    var has_collided = funcref(FPFunctions, "has_collided")
+    var bounce = funcref(FPFunctions, "bounce")
+    return map_only(has_collided, bounce)
+
+func queue_delete_bullet_on_collide():
+    # TODO: Implement functions below
+    var has_bullet_collided = funcref(FPFunctions, "has_bullet_collided")
+    var queue_delete = funcref(FPFunctions, "queue_delete")
+    return map_only(has_bullet_collided, queue_delete)

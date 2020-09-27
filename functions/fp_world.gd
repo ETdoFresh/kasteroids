@@ -21,14 +21,14 @@ func process(state: StateRecord, delta: float, world: Node):
             .apply_linear_acceleration(delta) \
             .apply_linear_velocity(delta) \
             .wrap_around_the_screen() \
+            .add_new_collisions() \
+            .resolve_collisions() \
             .update_destroy_timers(delta) \
+            .queue_delete_bullet_on_collide() \
             .queue_delete_on_timeout() \
             .spawn_bullet_particles_on_bullet_destroy(world) \
             .delete_objects() \
-            .update_nodes(world)
-#            .add_new_collisions() \
-#            .resolve_collisions() \
-#            .queue_delete_bullet_on_collide() \
+            .update_nodes(world) \
 #            .create_objects() \
         )
 

@@ -30,6 +30,14 @@ func head_or_null(): return null if is_empty() else array[0]
 func tail(): return array[array.size() - 1]
 func tail_or_null(): return null if is_empty() else array[array.size() - 1]
 
+func pairs():
+    var result = get_script().new()
+    for i in array.size():
+        for j in array.size():
+            if i != j:
+                result.array.append([array[i], array[j]])
+    return result
+
 func map(func_ref: FuncRef):
     var result = duplicate()
     for i in range(array.size()):
