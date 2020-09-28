@@ -1,0 +1,2 @@
+class_name NormalRecord
+extends Vector2Record

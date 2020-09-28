@@ -15,8 +15,10 @@ var bounce: BounceRecord
 var linear_velocity: LinearVelocityRecord
 var angular_velocity: AngularVelocityRecord
 
-# ColliderShape2D
+# Collision
 var collision_shape_2d: CollisionShape2DRecord
+var has_collided: HasCollidedRecord
+var collision: CollisionRecord
 
 # Destroy Timer
 var destroy_timer: DestroyTimerRecord

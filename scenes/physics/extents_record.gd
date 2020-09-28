@@ -1,0 +1,2 @@
+class_name ExtentsRecord
+extends Vector2Record
