@@ -17,6 +17,7 @@ var angular_velocity: AngularVelocityRecord
 
 # ColliderShape2D
 var collision_shape_2d: CollisionShape2DRecord
+var collision: PossibleCollisionRecord
 
 func duplicate():
     var duplicate = get_script().new()

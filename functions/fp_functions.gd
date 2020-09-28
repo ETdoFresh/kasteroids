@@ -1,5 +1,21 @@
 class_name FPFunctions
 
+func from_node_to_record(node: Node):
+    if node.has_method("get_record"):
+        return node.get_record()
+    else:
+        return null
+
+func is_not_null(obj: Object):
+    return obj != null
+
+static func is_asteroid(record: Record):
+    return record is AsteroidRecord
+
+static func randomize_asteroid(record: Record):
+    # TODO: Implement randomize_asteroid()
+    return record
+
 static func is_ship_record(record: Record):
     return record is ShipRecord
 
@@ -164,3 +180,21 @@ static func spawn_bullet_particles(world: Node2D, bullet: BulletRecord):
     bullet_particles.emitting = true
     bullet_particles.global_position = bullet.position.value
     return bullet
+
+static func has_bounding_box(record: Record):
+    return "bounding_box" in record
+    
+static func update_bounding_box(record: Record):
+    return record.with("bounding_box", \
+        record.bounding_box.with("position", record.position))
+
+static func get_pair_by_record(record: Record, pair: CollisionPairRecord):
+    return pair.record1 == record
+
+static func get_first_detected_collision(accumulator: PossibleCollisionRecord, pair: CollisionPairRecord):
+    if accumulator is NoCollisionRecord:
+        return pair.collision
+
+static func has_bullet_collided(record: Record):
+    return record is BulletRecord \
+        and record.collision is CollisionRecord

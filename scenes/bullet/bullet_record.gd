@@ -17,8 +17,7 @@ var angular_velocity: AngularVelocityRecord
 
 # Collision
 var collision_shape_2d: CollisionShape2DRecord
-var has_collided: HasCollidedRecord
-var collision: CollisionRecord
+var collision: PossibleCollisionRecord
 
 # Destroy Timer
 var destroy_timer: DestroyTimerRecord
@@ -34,5 +33,6 @@ func duplicate():
     duplicate.linear_velocity = linear_velocity
     duplicate.angular_velocity = angular_velocity
     duplicate.collision_shape_2d = collision_shape_2d
+    duplicate.collision = collision
     duplicate.destroy_timer = destroy_timer
     return duplicate

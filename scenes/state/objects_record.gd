@@ -1,6 +1,19 @@
 class_name ObjectsRecord
 extends ArrayRecord
 
+func from_nodes_to_records():
+    var from_node_to_record = funcref(FPFunctions, "from_node_to_record")
+    return map(from_node_to_record)
+
+func remove_nulls():
+    var is_not_null = funcref(FPFunctions, "is_not_null")
+    return filter(is_not_null)
+
+func randomize_asteroids():
+    var is_asteroid = funcref(FPFunctions, "is_asteroid")
+    var randomize_asteroid = funcref(FPFunctions, "randomize_asteroid")
+    return map_only(is_asteroid, randomize_asteroid)
+
 func apply_input() -> ObjectsRecord:
     var ships = funcref(FPFunctions, "is_ship_record")
     var apply_input_on_ship_record = funcref(FPFunctions, "apply_input_on_ship_record")
@@ -46,7 +59,7 @@ func limit_velocity() -> ObjectsRecord:
     var cap_max_speed = funcref(FPFunctions, "cap_max_speed")
     return map_only(has_max_speed, cap_max_speed)
 
-func queue_create_bullets() -> ObjectsRecord:
+func create_bullets() -> ObjectsRecord:
     var is_ship_firing = funcref(FPFunctions, "is_ship_firing")
     var create_bullet = funcref(FPFunctions, "create_bullet_record")
     return concat( \
@@ -91,27 +104,37 @@ func spawn_bullet_particles_on_bullet_destroy(world: Node2D):
     var _side_effect = filter(is_bullet_destroyed).map(spawn_bullet_particles_world_bake)
     return self
 
-func add_new_collisions():
-    # TODO: Implement functions below
-    var create_collision_pair_record = funcref(FPFunctions, "create_collision_pair_record")
+func update_bounding_boxes():
+    var has_bounding_box = funcref(FPFunctions, "has_bounding_box")
     var update_bounding_box = funcref(FPFunctions, "update_bounding_box")
-    var can_collide = funcref(FPFunctions, "can_collide")
-    var broad_phase_search = funcref(FPFunctions, "broad_phase_search")
-    var narrow_phase_search = funcref(FPFunctions, "narrow_phase_search")
-    var pairs = pairs() \
-        .map(create_collision_pair_record) \
-        .map_only(can_collide, update_bounding_box) \
-        .map_only(can_collide, broad_phase_search) \
-        .map_only(can_collide, narrow_phase_search)
-    var write_closest_collision = funcref(FPFunctions, "wite_closest_collision")
-    var baker = FPBake.new().init(write_closest_collision, pairs)
-    var write_closest_collision_pairs_bake = baker.get_funcref()
-    return map(write_closest_collision_pairs_bake)
+    return map_only(has_bounding_box, update_bounding_box)
+
+func add_new_collisions():
+    var can_collide = funcref(FPCollisions, "can_collide")
+    var broad_phase_search = funcref(FPCollisions, "broad_phase_search")
+    var narrow_phase_search = funcref(FPCollisions, "narrow_phase_search")
+    var add_collision_info = funcref(FPCollisions, "add_collision_info")
+    var pairs = create_collision_pairs() \
+        .filter(can_collide) \
+        .filter(broad_phase_search) \
+        .filter(narrow_phase_search) \
+        .map(add_collision_info)
+    var write_first_detected_collision = funcref(FPCollisions, "write_first_detected_collision")
+    var baker = FPBake.new().init(write_first_detected_collision, pairs)
+    var write_first_detected_collision_bake_pairs = baker.get_funcref()
+    return map(write_first_detected_collision_bake_pairs)
+
+func create_collision_pairs():
+    var collision_pair_array = []
+    for pair in pairs().array:
+        var collision_pair = CollisionPairRecord.new().init(pair[0], pair[1])
+        collision_pair_array.append(collision_pair)
+    return CollisionPairsRecord.new().init(collision_pair_array)
 
 func resolve_collisions():
     # TODO: Implement functions below
-    var has_collided = funcref(FPFunctions, "has_collided")
-    var bounce = funcref(FPFunctions, "bounce")
+    var has_collided = funcref(FPCollisions, "has_collided")
+    var bounce = funcref(FPCollisions, "bounce")
     return map_only(has_collided, bounce)
 
 func queue_delete_bullet_on_collide():

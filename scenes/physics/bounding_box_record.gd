@@ -30,3 +30,8 @@ func get_extents_from_points(points: Array):
         if extents.y < abs(point.y):
             extents.y = abs(point.y)
     return extents
+
+func get_left(): return position.value.x - extents.value.x
+func get_right(): return position.value.x + extents.value.x
+func get_up(): return position.value.y - extents.value.y
+func get_down(): return position.value.y + extents.value.y

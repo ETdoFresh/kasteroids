@@ -37,4 +37,5 @@ func get_record():
         record.linear_velocity = LinearVelocityRecord.new().init(linear_velocity)
         record.angular_velocity = AngularVelocityRecord.new().init(angular_velocity)
         record.collision_shape_2d = CollisionShape2DCircleRecord.new().init(collision_shape_2d.shape.radius)
+        record.collision = NoCollisionRecord.new()
     return record

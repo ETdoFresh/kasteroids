@@ -1,0 +1,3 @@
+class_name CollisionPairsRecord
+extends ArrayRecord
+

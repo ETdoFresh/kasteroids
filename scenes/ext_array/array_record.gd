@@ -24,11 +24,20 @@ func concat(other_array_record: ArrayRecord):
         result.array.append(item)
     return result
 
-func is_empty() -> bool: return array.size() > 0
-func head(): return array[0]
-func head_or_null(): return null if is_empty() else array[0]
-func tail(): return array[array.size() - 1]
-func tail_or_null(): return null if is_empty() else array[array.size() - 1]
+func is_empty() -> bool:
+    return array.size() > 0
+
+func head():
+    return array[0]
+
+func head_or_null():
+    return null if is_empty() else array[0]
+
+func tail():
+    return array[array.size() - 1]
+
+func tail_or_null():
+    return null if is_empty() else array[array.size() - 1]
 
 func pairs():
     var result = get_script().new()
@@ -65,12 +74,58 @@ func filter(func_ref):
             result.array.append(array[i])
     return result
 
-func find(_obj): pass
-func find_or_null(_obj): pass
-func find_index(_obj): pass
-func find_index_or_null(_obj): pass
-func fold(_acc, _func_ref): pass
-func size() -> int: return -1
-func sort(): return null
-func sort_by_field(_field_name): return null
-func zip(_other_array): return null # Returns Tuple
+func fold(accumulator, func_ref):
+    return reduce(accumulator, func_ref)
+
+func reduce(accumulator, func_ref):
+    for i in range(array.size()):
+        accumulator = func_ref.call_func(accumulator, array[i])
+    return accumulator
+
+func find(obj):
+    for i in range(array.size()):
+        if obj == array[i]:
+            return obj
+    push_error("Could not find obj %s" % obj)
+
+func find_or_null(obj):
+    for i in range(array.size()):
+        if obj == array[i]:
+            return obj
+    return null
+
+func find_index(obj):
+    for i in range(array.size()):
+        if obj == array[i]:
+            return i
+    push_error("Could not find obj %s" % obj)
+
+func find_index_or_null(obj):
+    for i in range(array.size()):
+        if obj == array[i]:
+            return i
+    return null
+
+func size() -> int:
+    return array.size()
+
+func sort():
+    var result = duplicate()
+    array.sort()
+    return result
+
+func sort_by_field(field_name):
+    var result = duplicate()
+    _field_name = field_name
+    array.sort_custom(self, "_array_sort_by_field")
+    return result
+
+var _field_name
+func _array_sort_by_field(a, b):
+    return a[_field_name] < b[_field_name]
+
+func zip(other_array):
+    var result = duplicate()
+    for i in range(array.size()):
+        result.array[i] = [array[i], other_array[i]]
+    return result

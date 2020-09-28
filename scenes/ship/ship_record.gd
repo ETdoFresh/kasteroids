@@ -23,6 +23,7 @@ var angular_velocity: AngularVelocityRecord
 
 # ColliderShape2D
 var collision_shape_2d: CollisionShape2DRecord
+var collision: PossibleCollisionRecord
 
 # Gun
 var gun_position: PositionRecord
