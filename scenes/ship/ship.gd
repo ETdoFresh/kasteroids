@@ -47,6 +47,7 @@ func set_record(new_record : ShipRecord):
 func get_record():
     if not record:
         record = ShipRecord.new()
+        record.id = IdRecord.new()
         record.node = self
         record.speed = SpeedRecord.new().init(speed)
         record.spin = SpinRecord.new().init(spin)
@@ -59,8 +60,10 @@ func get_record():
         record.linear_acceleration = LinearAccelerationRecord.new().init(linear_acceleration)
         record.linear_velocity = LinearVelocityRecord.new().init(linear_velocity)
         record.angular_velocity = AngularVelocityRecord.new().init(angular_velocity)
+        record.collision_exceptions = CollisionExceptionsRecord.new()
         record.collision_shape_2d = CollisionShape2DConvexPolygonRecord.new().init(collision_shape_2d.shape.points)
         record.collision = NoCollisionRecord.new()
+        record.bounding_box = BoundingBoxRecord.new().init(global_position, record.collision_shape_2d)
         record.gun_position = PositionRecord.new().init(gun.position)
         record.gun_rotation = RotationRecord.new().init(gun.rotation)
         record.cooldown = CooldownRecord.new().init(cooldown)

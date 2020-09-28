@@ -9,6 +9,7 @@ func ready(world: Node):
             .init(world.get_children()) \
             .from_nodes_to_records() \
             .remove_nulls() \
+            .assign_ids() \
             .randomize_asteroids())
 
 func process(state: StateRecord, delta: float, world: Node):
@@ -17,6 +18,7 @@ func process(state: StateRecord, delta: float, world: Node):
         .with("objects", state.objects \
             .apply_input() \
             .create_bullets() \
+            .assign_ids() \
             .set_cooldowns(delta) \
             .limit_velocity() \
             .apply_angular_velocity(delta) \

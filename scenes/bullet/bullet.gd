@@ -31,6 +31,7 @@ func set_record(new_record : BulletRecord):
 func get_record():
     if not record:
         record = BulletRecord.new()
+        record.id = IdRecord.new()
         record.node = self
         record.position = PositionRecord.new().init(position)
         record.rotation = RotationRecord.new().init(rotation)
@@ -39,7 +40,9 @@ func get_record():
         record.bounce = BounceRecord.new().init(bounce)
         record.linear_velocity = LinearVelocityRecord.new().init(linear_velocity)
         record.angular_velocity = AngularVelocityRecord.new().init(angular_velocity)
+        record.collision_exceptions = CollisionExceptionsRecord.new()
         record.collision_shape_2d = CollisionShape2DCircleRecord.new().init(radius)
         record.collision = NoCollisionRecord.new()
+        record.bounding_box = BoundingBoxRecord.new().init(position, record.collision_shape_2d)
         record.destroy_timer = DestroyTimerRecord.new().init(destroy_timer)
     return record

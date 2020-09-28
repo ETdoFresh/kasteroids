@@ -26,7 +26,7 @@ static func add_collision_info(pair: CollisionPairRecord):
 
 static func get_position(pair: CollisionPairRecord):
     # TODO: Find collision position... this is not it...
-    var position = pair.record1.position
+    var position = pair.record1.position.value
     return PositionRecord.new().init(position)
 
 static func get_normal(pair: CollisionPairRecord):

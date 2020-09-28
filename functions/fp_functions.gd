@@ -1,12 +1,12 @@
 class_name FPFunctions
 
-func from_node_to_record(node: Node):
+static func from_node_to_record(node: Node):
     if node.has_method("get_record"):
         return node.get_record()
     else:
         return null
 
-func is_not_null(obj: Object):
+static func is_not_null(obj: Object):
     return obj != null
 
 static func is_asteroid(record: Record):
@@ -15,6 +15,10 @@ static func is_asteroid(record: Record):
 static func randomize_asteroid(record: Record):
     # TODO: Implement randomize_asteroid()
     return record
+
+static func assign_ids(objects, record: Record):
+    return objects.replace(record, record.with("id", record.id.init(objects.next_id))) \
+        .with("next_id", objects.next_id + 1)
 
 static func is_ship_record(record: Record):
     return record is ShipRecord
@@ -112,6 +116,7 @@ static func is_ship_firing(record: Record):
         record.input.fire
 
 static func create_bullet_record(shipRecord: ShipRecord):
+    var ship_id = shipRecord.id.value
     var ship_position = shipRecord.position.value
     var ship_rotation = shipRecord.rotation.value
     var ship_velocity = shipRecord.linear_velocity.value
@@ -127,6 +132,7 @@ static func create_bullet_record(shipRecord: ShipRecord):
     bullet_record.position = bullet_record.position.init(gun_position)
     bullet_record.rotation = bullet_record.rotation.init(gun_rotation)
     bullet_record.linear_velocity = bullet_record.linear_velocity.init(bullet_velocity)
+    bullet_record.collision_exceptions = bullet_record.collision_exceptions.append(ship_id)
     return bullet_record
 
 static func update_cooldown_timer(delta: float, shipRecord: ShipRecord):

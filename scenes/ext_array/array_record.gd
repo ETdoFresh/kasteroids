@@ -82,6 +82,12 @@ func reduce(accumulator, func_ref):
         accumulator = func_ref.call_func(accumulator, array[i])
     return accumulator
 
+func replace(obj, new_obj):
+    var result = duplicate()
+    var i = find_index(obj)
+    result.array[i] = new_obj
+    return result
+
 func find(obj):
     for i in range(array.size()):
         if obj == array[i]:
