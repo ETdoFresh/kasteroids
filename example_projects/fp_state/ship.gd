@@ -34,11 +34,12 @@ var collision: CollisionObject
 # Gun
 var gun_position: Vector2
 var gun_rotation: float
-var cooldown: float
+var cooldown = 0.2
 var cooldown_timer: float
 
 var world = null
 var username = "Ship"
+var queue_delete = false
 
 onready var input = $Input
 onready var gun = $Gun
@@ -51,3 +52,4 @@ var apply_linear_acceleration = funcref(FUNC, "apply_linear_acceleration")
 var apply_linear_velocity = funcref(FUNC, "apply_linear_velocity")
 var wrap = funcref(FUNC, "wrap")
 var create_bullet = funcref(FUNC, "create_bullet")
+var set_cooldown = funcref(FUNC, "set_cooldown")

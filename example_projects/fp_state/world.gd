@@ -11,20 +11,20 @@ func _ready():
 func _process(delta):
     map(state.objects, "apply_input")
     fold1(state.objects, "create_bullet", state.objects, self)
-    map(state.objects, "assign_id")
+    map(state.objects, "assign_id") # TODO
     map1(state.objects, "set_cooldown", delta)
     map(state.objects, "limit_velocity")
     map1(state.objects, "apply_angular_velocity", delta)
     map1(state.objects, "apply_linear_acceleration", delta)
     map1(state.objects, "apply_linear_velocity", delta)
     map(state.objects, "wrap")
-    map(state.objects, "add_new_collision")
-    map(state.objects, "resolve_new_collision")
+    map(state.objects, "add_new_collision") # TODO
+    map(state.objects, "resolve_new_collision") # TODO
     map1(state.objects, "update_destroy_timer", delta)
-    map(state.objects, "queue_delete_bullet_on_collide")
+    map(state.objects, "queue_delete_bullet_on_collide") # TODO
     map(state.objects, "queue_delete_bullet_on_timeout")
-    map(state.objects, "spawn_bullet_particles_on_delete")
-    map(state.objects, "delete_object")
+    map1(state.objects, "spawn_bullet_particles_on_delete", self)
+    fold(state.objects, "delete_object", state.objects)
     $Label.text = "FPS: %s" % Engine.get_frames_per_second()
     $Label.text += "\nObjects: %s" % state.objects.size()
 
@@ -50,13 +50,15 @@ func map1(array: Array, func_name: String, arg): # 1 arg
     return array
 
 func fold(array: Array, func_name: String, accumulator):
-    for i in range(array.size()):
-        if func_name in array[i]:
-            accumulator = array[i][func_name].call_func(array[i], accumulator)
-    return array
+    var duplicate = array.duplicate()
+    for i in range(duplicate.size()):
+        if func_name in duplicate[i]:
+            accumulator = duplicate[i][func_name].call_func(duplicate[i], accumulator)
+    return accumulator
 
 func fold1(array: Array, func_name: String, accumulator, arg):
-    for i in range(array.size()):
-        if func_name in array[i]:
-            accumulator = array[i][func_name].call_func(array[i], accumulator, arg)
-    return array
+    var duplicate = array.duplicate()
+    for i in range(duplicate.size()):
+        if func_name in duplicate[i]:
+            accumulator = duplicate[i][func_name].call_func(duplicate[i], accumulator, arg)
+    return accumulator

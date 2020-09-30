@@ -37,8 +37,43 @@ static func is_firing(ship):
 static func create_bullet(ship, objects, world):
     if is_firing(ship):
         var bullet = ship.BULLET.instance()
+        var relative_velocity = ship.linear_velocity
         world.add_child(bullet)
         bullet.global_position = ship.gun.global_position
         bullet.global_rotation = ship.gun.global_rotation
         bullet.linear_velocity = Vector2(0, -bullet.speed).rotated(ship.gun.global_rotation)
+        bullet.linear_velocity += relative_velocity
+        bullet.collision_exceptions.append(ship)
         objects.append(bullet)
+    return objects
+
+static func set_cooldown(ship, delta):
+    if is_firing(ship):
+        ship.cooldown_timer = ship.cooldown
+    elif ship.cooldown_timer > 0:
+        ship.cooldown_timer -= delta
+    return ship
+
+static func update_destroy_timer(obj, delta):
+    if obj.destroy_timer > 0:
+        obj.destroy_timer -= delta
+    return obj
+
+static func queue_delete_bullet_on_timeout(obj):
+    if obj.destroy_timer <= 0:
+        obj.queue_delete = true
+    return obj
+
+static func delete_object(obj, objects):
+    if obj.queue_delete:
+        objects.erase(obj)
+        obj.queue_free()
+    return objects
+
+static func spawn_bullet_particles_on_delete(bullet, world):
+    if bullet.queue_delete:
+        var particles = bullet.PARTICLES.instance()
+        world.add_child(particles)
+        particles.global_position = bullet.global_position
+        particles.emitting = true
+    return bullet
