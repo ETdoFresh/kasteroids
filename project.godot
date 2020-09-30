@@ -94,6 +94,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/ship/cooldown_timer_record.gd"
 }, {
+"base": "StringRecord",
+"class": "CurrentSceneRecord",
+"language": "GDScript",
+"path": "res://scenes/game/current_scene_record.gd"
+}, {
 "base": "FloatRecord",
 "class": "DestroyTimerRecord",
 "language": "GDScript",
@@ -130,6 +135,16 @@ _global_script_classes=[ {
 "path": "res://functions/fp_functions.gd"
 }, {
 "base": "Reference",
+"class": "FPGame",
+"language": "GDScript",
+"path": "res://functions/fp_game.gd"
+}, {
+"base": "Reference",
+"class": "FPObjects",
+"language": "GDScript",
+"path": "res://functions/fp_objects.gd"
+}, {
+"base": "Reference",
 "class": "FPWorld",
 "language": "GDScript",
 "path": "res://functions/fp_world.gd"
@@ -138,6 +153,11 @@ _global_script_classes=[ {
 "class": "FloatRecord",
 "language": "GDScript",
 "path": "res://scenes/record/float_record.gd"
+}, {
+"base": "Record",
+"class": "GameRecord",
+"language": "GDScript",
+"path": "res://scenes/game/game_record.gd"
 }, {
 "base": "BoolRecord",
 "class": "HasCollidedRecord",
@@ -163,6 +183,11 @@ _global_script_classes=[ {
 "class": "JSONBeautifier",
 "language": "GDScript",
 "path": "res://plugins/json_beautifier.gd"
+}, {
+"base": "ArrayRecord",
+"class": "LeaderBoardRecord",
+"language": "GDScript",
+"path": "res://scenes/game/leader_board_record.gd"
 }, {
 "base": "Vector2Record",
 "class": "LinearAccelerationRecord",
@@ -194,6 +219,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/physics/no_collision_record.gd"
 }, {
+"base": "SessionRecord",
+"class": "NoSessionRecord",
+"language": "GDScript",
+"path": "res://scenes/game/no_session_record.gd"
+}, {
 "base": "Vector2Record",
 "class": "NormalRecord",
 "language": "GDScript",
@@ -203,6 +233,16 @@ _global_script_classes=[ {
 "class": "ObjectsRecord",
 "language": "GDScript",
 "path": "res://scenes/state/objects_record.gd"
+}, {
+"base": "Record",
+"class": "PlayerRecord",
+"language": "GDScript",
+"path": "res://scenes/game/player_record.gd"
+}, {
+"base": "ArrayRecord",
+"class": "PlayersRecord",
+"language": "GDScript",
+"path": "res://scenes/game/players_record.gd"
 }, {
 "base": "Vector2Record",
 "class": "PositionRecord",
@@ -224,6 +264,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/transform/rotation_record.gd"
 }, {
+"base": "Record",
+"class": "RoundRecord",
+"language": "GDScript",
+"path": "res://scenes/game/round_record.gd"
+}, {
+"base": "ArrayRecord",
+"class": "RoundsRecord",
+"language": "GDScript",
+"path": "res://scenes/game/rounds_record.gd"
+}, {
 "base": "Vector2Record",
 "class": "ScaleRecord",
 "language": "GDScript",
@@ -233,6 +283,21 @@ _global_script_classes=[ {
 "class": "SceneMap",
 "language": "GDScript",
 "path": "res://functions/scene_map.gd"
+}, {
+"base": "IntRecord",
+"class": "ScoreRecord",
+"language": "GDScript",
+"path": "res://scenes/game/score_record.gd"
+}, {
+"base": "Record",
+"class": "SessionRecord",
+"language": "GDScript",
+"path": "res://scenes/game/session_record.gd"
+}, {
+"base": "Record",
+"class": "SettingsRecord",
+"language": "GDScript",
+"path": "res://scenes/game/settings_record.gd"
 }, {
 "base": "Node2D",
 "class": "Ship",
@@ -270,6 +335,11 @@ _global_script_classes=[ {
 "path": "res://scenes/state/state_record.gd"
 }, {
 "base": "Record",
+"class": "StringRecord",
+"language": "GDScript",
+"path": "res://scenes/record/string_record.gd"
+}, {
+"base": "Record",
 "class": "Vector2Record",
 "language": "GDScript",
 "path": "res://scenes/record/vector2_record.gd"
@@ -292,6 +362,7 @@ _global_script_class_icons={
 "CollisionShape2DRecord": "",
 "CooldownRecord": "",
 "CooldownTimerRecord": "",
+"CurrentSceneRecord": "",
 "DestroyTimerRecord": "",
 "DictionaryFunctions": "",
 "DictionaryRecord": "",
@@ -299,27 +370,39 @@ _global_script_class_icons={
 "FPBake": "",
 "FPCollisions": "",
 "FPFunctions": "",
+"FPGame": "",
+"FPObjects": "",
 "FPWorld": "",
 "FloatRecord": "",
+"GameRecord": "",
 "HasCollidedRecord": "",
 "IdRecord": "",
 "InputRecord": "",
 "IntRecord": "",
 "JSONBeautifier": "",
+"LeaderBoardRecord": "",
 "LinearAccelerationRecord": "",
 "LinearVelocityRecord": "",
 "ListFunctions": "",
 "MassRecord": "",
 "MaxSpeedRecord": "",
 "NoCollisionRecord": "",
+"NoSessionRecord": "",
 "NormalRecord": "",
 "ObjectsRecord": "",
+"PlayerRecord": "",
+"PlayersRecord": "",
 "PositionRecord": "",
 "PossibleCollisionRecord": "",
 "Record": "",
 "RotationRecord": "",
+"RoundRecord": "",
+"RoundsRecord": "",
 "ScaleRecord": "",
 "SceneMap": "",
+"ScoreRecord": "",
+"SessionRecord": "",
+"SettingsRecord": "",
 "Ship": "",
 "ShipRecord": "",
 "ShortcutFunctions": "",
@@ -327,13 +410,14 @@ _global_script_class_icons={
 "SpinRecord": "",
 "StateFunctions": "",
 "StateRecord": "",
+"StringRecord": "",
 "Vector2Record": ""
 }
 
 [application]
 
 config/name="kasteroids"
-run/main_scene="res://world.tscn"
+run/main_scene="res://scenes/world/world.tscn"
 config/icon="res://graphics/icon.png"
 
 [autoload]
@@ -341,6 +425,7 @@ config/icon="res://graphics/icon.png"
 Random="*res://autoload/random.gd"
 FP="*res://functions/fp.gd"
 Scene="*res://autoload/scene.gd"
+Game="*res://scenes/game/game.gd"
 
 [display]
 

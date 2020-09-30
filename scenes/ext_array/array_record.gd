@@ -4,9 +4,12 @@ extends Record
 var array: Array = []
 
 func init(init_array: Array):
-    var init = duplicate()
-    init.array = init_array
-    return init
+    return set_array(init_array)
+
+func set_array(set_array):
+    var duplicate = duplicate()
+    duplicate.array = set_array
+    return duplicate
 
 func duplicate():
     var duplicate = get_script().new()

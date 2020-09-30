@@ -14,6 +14,3 @@ func _process(_delta : float):
     #label.text = JSONBeautifier.beautify_json(to_json(current_state))
     label.text = "FPS: %s\nOBJECTS: %s" % [Engine.get_frames_per_second(), state.objects.array.size()]
     pass
-
-func _input(event):
-    ShortcutFunctions.receive_input(event, self)

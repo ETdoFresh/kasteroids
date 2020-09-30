@@ -1,12 +1,12 @@
-class_name FloatRecord
+class_name StringRecord
 extends Record
 
-var value: float
+var value: String
 
-func init(init_value: float):
+func init(init_value: String):
     return set_value(init_value)
 
-func set_value(set_value: float):
+func set_value(set_value: String):
     var duplicate = duplicate()
     duplicate.value = set_value
     return duplicate
