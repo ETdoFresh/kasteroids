@@ -79,6 +79,7 @@ func process_received_data(delta):
             if correct_values:
                 object.from_dictionary(correct_values)
         #to_log("Resimulate", historical_state2.tick, historical_state2.input, historical_state2.objects)
+        var world
         world.rewind(received_data.tick)
         world.rewrite(received_data)
         for resimulate_tick in range(received_data.tick + 1, server_tick_sync.smooth_tick + 1):
@@ -140,6 +141,8 @@ func mismatch_exceeds_threshold(entry):
     else:
         return true
     
+    var historic_object
+    var other_object
     var delta = get_delta(historic_object, other_object)
     if delta.position.length() >= 2 || delta.rotation >= 0.05:
         return true
@@ -310,6 +313,7 @@ func claim_new_object(entry):
             return true
 
 func create_bullet(bullet):
+    var local_id = 0 # TODO: Solve later
     local_id += 1
     bullet.collision_layer = Data.get_physics_layer_id_by_name("predicted_world")
     bullet.collision_mask = Data.get_physics_layer_id_by_name("predicted_world")
@@ -334,4 +338,5 @@ func debug_bullet_destroy(_bullet):
     CSV.write_line("res://bullet.csv", [tick, "client_destroy_bullet"])
 
 func queue_remove_from_tree(child):
+    var remove_from_tree_queue # TODO: Delete later
     remove_from_tree_queue.append(child)
