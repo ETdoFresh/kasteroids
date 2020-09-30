@@ -24,7 +24,9 @@ func _process(delta):
     map(state.objects, "queue_delete_bullet_on_collide") # TODO
     map(state.objects, "queue_delete_bullet_on_timeout")
     map1(state.objects, "spawn_bullet_particles_on_delete", self)
+    map(state.objects, "play_spawn_sound")
     fold(state.objects, "delete_object", state.objects)
+    map(state.objects, "clear_spawn")
     $Label.text = "FPS: %s" % Engine.get_frames_per_second()
     $Label.text += "\nObjects: %s" % state.objects.size()
 

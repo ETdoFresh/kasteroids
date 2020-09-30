@@ -11,6 +11,9 @@ var linear_velocity = Vector2.ZERO
 var collision_exceptions = []
 var collision: CollisionObject
 var queue_delete = false
+var spawn = false
+
+onready var spawn_sound = $SpawnSound
 
 var assign_id = funcref(FUNC, "assign_id")
 var apply_linear_velocity = funcref(FUNC, "apply_linear_velocity")
@@ -19,3 +22,5 @@ var update_destroy_timer = funcref(FUNC, "update_destroy_timer")
 var queue_delete_bullet_on_timeout = funcref(FUNC, "queue_delete_bullet_on_timeout")
 var spawn_bullet_particles_on_delete = funcref(FUNC, "spawn_bullet_particles_on_delete")
 var delete_object = funcref(FUNC, "delete_object")
+var play_spawn_sound = funcref(FUNC, "play_spawn_sound")
+var clear_spawn = funcref(FUNC, "clear_spawn")

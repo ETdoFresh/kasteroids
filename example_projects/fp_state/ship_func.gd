@@ -44,6 +44,7 @@ static func create_bullet(ship, objects, world):
         bullet.linear_velocity = Vector2(0, -bullet.speed).rotated(ship.gun.global_rotation)
         bullet.linear_velocity += relative_velocity
         bullet.collision_exceptions.append(ship)
+        bullet.spawn = true
         objects.append(bullet)
     return objects
 
@@ -87,3 +88,13 @@ static func assign_id(obj, state):
         state.objects[i].id = state.next_id
         state.next_id += 1
     return state
+
+static func play_spawn_sound(obj):
+    if obj.spawn:
+        if Settings.sound_on:
+            obj.spawn_sound.play()
+    return obj
+
+static func clear_spawn(obj):
+    obj.spawn = false
+    return obj
