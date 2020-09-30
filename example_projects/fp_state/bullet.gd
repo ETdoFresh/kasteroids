@@ -6,11 +6,13 @@ const FUNC = preload("res://example_projects/fp_state/ship_func.gd")
 export var speed = 800.0
 export var destroy_timer = 1
 
+var id = -1
 var linear_velocity = Vector2.ZERO
 var collision_exceptions = []
 var collision: CollisionObject
 var queue_delete = false
 
+var assign_id = funcref(FUNC, "assign_id")
 var apply_linear_velocity = funcref(FUNC, "apply_linear_velocity")
 var wrap = funcref(FUNC, "wrap")
 var update_destroy_timer = funcref(FUNC, "update_destroy_timer")

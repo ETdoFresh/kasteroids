@@ -77,3 +77,13 @@ static func spawn_bullet_particles_on_delete(bullet, world):
         particles.global_position = bullet.global_position
         particles.emitting = true
     return bullet
+
+static func is_id_unassigned(obj):
+    return obj.id == -1
+
+static func assign_id(obj, state):
+    if is_id_unassigned(obj):
+        var i = state.objects.find(obj)
+        state.objects[i].id = state.next_id
+        state.next_id += 1
+    return state

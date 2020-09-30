@@ -11,7 +11,7 @@ func _ready():
 func _process(delta):
     map(state.objects, "apply_input")
     fold1(state.objects, "create_bullet", state.objects, self)
-    map(state.objects, "assign_id") # TODO
+    fold(state.objects, "assign_id", state)
     map1(state.objects, "set_cooldown", delta)
     map(state.objects, "limit_velocity")
     map1(state.objects, "apply_angular_velocity", delta)

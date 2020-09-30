@@ -45,6 +45,7 @@ onready var input = $Input
 onready var gun = $Gun
 
 # Functions
+var assign_id = funcref(FUNC, "assign_id")
 var apply_input = funcref(FUNC, "apply_input")
 var limit_velocity = funcref(FUNC, "limit_velocity")
 var apply_angular_velocity = funcref(FUNC, "apply_angular_velocity")
