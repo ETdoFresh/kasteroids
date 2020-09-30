@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://example_projects/fp_state/world.gd" type="Script" id=1]
 [ext_resource path="res://entities/sound_player/sound_player.tscn" type="PackedScene" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://entities/ship/ship.svg" type="Texture" id=4]
 [ext_resource path="res://example_projects/fp_state/ship.gd" type="Script" id=5]
 [ext_resource path="res://entities/input/keyboard_plus_gui.tscn" type="PackedScene" id=6]
+[ext_resource path="res://example_projects/fp_state/bullet.tscn" type="PackedScene" id=7]
 
 [node name="World" type="Node2D"]
 script = ExtResource( 1 )
@@ -50,3 +51,12 @@ __meta__ = {
 }
 
 [node name="Input" parent="Ship" instance=ExtResource( 6 )]
+
+[node name="Bullet" parent="." instance=ExtResource( 7 )]
+
+[node name="Label" type="Label" parent="."]
+margin_right = 40.0
+margin_bottom = 14.0
+__meta__ = {
+"_edit_use_anchors_": false
+}

@@ -1,5 +1,6 @@
 extends KinematicBody2D
 
+const BULLET = preload("res://example_projects/fp_state/bullet.tscn")
 const FUNC = preload("res://example_projects/fp_state/ship_func.gd")
 
 # ID
@@ -40,6 +41,7 @@ var world = null
 var username = "Ship"
 
 onready var input = $Input
+onready var gun = $Gun
 
 # Functions
 var apply_input = funcref(FUNC, "apply_input")
@@ -48,3 +50,4 @@ var apply_angular_velocity = funcref(FUNC, "apply_angular_velocity")
 var apply_linear_acceleration = funcref(FUNC, "apply_linear_acceleration")
 var apply_linear_velocity = funcref(FUNC, "apply_linear_velocity")
 var wrap = funcref(FUNC, "wrap")
+var create_bullet = funcref(FUNC, "create_bullet")

@@ -30,3 +30,15 @@ static func wrap(ship):
     while position.y > 720: position.y -= 720
     ship.global_position = position
     return ship
+
+static func is_firing(ship):
+    return ship.input.fire and ship.cooldown_timer <= 0
+
+static func create_bullet(ship, objects, world):
+    if is_firing(ship):
+        var bullet = ship.BULLET.instance()
+        world.add_child(bullet)
+        bullet.global_position = ship.gun.global_position
+        bullet.global_rotation = ship.gun.global_rotation
+        bullet.linear_velocity = Vector2(0, -bullet.speed).rotated(ship.gun.global_rotation)
+        objects.append(bullet)
