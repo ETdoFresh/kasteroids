@@ -20,7 +20,7 @@ var bounce_coeff = 0.0
 onready var collision_shape = $CollisionShape2D
 var bounding_box: BoundingBox
 var broadphase_collision = false
-var collision: CollisionObject
+var collision#: CollisionObject
 var collision_exceptions = []
 
 # Functions
@@ -35,5 +35,9 @@ var delete_object = funcref(FUNC, "delete_object")
 var play_spawn_sound = funcref(FUNC, "play_spawn_sound")
 var clear_spawn = funcref(FUNC, "clear_spawn")
 var update_bounding_box = funcref(FUNC, "update_bounding_box")
+var broad_phase_collision_detection = funcref(FUNC, "broad_phase_collision_detection")
+var narrow_phase_collision_detection = funcref(FUNC, "narrow_phase_collision_detection")
+var clear_collision = funcref(FUNC, "clear_collision")
+var queue_delete_bullet_on_collide = funcref(FUNC, "queue_delete_bullet_on_collide")
 
 var draw_debug_bounding_box = funcref(FUNC, "draw_debug_bounding_box")

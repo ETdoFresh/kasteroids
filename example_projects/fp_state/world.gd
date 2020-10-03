@@ -22,7 +22,7 @@ func _process(delta):
     map1(state.objects, "apply_linear_velocity", delta)
     map(state.objects, "wrap")
     map(state.objects, "update_bounding_box")
-    map1(state.objects, "broad_phase_collision_detection", state.objects) # TODO
+    map1(state.objects, "broad_phase_collision_detection", state.objects)
     map1(state.objects, "narrow_phase_collision_detection", state.objects) # TODO
     map(state.objects, "resolve_collision") # TODO
     map1(state.objects, "update_destroy_timer", delta)

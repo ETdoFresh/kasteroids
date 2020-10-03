@@ -27,7 +27,7 @@ onready var collision_shape = $CollisionShape2D
 var bounding_box: BoundingBox
 var broadphase_collision = false
 var collision_exceptions = []
-var collision: CollisionObject
+var collision#: CollisionObject
 
 # Gun
 onready var gun = $Gun
@@ -49,5 +49,8 @@ var wrap = funcref(FUNC, "wrap")
 var create_bullet = funcref(FUNC, "create_bullet")
 var set_cooldown = funcref(FUNC, "set_cooldown")
 var update_bounding_box = funcref(FUNC, "update_bounding_box")
+var broad_phase_collision_detection = funcref(FUNC, "broad_phase_collision_detection")
+var narrow_phase_collision_detection = funcref(FUNC, "narrow_phase_collision_detection")
+var clear_collision = funcref(FUNC, "clear_collision")
 
 var draw_debug_bounding_box = funcref(FUNC, "draw_debug_bounding_box")

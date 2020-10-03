@@ -23,7 +23,8 @@ export var max_angular_velocity = 3.0
 onready var collision_shape = $CollisionShape2D
 var bounding_box: BoundingBox
 var broadphase_collision = false
-var collision: CollisionObject
+var collision#: CollisionObject
+var collision_exceptions = []
 
 # Functions
 const FUNC = preload("res://example_projects/fp_state/ship_func.gd")
@@ -36,5 +37,8 @@ var randomize_linear_velocity = funcref(FUNC, "randomize_linear_velocity")
 var randomize_angular_velocity = funcref(FUNC, "randomize_angular_velocity")
 var randomize_scale = funcref(FUNC, "randomize_scale")
 var update_bounding_box = funcref(FUNC, "update_bounding_box")
+var broad_phase_collision_detection = funcref(FUNC, "broad_phase_collision_detection")
+var narrow_phase_collision_detection = funcref(FUNC, "narrow_phase_collision_detection")
+var clear_collision = funcref(FUNC, "clear_collision")
 
 var draw_debug_bounding_box = funcref(FUNC, "draw_debug_bounding_box")

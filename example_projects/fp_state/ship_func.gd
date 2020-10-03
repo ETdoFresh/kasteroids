@@ -25,20 +25,39 @@ static func apply_linear_velocity(ship, delta: float):
 
 static func broad_phase_collision_detection(obj, objects):
     for i in range(objects.size()):
-        if not objects[i].has_method("broad_phase_collision_detection"):
+        if obj == objects[i]:
             continue
-        var is_overlapping = obj.bounding_box.overlaps(objects[i].bounding_box)
+        if not "broad_phase_collision_detection" in objects[i]:
+            continue
+        if obj.collision_exceptions.has(objects[i]):
+            continue
+        if objects[i].collision_exceptions.has(obj):
+            continue
+        var is_overlapping = obj.bounding_box.intersects(objects[i].bounding_box)
         if is_overlapping:
             obj.broadphase_collision = true
+            break
     return obj
 
 static func narrow_phase_collision_detection(obj, objects):
+    if not obj.broadphase_collision:
+        return obj
     for i in range(objects.size()):
-        if not objects[i].has_method("narrow_phase_collision_detection"):
+        if obj == objects[i]:
             continue
-        var is_overlapping = obj.bounding_box.overlaps(objects[i].bounding_box)
+        if not "broad_phase_collision_detection" in objects[i]:
+            continue
+        if not obj.broadphase_collision:
+            continue
+        var is_overlapping = obj.bounding_box.intersects(objects[i].bounding_box)
         if is_overlapping:
             obj.collision = true
+            break
+    return obj
+
+static func clear_collision(obj):
+    obj.broadphase_collision = false
+    obj.collision = null
     return obj
 
 static func clear_spawn(obj):
@@ -93,6 +112,11 @@ static func play_spawn_sound(obj):
 
 static func queue_delete_bullet_on_timeout(obj):
     if obj.destroy_timer <= 0:
+        obj.queue_delete = true
+    return obj
+
+static func queue_delete_bullet_on_collide(obj):
+    if obj.collision:
         obj.queue_delete = true
     return obj
 
