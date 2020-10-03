@@ -40,5 +40,6 @@ var broad_phase_collision_detection = funcref(FUNC, "broad_phase_collision_detec
 var narrow_phase_collision_detection = funcref(FUNC, "narrow_phase_collision_detection")
 var clear_collision = funcref(FUNC, "clear_collision")
 var queue_delete_bullet_on_collide = funcref(FUNC, "queue_delete_bullet_on_collide")
+var resolve_collision = funcref(FUNC, "resolve_collision")
 
 var draw_debug_bounding_box = funcref(FUNC, "draw_debug_bounding_box")

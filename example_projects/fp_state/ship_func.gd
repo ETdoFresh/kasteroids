@@ -111,10 +111,21 @@ static func limit_velocity(ship):
         ship.linear_velocity *= ship.max_linear_velocity
     return ship
 
-static func play_spawn_sound(obj):
+static func play_sound(sound_node: AudioStreamPlayer, world):
+    var sound = sound_node.duplicate()
+    var length = sound_node.stream.get_length()
+    var destroy_timer = Timer.new()
+    destroy_timer.connect("timeout", sound, "queue_free")
+    destroy_timer.wait_time = length
+    destroy_timer.autostart = true
+    sound.add_child(destroy_timer)
+    world.add_child(sound)
+    sound.play()
+
+static func play_spawn_sound(obj, world):
     if obj.spawn:
         if Settings.sound_on:
-            obj.spawn_sound.play()
+            play_sound(obj.spawn_sound, world)
     return obj
 
 static func queue_delete_bullet_on_timeout(obj):
@@ -144,6 +155,21 @@ static func randomize_scale(obj):
     var min_range = obj.random_scale.x
     var max_range = obj.random_scale.y
     obj.global_scale *= Random.randf_range(min_range, max_range)
+    return obj
+
+static func resolve_collision(obj):
+    if obj.collision:
+        var other = obj.collision.other
+        var ma = obj.mass
+        var mb = other.mass
+        var va = obj.linear_velocity
+        var vb = other.linear_velocity
+        var n = obj.collision.normal
+        var cr = obj.bounce # Coefficient of Restitution
+        if (va - vb).dot(n) > 0: return obj # Don't resolve same direction collisions
+        var j = -(1.0 + cr) * (va - vb).dot(n) # Impulse Magnitude
+        j /= (1.0/ma + 1.0/mb)
+        obj.linear_velocity = va + (j / ma) * n
     return obj
 
 static func set_cooldown(ship, delta):

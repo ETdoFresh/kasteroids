@@ -23,13 +23,13 @@ func _process(delta):
     map(state.objects, "wrap")
     map(state.objects, "update_bounding_box")
     map1(state.objects, "broad_phase_collision_detection", state.objects)
-    map1(state.objects, "narrow_phase_collision_detection", state.objects) # TODO
-    map(state.objects, "resolve_collision") # TODO
+    map1(state.objects, "narrow_phase_collision_detection", state.objects)
+    map(state.objects, "resolve_collision")
     map1(state.objects, "update_destroy_timer", delta)
     map(state.objects, "queue_delete_bullet_on_collide")
     map(state.objects, "queue_delete_bullet_on_timeout")
     map1(state.objects, "spawn_bullet_particles_on_delete", self)
-    map(state.objects, "play_spawn_sound")
+    map1(state.objects, "play_spawn_sound", self)
     fold(state.objects, "delete_object", state.objects)
     map(state.objects, "clear_spawn")
     map(state.objects, "clear_collision")
@@ -75,11 +75,3 @@ func fold1(array: Array, func_name: String, accumulator, arg):
         if func_name in duplicate[i]:
             accumulator = duplicate[i][func_name].call_func(duplicate[i], accumulator, arg)
     return accumulator
-
-func pairs(array: Array):
-    var pairs = []
-    for i in range(array.size()):
-        for j in range(array.size()):
-            if i != j:
-                pairs.append([array[i], array[j]])
-    return pairs

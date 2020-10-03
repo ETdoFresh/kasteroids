@@ -18,3 +18,4 @@ texture = ExtResource( 2 )
 shape = SubResource( 1 )
 
 [node name="CollisionSound" parent="." instance=ExtResource( 1 )]
+script = null
