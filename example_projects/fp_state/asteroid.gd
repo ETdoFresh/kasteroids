@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends Node2D
 
 # Node
 var id = -1
@@ -11,7 +11,7 @@ export var random_scale = Vector2(0.75, 1)
 
 # Physics Body
 export var mass = 5.0
-export var bounce_coeff = 0.0
+export var bounce = 0.0
 var linear_velocity = Vector2.ZERO
 var angular_velocity = 0
 

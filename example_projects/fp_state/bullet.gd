@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends Node2D
 
 # Node
 var id = -1
@@ -12,9 +12,10 @@ export var speed = 800.0
 export var destroy_timer = 1
 
 # Physics Body
-var linear_velocity = Vector2.ZERO
 var mass = 0.2
-var bounce_coeff = 0.0
+var bounce = 0.0
+var linear_velocity = Vector2.ZERO
+var angular_velocity = 0.0
 
 # Physics Collision
 onready var collision_shape = $CollisionShape2D

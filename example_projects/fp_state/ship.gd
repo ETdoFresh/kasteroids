@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends Node2D
 
 # Node
 var id = -1
@@ -12,7 +12,7 @@ var spin = 10.0
 
 # Physics Body
 export var mass = 1.0
-export var bounce_coeff = 0.0
+export var bounce = 0.0
 var linear_acceleration = Vector2.ZERO
 var linear_velocity = Vector2.ZERO
 var angular_velocity = 0

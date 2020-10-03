@@ -26,13 +26,13 @@ func _process(delta):
     map1(state.objects, "narrow_phase_collision_detection", state.objects) # TODO
     map(state.objects, "resolve_collision") # TODO
     map1(state.objects, "update_destroy_timer", delta)
-    map(state.objects, "queue_delete_bullet_on_collide") # TODO
+    map(state.objects, "queue_delete_bullet_on_collide")
     map(state.objects, "queue_delete_bullet_on_timeout")
     map1(state.objects, "spawn_bullet_particles_on_delete", self)
     map(state.objects, "play_spawn_sound")
     fold(state.objects, "delete_object", state.objects)
     map(state.objects, "clear_spawn")
-    map(state.objects, "clear_collision") # TODO
+    map(state.objects, "clear_collision")
     $Label.text = "FPS: %s" % Engine.get_frames_per_second()
     $Label.text += "\nObjects: %s" % state.objects.size()
     update()

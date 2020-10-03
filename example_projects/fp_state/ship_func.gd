@@ -43,15 +43,22 @@ static func narrow_phase_collision_detection(obj, objects):
     if not obj.broadphase_collision:
         return obj
     for i in range(objects.size()):
-        if obj == objects[i]:
+        var other = objects[i]
+        if obj == other:
             continue
-        if not "broad_phase_collision_detection" in objects[i]:
+        if not "broad_phase_collision_detection" in other:
             continue
         if not obj.broadphase_collision:
             continue
-        var is_overlapping = obj.bounding_box.intersects(objects[i].bounding_box)
-        if is_overlapping:
-            obj.collision = true
+        var local_transform = obj.transform
+        var other_shape = other.collision_shape.shape
+        var other_transform = other.transform
+        var contacts = obj.collision_shape.shape.collide_and_get_contacts(local_transform, other_shape, other_transform)
+        if contacts.size() > 0:
+            var average_contact = Vector2.ZERO
+            for contact in contacts: average_contact += contact
+            average_contact /= contacts.size()
+            obj.collision = Collision.new().init(obj, other, average_contact)
             break
     return obj
 
@@ -162,20 +169,17 @@ static func update_bounding_box(obj):
             position = obj.collision_shape.global_position
             if obj.collision_shape.shape is RectangleShape2D:
                 extents = obj.collision_shape.shape.extents
-                extents *= obj.collision_shape.global_scale
             elif obj.collision_shape.shape is CircleShape2D:
                 var radius = obj.collision_shape.shape.radius
                 extents = Vector2(radius, radius)
-                extents *= obj.collision_shape.global_scale
-        elif obj.collision_shape is CollisionPolygon2D:
-            position = obj.collision_shape.global_position
-            for point in obj.collision_shape.polygon:
-                if extents.x < abs(point.x):
-                    extents.x = abs(point.x)
-                    extents.y = abs(point.x)
-                if extents.y < abs(point.y):
-                    extents.x = abs(point.y)
-                    extents.y = abs(point.y)
+            elif obj.collision_shape.shape is ConvexPolygonShape2D:
+                for point in obj.collision_shape.shape.points:
+                    if extents.x < abs(point.x):
+                        extents.x = abs(point.x)
+                        extents.y = abs(point.x)
+                    if extents.y < abs(point.y):
+                        extents.x = abs(point.y)
+                        extents.y = abs(point.y)
             extents *= obj.collision_shape.global_scale
         obj.bounding_box = BoundingBox.new(position, extents)
     else:
