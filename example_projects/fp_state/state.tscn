@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://example_projects/fp_state/world.gd" type="Script" id=1]
 [ext_resource path="res://entities/sound_player/sound_player.tscn" type="PackedScene" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://example_projects/fp_state/ship.gd" type="Script" id=5]
 [ext_resource path="res://entities/input/keyboard_plus_gui.tscn" type="PackedScene" id=6]
 [ext_resource path="res://entities/sound_toggle/audio_toggles.tscn" type="PackedScene" id=7]
+[ext_resource path="res://example_projects/fp_state/asteroid.tscn" type="PackedScene" id=8]
 
 [node name="World" type="Node2D"]
 script = ExtResource( 1 )
@@ -62,3 +63,15 @@ __meta__ = {
 [node name="AudioToggles" parent="." instance=ExtResource( 7 )]
 margin_top = 49.0
 margin_bottom = 124.0
+
+[node name="Asteroid" parent="." instance=ExtResource( 8 )]
+position = Vector2( 296.33, 176.226 )
+
+[node name="Asteroid2" parent="." instance=ExtResource( 8 )]
+position = Vector2( 344.596, 492.761 )
+
+[node name="Asteroid3" parent="." instance=ExtResource( 8 )]
+position = Vector2( 1016.95, 165.002 )
+
+[node name="Asteroid4" parent="." instance=ExtResource( 8 )]
+position = Vector2( 1011.34, 471.434 )

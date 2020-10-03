@@ -7,6 +7,9 @@ var state: STATE = STATE.new()
 func _ready():
     state.tick = 0
     state.objects = get_children()
+    map(state.objects, "randomize_linear_velocity")
+    map(state.objects, "randomize_angular_velocity")
+    map(state.objects, "randomize_scale")
 
 func _process(delta):
     map(state.objects, "apply_input")
@@ -18,8 +21,10 @@ func _process(delta):
     map1(state.objects, "apply_linear_acceleration", delta)
     map1(state.objects, "apply_linear_velocity", delta)
     map(state.objects, "wrap")
-    map(state.objects, "add_new_collision") # TODO
-    map(state.objects, "resolve_new_collision") # TODO
+    map(state.objects, "update_bounding_box")
+    map1(state.objects, "broad_phase_collision_detection", state.objects) # TODO
+    map1(state.objects, "narrow_phase_collision_detection", state.objects) # TODO
+    map(state.objects, "resolve_collision") # TODO
     map1(state.objects, "update_destroy_timer", delta)
     map(state.objects, "queue_delete_bullet_on_collide") # TODO
     map(state.objects, "queue_delete_bullet_on_timeout")
@@ -27,8 +32,14 @@ func _process(delta):
     map(state.objects, "play_spawn_sound")
     fold(state.objects, "delete_object", state.objects)
     map(state.objects, "clear_spawn")
+    map(state.objects, "clear_collision") # TODO
     $Label.text = "FPS: %s" % Engine.get_frames_per_second()
     $Label.text += "\nObjects: %s" % state.objects.size()
+    update()
+
+func _draw():
+    map1(state.objects, "draw_debug_bounding_box", self)
+    pass
 
 func connect_new_input(input):
     var ship = input.new_ship()
@@ -64,3 +75,11 @@ func fold1(array: Array, func_name: String, accumulator, arg):
         if func_name in duplicate[i]:
             accumulator = duplicate[i][func_name].call_func(duplicate[i], accumulator, arg)
     return accumulator
+
+func pairs(array: Array):
+    var pairs = []
+    for i in range(array.size()):
+        for j in range(array.size()):
+            if i != j:
+                pairs.append([array[i], array[j]])
+    return pairs

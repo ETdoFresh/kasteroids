@@ -1,0 +1,23 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://entities/sound_player/sound_player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://entities/asteroid/asteroid1.svg" type="Texture" id=2]
+[ext_resource path="res://entities/asteroid/8BIT_RETRO_Explosion_Short_Distant_mono.ogg" type="AudioStream" id=3]
+[ext_resource path="res://example_projects/fp_state/asteroid.gd" type="Script" id=4]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 72.0791
+
+[node name="Asteroid" type="KinematicBody2D"]
+script = ExtResource( 4 )
+
+[node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="CollisionSound" type="AudioStreamPlayer" parent="." instance=ExtResource( 1 )]
+stream = ExtResource( 3 )
+volume_db = -10.0
