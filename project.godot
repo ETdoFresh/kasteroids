@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Reference",
+"class": "ArrayFunc",
+"language": "GDScript",
+"path": "res://example_projects/fp_state/array_func.gd"
+}, {
 "base": "KinematicBody2D",
 "class": "Asteroid",
 "language": "GDScript",
@@ -110,6 +115,7 @@ _global_script_classes=[ {
 "path": "res://entities/wrap/wrap.gd"
 } ]
 _global_script_class_icons={
+"ArrayFunc": "",
 "Asteroid": "",
 "BoundingBox": "",
 "Bullet": "",

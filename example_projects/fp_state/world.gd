@@ -50,28 +50,7 @@ func disconnect_input(input):
     map1(state.objects, "queue_delete_input", input)
     map(state.objects, "delete_object")
 
-func map(array: Array, func_name: String):
-    for i in range(array.size()):
-        if func_name in array[i]:
-            array[i] = array[i][func_name].call_func(array[i])
-    return array
-
-func map1(array: Array, func_name: String, arg): # 1 arg
-    for i in range(array.size()):
-        if func_name in array[i]:
-            array[i] = array[i][func_name].call_func(array[i], arg)
-    return array
-
-func fold(array: Array, func_name: String, accumulator):
-    var duplicate = array.duplicate()
-    for i in range(duplicate.size()):
-        if func_name in duplicate[i]:
-            accumulator = duplicate[i][func_name].call_func(duplicate[i], accumulator)
-    return accumulator
-
-func fold1(array: Array, func_name: String, accumulator, arg):
-    var duplicate = array.duplicate()
-    for i in range(duplicate.size()):
-        if func_name in duplicate[i]:
-            accumulator = duplicate[i][func_name].call_func(duplicate[i], accumulator, arg)
-    return accumulator
+func map(array: Array, func_name: String): ArrayFunc.map(array, func_name)
+func map1(array: Array, func_name: String, arg): ArrayFunc.map1(array, func_name, arg)
+func fold(array: Array, func_name: String, accumulator): ArrayFunc.fold(array, func_name, accumulator)
+func fold1(array: Array, func_name: String, accumulator, arg): ArrayFunc.fold1(array, func_name, accumulator, arg)
