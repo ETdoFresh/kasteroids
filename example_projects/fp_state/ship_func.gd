@@ -96,6 +96,24 @@ static func delete_object(obj, objects):
         obj.queue_free()
     return objects
 
+static func fix_penetration(obj):
+    if obj.collision:
+        var other = obj.collision.other
+        var pa = obj.collision.position
+        var pb = obj.collision.other_position
+        var ra = obj.bounding_box.size / 2
+        var rb = other.bounding_box.size / 2
+        var new_va = obj.linear_velocity
+        var new_vb = other.linear_velocity
+        var n = obj.collision.normal
+        var cr = obj.bounce
+        var ppa = pa - n * ra # Penetration Point A
+        var ppb = pb + n * rb # Penetration Point B
+        var penetration = (ppa - ppb).length()
+        var ratio = new_va.length() / (new_va + new_vb).length()
+        obj.global_position += n * penetration * ratio
+    return obj
+
 static func is_id_unassigned(obj):
     return obj.id == -1
 
@@ -162,11 +180,10 @@ static func randomize_scale(obj):
 
 static func resolve_collision(obj):
     if obj.collision:
-        var other = obj.collision.other
-        var ma = obj.mass
-        var mb = other.mass
-        var va = obj.linear_velocity
-        var vb = other.linear_velocity
+        var ma = obj.collision.mass
+        var mb = obj.collision.other_mass
+        var va = obj.collision.linear_velocity
+        var vb = obj.collision.other_linear_velocity
         var n = obj.collision.normal
         var cr = obj.bounce # Coefficient of Restitution
         if (va - vb).dot(n) > 0: return obj # Don't resolve same direction collisions

@@ -2,6 +2,7 @@ extends Node2D
 
 const STATE = preload("res://example_projects/fp_state/state.gd")
 
+var debug_draw = false
 var state: STATE = STATE.new()
 
 func _ready():
@@ -25,6 +26,7 @@ func _process(delta):
     map1(state.objects, "broad_phase_collision_detection", state.objects)
     map1(state.objects, "narrow_phase_collision_detection", state.objects)
     map(state.objects, "resolve_collision")
+    #map(state.objects, "fix_penetration")
     map1(state.objects, "update_destroy_timer", delta)
     map(state.objects, "queue_delete_bullet_on_collide")
     map(state.objects, "queue_delete_bullet_on_timeout")
@@ -36,11 +38,10 @@ func _process(delta):
     map(state.objects, "clear_collision")
     $Label.text = "FPS: %s" % Engine.get_frames_per_second()
     $Label.text += "\nObjects: %s" % state.objects.size()
-    update()
+    if debug_draw: update()
 
 func _draw():
-    map1(state.objects, "draw_debug_bounding_box", self)
-    pass
+    if debug_draw: map1(state.objects, "draw_debug_bounding_box", self)
 
 func connect_new_input(input):
     var ship = input.new_ship()
