@@ -19,7 +19,7 @@ var angular_velocity = 0.0
 
 # Physics Collision
 onready var collision_shape = $CollisionShape2D
-var bounding_box: BoundingBox
+var bounding_box: Rect2
 var broadphase_collision = false
 var collision#: CollisionObject
 var collision_exceptions = []

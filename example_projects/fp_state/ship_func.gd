@@ -87,10 +87,7 @@ static func create_bullet(ship, objects, world):
 
 static func draw_debug_bounding_box(obj, world):
     if obj.bounding_box:
-        var position = obj.bounding_box.position - obj.bounding_box.extents
-        var size = obj.bounding_box.extents * 2
-        var rect = Rect2(position, size)
-        world.draw_rect(rect, Color.beige, false, 2.0, true)
+        world.draw_rect(obj.bounding_box, Color.beige, false, 2.0, true)
     return obj
 
 static func delete_object(obj, objects):
@@ -121,6 +118,12 @@ static func play_sound(sound_node: AudioStreamPlayer, world):
     sound.add_child(destroy_timer)
     world.add_child(sound)
     sound.play()
+
+static func play_collision_sound(obj, world):
+    if obj.collision:
+        if Settings.sound_on:
+            play_sound(obj.collision_sound, world)
+    return obj
 
 static func play_spawn_sound(obj, world):
     if obj.spawn:
@@ -190,26 +193,28 @@ static func spawn_bullet_particles_on_delete(bullet, world):
 static func update_bounding_box(obj):
     if not obj.bounding_box:
         var position = Vector2.ZERO
-        var extents = Vector2.ZERO
+        var size = Vector2.ZERO
         if obj.collision_shape is CollisionShape2D:
             position = obj.collision_shape.global_position
             if obj.collision_shape.shape is RectangleShape2D:
-                extents = obj.collision_shape.shape.extents
+                size = obj.collision_shape.shape.extents * 2
             elif obj.collision_shape.shape is CircleShape2D:
                 var radius = obj.collision_shape.shape.radius
-                extents = Vector2(radius, radius)
+                size = Vector2(radius, radius) * 2
             elif obj.collision_shape.shape is ConvexPolygonShape2D:
                 for point in obj.collision_shape.shape.points:
-                    if extents.x < abs(point.x):
-                        extents.x = abs(point.x)
-                        extents.y = abs(point.x)
-                    if extents.y < abs(point.y):
-                        extents.x = abs(point.y)
-                        extents.y = abs(point.y)
-            extents *= obj.collision_shape.global_scale
-        obj.bounding_box = BoundingBox.new(position, extents)
+                    if size.x < abs(point.x) * 2:
+                        size.x = abs(point.x) * 2
+                        size.y = abs(point.x) * 2
+                    if size.y < abs(point.y) * 2:
+                        size.x = abs(point.y) * 2
+                        size.y = abs(point.y) * 2
+            size *= obj.collision_shape.global_scale
+            position -= size / 2
+        obj.bounding_box = Rect2(position, size)
     else:
         obj.bounding_box.position = obj.collision_shape.global_position
+        obj.bounding_box.position -= obj.bounding_box.size / 2
     return obj
 
 static func update_destroy_timer(obj, delta):

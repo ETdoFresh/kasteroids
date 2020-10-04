@@ -30,6 +30,7 @@ func _process(delta):
     map(state.objects, "queue_delete_bullet_on_timeout")
     map1(state.objects, "spawn_bullet_particles_on_delete", self)
     map1(state.objects, "play_spawn_sound", self)
+    map1(state.objects, "play_collision_sound", self)
     fold(state.objects, "delete_object", state.objects)
     map(state.objects, "clear_spawn")
     map(state.objects, "clear_collision")

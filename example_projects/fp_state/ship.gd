@@ -24,7 +24,7 @@ export var max_angular_velocity = 3.0
 
 # Physics Collision
 onready var collision_shape = $CollisionShape2D
-var bounding_box: BoundingBox
+var bounding_box: Rect2
 var broadphase_collision = false
 var collision_exceptions = []
 var collision#: CollisionObject

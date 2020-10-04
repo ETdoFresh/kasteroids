@@ -21,7 +21,8 @@ export var max_angular_velocity = 3.0
 
 # Physics Collision
 onready var collision_shape = $CollisionShape2D
-var bounding_box: BoundingBox
+onready var collision_sound = $CollisionSound
+var bounding_box: Rect2
 var broadphase_collision = false
 var collision#: CollisionObject
 var collision_exceptions = []
@@ -41,5 +42,6 @@ var broad_phase_collision_detection = funcref(FUNC, "broad_phase_collision_detec
 var narrow_phase_collision_detection = funcref(FUNC, "narrow_phase_collision_detection")
 var clear_collision = funcref(FUNC, "clear_collision")
 var resolve_collision = funcref(FUNC, "resolve_collision")
+var play_collision_sound = funcref(FUNC, "play_collision_sound")
 
 var draw_debug_bounding_box = funcref(FUNC, "draw_debug_bounding_box")

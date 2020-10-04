@@ -19,11 +19,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://entities/asteroid/asteroid.gd"
 }, {
-"base": "Reference",
-"class": "BoundingBox",
-"language": "GDScript",
-"path": "res://example_projects/fp_state/bounding_box.gd"
-}, {
 "base": "KinematicBody2D",
 "class": "Bullet",
 "language": "GDScript",
@@ -117,7 +112,6 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "ArrayFunc": "",
 "Asteroid": "",
-"BoundingBox": "",
 "Bullet": "",
 "Collision": "",
 "Gun": "",
@@ -141,7 +135,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Kasteroids"
-run/main_scene="res://scenes/menu/menu.tscn"
+run/main_scene="res://example_projects/fp_state/state.tscn"
 config/icon="res://icon/icon.png"
 config/windows_native_icon="res://icon.ico"
 
