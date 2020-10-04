@@ -37,8 +37,8 @@ var cooldown = 0.2
 var cooldown_timer: float
 
 # Functions
-const BULLET = preload("res://example_projects/fp_state/bullet.tscn")
-const FUNC = preload("res://example_projects/fp_state/ship_func.gd")
+const BULLET = preload("res://entities/bullet/bullet_new.tscn")
+const FUNC = preload("res://entities/functions/functions.gd")
 var assign_id = funcref(FUNC, "assign_id")
 var apply_input = funcref(FUNC, "apply_input")
 var limit_velocity = funcref(FUNC, "limit_velocity")

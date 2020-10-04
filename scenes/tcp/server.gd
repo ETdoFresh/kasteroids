@@ -38,6 +38,7 @@ func _process(delta):
             var world_dictionary = $World.to_dictionary(client_data)
             var json = Data.var2strs_json(world_dictionary)
             $LatencySimulator.send(client, json)
+    $Label.text = "FPS: %s" % Engine.get_frames_per_second()
 
 func create_tcp_server_input(client):
     var input = NetworkServerPlayerInput.new("TCPPlayer", client)

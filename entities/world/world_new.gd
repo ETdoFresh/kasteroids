@@ -1,8 +1,9 @@
 extends Node2D
 
-const STATE = preload("res://example_projects/fp_state/state.gd")
+const STATE = preload("res://entities/state/state_new.gd")
 
-var debug_draw = false
+export var debug_draw = false
+
 var state: STATE = STATE.new()
 
 func _ready():

@@ -1,23 +1,23 @@
 [gd_scene load_steps=10 format=2]
 
-[ext_resource path="res://example_projects/fp_state/world.gd" type="Script" id=1]
-[ext_resource path="res://entities/sound_player/sound_player.tscn" type="PackedScene" id=2]
-[ext_resource path="res://entities/ship/upright_label.gd" type="Script" id=3]
+[ext_resource path="res://entities/sound_player/sound_player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://entities/input/keyboard_plus_gui.tscn" type="PackedScene" id=2]
+[ext_resource path="res://entities/sound_toggle/audio_toggles.tscn" type="PackedScene" id=3]
 [ext_resource path="res://entities/ship/ship.svg" type="Texture" id=4]
-[ext_resource path="res://example_projects/fp_state/ship.gd" type="Script" id=5]
-[ext_resource path="res://entities/input/keyboard_plus_gui.tscn" type="PackedScene" id=6]
-[ext_resource path="res://entities/sound_toggle/audio_toggles.tscn" type="PackedScene" id=7]
-[ext_resource path="res://example_projects/fp_state/asteroid.tscn" type="PackedScene" id=8]
+[ext_resource path="res://entities/ship/upright_label.gd" type="Script" id=5]
+[ext_resource path="res://entities/world/world_new.gd" type="Script" id=6]
+[ext_resource path="res://entities/asteroid/asteroid_new.tscn" type="PackedScene" id=7]
+[ext_resource path="res://entities/ship/ship_new.gd" type="Script" id=8]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 3.246, -31.277, 18.057, 29.749, -18.803, 27.745 )
 
 [node name="World" type="Node2D"]
-script = ExtResource( 1 )
+script = ExtResource( 6 )
 
 [node name="Ship" type="Node2D" parent="."]
 position = Vector2( 642.828, 361.414 )
-script = ExtResource( 5 )
+script = ExtResource( 8 )
 bounce = 0.6
 
 [node name="Sprite" type="Sprite" parent="Ship"]
@@ -32,11 +32,11 @@ visible = false
 polygon = PoolVector2Array( 3.24627, -31.2773, 18.0575, 29.7493, -18.8035, 27.7447 )
 disabled = true
 
-[node name="CollisionSound" parent="Ship" instance=ExtResource( 2 )]
+[node name="CollisionSound" parent="Ship" instance=ExtResource( 1 )]
 script = null
 
 [node name="Name" type="Node2D" parent="Ship"]
-script = ExtResource( 3 )
+script = ExtResource( 5 )
 
 [node name="Label" type="Label" parent="Ship/Name"]
 anchor_left = 0.5
@@ -60,7 +60,7 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="Input" parent="Ship" instance=ExtResource( 6 )]
+[node name="Input" parent="Ship" instance=ExtResource( 2 )]
 
 [node name="Label" type="Label" parent="."]
 margin_right = 40.0
@@ -69,18 +69,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="AudioToggles" parent="." instance=ExtResource( 7 )]
+[node name="AudioToggles" parent="." instance=ExtResource( 3 )]
 margin_top = 49.0
 margin_bottom = 124.0
 
-[node name="Asteroid" parent="." instance=ExtResource( 8 )]
+[node name="Asteroid" parent="." instance=ExtResource( 7 )]
 position = Vector2( 296.33, 176.226 )
 
-[node name="Asteroid2" parent="." instance=ExtResource( 8 )]
+[node name="Asteroid2" parent="." instance=ExtResource( 7 )]
 position = Vector2( 344.596, 492.761 )
 
-[node name="Asteroid3" parent="." instance=ExtResource( 8 )]
+[node name="Asteroid3" parent="." instance=ExtResource( 7 )]
 position = Vector2( 1016.95, 165.002 )
 
-[node name="Asteroid4" parent="." instance=ExtResource( 8 )]
+[node name="Asteroid4" parent="." instance=ExtResource( 7 )]
 position = Vector2( 1011.34, 471.434 )

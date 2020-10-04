@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://entities/asteroid/randomize.gd" type="Script" id=1]
+[ext_resource path="res://entities/asteroid/randomize_old.gd" type="Script" id=1]
 
 [node name="RandomizeAsteroid" type="Node"]
 script = ExtResource( 1 )

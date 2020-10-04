@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://scenes/tcp/server.gd" type="Script" id=1]
 [ext_resource path="res://entities/input/keyboard_plus_gui.tscn" type="PackedScene" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://entities/input/keyboard_shortcuts.gd" type="Script" id=5]
 [ext_resource path="res://music/destroy_asteroids_music.tscn" type="PackedScene" id=6]
 [ext_resource path="res://entities/sound_toggle/audio_toggles.tscn" type="PackedScene" id=7]
+[ext_resource path="res://fonts/arial_16.tres" type="DynamicFont" id=8]
 
 [node name="Local" type="Node"]
 script = ExtResource( 1 )
@@ -34,3 +35,12 @@ margin_left = 1025.0
 margin_top = 10.0
 margin_right = 1175.0
 margin_bottom = 85.0
+
+[node name="Label" type="Label" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 80.0
+custom_fonts/font = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

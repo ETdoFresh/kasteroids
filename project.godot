@@ -12,27 +12,27 @@ _global_script_classes=[ {
 "base": "Reference",
 "class": "ArrayFunc",
 "language": "GDScript",
-"path": "res://example_projects/fp_state/array_func.gd"
+"path": "res://entities/functions/array_func.gd"
 }, {
 "base": "KinematicBody2D",
 "class": "Asteroid",
 "language": "GDScript",
-"path": "res://entities/asteroid/asteroid.gd"
+"path": "res://entities/asteroid/asteroid_old.gd"
 }, {
 "base": "KinematicBody2D",
 "class": "Bullet",
 "language": "GDScript",
-"path": "res://entities/bullet/bullet.gd"
+"path": "res://entities/bullet/bullet_old.gd"
 }, {
 "base": "Reference",
 "class": "Collision",
 "language": "GDScript",
-"path": "res://example_projects/fp_state/collision.gd"
+"path": "res://entities/physics/collision.gd"
 }, {
 "base": "Node2D",
 "class": "Gun",
 "language": "GDScript",
-"path": "res://entities/ship/gun.gd"
+"path": "res://entities/ship/gun_old.gd"
 }, {
 "base": "Panel",
 "class": "InGameConsole",
@@ -82,17 +82,12 @@ _global_script_classes=[ {
 "base": "KinematicBody2D",
 "class": "Ship",
 "language": "GDScript",
-"path": "res://entities/ship/ship.gd"
+"path": "res://entities/ship/ship_old.gd"
 }, {
 "base": "Reference",
 "class": "SlidingWindow",
 "language": "GDScript",
 "path": "res://example_projects/one_value_sync/sliding_window.gd"
-}, {
-"base": "Node",
-"class": "State",
-"language": "GDScript",
-"path": "res://entities/state/state.gd"
 }, {
 "base": "Node2D",
 "class": "StateMachine",
@@ -126,7 +121,6 @@ _global_script_class_icons={
 "SettingsFile": "",
 "Ship": "",
 "SlidingWindow": "",
-"State": "",
 "StateMachine": "",
 "Username": "",
 "Wrap": ""
@@ -135,7 +129,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Kasteroids"
-run/main_scene="res://example_projects/fp_state/state.tscn"
+run/main_scene="res://entities/state/state.tscn"
 config/icon="res://icon/icon.png"
 config/windows_native_icon="res://icon.ico"
 

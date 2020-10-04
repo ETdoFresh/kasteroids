@@ -1,10 +1,10 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://entities/bullet/bullet.svg" type="Texture" id=1]
-[ext_resource path="res://entities/bullet/bullet_client.gd" type="Script" id=3]
+[ext_resource path="res://entities/bullet/bullet_client_old.gd" type="Script" id=2]
 
 [node name="BulletClient" type="Node2D"]
-script = ExtResource( 3 )
+script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
 scale = Vector2( 0.5, 0.5 )

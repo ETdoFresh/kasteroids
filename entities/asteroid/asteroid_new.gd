@@ -28,7 +28,7 @@ var collision#: CollisionObject
 var collision_exceptions = []
 
 # Functions
-const FUNC = preload("res://example_projects/fp_state/ship_func.gd")
+const FUNC = preload("res://entities/functions/functions.gd")
 var assign_id = funcref(FUNC, "assign_id")
 var limit_velocity = funcref(FUNC, "limit_velocity")
 var apply_angular_velocity = funcref(FUNC, "apply_angular_velocity")
